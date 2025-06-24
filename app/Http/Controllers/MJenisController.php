@@ -61,13 +61,13 @@ class MJenisController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, MJenis $mJenis)
+    public function update(Request $request, MJenis $jenis)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:m_jenis,name,' . $mJenis->id,
+            'name' => 'required|string|max:255'
         ]);
 
-        $mJenis->update($request->only('name'));
+        $jenis->update($request->all());
 
         return response()->json([
             'status' => 'success',

@@ -10,7 +10,9 @@ class MJenis extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'm_jenis';
+
     protected $guarded = ['id'];
+    protected $fillable = ['name'];
 
     public function categories()
     {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\MJenis;
 use App\Models\TProduct;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

@@ -17,7 +17,7 @@ class TProductController extends Controller
     {
         $arr['categories'] = MCategories::all();
         if ($request->ajax()) {
-            $query = TProduct::with('category')->orderBy('created_at', 'desc');
+            $query = TProduct::with('category', 'category.jenis')->orderBy('created_at', 'desc');
             if ($request->has('filter')) {
                 $query = $query->where('category_id', $request->filter);
             }
@@ -33,6 +33,9 @@ class TProductController extends Controller
                 ->addIndexColumn()
                 ->addColumn('category', function ($row) {
                     return $row->category ? $row->category->name : '-';
+                })
+                ->addColumn('jenis', function ($row) {
+                    return $row->category->jenis ? $row->category->jenis->name : "Tidak ada jenis";
                 })
                 ->rawColumns(['action'])
                 ->toJson();
@@ -60,15 +63,11 @@ class TProductController extends Controller
             'category_id' => 'required|exists:m_categories,id',
         ]);
 
-        $uploadedImages = [];
-
         if ($request->hasFile('image')) {
             foreach ($request->file('image') as $file) {
                 $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                 $path = $file->storeAs('images/products/' . now()->format('Y/m/d'), $filename, 'public');
 
-                // Simpan ke database jika perlu
-                $uploadedImages[] = $path;
                 if (!TProduct::where('code', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))->exists()) {
                     TProduct::create([
                         'code' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),

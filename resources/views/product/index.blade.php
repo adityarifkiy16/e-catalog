@@ -28,7 +28,7 @@
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
                                         {{ old('category', request()->query('filter')) == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name }}
+                                        {{ $category->name }} ({{ $category->jenis->name ?? 'Unknown' }})
                                     </option>
                                 @endforeach
                             </select>
@@ -49,6 +49,7 @@
                             <tr>
                                 <th style="width: 0.5rem;">No</th>
                                 <th>Kode</th>
+                                <th>Jenis</th>
                                 <th>Kategori</th>
                                 <th>Foto</th>
                                 @if ($isAuthenticated && ($user->hasPermission('edit_products') || $user->hasPermission('edit_products')))
@@ -162,6 +163,9 @@
                     },
                     {
                         data: 'code'
+                    },
+                    {
+                        data: 'jenis'
                     },
                     {
                         data: 'category',

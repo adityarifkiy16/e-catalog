@@ -19,6 +19,8 @@ Route::controller(App\Http\Controllers\AuthController::class)->middleware("guest
     Route::post("/", "store")->name("login.post");
 });
 
+Route::get("/catalog", [App\Http\Controllers\CatalogController::class, "index"])->name("catalog");
+
 Route::middleware("auth")->group(function () {
     Route::get("/dashboard", [App\Http\Controllers\DashboardController::class, "index"])->name("dashboard");
     Route::post("/logout", [App\Http\Controllers\AuthController::class, "logout"])->name("logout");
