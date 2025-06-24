@@ -6,6 +6,7 @@ use App\Models\TProduct;
 use App\Models\MCategories;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Yajra\DataTables\Facades\DataTables;
 
 class TProductController extends Controller
 {
@@ -14,13 +15,31 @@ class TProductController extends Controller
      */
     public function index(Request $request)
     {
-        $arr['products'] = TProduct::with('category');
-        if ($request->has('category') && $request->category != '') {
-            $arr['products'] = $arr['products']->where('category_id', $request->category)->get();
-        } else {
-            $arr['products'] = $arr['products']->get();
-        }
         $arr['categories'] = MCategories::all();
+        if ($request->ajax()) {
+            $query = TProduct::with('category');
+            if ($request->has('filter')) {
+                $query = $query->where('category_id', $request->filter);
+            }
+            if ($request->has('search') && $request->search['value'] !== null) {
+                $search = $request->search['value'];
+                $query->where(function ($q) use ($search) {
+                    $q->where('code', 'like', '%' . $search . '%')
+                        ->orWhere('name', 'like', '%' . $search . '%')
+                        ->orwhereHas('category', function ($q) use ($search) {
+                            $q->where('name', 'like', '%' . $search . '%');
+                        });
+                });
+            }
+            $product = $query->get();
+            return DataTables::of($product)
+                ->addIndexColumn()
+                ->addColumn('category', function ($row) {
+                    return $row->category ? $row->category->name : '-';
+                })
+                ->rawColumns(['action'])
+                ->toJson();
+        }
         return view('product.index', $arr);
     }
 
@@ -89,7 +108,6 @@ class TProductController extends Controller
      */
     public function update(Request $request, TProduct $product)
     {
-        // dd($request->all());
         $request->validate([
             'code' => [
                 'required',

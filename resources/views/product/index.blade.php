@@ -20,97 +20,43 @@
         <div class="col-12">
             <div class="card card-primary">
                 <div class="card-body table-responsive">
-                    <div class="d-flex justify-content-between align-items-center mb-3 " style="width: 300px;">
-                        <select id="category-filter" class="form-control mr-2" name="category" style="width: 150px;">
-                            <option value="">All Categories</option>
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->id }}"
-                                    {{ old('category', request()->query('category')) == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <button class="btn btn-secondary" type="button" id="btn-filter-category" style="width: 100px;">
-                            Filter
-                        </button>
-                    </div>
+
+                    <form action="{{ route('products.index') }}" method="GET">
+                        <div class="d-flex justify-content-between align-items-center mb-3 ">
+                            <select id="category-filter" class="form-control mr-2" name="filter">
+                                <option value="">All Categories</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}"
+                                        {{ old('category', request()->query('filter')) == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <button class="btn btn-secondary" type="submit" id="btn-filter-category" style="width: 100px;">
+                                Filter
+                            </button>
+                        </div>
+                    </form>
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <form action="{{ route('products.search') }}" method="GET" class="input-group">
-                            <input type="text" id="search-products" name="search" class="form-control"
-                                placeholder="Search...">
-                            <div class="input-group-append">
-                                <button class="btn btn-secondary" type="submit" id="btn-search-products">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
-                        </form>
                         @if ($isAuthenticated && $user->hasPermission('create_products'))
                             <a href="{{ route('products.create') }}" class="btn btn-success ml-2">
-                                <i class="fa fa-plus"></i>
+                                <i class="fa fa-plus"></i> Tambah Produk
                             </a>
                         @endif
                     </div>
-                    <table id="user-table" class="table table-bordered">
+                    <table id="product-table" class="table table-bordered">
                         <thead>
                             <tr>
                                 <th style="width: 0.5rem;">No</th>
                                 <th>Kode</th>
                                 <th>Kategori</th>
-                                <th>Photos</th>
+                                <th>Foto</th>
                                 @if ($isAuthenticated && ($user->hasPermission('edit_products') || $user->hasPermission('edit_products')))
-                                    <th style="text-align: end;">Action</th>
+                                    <th style="text-align: end; width: 2rem;">Action</th>
                                 @endif
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($products as $item)
-                                <tr>
-                                    <td style="width: 10px;">{{ $item->id }}</td>
-                                    <td>{{ $item->code }}</td>
-                                    <td>
-                                        @if ($item->category)
-                                            {{ $item->category->name }}
-                                        @else
-                                            <span class="text-muted">No Category</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if ($item->photo)
-                                            <div class="d-flex flex-wrap gap-2">
-                                                <img src="{{ asset('storage/' . $item->photo) }}" alt="{{ $item->name }}"
-                                                    class="img-thumbnail"
-                                                    style="width: 50px; height: 50px; object-fit: cover;">
-
-                                            </div>
-                                        @else
-                                            <span class="text-muted">No Photos</span>
-                                        @endif
-                                    </td>
-                                    @if ($isAuthenticated && ($user->hasPermission('edit_products') || $user->hasPermission('edit_products')))
-                                        <td style="width: 100px;">
-                                            <div class="d-flex justify-content-end align-items-center gap-1">
-                                                @if ($isAuthenticated && $user->hasPermission('edit_products'))
-                                                    <a href="{{ route('products.edit', $item) }}"
-                                                        class="btn btn-sm btn-primary mr-2" title="Edit">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                @endif
-
-                                                @if ($isAuthenticated && $user->hasPermission('delete_products'))
-                                                    <form action="{{ route('products.destroy', $item) }}" method="POST"
-                                                        style="display: inline;" class="delete-product">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    </form>
-                                                @endif
-                                            </div>
-                                        </td>
-                                    @endif
-                                </tr>
-                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -121,6 +67,46 @@
 
 @push('scripts')
     <script type="text/javascript">
+        $(document).on('submit', '.delete-product', function(e) {
+            e.preventDefault();
+            const form = $(this);
+            const url = form.attr('action');
+
+            Swal.fire({
+                title: 'Yakin ingin menghapus?',
+                text: "Data tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: form.serialize(),
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                Swal.fire('Berhasil!', response.message, 'success');
+                                // Jika pakai DataTables
+                                $('#product-table').DataTable().ajax.reload(null, false);
+                            } else {
+                                Swal.fire('Gagal!', response.message, 'error');
+                            }
+                        },
+                        error: function(xhr) {
+                            Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+
         $(document).ready(function() {
             const Toast = Swal.mixin({
                 toast: true,
@@ -133,6 +119,85 @@
                     toast.onmouseleave = Swal.resumeTimer;
                 }
             });
+
+            $("#product-table").DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                "order": [],
+                serverSide: true,
+                language: {
+                    searchPlaceholder: 'Cari Produk',
+                    'search': '',
+                    paginate: {
+                        next: '<i class="fas fa-arrow-right"></i>',
+                        previous: '<i class="fas fa-arrow-left"></i>'
+                    }
+                },
+                ajax: {
+                    url: "{{ route('products.index') }}",
+                    type: "GET",
+                    data: function(d) {
+                        let urlParams = new URLSearchParams(window.location.search);
+                        let filter = urlParams.get('filter');
+                        if (filter) {
+                            d.filter = filter;
+                        }
+                    },
+                    dataSrc: function(response) {
+                        return response.data;
+                    }
+                },
+
+                columns: [{
+                        data: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: true
+                    },
+                    {
+                        data: 'code'
+                    },
+                    {
+                        data: 'category',
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        render: function(data) {
+                            if (data.photo) {
+                                return `<div class="d-flex flex-wrap gap-2">
+                                    <img src="storage/${data.photo}" alt="${data.name}" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                                </div>`;
+                            } else {
+                                return '<span class="text-muted">No Photos</span>';
+                            }
+                        }
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        render: function(data) {
+                            return `
+                        <div class="d-flex flex-row justify-content-end align-items-end">
+                            <a href="/products/${data.id}/edit"><button type="button" class="btn btn-primary mx-2"><i class="fas fa-pencil-alt" title="Edit"></i></button></a>
+                                <form action="/products/${data.id}" style="display: inline;" class="delete-product">
+                                            <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit" class="btn btn-danger delete-task-button" data-user-id="${data.id}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                </form>
+                        </div>`;
+                        }
+                    }
+                ],
+            });
+
 
             $('.btn-detail').on('click', function(e) {
                 e.preventDefault();
@@ -174,49 +239,6 @@
                 // Redirect to updated URL
                 window.location.href = url.toString();
             });
-
-            $('.delete-product').on('submit', function(e) {
-                e.preventDefault();
-                let form = $(this);
-                let url = form.attr('action');
-
-                Swal.fire({
-                    title: 'Yakin ingin menghapus?',
-                    text: "Data tidak bisa dikembalikan!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Ya, hapus!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            url: url,
-                            type: 'POST',
-                            data: form.serialize(),
-                            success: function(response) {
-                                if (response.status == 'success') {
-                                    Swal.fire('Berhasil!', response.message, 'success');
-                                    setTimeout(() => {
-                                        location.reload();
-                                    }, 1500);
-                                } else {
-                                    Swal.fire('Gagal!', response.message, 'error');
-                                }
-                            },
-                            error: function(xhr) {
-                                Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus.',
-                                    'error');
-                            }
-                        });
-                    }
-                });
-            });
-
         });
     </script>
 @endpush

@@ -16,6 +16,6 @@ class TProduct extends Model
 
     public function category()
     {
-        return $this->belongsTo(MCategories::class, 'category_id');
+        return $this->belongsTo(MCategories::class, 'category_id', 'id');
     }
 }
