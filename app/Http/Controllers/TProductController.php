@@ -69,10 +69,18 @@ class TProductController extends Controller
 
                 // Simpan ke database jika perlu
                 $uploadedImages[] = $path;
-                TProduct::create([
-                    'photo' => $path,
-                    'category_id' => $request->input('category_id'),
-                ]);
+                if (!TProduct::where('code', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))->exists()) {
+                    TProduct::create([
+                        'code' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+                        'photo' => $path,
+                        'category_id' => $request->input('category_id'),
+                    ]);
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Product with this code already exists.',
+                    ], 200);
+                }
             }
         }
 

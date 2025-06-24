@@ -37,7 +37,7 @@
                             </button>
                         </div>
                     </form>
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex justify-content-start align-items-center mb-3">
                         @if ($isAuthenticated && $user->hasPermission('create_products'))
                             <a href="{{ route('products.create') }}" class="btn btn-success ml-2">
                                 <i class="fa fa-plus"></i> Tambah Produk
@@ -122,14 +122,16 @@
 
             $("#product-table").DataTable({
                 "paging": true,
-                "lengthChange": false,
+                "lengthChange": true,
                 "searching": true,
                 "info": true,
                 "autoWidth": false,
                 "responsive": true,
                 "order": [],
                 serverSide: true,
-                processing: true, // tampilkan 3 data per halaman
+                processing: true,
+                pageLength: 5,
+                lengthMenu: [5, 10, 25, 50, 100],
                 language: {
                     searchPlaceholder: 'Cari Produk',
                     'search': '',
