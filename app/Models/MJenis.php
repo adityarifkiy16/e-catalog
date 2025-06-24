@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use id;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class MJenis extends Model
 {
@@ -16,6 +17,6 @@ class MJenis extends Model
 
     public function categories()
     {
-        return $this->hasMany(MCategories::class, 'category_id');
+        return $this->hasMany(MCategories::class, 'jenis_id', 'id');
     }
 }

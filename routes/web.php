@@ -17,9 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::controller(App\Http\Controllers\AuthController::class)->middleware("guest")->group(function () {
     Route::get("/", "index")->name("login");
     Route::post("/", "store")->name("login.post");
+    Route::get("/catalog", [App\Http\Controllers\CatalogController::class, "index"])->name("catalog");
 });
-
-Route::get("/catalog", [App\Http\Controllers\CatalogController::class, "index"])->name("catalog");
 
 Route::middleware("auth")->group(function () {
     Route::get("/dashboard", [App\Http\Controllers\DashboardController::class, "index"])->name("dashboard");

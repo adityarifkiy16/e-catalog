@@ -28,70 +28,29 @@
     @vite(['resources/js/app.js'])
 
     <style>
-        .breadcrumb {
-            font-size: 1.1rem;
-            /* Ukuran font sedikit lebih besar untuk keterbacaan */
-        }
+        .card:hover {
+            box-shadow: 8px 8px 5px rgba(0, 0, 0, 0.1);
+            transform: scale(1.02);
+            transition: all 0.3s ease-in-out;
 
-        .breadcrumb-item a {
-            color: #333;
-            /* Warna teks yang gelap pada link */
-            transition: color 0.3s ease-in-out;
-        }
-
-        .breadcrumb-item a:hover {
-            color: #007bff;
-            /* Warna biru terang saat hover */
-            text-decoration: underline;
-            /* Menambahkan garis bawah pada hover */
-        }
-
-        .breadcrumb-item.active {
-            color: #6c757d;
-            /* Warna breadcrumb yang aktif */
-        }
-
-        .breadcrumb-item:not(:last-child):after {
-            content: "›";
-            /* Menambahkan tanda panah sebagai separator */
-            margin: 0 10px;
-            color: #6c757d;
-        }
-
-        .breadcrumb-item:last-child {
-            font-weight: bold;
-            /* Menebalkan breadcrumb terakhir */
-            color: #007bff;
-            /* Membuat breadcrumb terakhir lebih menonjol */
         }
     </style>
 </head>
 
-<body>
+<body style="background-color: #f5efe0">
     <div class="d-flex flex-column min-vh-100">
         <div class="">
-            <!-- Content Header (Page header) -->
-            <section class="content-header">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12 mx-auto mt-2">
-                            @yield('header')
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <!-- Main content -->
             <section class="content">
-                <div class="container-fluid">
+                <div class="container-fluid p-0">
                     @yield('content')
                 </div>
             </section>
         </div>
 
         <!-- Footer -->
-        <footer class="footer mt-auto py-3 bg-light text-center">
-            <strong>&copy; <a href="#">Adit Ganteng</a>.</strong> All rights reserved.
+        <footer class="footer mt-auto py-3 text-center">
+            <strong>&copy; <a href="#">OSBORN</a>.</strong> All rights reserved.
         </footer>
     </div>
 

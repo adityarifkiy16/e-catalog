@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MCategories;
+use App\Models\MJenis;
 use App\Models\TProduct;
 use Illuminate\Http\Request;
 
@@ -10,29 +12,46 @@ class CatalogController extends Controller
     public function index(Request $request)
     {
         $arr = [];
+
+        // Inisialisasi query produk dengan eager loading
+        $query = TProduct::with('category', 'category.jenis');
+
         if ($request->ajax()) {
-            $query = TProduct::with('category', 'category.jenis');
-
-            if ($request->has('category')) {
-                $query->whereHas('categories', function ($q) use ($request) {
-                    $q->where('id', $request->query('category'));
+            // Filter berdasarkan kategori
+            if ($request->filled('category')) {
+                $query->whereHas('category', function ($q) use ($request) {
+                    $q->where('id', $request->category);
                 });
             }
 
-            if ($request->has('search')) {
-                $query->where('code', 'like', '%' . $request->query('search') . '%');
+            // Filter berdasarkan search (kode produk)
+            if ($request->filled('search')) {
+                $query->where('code', 'like', '%' . $request->search . '%');
             }
 
-            if ($request->has('jenis')) {
-                $query->whereHas('jenis', function ($q) use ($request) {
-                    $q->where('id', $request->query('jenis'));
+            // Filter berdasarkan jenis (lewat relasi category.jenis)
+            if ($request->filled('jenis')) {
+                $jenisId = $request->jenis;
+
+                $query->whereHas('category.jenis', function ($q) use ($jenisId) {
+                    $q->where('id', $jenisId);
                 });
+
+                // Ambil kategori yang cocok dengan jenis tersebut
+                $arr['categories'] = MCategories::where('jenis_id', $jenisId)->get();
             }
+
+            // Ambil data hasil filter
             $arr['data'] = $query->get();
-            return response()->json(['data' => $query->get()]);
-        } else {
-            $arr['data'] = TProduct::with('category', 'category.jenis')->get();
+
+            return response()->json($arr);
         }
+
+        // Request biasa (bukan AJAX)
+        $arr['data'] = TProduct::with('category', 'category.jenis')->get();
+        $arr['jenis'] = MJenis::with('categories')->get();
+        $arr['categories'] = MCategories::all();
+
         return view('catalog.index', $arr);
     }
 }
