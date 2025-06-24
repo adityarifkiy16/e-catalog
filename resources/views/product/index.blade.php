@@ -129,6 +129,7 @@
                 "responsive": true,
                 "order": [],
                 serverSide: true,
+                processing: true, // tampilkan 3 data per halaman
                 language: {
                     searchPlaceholder: 'Cari Produk',
                     'search': '',
@@ -155,13 +156,14 @@
                 columns: [{
                         data: 'DT_RowIndex',
                         orderable: false,
-                        searchable: true
+                        searchable: false
                     },
                     {
                         data: 'code'
                     },
                     {
                         data: 'category',
+                        searchable: true,
                     },
                     {
                         data: null,

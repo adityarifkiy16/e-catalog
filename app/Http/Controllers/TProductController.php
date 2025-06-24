@@ -17,7 +17,7 @@ class TProductController extends Controller
     {
         $arr['categories'] = MCategories::all();
         if ($request->ajax()) {
-            $query = TProduct::with('category');
+            $query = TProduct::with('category')->orderBy('created_at', 'desc');
             if ($request->has('filter')) {
                 $query = $query->where('category_id', $request->filter);
             }
@@ -25,14 +25,11 @@ class TProductController extends Controller
                 $search = $request->search['value'];
                 $query->where(function ($q) use ($search) {
                     $q->where('code', 'like', '%' . $search . '%')
-                        ->orWhere('name', 'like', '%' . $search . '%')
-                        ->orwhereHas('category', function ($q) use ($search) {
-                            $q->where('name', 'like', '%' . $search . '%');
-                        });
+                        ->orWhere('name', 'like', '%' . $search . '%');
                 });
             }
-            $product = $query->get();
-            return DataTables::of($product)
+            // dd($query->toSql(), $query->getBindings());
+            return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('category', function ($row) {
                     return $row->category ? $row->category->name : '-';
