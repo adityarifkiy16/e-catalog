@@ -1,0 +1,51 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+
+Route::controller(App\Http\Controllers\AuthController::class)->middleware("guest")->group(function () {
+    Route::get("/", "index")->name("login");
+    Route::post("/", "store")->name("login.post");
+});
+
+Route::middleware("auth")->group(function () {
+    Route::get("/dashboard", [App\Http\Controllers\DashboardController::class, "index"])->name("dashboard");
+    Route::post("/logout", [App\Http\Controllers\AuthController::class, "logout"])->name("logout");
+
+    // User management routes
+    Route::get("/users", [App\Http\Controllers\UserController::class, "index"])->name("users.index");
+    Route::get("/users/create", [App\Http\Controllers\UserController::class, "create"])->name("users.create");
+    Route::post("/users", [App\Http\Controllers\UserController::class, "store"])->name("users.store");
+    Route::get("/users/{user}/edit", [App\Http\Controllers\UserController::class, "edit"])->name("users.edit");
+    Route::put("/users/{user}", [App\Http\Controllers\UserController::class, "update"])->name("users.update");
+    Route::delete("/users/{user}", [App\Http\Controllers\UserController::class, "destroy"])->name("users.destroy");
+    Route::get("/users/search", [App\Http\Controllers\UserController::class, "search"])->name("users.search");
+
+    // Category management routes
+    Route::get("/categories", [App\Http\Controllers\MCategoriesController::class, "index"])->name("categories.index");
+    Route::get("/categories/create", [App\Http\Controllers\MCategoriesController::class, "create"])->name("categories.create");
+    Route::post("/categories", [App\Http\Controllers\MCategoriesController::class, "store"])->name("categories.store");
+    Route::get("/categories/{categories}/edit", [App\Http\Controllers\MCategoriesController::class, "edit"])->name("categories.edit");
+    Route::put("/categories/{categories}", [App\Http\Controllers\MCategoriesController::class, "update"])->name("categories.update");
+    Route::delete("/categories/{categories}", [App\Http\Controllers\MCategoriesController::class, "destroy"])->name("categories.destroy");
+
+    // Product management routes
+    Route::get("/products", [App\Http\Controllers\TProductController::class, "index"])->name("products.index");
+    Route::get("/products/create", [App\Http\Controllers\TProductController::class, "create"])->name("products.create");
+    Route::post("/products", [App\Http\Controllers\TProductController::class, "store"])->name("products.store");
+    Route::get("/products/{product}/edit", [App\Http\Controllers\TProductController::class, "edit"])->name("products.edit");
+    Route::put("/products/{product}", [App\Http\Controllers\TProductController::class, "update"])->name("products.update");
+    Route::delete("/products/{product}", [App\Http\Controllers\TProductController::class, "destroy"])->name("products.destroy");
+    Route::get("/products/search", [App\Http\Controllers\TProductController::class, "search"])->name("products.search");
+});
