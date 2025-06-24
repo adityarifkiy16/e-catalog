@@ -32,6 +32,14 @@ Route::middleware("auth")->group(function () {
     Route::delete("/users/{user}", [App\Http\Controllers\UserController::class, "destroy"])->name("users.destroy");
     Route::get("/users/search", [App\Http\Controllers\UserController::class, "search"])->name("users.search");
 
+    // Jenis management routes
+    Route::get("/jenis", [App\Http\Controllers\MJenisController::class, "index"])->name("jenis.index");
+    Route::get("/jenis/create", [App\Http\Controllers\MJenisController::class, "create"])->name("jenis.create");
+    Route::post("/jenis", [App\Http\Controllers\MJenisController::class, "store"])->name("jenis.store");
+    Route::get("/jenis/{jenis}/edit", [App\Http\Controllers\MJenisController::class, "edit"])->name("jenis.edit");
+    Route::put("/jenis/{jenis}", [App\Http\Controllers\MJenisController::class, "update"])->name("jenis.update");
+    Route::delete("/jenis/{jenis}", [App\Http\Controllers\MJenisController::class, "destroy"])->name("jenis.destroy");
+
     // Category management routes
     Route::get("/categories", [App\Http\Controllers\MCategoriesController::class, "index"])->name("categories.index");
     Route::get("/categories/create", [App\Http\Controllers\MCategoriesController::class, "create"])->name("categories.create");

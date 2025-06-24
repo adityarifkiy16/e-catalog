@@ -3,7 +3,7 @@
     <div class="card d-flex px-4 py-2" style="border-radius: 1rem;">
         <x-breadcrumb :items="[
             ['label' => 'Home', 'url' => route('dashboard')],
-            ['label' => 'categories', 'url' => route('categories.index')],
+            ['label' => 'Jenis', 'url' => route('jenis.index')],
             ['label' => 'Edit'],
         ]">
         </x-breadcrumb>
@@ -19,25 +19,16 @@
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ route('categories.update', $categories) }}" method="POST" id="form-edit">
+                    <form action="{{ route('jenis.update', $jenis) }}" method="POST" id="form-edit">
                         @csrf
                         @method('PUT')
                         <div class="form-group">
                             <label><i class="fas fa-user"></i> Name</label>
-                            <input type="text" class="form-control" name="name" value="{{ $categories->name }}">
+                            <input type="text" class="form-control" name="name" value="{{ $jenis->name }}">
                             @error('name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <label class="mt-3"><i class="fas fa-user-tag"></i> Jenis</label>
-                        <select class="form-control" name="jenis_id">
-                            <option value="">Pilih Jenis</option>
-                            @foreach ($jenis as $item)
-                                <option value="{{ $item->id }}" {{ old('jenis_id') == $item->id ? 'selected' : '' }}>
-                                    {{ $item->name }}
-                                </option>
-                            @endforeach
-                        </select>
                         <button class="btn btn-primary mt-3" type="submit">Kirim</button>
                     </form>
                 </div>

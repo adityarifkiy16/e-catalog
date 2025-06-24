@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MCategories;
+use App\Models\MJenis;
 use Illuminate\Http\Request;
 
 class MCategoriesController extends Controller
@@ -13,6 +14,7 @@ class MCategoriesController extends Controller
     public function index()
     {
         $arr['categories'] = MCategories::all();
+        $arr['jenis'] = MJenis::all();
         return view('categories.index', $arr);
     }
 
@@ -31,6 +33,7 @@ class MCategoriesController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'jenis_id' => 'required|exists:m_jenis,id',
         ]);
 
         MCategories::create($request->all());
@@ -55,7 +58,8 @@ class MCategoriesController extends Controller
     public function edit(MCategories $categories)
     {
         $arr['categories'] = $categories;
-        return view('categories.edit', compact('categories'));
+        $arr['jenis'] = MJenis::all();
+        return view('categories.edit', $arr);
     }
 
     /**
@@ -65,6 +69,7 @@ class MCategoriesController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'jenis_id' => 'required|exists:m_jenis,id',
         ]);
 
         $categories->update($request->all());

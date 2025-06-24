@@ -18,6 +18,12 @@
             ])
         @endif
 
+        @include('partials.sidebar._nav_item', [
+            'route' => 'jenis.index',
+            'icon' => 'fas fa-tags',
+            'label' => 'Jenis',
+        ])
+
         @if (auth()->check() && auth()->user()->hasPermission('view_categories'))
             @include('partials.sidebar._nav_item', [
                 'route' => 'categories.index',
@@ -30,7 +36,7 @@
             @include('partials.sidebar._nav_item', [
                 'route' => 'products.index',
                 'icon' => 'fas fa-box',
-                'label' => 'products',
+                'label' => 'Products',
             ])
         @endif
 

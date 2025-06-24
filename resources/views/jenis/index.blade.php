@@ -9,7 +9,7 @@
     <div class="card d-flex px-4 py-2" style="border-radius: 1rem;">
         <x-breadcrumb :items="[
             ['label' => 'Home', 'url' => route('dashboard')],
-            ['label' => 'Categories', 'url' => route('categories.index')],
+            ['label' => 'Jenis', 'url' => route('jenis.index')],
         ]">
         </x-breadcrumb>
     </div>
@@ -21,53 +21,41 @@
             <div class="card card-primary">
                 <div class="card-body table-responsive">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        @if ($isAuthenticated && $user->hasPermission('create_categories'))
-                            <a href="{{ route('categories.create') }}" class="btn btn-success ml-2">
-                                <i class="fa fa-plus"></i>
-                                Tambah Kategori
-                            </a>
-                        @endif
+                        <a href="{{ route('jenis.create') }}" class="btn btn-success ml-2">
+                            <i class="fa fa-plus"></i>
+                            Tambah Jenis
+                        </a>
                     </div>
                     <table id="user-table" class="table table-bordered">
                         <thead>
                             <tr>
                                 <th style="width: 0.5rem;">No</th>
                                 <th>Name</th>
-                                <th>Jenis</th>
-                                @if ($isAuthenticated && ($user->hasPermission('edit_categories') || $user->hasPermission('edit_categories')))
-                                    <th style="text-align: end;">Action</th>
-                                @endif
+                                <th style="text-align: end;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($categories as $item)
+                            @foreach ($jenis as $item)
                                 <tr>
                                     <td style="width: 10px;">{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->jenis->name ?? 'Tidak Diketahui' }}</td>
-                                    @if ($isAuthenticated && ($user->hasPermission('edit_categories') || $user->hasPermission('edit_categories')))
-                                        <td style="width: 100px;">
-                                            <div class="d-flex justify-content-end align-items-center gap-1">
-                                                @if ($isAuthenticated && $user->hasPermission('edit_categories'))
-                                                    <a href="{{ route('categories.edit', $item) }}"
-                                                        class="btn btn-sm btn-primary mr-2" title="Edit">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                @endif
 
-                                                @if ($isAuthenticated && $user->hasPermission('delete_categories'))
-                                                    <form action="{{ route('categories.destroy', $item) }}" method="POST"
-                                                        style="display: inline;" class="delete-category">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    </form>
-                                                @endif
-                                            </div>
-                                        </td>
-                                    @endif
+                                    <td style="width: 100px;">
+                                        <div class="d-flex justify-content-end align-items-center gap-1">
+                                            <a href="{{ route('jenis.edit', $item) }}" class="btn btn-sm btn-primary mr-2"
+                                                title="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <form action="{{ route('jenis.destroy', $item) }}" method="POST"
+                                                style="display: inline;" class="delete-category">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

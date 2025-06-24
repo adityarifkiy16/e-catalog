@@ -3,8 +3,8 @@
     <div class="card d-flex px-4 py-2" style="border-radius: 1rem;">
         <x-breadcrumb :items="[
             ['label' => 'Home', 'url' => route('dashboard')],
-            ['label' => 'categories', 'url' => route('categories.index')],
-            ['label' => 'Edit'],
+            ['label' => 'Jenis', 'url' => route('jenis.index')],
+            ['label' => 'Tambah'],
         ]">
         </x-breadcrumb>
     </div>
@@ -15,29 +15,22 @@
         <div class="col-md-12">
             <div class="card card-maroon">
                 <div class="card-header">
-                    <h2 class="card-title">Edit Category</h2>
+                    <h2 class="card-title">Tambah Jenis</h2>
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ route('categories.update', $categories) }}" method="POST" id="form-edit">
+                    <form action="{{ route('jenis.store') }}" method="POST" id="form-tambah">
                         @csrf
-                        @method('PUT')
+                        @method('POST')
+
+                        <!-- Role Info -->
                         <div class="form-group">
-                            <label><i class="fas fa-user"></i> Name</label>
-                            <input type="text" class="form-control" name="name" value="{{ $categories->name }}">
+                            <label><i class="fas fa-tags"></i> Name</label>
+                            <input type="text" class="form-control" name="name">
                             @error('name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <label class="mt-3"><i class="fas fa-user-tag"></i> Jenis</label>
-                        <select class="form-control" name="jenis_id">
-                            <option value="">Pilih Jenis</option>
-                            @foreach ($jenis as $item)
-                                <option value="{{ $item->id }}" {{ old('jenis_id') == $item->id ? 'selected' : '' }}>
-                                    {{ $item->name }}
-                                </option>
-                            @endforeach
-                        </select>
                         <button class="btn btn-primary mt-3" type="submit">Kirim</button>
                     </form>
                 </div>
@@ -61,7 +54,7 @@
                 }
             });
 
-            $("#form-edit").on('submit', function(e) {
+            $("#form-tambah").on('submit', function(e) {
                 e.preventDefault();
                 console.log("submit");
                 let form = $(this);

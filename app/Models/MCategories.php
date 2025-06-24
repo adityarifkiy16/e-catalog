@@ -18,4 +18,9 @@ class MCategories extends Model
     {
         return $this->hasMany(TProduct::class, 'category_id', 'id');
     }
+
+    public function jenis()
+    {
+        return $this->belongsTo(MJenis::class, 'jenis_id', 'id');
+    }
 }
