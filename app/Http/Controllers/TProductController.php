@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MJenis;
 use App\Models\TProduct;
 use App\Models\MCategories;
-use App\Models\MJenis;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -65,8 +66,17 @@ class TProductController extends Controller
 
         if ($request->hasFile('image')) {
             foreach ($request->file('image') as $file) {
-                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                $path = $file->storeAs('images/products/' . now()->format('Y/m/d'), $filename, 'public');
+                $filename = time() . '_' . uniqid() . '.webp';
+                $folder = 'images/products/' . now()->format('Y/m/d');
+                $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
+                $path =  $folder . '/' . $filename;
+                Image::make($file)
+                    ->resize(800, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })
+                    ->encode('webp', 75) // kualitas 75%
+                    ->save($fullPath);
 
                 if (!TProduct::where('code', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))->exists()) {
                     TProduct::create([
