@@ -57,4 +57,5 @@ Route::middleware("auth")->group(function () {
     Route::put("/products/{product}", [App\Http\Controllers\TProductController::class, "update"])->name("products.update");
     Route::delete("/products/{product}", [App\Http\Controllers\TProductController::class, "destroy"])->name("products.destroy");
     Route::get("/products/search", [App\Http\Controllers\TProductController::class, "search"])->name("products.search");
+    Route::get("/products/categories", [App\Http\Controllers\TProductController::class, "getCategoriesByJenis"])->name("products.getCategories");
 });

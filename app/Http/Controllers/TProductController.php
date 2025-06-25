@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TProduct;
 use App\Models\MCategories;
+use App\Models\MJenis;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
@@ -28,7 +29,6 @@ class TProductController extends Controller
                         ->orWhere('name', 'like', '%' . $search . '%');
                 });
             }
-            // dd($query->toSql(), $query->getBindings());
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('category', function ($row) {
@@ -48,7 +48,7 @@ class TProductController extends Controller
      */
     public function create()
     {
-        $arr['categories'] = MCategories::all();
+        $arr['jenis'] = MJenis::with('categories')->get();
         return view('product.create', $arr);
     }
 
@@ -168,5 +168,12 @@ class TProductController extends Controller
         $arr['categories'] = MCategories::all();
         $arr['products'] = TProduct::where('name', 'LIKE', '%' . $request->search . '%')->orWhere('code', 'LIKE', '%' . $request->search . '%')->get();
         return view('product.index', $arr);
+    }
+
+    public function getCategoriesByJenis(Request $request)
+    {
+        $jenisId = $request->input('jenis_id');
+        $categories = MCategories::where('jenis_id', $jenisId)->get();
+        return response()->json($categories);
     }
 }

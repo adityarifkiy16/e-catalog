@@ -23,8 +23,6 @@
                         enctype="multipart/form-data">
                         @csrf
                         @method('POST')
-
-                        <!-- Role Info -->
                         <div class="form-group">
                             <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar</label>
                             <input type="file" class="form-control" id="img" name="image[]" multiple
@@ -41,16 +39,21 @@
                                 @endforeach
                             @endif
 
-
                             <label class="mt-3"><i class="fas fa-user-tag"></i>Kategori</label>
-                            <select class="form-control" name="category_id">
-                                <option value="">Pilih Kategori</option>
-                                @foreach ($categories as $item)
+                            <select class="form-control" name="jenis" id="jenis">
+                                <option value="">Pilih Jenis</option>
+                                @foreach ($jenis as $item)
                                     <option value="{{ $item->id }}"
-                                        {{ old('category_id') == $item->id ? 'selected' : '' }}>
+                                        {{ old('jenis', request()->query('jenis')) == $item->id ? 'selected' : '' }}>
                                         {{ $item->name }}
                                     </option>
                                 @endforeach
+                            </select>
+
+
+                            <label class="mt-3"><i class="fas fa-user-tag"></i>Kategori</label>
+                            <select class="form-control" name="category_id">
+                                <option value="">Pilih Jenis dahulu</option>
                             </select>
                         </div>
                         <button class="btn btn-primary mt-3" type="submit">Kirim</button>
@@ -73,6 +76,35 @@
                 didOpen: (toast) => {
                     toast.onmouseenter = Swal.stopTimer;
                     toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            $("#jenis").on('change', function() {
+                let jenisId = $(this).val();
+                if (jenisId) {
+                    $.ajax({
+                        url: "{{ route('products.getCategories') }}",
+                        type: 'GET',
+                        data: {
+                            jenis_id: jenisId
+                        },
+                        success: function(response) {
+                            let categorySelect = $('select[name="category_id"]');
+                            categorySelect.empty();
+                            categorySelect.append('<option value="">Pilih Kategori</option>');
+                            $.each(response, function(index, category) {
+                                categorySelect.append(
+                                    `<option value="${category.id}">${category.name}</option>`
+                                );
+                            });
+                        },
+                        error: function(xhr) {
+                            console.error(xhr);
+                        }
+                    });
+                } else {
+                    $('select[name="category_id"]').empty().append(
+                        '<option value="">Pilih Kategori</option>');
                 }
             });
 
