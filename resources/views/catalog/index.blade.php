@@ -14,13 +14,12 @@
     </div>
     <div class="container-fluid py-4 px-4">
         <div class="row">
-            <div class="col-md-10 col-12 order-2 order-md-2 center-content" id="catalog-col">
+            <div class="col-md-10 col-12 order-2 order-md-1 center-content" id="catalog-col">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="jenis-filter">
                             <div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row">
                                 <select id="jenis-filter" class="form-control mt-2" name="jenis" style="width: 300px">
-                                    <option value="">Choose Design</option>
                                     @foreach ($jenis as $item)
                                         <option value="{{ $item->id }}"
                                             {{ old('jenis', request()->query('jenis')) == $item->id ? 'selected' : '' }}>
@@ -40,8 +39,8 @@
                     <div class="row">
                         @forelse ($data as $product)
                             <div class="col-md-3 mb-4">
-                                <div class="card h-100 shadow-md product-card" data-name="{{ $product->name }}"
-                                    data-code="{{ $product->code }}" data-category="{{ $product->category->name }}"
+                                <div class="card h-100 shadow-md product-card" data-code="{{ $product->code }}"
+                                    data-category="{{ $product->category->name }}"
                                     data-image="{{ $product->photo ? asset('storage/' . $product->photo) : 'https://via.placeholder.com/300x200?text=No+Image' }}">
                                     <img src="{{ $product->photo ? asset('storage/' . $product->photo) : 'https://via.placeholder.com/300x200?text=No+Image' }}"
                                         class="card-img-top" alt="{{ $product->name }}"
@@ -72,7 +71,7 @@
                         </div>
                         <div class="modal-body d-flex flex-column justify-content-center align-items-center">
                             <img id="modalImage" src="" class="img-fluid mb-3" alt="Product Image"
-                                style="max-width: 50%; height: auto;">
+                                style="max-width: 60%; height: auto;">
                             <h4 id="modalCode" class="font-weight-bold"></h4>
                             <p id="modalCategory" class="text-muted"></p>
                         </div>
@@ -106,21 +105,16 @@
                 </div>
             </div>
 
-            <div class="col-md-2 col-12 order-1 order-md-1 d-none" id="category-container">
+            <div class="col-md-2 col-12 order-1 order-md-2 d-none" id="category-container">
                 <div class="sidebarborder-end">
                     <div class="accordion" id="accordionExample">
                         <div class="" style="background: #f5efe0">
                             <div class="" id="headingOne">
                                 <h2 class="mb-0">
-                                    <button class="btn btn-block text-left" type="button" data-toggle="collapse"
-                                        data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        <span class="font-weight-bold h3">Kategori</span>
-                                    </button>
+                                    <span class="font-weight-bold h4 px-3 pt-3 d-block">Kategori</span>
                                 </h2>
                             </div>
-
-                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
-                                data-parent="#accordionExample">
+                            <div class="pt-2">
                                 <div class="card-body">
                                     <ul class="nav flex-column" id="category-menu-item">
                                         <!-- Kategori akan diisi oleh JavaScript -->
@@ -139,6 +133,11 @@
     <script>
         let delayTimer;
         let category;
+
+        $(document).ready(function() {
+            $('#jenis-filter').trigger('change');
+        })
+
         $('#search-input').on('input', function() {
             clearTimeout(delayTimer);
             const search = $(this).val();
@@ -158,7 +157,7 @@
                     success: function(response) {
                         console.log(response);
                         let html = '<div class="row">';
-                        if (response) {
+                        if (response.data && response.data.length > 0) {
                             response.data.forEach(product => {
                                 const image = product.photo ?
                                     `/storage/${product.photo}` :
@@ -169,7 +168,6 @@
                                 html += `
                                 <div class="col-md-3 mb-4">
                                     <div class="card h-100 shadow-md product-card"
-                                    data-name="${product.name}"
                                     data-code="${product.code}"
                                     data-category="${category}"
                                     data-image="${image}">
@@ -248,7 +246,6 @@
                                 html += `
                             <div class="col-md-3 mb-4">
                                 <div class="card h-100 shadow-sm product-card"
-                                data-name="${product.name}"
                                 data-code="${product.code}"
                                 data-category="${category}"
                                 data-image="${image}">
@@ -330,7 +327,6 @@
                             html += `
                         <div class="col-md-3 mb-4">
                             <div class="card h-100 shadow-sm product-card"
-                                data-name="${product.name}"
                                 data-code="${product.code}"
                                 data-category="${category}"
                                 data-image="${image}">
@@ -361,7 +357,6 @@
         $(document).on('click', '.product-card', function() {
             const image = $(this).data('image');
             const code = $(this).data('code');
-            const name = $(this).data('name');
             const category = $(this).data('category');
 
             $('#modalImage').attr('src', image);
