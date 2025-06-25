@@ -56,7 +56,7 @@
                                 @endforeach
                             @endif
                         </div>
-                        <button class="btn btn-primary mt-3" type="submit">Kirim</button>
+                        <button class="btn btn-primary mt-3" type="submit" id="btn-tambah">Kirim</button>
                     </form>
                 </div>
             </div>
@@ -114,6 +114,7 @@
                 let form = $(this);
                 let url = form.attr('action');
                 let formData = new FormData(this);
+                $('#btn-tambah').attr("disabled", true);
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
