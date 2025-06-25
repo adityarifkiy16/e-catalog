@@ -167,6 +167,14 @@ class TProductController extends Controller
     public function destroy(TProduct $product)
     {
         $product->delete();
+        // Optionally, you can also delete the image file from storage
+        if ($product->photo) {
+            $imagePath = storage_path('app/public/' . $product->photo);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+
         return response()->json([
             'status' => 'success',
             'message' => 'Product deleted successfully.',

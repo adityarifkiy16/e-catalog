@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="w-100 d-flex justify-content-center align-items-center mb-4">
-        <div class="d-flex justify-content-around align-items-center p-2 w-100" style="background-color: #1B1A55">
-            <a href="https://osborn.id/" target="_blank"> <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn-logo"
-                    style="width: 150px; height: auto;"></a>
+        <div class="d-flex justify-content-start align-items-center py-3 px-3 w-100" style="background-color: #1B1A55">
+            <a href="https://osborn.id/" target="_blank" style="margin-left: 7.5rem" class="py-2"> <img
+                    src="{{ asset('dist/img/osborn.png') }}" alt="osborn-logo" style="width: 130px; height: auto;"></a>
         </div>
     </div>
     <div class="container-fluid py-4">
@@ -47,7 +47,8 @@
                                 </div>
                             </div>
                         @empty
-                            <div class="col-12 text-muted">Belum ada produk yang tersedia.</div>
+                            <img src="{{ asset('dist/img/no-data.png') }}" alt="no-data"
+                                class="img-fluid mx-auto d-block mt-5" style="max-width: 100%; height: auto;">
                         @endforelse
                     </div>
                 </div>
@@ -126,7 +127,8 @@
                             });
                         } else {
                             html +=
-                                `<div class="col-12 text-muted">Produk tidak ditemukan.</div>`;
+                                `<img src="{{ asset('dist/img/no-data.png') }}" alt="no-data"
+                                class="img-fluid mx-auto d-block mt-5" style="max-width: 100%; height: auto;">`;
                         }
                         html += '</div>';
                         $('#product-list').html(html);
@@ -185,7 +187,8 @@
                             });
                         } else {
                             html +=
-                                `<div class="col-12 text-muted">Produk tidak ditemukan.</div>`;
+                                `<img src="{{ asset('dist/img/no-data.png') }}" alt="no-data"
+                                class="img-fluid mx-auto d-block mt-5" style="max-width: 100%; height: auto;">`;
                         }
 
                         html += '</div>';
@@ -256,7 +259,8 @@
                     `;
                         });
                     } else {
-                        html += `<div class="col-12 text-muted">Produk tidak ditemukan.</div>`;
+                        html += `<img src="{{ asset('dist/img/no-data.png') }}" alt="no-data"
+                                class="img-fluid mx-auto d-block mt-5" style="max-width: 100%; height: auto;">`;
                     }
 
                     html += '</div>';
