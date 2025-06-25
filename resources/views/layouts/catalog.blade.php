@@ -41,6 +41,14 @@
             margin: 0 auto;
             float: none;
         }
+
+        @media (max-width: 767.98px) {
+            #category-container {
+                background: #f8f9fa;
+                padding: 10px;
+                z-index: 1000;
+            }
+        }
     </style>
 </head>
 

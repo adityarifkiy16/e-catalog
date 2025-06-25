@@ -19,7 +19,7 @@ class TProductController extends Controller
     {
         $arr['categories'] = MCategories::all();
         if ($request->ajax()) {
-            $query = TProduct::with('category', 'category.jenis')->orderBy('created_at', 'desc');
+            $query = TProduct::with('category', 'category.jenis')->orderBy('code', 'asc');
             if ($request->has('filter')) {
                 $query = $query->where('category_id', $request->filter);
             }
@@ -60,7 +60,7 @@ class TProductController extends Controller
     {
         $request->validate([
             'image' => 'required|array',
-            'image.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'category_id' => 'required|exists:m_categories,id',
         ]);
 
@@ -70,12 +70,27 @@ class TProductController extends Controller
                 $folder = 'images/products/' . now()->format('Y/m/d');
                 $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
                 $path =  $folder . '/' . $filename;
+
+                $directory = dirname($fullPath);
+                if (!file_exists($directory)) {
+                    mkdir($directory, 0755, true);
+                }
+
+                // Buat watermark dan resize (misal lebar 100px)
+                $watermark = Image::make(public_path('dist/img/osborn.png'))
+                    ->resize(200, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+
+                // Proses gambar
                 Image::make($file)
                     ->resize(800, null, function ($constraint) {
                         $constraint->aspectRatio();
                         $constraint->upsize();
                     })
-                    ->encode('webp', 75) // kualitas 75%
+                    ->insert($watermark, 'center', 10, 10) // tambahkan watermark
+                    ->encode('webp', 100) // kualitas 75%
                     ->save($fullPath);
 
                 if (!TProduct::where('code', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))->exists()) {

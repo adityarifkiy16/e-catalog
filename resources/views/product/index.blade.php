@@ -162,14 +162,17 @@
                         searchable: false
                     },
                     {
-                        data: 'code'
+                        data: 'code',
+                        orderable: false,
                     },
                     {
-                        data: 'jenis'
+                        data: 'jenis',
+                        orderable: false,
                     },
                     {
                         data: 'category',
                         searchable: true,
+                        orderable: false,
                     },
                     {
                         data: null,
