@@ -23,7 +23,8 @@ class MCategoriesController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        $arr['jenis'] = MJenis::all();
+        return view('categories.create', $arr);
     }
 
     /**

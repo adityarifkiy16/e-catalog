@@ -1,4 +1,4 @@
-<li class="nav-item has-treeview">
+<li class="nav-item has-treeview menu-open bg-dark rounded">
     <a href="#" class="nav-link">
         <i class="nav-icon {{ $icon }}"></i>
         <p>
@@ -9,7 +9,7 @@
     <ul class="nav nav-treeview">
         @foreach ($items as $item)
             <li class="nav-item">
-                <a href="{{ route($item['route']) }}" class="nav-link">
+                <a href="{{ route($item['route']) }}" class="nav-link" style="">
                     <i class="{{ $item['icon'] ?? 'fas fa-circle' }} nav-icon"></i>
                     <p>{{ $item['label'] }}</p>
                 </a>

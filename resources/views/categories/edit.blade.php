@@ -33,7 +33,8 @@
                         <select class="form-control" name="jenis_id">
                             <option value="">Pilih Jenis</option>
                             @foreach ($jenis as $item)
-                                <option value="{{ $item->id }}" {{ old('jenis_id') == $item->id ? 'selected' : '' }}>
+                                <option value="{{ $item->id }}"
+                                    {{ old('jenis_id', $categories->jenis_id) == $item->id ? 'selected' : '' }}>
                                     {{ $item->name }}
                                 </option>
                             @endforeach

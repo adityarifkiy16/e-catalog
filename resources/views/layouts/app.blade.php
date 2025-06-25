@@ -7,6 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'E-catalog')</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ asset('dist/img/favicon.ico') }}" />
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -64,6 +66,15 @@
             color: #007bff;
             /* Membuat breadcrumb terakhir lebih menonjol */
         }
+
+        .nav-link-hover {
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .nav-link-hover:hover {
+            background-color: #f4f4f4;
+            color: #000;
+        }
     </style>
 </head>
 
@@ -79,7 +90,7 @@
                             class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{{ url('/dashboard') }}" class="nav-link">Home</a>
+                    <a href="{{ route('dashboard') }}" class="nav-link">Home</a>
                 </li>
             </ul>
 
@@ -134,12 +145,10 @@
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-light-info elevation-4">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="{{ url('/') }}" class="brand-link">
-                <img src="{{ asset('dist/img/logo.png') }}" alt="Logo" class="brand-image img-circle my-0"
-                    style="opacity: .8">
-                <span class="brand-text font-weight-light">{{ config('app.name', 'Laravel') }}</span>
+            <a href="{{ url('https://osborn.id') }}" target="_blank" class="brand-link">
+                <img src="{{ asset('dist/img/osborn.png') }}" alt="Logo" style="width: 150px; height: auto">
             </a>
 
             <!-- Sidebar -->
@@ -171,7 +180,7 @@
 
         <!-- Footer -->
         <footer class="main-footer">
-            <strong>&copy; <a href="#">Adit Ganteng</a>.</strong> All rights reserved.
+            <strong>&copy; <a href="https://osborn.id">Osborn</a>.</strong> All rights reserved.
         </footer>
 
         <!-- Control Sidebar -->

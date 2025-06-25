@@ -21,7 +21,7 @@ Route::controller(App\Http\Controllers\AuthController::class)->middleware("guest
 });
 
 Route::middleware("auth")->group(function () {
-    Route::get("/dashboard", [App\Http\Controllers\DashboardController::class, "index"])->name("dashboard");
+    Route::get("/home", [App\Http\Controllers\DashboardController::class, "index"])->name("dashboard");
     Route::post("/logout", [App\Http\Controllers\AuthController::class, "logout"])->name("logout");
 
     // User management routes

@@ -24,6 +24,23 @@
                         @csrf
                         @method('POST')
                         <div class="form-group">
+                            <label class="mt-3"><i class="fas fa-tags"></i> Jenis</label>
+                            <select class="form-control" name="jenis" id="jenis">
+                                <option value="">Pilih Jenis</option>
+                                @foreach ($jenis as $item)
+                                    <option value="{{ $item->id }}"
+                                        {{ old('jenis', request()->query('jenis')) == $item->id ? 'selected' : '' }}>
+                                        {{ $item->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+
+                            <label class="mt-3"><i class="fas fa-tags"></i> Kategori</label>
+                            <select class="form-control" name="category_id">
+                                <option value="">Pilih Jenis dahulu</option>
+                            </select>
+
                             <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar</label>
                             <input type="file" class="form-control" id="img" name="image[]" multiple
                                 accept="image/*">
@@ -38,23 +55,6 @@
                                     @endforeach
                                 @endforeach
                             @endif
-
-                            <label class="mt-3"><i class="fas fa-user-tag"></i>Kategori</label>
-                            <select class="form-control" name="jenis" id="jenis">
-                                <option value="">Pilih Jenis</option>
-                                @foreach ($jenis as $item)
-                                    <option value="{{ $item->id }}"
-                                        {{ old('jenis', request()->query('jenis')) == $item->id ? 'selected' : '' }}>
-                                        {{ $item->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-
-
-                            <label class="mt-3"><i class="fas fa-user-tag"></i>Kategori</label>
-                            <select class="form-control" name="category_id">
-                                <option value="">Pilih Jenis dahulu</option>
-                            </select>
                         </div>
                         <button class="btn btn-primary mt-3" type="submit">Kirim</button>
                     </form>

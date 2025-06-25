@@ -15,7 +15,7 @@
         <div class="col-md-12">
             <div class="card card-maroon">
                 <div class="card-header">
-                    <h2 class="card-title">Edit Category</h2>
+                    <h2 class="card-title">Edit Jenis</h2>
                 </div>
 
                 <div class="card-body">

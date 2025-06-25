@@ -26,11 +26,20 @@
                         <!-- Role Info -->
                         <div class="form-group">
                             <label><i class="fas fa-tags"></i> Name</label>
-                            <input type="text" class="form-control" name="name">
+                            <input type="text" class="form-control" name="name" placeholder="Masukkan Nama">
                             @error('name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+                        <label class="mt-3"><i class="fas fa-user-tag"></i> Jenis</label>
+                        <select class="form-control" name="jenis_id">
+                            <option value="">Pilih Jenis</option>
+                            @foreach ($jenis as $item)
+                                <option value="{{ $item->id }}" {{ old('jenis_id') == $item->id ? 'selected' : '' }}>
+                                    {{ $item->name }}
+                                </option>
+                            @endforeach
+                        </select>
                         <button class="btn btn-primary mt-3" type="submit">Kirim</button>
                     </form>
                 </div>

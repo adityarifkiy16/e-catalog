@@ -20,5 +20,30 @@
                 </div>
             </div>
         </div>
+        @foreach ($count as $item => $value)
+            <div class="col-md-3 mb-4">
+                <div class="card shadow-sm rounded-lg border-0 h-100">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center text-center p-4"
+                        style="background-color: white;">
+                        <div class="mb-2">
+                            @if ($item == 'product')
+                                <i class="fas fa-box fa-2x text-danger"></i>
+                            @endif
+                            @if ($item == 'jenis')
+                                <i class="fas fa-tags fa-2x text-danger"></i>
+                            @endif
+                            @if ($item == 'category')
+                                <i class="fas fa-tags fa-2x text-danger"></i>
+                            @endif
+                            @if ($item == 'user')
+                                <i class="fas fa-users fa-2x text-danger"></i>
+                            @endif
+                        </div>
+                        <h5 class="fw-bold text-dark mb-1">{{ ucwords($item) }}</h5>
+                        <h2 class="fw-bold text-secondary">{{ $value }}</h2>
+                    </div>
+                </div>
+            </div>
+        @endforeach
     </div>
 @endsection

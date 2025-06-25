@@ -7,6 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'E-catalog')</title>
+    <link rel="shortcut icon" href="{{ asset('dist/img/favicon.ico') }}" />
+
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -34,6 +36,11 @@
             transition: all 0.3s ease-in-out;
 
         }
+
+        .center-content {
+            margin: 0 auto;
+            float: none;
+        }
     </style>
 </head>
 
@@ -50,7 +57,7 @@
 
         <!-- Footer -->
         <footer class="footer mt-auto py-3 text-center">
-            <strong>&copy; <a href="#">OSBORN</a>.</strong> All rights reserved.
+            <strong>&copy; <a href="https://osborn.id">Osborn</a>.</strong> All rights reserved.
         </footer>
     </div>
 
