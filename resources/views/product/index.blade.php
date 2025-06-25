@@ -37,7 +37,7 @@
                             </button>
                         </div>
                     </form>
-                    <div class="d-flex justify-content-start align-items-center mb-3">
+                    <div class="d-flex justify-content-end align-items-center mb-3">
                         @if ($isAuthenticated && $user->hasPermission('create_products'))
                             <a href="{{ route('products.create') }}" class="btn btn-success ml-2">
                                 <i class="fa fa-plus"></i> Tambah Produk

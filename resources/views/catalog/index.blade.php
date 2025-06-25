@@ -1,6 +1,11 @@
 @extends('layouts.catalog')
 
 @section('content')
+    <a href="https://wa.me/6281390153602" class="btn btn-success btn-lg rounded-circle position-fixed"
+        style="bottom: 20px; right: 20px; z-index: 999;">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
     <div class="w-100 d-flex justify-content-center align-items-center mb-4">
         <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100" style="background-color: #1B1A55">
             <a href="https://osborn.id/" target="_blank" class="py-2"> <img src="{{ asset('dist/img/osborn.png') }}"
@@ -18,8 +23,9 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="jenis-filter">
-                            <div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row">
-                                <select id="jenis-filter" class="form-control mt-2" name="jenis" style="width: 300px">
+                            <div
+                                class="d-flex justify-content-between align-items-center mb-3 flex-column-reverse flex-md-row ">
+                                <select id="jenis-filter" class="custom-select mb-2" name="jenis" style="width: 300px">
                                     @foreach ($jenis as $item)
                                         <option value="{{ $item->id }}"
                                             {{ old('jenis', request()->query('jenis')) == $item->id ? 'selected' : '' }}>
@@ -27,9 +33,13 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <div style="width: 300px;" class="mt-2">
-                                    <input type="text" id="search-input" class="form-control"
-                                        placeholder="Search product by code" value="{{ request()->query('search') }}">
+                                <div style="width: 300px;" class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" style="background-color: white !important"><i
+                                                class="fas fa-search"></i></span>
+                                    </div>
+                                    <input type="text" id="search-input" class="form-control" placeholder="Search by..."
+                                        value="{{ request()->query('search') }}">
                                 </div>
                             </div>
                         </div>
@@ -46,9 +56,11 @@
                                         class="card-img-top" alt="{{ $product->name }}"
                                         style="height: 200px; object-fit: cover;">
                                     <div class="card-body d-flex flex-column">
-                                        <h5 class="card-title font-weight-bold">{{ $product->code }}</h5>
-                                        <p class="card-text text-muted">{{ $product->category->name ?? 'Tanpa Kategori' }}
-                                        </p>
+                                        <h4 class="card-title font-weight-bold text-uppercase mb-2"
+                                            style="font-family: 'Poppins', sans-serif; font-size: 1.2rem; letter-spacing: 2px;">
+                                            {{ $product->category->name ?? 'Tanpa Kategori' }}
+                                        </h4>
+                                        <h6 class="card-text text-muted">{{ $product->code }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -66,7 +78,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="productModalLabel">Detail Produk</h5>
-                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Tutup">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
                                 <span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body d-flex flex-column justify-content-center align-items-center">
@@ -132,74 +144,118 @@
 @push('scripts')
     <script>
         let delayTimer;
-        let category;
+        let category = null;
+        let currentPage = 1;
+        let isLoading = false;
+        let lastPage = false;
+
+        function loadMoreData() {
+            console.log("Loading more data...");
+            console.log(isLoading);
+            console.log(lastPage);
+            if (isLoading || lastPage) return;
+
+            isLoading = true;
+
+            const search = $('#search-input').val();
+            const jenis = $('#jenis-filter').val();
+
+            $.ajax({
+                url: "{{ route('catalog') }}",
+                type: "GET",
+                data: {
+                    page: currentPage,
+                    search,
+                    jenis,
+                    category
+                },
+                success: function(response) {
+                    console.log(response);
+                    if (response.data.data && response.data.data.length > 0) {
+                        let html = '';
+                        response.data.data.forEach(product => {
+                            const image = product.photo ?
+                                `/storage/${product.photo}` :
+                                'https://via.placeholder.com/300x200?text=No+Image';
+                            const category = product.category?.name ?? 'Tanpa Kategori';
+
+                            html += `
+                        <div class="col-md-3 mb-4">
+                            <div class="card h-100 shadow-md product-card"
+                            data-code="${product.code}"
+                            data-category="${category}"
+                            data-image="${image}">
+                                <img src="${image}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
+                                <div class="card-body d-flex flex-column">
+                                    <h4 class="card-title font-weight-bold text-uppercase mb-2">${category}</h4>
+                                    <h6 class="card-text text-muted mb-1">${product.code}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                        });
+
+                        $('#product-list .row').append(html);
+                        currentPage++;
+
+                        if (currentPage > response.data.last_page) {
+                            lastPage = true;
+                        }
+                    } else {
+                        lastPage = true;
+                    }
+
+                    isLoading = false;
+                },
+                error: function() {
+                    isLoading = false;
+                    console.log('Gagal memuat data.');
+                }
+            });
+        }
+
 
         $(document).ready(function() {
             $('#jenis-filter').trigger('change');
+            $(window).scroll(function() {
+                console.log('scroll');
+                console.log($(window).scrollTop() + $(window).height() >= $(document).height() - 150);
+                if ($(window).scrollTop() + $(window).height() >= $(document).height() - 150) {
+                    loadMoreData();
+                }
+            });
+            $('#product-list').html('<div class="row"></div>');
+            loadMoreData();
         })
 
         $('#search-input').on('input', function() {
             clearTimeout(delayTimer);
-            const search = $(this).val();
-            let jenis = $('#jenis-filter').val();
-
-
 
             delayTimer = setTimeout(() => {
-                $.ajax({
-                    url: "{{ route('catalog') }}",
-                    type: "GET",
-                    data: {
-                        search,
-                        jenis,
-                        category
-                    },
-                    success: function(response) {
-                        console.log(response);
-                        let html = '<div class="row">';
-                        if (response.data && response.data.length > 0) {
-                            response.data.forEach(product => {
-                                const image = product.photo ?
-                                    `/storage/${product.photo}` :
-                                    'https://via.placeholder.com/300x200?text=No+Image';
-                                const category = product.category?.name ??
-                                    'Tanpa Kategori';
+                const search = $(this).val();
+                const jenis = $('#jenis-filter').val();
 
-                                html += `
-                                <div class="col-md-3 mb-4">
-                                    <div class="card h-100 shadow-md product-card"
-                                    data-code="${product.code}"
-                                    data-category="${category}"
-                                    data-image="${image}">
-                                        <img src="${image}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
-                                        <div class="card-body d-flex flex-column">
-                                            <h5 class="card-title">${product.code}</h5>
-                                            <p class="card-text text-muted">${category}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                            });
-                        } else {
-                            html +=
-                                `<img src="{{ asset('dist/img/no-data.png') }}" alt="no-data"
-                                class="img-fluid mx-auto d-block mt-5" style="max-width: 100%; height: auto;">`;
-                        }
-                        html += '</div>';
-                        $('#product-list').html(html);
-                    },
-                    error: function() {
-                        $('#product-list').html(
-                            '<div class="text-danger">Terjadi kesalahan saat mengambil data.</div>'
-                        );
-                    }
-                });
+                // Reset kondisi
+                currentPage = 1;
+                isLoading = false;
+                lastPage = false;
+
+                // Kosongkan tampilan
+                $('#product-list').html('<div class="row"></div>');
+
+                // Panggil ulang loadMoreData()
+                loadMoreData();
             }, 500);
         });
+
 
         $('#jenis-filter').on('change', function() {
             const selectedJenis = $('#jenis-filter').val();
             const url = "{{ route('catalog') }}";
+            currentPage = 1;
+            isLoading = false;
+            lastPage = false;
+
             if (selectedJenis) {
                 // Tampilkan kategori di desktop
                 $('#category-container').removeClass('d-md-none');
@@ -229,14 +285,15 @@
                     url: url,
                     type: "GET",
                     data: {
-                        jenis: selectedJenis
+                        jenis: selectedJenis,
+                        page: 1
                     },
                     success: function(response) {
                         let html = '<div class="row">';
                         $("#category-container").show();
                         // Tampilkan produk
-                        if (response.data && response.data.length > 0) {
-                            response.data.forEach(product => {
+                        if (response.data.data && response.data.data.length > 0) {
+                            response.data.data.forEach(product => {
                                 const image = product.photo ?
                                     `/storage/${product.photo}` :
                                     'https://via.placeholder.com/300x200?text=No+Image';
@@ -251,8 +308,8 @@
                                 data-image="${image}">
                                     <img src="${image}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
                                     <div class="card-body d-flex flex-column">
-                                        <h5 class="card-title">${product.code}</h5>
-                                        <p class="card-text text-muted">${category}</p>
+                                        <h4 class="card-title font-weight-bold text-uppercase mb-2" style="font-family: 'Poppins', sans-serif; font-size: 1.2rem; letter-spacing: 2px;">${category}</h4>
+                                        <h6 class="card-text text-muted mb-1">${product.code}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -302,56 +359,27 @@
         });
 
         $(document).on('click', '.category-filter', function(e) {
+            console.log("click");
             e.preventDefault();
 
             const categoryId = $(this).data('id');
+            const jenis = $('#jenis-filter').val();
             const url = "{{ route('catalog') }}";
+
+            // Reset state
+            currentPage = 1;
+            isLoading = false;
+            lastPage = false;
             category = categoryId;
+
+            // Kosongkan tampilan produk
+            $('#product-list').html('<div class="row"></div>');
+
             $('#categoryModal').modal('hide');
-            $.ajax({
-                url: url,
-                type: 'GET',
-                data: {
-                    category: categoryId
-                },
-                success: function(response) {
-                    let html = '<div class="row">';
 
-                    if (response.data && response.data.length > 0) {
-                        response.data.forEach(product => {
-                            const image = product.photo ?
-                                `/storage/${product.photo}` :
-                                'https://via.placeholder.com/300x200?text=No+Image';
-                            const category = product.category?.name ?? 'Tanpa Kategori';
+            // Panggil loadMoreData untuk memuat page 1
+            loadMoreData();
 
-                            html += `
-                        <div class="col-md-3 mb-4">
-                            <div class="card h-100 shadow-sm product-card"
-                                data-code="${product.code}"
-                                data-category="${category}"
-                                data-image="${image}">
-                                <img src="${image}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title">${product.code}</h5>
-                                    <p class="card-text text-muted">${category}</p>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                        });
-                    } else {
-                        html += `<img src="{{ asset('dist/img/no-data.png') }}" alt="no-data"
-                                class="img-fluid mx-auto d-block mt-5" style="max-width: 100%; height: auto;">`;
-                    }
-
-                    html += '</div>';
-                    $('#product-list').html(html);
-                },
-                error: function() {
-                    $('#product-list').html(
-                        '<div class="text-danger">Gagal memuat produk berdasarkan kategori.</div>');
-                }
-            });
         });
 
         $(document).on('click', '.product-card', function() {
@@ -362,7 +390,6 @@
             $('#modalImage').attr('src', image);
             $('#modalCode').text(name + ' (' + code + ')');
             $('#modalCategory').text('Kategori: ' + category);
-
             $('#productModal').modal('show'); // ← tampilkan modal
         });
     </script>

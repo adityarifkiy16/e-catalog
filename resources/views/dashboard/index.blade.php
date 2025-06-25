@@ -15,8 +15,8 @@
         <div class="col-12">
             <div class="card card-primary">
                 <div class="card-body">
-                    <h2 class="fw-bold text-muted">Selamat Datang, {{ Auth::user()->name }}
-                        ☄</h2>
+                    <h2 class="text-muted">Welcome, <span class="font-weight-bold">{{ Auth::user()->name }}</span>
+                    </h2>
                 </div>
             </div>
         </div>
@@ -27,19 +27,19 @@
                         style="background-color: white;">
                         <div class="mb-2">
                             @if ($item == 'product')
-                                <i class="fas fa-box fa-2x text-danger"></i>
+                                <i class="fas fa-box fa-2x" style="color: #1B1A55"></i>
                             @endif
                             @if ($item == 'jenis')
-                                <i class="fas fa-tags fa-2x text-danger"></i>
+                                <i class="fas fa-tags fa-2x" style="color: #1B1A55"></i>
                             @endif
                             @if ($item == 'category')
-                                <i class="fas fa-tags fa-2x text-danger"></i>
+                                <i class="fas fa-tags fa-2x" style="color: #1B1A55"></i>
                             @endif
                             @if ($item == 'user')
-                                <i class="fas fa-users fa-2x text-danger"></i>
+                                <i class="fas fa-users fa-2x" style="color: #1B1A55"></i>
                             @endif
                         </div>
-                        <h5 class="fw-bold text-dark mb-1">{{ ucwords($item) }}</h5>
+                        <h5 class="fw-bold text-secondary mb-1">{{ ucwords($item) }}</h5>
                         <h2 class="fw-bold text-secondary">{{ $value }}</h2>
                     </div>
                 </div>

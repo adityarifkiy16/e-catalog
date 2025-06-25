@@ -51,7 +51,7 @@
                         <tbody>
                             @foreach ($users as $item)
                                 <tr>
-                                    <td style="width: 10px;">{{ $item->id }}</td>
+                                    <td style="width: 10px;">{{ $loop->index + 1 }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->role->name }}</td>
                                     @if ($isAuthenticated && ($user->hasPermission('edit_users') || $user->hasPermission('edit_users')))

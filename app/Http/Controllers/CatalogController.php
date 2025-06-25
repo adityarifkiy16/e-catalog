@@ -14,7 +14,7 @@ class CatalogController extends Controller
         $arr = [];
 
         // Inisialisasi query produk dengan eager loading
-        $query = TProduct::with('category', 'category.jenis');
+        $query = TProduct::with(['category', 'category.jenis']);
 
         if ($request->ajax()) {
             // Filter berdasarkan kategori
@@ -42,7 +42,7 @@ class CatalogController extends Controller
             }
 
             // Ambil data hasil filter
-            $arr['data'] = $query->get();
+            $arr['data'] = $query->paginate(4);
 
             return response()->json($arr);
         }
