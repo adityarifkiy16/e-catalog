@@ -202,6 +202,9 @@
                             lastPage = true;
                         }
                     } else {
+                        $('#product-list .row').append(
+                            '`<img src="{{ asset('dist/img/no-data.png') }}" alt="no-data"class="img-fluid mx-auto d-block mt-5" style="max-width: 100%; height: auto;">`'
+                            );
                         lastPage = true;
                     }
 

@@ -1,15 +1,14 @@
 @extends('layouts.auth')
 @section('content')
     <!-- Login form -->
-    <div class="d-flex align-items-center justify-content-center vh-100 ml-5">
+    <div class="d-flex align-items-center justify-content-center vh-100">
         <div class="col-md-4">
             <form class="login-form">
                 @csrf
-                <div class="card mb-0 shadow gradient-outline rounded">
+                <div class="card mb-0 shadow gradient-outline rounded card-dark">
                     <div class="card-header text-center d-flex justify-content-center align-items-center">
-                        {{-- <img src="{{ asset('dist/img/logo.png') }}" alt="image logo" class="img-fluid"
-                            style="width: 2rem; height: 2rem"> --}}
-                        <div class="font-weight-bold h3">{{ config('app.name', 'Laravel') }}</div>
+                        <img src="{{ asset('dist/img/osborn.png') }}" alt="image logo" class="img-fluid"
+                            style="width: 150px; height: auto">
                     </div>
                     <div class="card-body mb-1">
                         <label for="login" class="fw-bold">Masukan Email anda</label>
@@ -34,8 +33,9 @@
                             </div>
                         </div>
 
-                        <div class="form-group d-flex justify-content-end">
-                            <button type="submit" class="btn btn-outline-primary mr-2"><span>Masuk</span></button>
+                        <div class="form-group d-flex justify-content-center">
+                            <button type="submit" class="btn btn-outline-primary mr-2 w-50"
+                                id="btn-submit"><span>Masuk</span></button>
                         </div>
                     </div>
                 </div>
@@ -51,6 +51,12 @@
                     showConfirmButton: false,
                     timer: 3000,
                     timerProgressBar: true,
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown animate__faster'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutUp animate__faster'
+                    },
                     didOpen: (toast) => {
                         toast.onmouseenter = Swal.stopTimer;
                         toast.onmouseleave = Swal.resumeTimer;

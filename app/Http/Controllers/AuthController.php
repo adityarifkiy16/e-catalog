@@ -34,7 +34,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             return response()->json(
                 [
-                    "message" => "success login",
+                    "message" => "You are redirected to dashboard...",
                     "url" => route("dashboard"),
                     "status" => "success",
                 ],
@@ -53,6 +53,6 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route("login")->with("message", "success logout");
+        return redirect()->route("login")->with("message", "Profile has been logged out");
     }
 }

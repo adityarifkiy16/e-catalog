@@ -22,9 +22,10 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
     <!-- custom css -->
-    <link rel="stylesheet" href="{{ asset('style.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('style.css') }}"> --}}
 
     @vite(['resources/js/app.js'])
+    @vite(['resources/css/app.css'])
     <style>
         .password-toggle {
             position: absolute;
@@ -42,7 +43,7 @@
     </style>
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition layout-fixed">
     <div class="wrapper">
         @yield('content')
     </div>
