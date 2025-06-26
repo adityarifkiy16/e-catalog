@@ -42,7 +42,7 @@ class CatalogController extends Controller
             }
 
             // Ambil data hasil filter
-            $arr['data'] = $query->paginate(4);
+            $arr['data'] = $query->paginate(8);
 
             return response()->json($arr);
         }

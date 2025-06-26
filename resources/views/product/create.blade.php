@@ -25,7 +25,7 @@
                         @method('POST')
                         <div class="form-group">
                             <label class="mt-3"><i class="fas fa-tags"></i> Jenis</label>
-                            <select class="form-control" name="jenis" id="jenis">
+                            <select class="custom-select" name="jenis" id="jenis">
                                 <option value="">Pilih Jenis</option>
                                 @foreach ($jenis as $item)
                                     <option value="{{ $item->id }}"
@@ -37,12 +37,12 @@
 
 
                             <label class="mt-3"><i class="fas fa-tags"></i> Kategori</label>
-                            <select class="form-control" name="category_id">
-                                <option value="">Pilih Jenis dahulu</option>
+                            <select class="custom-select" name="category_id">
+                                <option value="">Silahkan Pilih Jenis dahulu</option>
                             </select>
 
                             <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar</label>
-                            <input type="file" class="form-control" id="img" name="image[]" multiple
+                            <input type="file" class="custom-select" id="img" name="image[]" multiple
                                 accept="image/*">
                             @error('image')
                                 <span class="text-danger">{{ $message }}</span>
