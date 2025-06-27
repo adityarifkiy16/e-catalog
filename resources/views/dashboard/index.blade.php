@@ -15,8 +15,21 @@
         <div class="col-12">
             <div class="card card-primary">
                 <div class="card-body">
-                    <h2 class="text-muted">Welcome, <span class="font-weight-bold">{{ Auth::user()->name }}</span>
-                    </h2>
+                    <div class="d-flex flex-row justify-content-between align-items-center">
+                        <h2 class="text-muted">
+                            @if (date('H') < 12)
+                                Good morning,
+                            @elseif (date('H') < 18)
+                                Good afternoon,
+                            @else
+                                Good Night,
+                            @endif
+                            <span class="font-weight-bold">{{ Auth::user()->name }}</span>
+                        </h2>
+                        <h6 class="font-weight-bold">
+                            {{ now()->setTimezone('Asia/Jakarta')->format('d M Y, H:i') . ' WIB' }}
+                        </h6>
+                    </div>
                 </div>
             </div>
         </div>
