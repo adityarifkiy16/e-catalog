@@ -1,4 +1,4 @@
-<li class="nav-item has-treeview menu-open bg-dark rounded">
+<li class="nav-item has-treeview bg-dark rounded">
     <a href="#" class="nav-link">
         <i class="nav-icon {{ $icon }}"></i>
         <p>
