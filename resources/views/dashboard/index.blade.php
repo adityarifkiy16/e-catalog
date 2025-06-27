@@ -45,5 +45,18 @@
                 </div>
             </div>
         @endforeach
+        <div class="col-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h2 class="card-title">Total Produk Per Jenis</h2>
+                </div>
+                <div class="card-body">
+                    @foreach ($produkPerJenis as $key => $value)
+                        <h5 class="font-weight-bold text-secondary mb-1">- {{ $key }} : {{ $value }} pcs
+                        </h5>
+                    @endforeach
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

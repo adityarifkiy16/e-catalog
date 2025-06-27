@@ -13,13 +13,24 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
+        $produkPerJenis = TProduct::with('category.jenis')
+            ->get()
+            ->groupBy(function ($item) {
+                return $item->category->jenis->name ?? 'Tanpa Jenis';
+            })
+            ->map(function ($group) {
+                return $group->count();
+            })
+            ->toArray();
+
         $arr['count'] = [
             'user' => User::count(),
             'product' => TProduct::count(),
             'jenis' => MJenis::count(),
             'category' => MCategories::count(),
         ];
-        // dd($arr['count']);
+        $arr['produkPerJenis'] = $produkPerJenis;
+        // dd($arr);
         return view('dashboard.index', $arr);
     }
 }
