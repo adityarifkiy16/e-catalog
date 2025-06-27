@@ -114,7 +114,10 @@
                 let form = $(this);
                 let url = form.attr('action');
                 let formData = new FormData(this);
-                $('#btn-tambah').attr("disabled", true);
+                $('#btn-tambah').html(
+                    '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Loading...'
+                    ).attr("disabled", true);
+
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -133,9 +136,25 @@
                                 showConfirmButton: false,
                                 timer: 1500
                             })
-                            setTimeout(() => {
-                                location.reload();
-                            }, 1500);
+                            if (response.warning && response.warning.length > 0) {
+                                let warningMessages = response.warning;
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Duplikasi Data!',
+                                    html: warningMessages.join(', '),
+                                    confirmButtonText: 'OK',
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 1500);
+                                    }
+                                });
+                            } else {
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 1500);
+                            }
                         } else {
                             Toast.fire({
                                 icon: 'error',

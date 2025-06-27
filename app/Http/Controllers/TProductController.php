@@ -6,8 +6,9 @@ use App\Models\MJenis;
 use App\Models\TProduct;
 use App\Models\MCategories;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
 class TProductController extends Controller
@@ -64,54 +65,62 @@ class TProductController extends Controller
             'category_id' => 'required|exists:m_categories,id',
         ]);
 
-        if ($request->hasFile('image')) {
-            foreach ($request->file('image') as $file) {
-                $filename = time() . '_' . uniqid() . '.webp';
-                $folder = 'images/products/' . now()->format('Y/m/d');
-                $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
-                $path =  $folder . '/' . $filename;
+        DB::beginTransaction();
+        try {
+            if ($request->hasFile('image')) {
+                foreach ($request->file('image') as $file) {
+                    $filename = time() . '_' . uniqid() . '.webp';
+                    $folder = 'images/products/' . now()->format('Y/m/d');
+                    $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
+                    $path =  $folder . '/' . $filename;
 
-                $directory = dirname($fullPath);
-                if (!file_exists($directory)) {
-                    mkdir($directory, 0755, true);
-                }
+                    $directory = dirname($fullPath);
+                    if (!file_exists($directory)) {
+                        mkdir($directory, 0755, true);
+                    }
 
-                // Buat watermark dan resize (misal lebar 100px)
-                $watermark = Image::make(public_path('dist/img/osborn.png'))
-                    ->resize(200, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    });
+                    // Buat watermark dan resize (misal lebar 100px)
+                    $watermark = Image::make(public_path('dist/img/osborn.png'))
+                        ->resize(200, null, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        });
 
-                // Proses gambar
-                Image::make($file)
-                    ->resize(800, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    })
-                    ->insert($watermark, 'center', 10, 10) // tambahkan watermark
-                    ->encode('webp', 100) // kualitas 75%
-                    ->save($fullPath);
+                    // Proses gambar
+                    Image::make($file)
+                        ->resize(800, null, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        })
+                        ->insert($watermark, 'center', 10, 10)
+                        ->encode('webp', 100)
+                        ->save($fullPath);
 
-                if (!TProduct::where('code', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))->exists()) {
-                    TProduct::create([
-                        'code' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
-                        'photo' => $path,
-                        'category_id' => $request->input('category_id'),
-                    ]);
-                } else {
-                    return response()->json([
-                        'status' => 'error',
-                        'message' => 'Product with this code already exists.',
-                    ], 200);
+                    if (!TProduct::where('code', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))->exists()) {
+                        TProduct::create([
+                            'code' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+                            'photo' => $path,
+                            'category_id' => $request->input('category_id'),
+                        ]);
+                    } else {
+                        $arr['warning'][] =  pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    }
                 }
             }
-        }
+            DB::commit();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Product created successfully.',
-        ]);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Product created successfully.',
+                'warning' => isset($arr['warning']) ? $arr['warning'] : null
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
