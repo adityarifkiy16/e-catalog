@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
@@ -76,7 +80,14 @@ class AuthController extends Controller
 
         $rawToken = bin2hex(random_bytes(16));
         $token = bcrypt($rawToken);
-        Mail::to($user->email)->send(new \App\Mail\ForgetEmail($user, $token));
+
+        DB::table("password_reset_tokens")->updateOrInsert([
+            "email" => $user->email
+        ], [
+            "token" => $token,
+            "created_at" => now(),
+        ]);
+        Mail::to($user->email)->send(new \App\Mail\ForgetEmail($user, $rawToken));
         return response()->json(["message" => "email sent", "status" => "success", "url" => route("login")], 200);
     }
 
@@ -95,6 +106,22 @@ class AuthController extends Controller
             "token" => "required",
             "password" => "required|confirmed",
         ]);
+
+        $record = DB::table('password_reset_tokens')->where('email', $request->email)->first();
+        if (!$record) {
+            return response()->json(["message" => "Invalid request", "status" => "error"], 401);
+        }
+
+        // Periksa apakah token kadaluarsa (misalnya 60 menit)
+        if (Carbon::parse($record->created_at)->addMinutes(60)->isPast()) {
+            return response()->json(["message" => "Token expired", "status" => "error"], 401);
+        }
+
+        // Verifikasi token
+        if (!$record || !Hash::check($request->token, $record->token)) {
+            return response()->json(["message" => "Invalid token", "status" => "error"], 401);
+        }
+
         $user = \App\Models\User::where("email", $request->email)->first();
         $user->password = bcrypt($request->password);
         $user->save();

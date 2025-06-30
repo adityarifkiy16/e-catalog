@@ -136,6 +136,16 @@
                                     showConfirmButton: false,
                                     timer: 1500
                                 });
+                            } else if (response.status === 401) {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: response.responseJSON.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                                setTimeout(function() {
+                                    window.location.reload();
+                                })
                             }
                         }
                     });
