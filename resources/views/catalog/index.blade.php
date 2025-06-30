@@ -220,7 +220,7 @@
                         let dropdown = `<li class="nav-item">`;
                         response.categories.forEach(cat => {
                             dropdown +=
-                                `<a class="nav-link text-dark category-filter" href="#" data-id="${cat.id}"><i class="fa fa-tags mr-2"></i> ${cat.name}</a>`;
+                                `<a class="nav-link text-dark category-filter" href="#" data-id="${cat.id}"><i class="fa fa-tags mr-2"></i> ${cat.name} ${cat.products_count > 0 ? `(${cat.products_count})` : ''}</a>`;
                         });
                         dropdown += `</li>`;
                         $('#category-menu-item, #category-menu-item-modal').html(dropdown);

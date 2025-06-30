@@ -38,7 +38,9 @@ class CatalogController extends Controller
                 });
 
                 // Ambil kategori yang cocok dengan jenis tersebut
-                $arr['categories'] = MCategories::where('jenis_id', $jenisId)->get();
+                $arr['categories'] = MCategories::where('jenis_id', $jenisId)
+                    ->withCount('products')
+                    ->get();
             }
 
             // Ambil data hasil filter
