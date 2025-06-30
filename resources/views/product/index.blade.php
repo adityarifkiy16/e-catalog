@@ -23,7 +23,7 @@
 
                     <form action="{{ route('products.index') }}" method="GET">
                         <div class="d-flex justify-content-between align-items-center mb-3 ">
-                            <select id="category-filter" class="form-control mr-2" name="filter">
+                            <select id="category-filter" class="custom-select mr-2" name="filter">
                                 <option value="">All Categories</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"

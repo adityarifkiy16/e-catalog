@@ -149,19 +149,49 @@
         let isLoading = false;
         let lastPage = false;
 
-        function loadMoreData() {
-            console.log("Loading more data...");
-            console.log(isLoading);
-            console.log(lastPage);
-            if (isLoading || lastPage) return;
+        const url = "{{ route('catalog') }}";
 
+        function resetState() {
+            currentPage = 1;
+            isLoading = false;
+            lastPage = false;
+            $('#product-list').html('<div class="row"></div>');
+        }
+
+        function renderProducts(products) {
+            let html = '';
+            products.forEach(product => {
+                const image = product.photo ?
+                    `/storage/${product.photo}` :
+                    'https://via.placeholder.com/300x200?text=No+Image';
+                const categoryName = product.category?.name ?? 'Tanpa Kategori';
+
+                html += `
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 shadow-sm product-card"
+                    data-code="${product.code}"
+                    data-category="${categoryName}"
+                    data-image="${image}">
+                        <img src="${image}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h4 class="card-title font-weight-bold text-uppercase mb-2">${categoryName}</h4>
+                            <h6 class="card-text text-muted mb-1">${product.code}</h6>
+                        </div>
+                    </div>
+                </div>`;
+            });
+            $('#product-list .row').append(html);
+        }
+
+        function loadMoreData() {
+            if (isLoading || lastPage) return;
             isLoading = true;
 
             const search = $('#search-input').val();
             const jenis = $('#jenis-filter').val();
 
             $.ajax({
-                url: "{{ route('catalog') }}",
+                url: url,
                 type: "GET",
                 data: {
                     page: currentPage,
@@ -170,42 +200,34 @@
                     category
                 },
                 success: function(response) {
-                    console.log(response);
-                    if (response.data.data && response.data.data.length > 0) {
-                        let html = '';
-                        response.data.data.forEach(product => {
-                            const image = product.photo ?
-                                `/storage/${product.photo}` :
-                                'https://via.placeholder.com/300x200?text=No+Image';
-                            const category = product.category?.name ?? 'Tanpa Kategori';
-
-                            html += `
-                        <div class="col-md-3 mb-4">
-                            <div class="card h-100 shadow-md product-card"
-                            data-code="${product.code}"
-                            data-category="${category}"
-                            data-image="${image}">
-                                <img src="${image}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
-                                <div class="card-body d-flex flex-column">
-                                    <h4 class="card-title font-weight-bold text-uppercase mb-2">${category}</h4>
-                                    <h6 class="card-text text-muted mb-1">${product.code}</h6>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                        });
-
-                        $('#product-list .row').append(html);
+                    const products = response.data.data ?? [];
+                    if (products.length > 0) {
+                        renderProducts(products);
                         currentPage++;
-
-                        if (currentPage > response.data.last_page) {
-                            lastPage = true;
-                        }
+                        if (currentPage > response.data.last_page) lastPage = true;
                     } else {
-                        $('#product-list .row').append(
-                            '`<img src="{{ asset('dist/img/no-data.png') }}" alt="no-data"class="img-fluid mx-auto d-block mt-5" style="max-width: 100%; height: auto;">`'
+                        if (currentPage === 1) {
+                            $('#product-list .row').append(
+                                `<img src="{{ asset('dist/img/no-data.png') }}" alt="no-data"
+                            class="img-fluid mx-auto d-block mt-5" style="max-width: 100%; height: auto;">`
                             );
+                        }
                         lastPage = true;
+                    }
+
+                    // Update kategori
+                    if (response.categories) {
+                        let dropdown = `<li class="nav-item">`;
+                        response.categories.forEach(cat => {
+                            dropdown +=
+                                `<a class="nav-link text-dark category-filter" href="#" data-id="${cat.id}"><i class="fa fa-tags mr-2"></i> ${cat.name}</a>`;
+                        });
+                        dropdown += `</li>`;
+                        $('#category-menu-item, #category-menu-item-modal').html(dropdown);
+                    } else {
+                        $('#category-menu-item, #category-menu-item-modal').html(
+                            `<li class="nav-item"><a class="nav-link font-weight-bold h6 text-danger" href="#">choose design first 😇</a></li>`
+                        );
                     }
 
                     isLoading = false;
@@ -217,183 +239,65 @@
             });
         }
 
-
         $(document).ready(function() {
             $('#jenis-filter').trigger('change');
+            $('#product-list').html('<div class="row"></div>');
+            loadMoreData();
+
             $(window).scroll(function() {
-                console.log('scroll');
-                console.log($(window).scrollTop() + $(window).height() >= $(document).height() - 150);
                 if ($(window).scrollTop() + $(window).height() >= $(document).height() - 150) {
                     loadMoreData();
                 }
             });
-            $('#product-list').html('<div class="row"></div>');
-            loadMoreData();
-        })
+        });
 
         $('#search-input').on('input', function() {
             clearTimeout(delayTimer);
-
             delayTimer = setTimeout(() => {
-                const search = $(this).val();
-                const jenis = $('#jenis-filter').val();
-
-                // Reset kondisi
-                currentPage = 1;
-                isLoading = false;
-                lastPage = false;
-
-                // Kosongkan tampilan
-                $('#product-list').html('<div class="row"></div>');
-
-                // Panggil ulang loadMoreData()
+                resetState();
                 loadMoreData();
             }, 500);
         });
 
-
         $('#jenis-filter').on('change', function() {
-            const selectedJenis = $('#jenis-filter').val();
-            const url = "{{ route('catalog') }}";
-            currentPage = 1;
-            isLoading = false;
-            lastPage = false;
+            const selectedJenis = $(this).val();
 
+            // Tampilkan atau sembunyikan sidebar
             if (selectedJenis) {
-                // Tampilkan kategori di desktop
                 $('#category-container').removeClass('d-md-none');
-
-                // Jika di mobile, tetap sembunyikan dan pakai modal
                 if (window.innerWidth < 768) {
                     $('#category-container').addClass('d-none');
                 } else {
                     $('#category-container').removeClass('d-none');
                 }
-
-                // Geser konten utama di desktop
                 $('#catalog-col').removeClass('center-content');
             } else {
-                // Sembunyikan sidebar di semua ukuran
-
                 $('#category-container').addClass('d-md-none d-none');
-
-                // Kembalikan konten ke tengah
                 $('#catalog-col').addClass('center-content');
             }
 
-
-            clearTimeout(delayTimer);
-            delayTimer = setTimeout(() => {
-                $.ajax({
-                    url: url,
-                    type: "GET",
-                    data: {
-                        jenis: selectedJenis,
-                        page: 1
-                    },
-                    success: function(response) {
-                        let html = '<div class="row">';
-                        $("#category-container").show();
-                        // Tampilkan produk
-                        if (response.data.data && response.data.data.length > 0) {
-                            response.data.data.forEach(product => {
-                                const image = product.photo ?
-                                    `/storage/${product.photo}` :
-                                    'https://via.placeholder.com/300x200?text=No+Image';
-                                const category = product.category?.name ??
-                                    'Tanpa Kategori';
-
-                                html += `
-                            <div class="col-md-3 mb-4">
-                                <div class="card h-100 shadow-sm product-card"
-                                data-code="${product.code}"
-                                data-category="${category}"
-                                data-image="${image}">
-                                    <img src="${image}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
-                                    <div class="card-body d-flex flex-column">
-                                        <h4 class="card-title font-weight-bold text-uppercase mb-2" style="font-family: 'Poppins', sans-serif; font-size: 1.2rem; letter-spacing: 2px;">${category}</h4>
-                                        <h6 class="card-text text-muted mb-1">${product.code}</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                            });
-                        } else {
-                            html +=
-                                `<img src="{{ asset('dist/img/no-data.png') }}" alt="no-data"
-                                class="img-fluid mx-auto d-block mt-5" style="max-width: 100%; height: auto;">`;
-                        }
-
-                        html += '</div>';
-                        $('#product-list').html(html);
-
-                        // Inject kategori ke sidebar
-                        if (response.categories) {
-                            if (response.categories) {
-                                let dropdown = `
-                                    <li class="nav-item">
-                                `;
-
-                                response.categories.forEach(cat => {
-                                    dropdown +=
-                                        `
-                                     <a class="nav-link text-dark category-filter" href="#" data-id="${cat.id}"><i class="fa fa-tags mr-2"></i> ${cat.name}</a>`;
-                                });
-
-                                dropdown += `</li>`;
-
-                                $('#category-menu-item').html(dropdown);
-                                $('#category-menu-item-modal').html(dropdown);
-                            }
-                        } else {
-                            $('#category-menu-item').html('');
-                            $('#category-menu-item-modal').html(
-                                '<li class="nav-item"><a class="nav-link font-weight-bold h6 text-danger" href="#">choose design  first😇</a></li>'
-                            );
-                        }
-                    },
-                    error: function() {
-                        $('#product-list').html(
-                            '<div class="text-danger">Terjadi kesalahan saat mengambil data.</div>'
-                        );
-                    }
-                });
-            }, 300);
+            // Reset dan load ulang
+            resetState();
+            category = null;
+            loadMoreData();
         });
 
         $(document).on('click', '.category-filter', function(e) {
-            console.log("click");
             e.preventDefault();
-
-            const categoryId = $(this).data('id');
-            const jenis = $('#jenis-filter').val();
-            const url = "{{ route('catalog') }}";
-
-            // Reset state
-            currentPage = 1;
-            isLoading = false;
-            lastPage = false;
-            category = categoryId;
-
-            // Kosongkan tampilan produk
-            $('#product-list').html('<div class="row"></div>');
-
+            category = $(this).data('id');
+            resetState();
             $('#categoryModal').modal('hide');
-
-            // Panggil loadMoreData untuk memuat page 1
             loadMoreData();
-
         });
 
         $(document).on('click', '.product-card', function() {
             const image = $(this).data('image');
             const code = $(this).data('code');
             const category = $(this).data('category');
-
             $('#modalImage').attr('src', image);
-            $('#modalCode').text(name + ' (' + code + ')');
+            $('#modalCode').text(code);
             $('#modalCategory').text('Kategori: ' + category);
-            $('#productModal').modal('show'); // ← tampilkan modal
+            $('#productModal').modal('show');
         });
     </script>
 @endpush

@@ -18,6 +18,10 @@ Route::get("/catalog", [App\Http\Controllers\CatalogController::class, "index"])
 Route::controller(App\Http\Controllers\AuthController::class)->middleware("guest")->group(function () {
     Route::get("/", "index")->name("login");
     Route::post("/", "store")->name("login.post");
+    Route::get("/forget-password", "forgetPassword")->name("forget-password");
+    Route::post("/forget-password", "forgetPasswordPost")->name("forget-password.post");
+    Route::get("/reset-password", "resetPassword")->name("reset-password");
+    Route::post("/reset-password", "resetPasswordPost")->name("reset-password.post");
 });
 
 Route::middleware("auth")->group(function () {

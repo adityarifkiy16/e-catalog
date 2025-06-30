@@ -148,7 +148,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="{{ url('https://osborn.id') }}" target="_blank" class="brand-link">
-                <img src="{{ asset('dist/img/osborn.png') }}" alt="Logo" style="width: 150px; height: auto">
+                <img src="{{ asset('dist/img/osborn.png') }}" alt="Logo" class="img-fluid w-50">
             </a>
 
             <!-- Sidebar -->
