@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Verifikasi Email - Reset Password</title>
+    <title>Reset Password</title>
     <style>
         .container {
             max-width: 600px;
