@@ -1,0 +1,61 @@
+.breadcrumb {
+    font-size: 1.1rem;
+    /* Ukuran font sedikit lebih besar untuk keterbacaan */
+}
+
+.breadcrumb-item a {
+    color: #333;
+    /* Warna teks yang gelap pada link */
+    transition: color 0.3s ease-in-out;
+}
+
+.breadcrumb-item a:hover {
+    color: #007bff;
+    /* Warna biru terang saat hover */
+    text-decoration: underline;
+    /* Menambahkan garis bawah pada hover */
+}
+
+.breadcrumb-item.active {
+    color: #6c757d;
+    /* Warna breadcrumb yang aktif */
+}
+
+.breadcrumb-item:not(:last-child):after {
+    content: '›';
+    /* Menambahkan tanda panah sebagai separator */
+    margin: 0 10px;
+    color: #6c757d;
+}
+
+.breadcrumb-item:last-child {
+    font-weight: bold;
+    /* Menebalkan breadcrumb terakhir */
+    color: #007bff;
+    /* Membuat breadcrumb terakhir lebih menonjol */
+}
+
+.nav-link-hover {
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-link-hover:hover {
+    background-color: #f4f4f4;
+    color: #000;
+}
+
+.bg-darkBlue {
+    background-color: #001c4b;
+    color: #fff;
+}
+
+.btn-brown {
+    background-color: #a3764c;
+    color: #fff;
+}
+
+.btn-brown:hover {
+    background-color: #fff;
+    color: #a3764c;
+    outline: #a3764c solid 2px;
+}

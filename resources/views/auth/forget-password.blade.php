@@ -1,17 +1,17 @@
 @extends('layouts.auth')
 @section('content')
     <!-- Login form -->
-    <div class="d-flex align-items-center justify-content-center vh-100 ml-5">
+    <div class="d-flex align-items-center justify-content-center vh-100">
         <div class="col-md-4">
             <form class="forget-form">
                 @csrf
-                <div class="card mb-0 shadow gradient-outline rounded card-dark">
-                    <div class="card-header text-center d-flex justify-content-center align-items-center">
+                <div class="card mb-0 shadow gradient-outline rounded">
+                    <div class="card-header text-center d-flex justify-content-center align-items-center bg-darkBlue">
                         <img src="{{ asset('dist/img/osborn.png') }}" alt="image logo" class="img-fluid"
                             style="width: 150px; height: auto">
                     </div>
                     <div class="card-body mb-1">
-                        <label for="login" class="fw-bold">Masukan Email anda</label>
+                        <label for="login" class="fw-bold">Email</label>
                         <div class="form-group form-group-feedback form-group-feedback-left">
                             <input type="text" name="email" class="form-control" placeholder="adityarifkiy@mail.com">
                             <div class="form-control-feedback">
@@ -21,8 +21,9 @@
                         </div>
 
                         <div class="form-group d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary mr-2 w-100"
-                                id="btn-submit"><span>Kirim</span></button>
+                            <button type="submit" class="btn btn-brown mr-2 w-100" id="btn-submit"><span>Kirim
+                                    Email</span></button>
+                            <a href="{{ route('login') }}" class="btn btn-secondary w-100">Kembali Ke Login</a>
                         </div>
                     </div>
                 </div>
@@ -115,6 +116,7 @@
                                         $(`#${field}-error`).text(errors[field][0]);
                                     }
                                 }
+                                $('#btn-submit').html('Kirim Email').attr("disabled", false);
                             } else if (response.status === 500) {
                                 Toast.fire({
                                     icon: 'error',
@@ -129,6 +131,16 @@
                                     showConfirmButton: false,
                                     timer: 1500
                                 })
+                                setTimeout(function() {
+                                    window.location.reload();
+                                }, 1500);
+                            } else {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: response.responseJSON.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
                                 setTimeout(function() {
                                     window.location.reload();
                                 }, 1500);

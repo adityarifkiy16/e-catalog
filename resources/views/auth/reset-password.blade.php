@@ -1,23 +1,23 @@
 @extends('layouts.auth')
 @section('content')
     <!-- Login form -->
-    <div class="d-flex align-items-center justify-content-center vh-100 ml-5">
+    <div class="d-flex align-items-center justify-content-center vh-100">
         <div class="col-md-4">
             <form class="reset-form">
                 @csrf
-                <div class="card card-dark mb-0 shadow gradient-outline rounded">
-                    <div class="card-header text-center d-flex justify-content-center align-items-center">
+                <div class="card mb-0 shadow gradient-outline rounded">
+                    <div class="card-header text-center d-flex justify-content-center align-items-center bg-darkBlue">
                         <img src="{{ asset('dist/img/osborn.png') }}" alt="image logo" class="img-fluid"
                             style="width: 150px; height: auto">
                     </div>
                     <div class="card-body mb-1">
                         <input type="hidden" name="token" value="{{ $token }}">
                         <input type="hidden" name="email" value="{{ $email }}">
-                        <label for="login" class="fw-bold">Masukan password</label>
+                        <label for="login" class="fw-bold">Masukan password baru</label>
                         <div class="form-group form-group-feedback form-group-feedback-left">
                             <div class="position-relative">
                                 <input type="password" name="password" autocomplete="off" class="form-control pr-5"
-                                    placeholder="Password" id="password">
+                                    placeholder="Password Baru" id="password">
                                 <i class="fa fa-eye-slash password-toggle"></i>
                             </div>
                             <div class="form-control-feedback">
@@ -30,7 +30,7 @@
                         <div class="form-group form-group-feedback form-group-feedback-left">
                             <div class="position-relative">
                                 <input type="password" name="password_confirmation" autocomplete="off"
-                                    class="form-control pr-5" placeholder="Password" id="password_confirmation">
+                                    class="form-control pr-5" placeholder="Konfirmasi Password" id="password_confirmation">
                                 <i class="fa fa-eye-slash password-toggle"></i>
                             </div>
 
@@ -41,8 +41,8 @@
                         </div>
 
                         <div class="form-group d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary mr-2 w-100"
-                                id="btn-submit"><span>Kirim</span></button>
+                            <button type="submit" class="btn btn-brown mr-2 w-100" id="btn-submit"><span>Kirim
+                                    Password</span></button>
                         </div>
                     </div>
                 </div>
@@ -105,6 +105,9 @@
                                     showConfirmButton: false,
                                     timer: 1500
                                 })
+                                setTimeout(function() {
+                                    window.location.reload();
+                                })
                             }
                         },
                         error: function(response) {
@@ -129,6 +132,7 @@
                                         $(`#${field}-error`).text(errors[field][0]);
                                     }
                                 }
+                                $('#btn-submit').html('Kirim Email').attr("disabled", false);
                             } else if (response.status === 500) {
                                 Toast.fire({
                                     icon: 'error',

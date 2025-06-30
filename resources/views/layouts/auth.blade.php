@@ -10,6 +10,8 @@
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ asset('dist/img/favicon.ico') }}" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
     <!-- overlayScrollbars -->
@@ -22,7 +24,8 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
     <!-- custom css -->
-    {{-- <link rel="stylesheet" href="{{ asset('style.css') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('dist/css/style.css') }}">
+
 
     @vite(['resources/js/app.js'])
     @vite(['resources/css/app.css'])

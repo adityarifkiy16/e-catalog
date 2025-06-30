@@ -5,13 +5,13 @@
         <div class="col-md-4">
             <form class="login-form">
                 @csrf
-                <div class="card mb-0 shadow gradient-outline rounded card-dark">
-                    <div class="card-header text-center d-flex justify-content-center align-items-center">
+                <div class="card mb-0 shadow gradient-outline rounded ">
+                    <div class="card-header text-center d-flex justify-content-center align-items-center bg-darkBlue">
                         <img src="{{ asset('dist/img/osborn.png') }}" alt="image logo" class="img-fluid"
                             style="width: 150px; height: auto">
                     </div>
                     <div class="card-body mb-1">
-                        <label for="login" class="fw-bold">Masukan Email anda</label>
+                        <label for="login" class="fw-bold">Email</label>
                         <div class="form-group form-group-feedback form-group-feedback-left">
                             <input type="text" name="email" class="form-control" placeholder="adityarifkiy@mail.com"
                                 id="email">
@@ -20,7 +20,7 @@
                             </div>
                         </div>
 
-                        <label for="login" class="fw-bold">Masukan password</label>
+                        <label for="login" class="fw-bold">Password</label>
                         <div class="form-group form-group-feedback form-group-feedback-left">
                             <div class="position-relative">
                                 <input type="password" name="password" autocomplete="off" class="form-control pr-5"
@@ -32,12 +32,11 @@
                                 <small id="password-error" class="text-danger"></small>
                             </div>
                         </div>
+                        <a href="{{ route('forget-password') }}">Lupa Kata Sandi?</a>
 
-                        <div class="form-group d-flex flex-column justify-content-center">
-                            <button type="submit" class="btn btn-success mr-2 w-100"
+                        <div class="form-group d-flex flex-column justify-content-center mt-3">
+                            <button type="submit" class="btn btn-brown mr-2 w-100"
                                 id="btn-submit"><span>Masuk</span></button>
-                            <a href="{{ route('forget-password') }}" class="btn btn-link mr-2 w-100">Forget
-                                Password</a>
                         </div>
                     </div>
                 </div>

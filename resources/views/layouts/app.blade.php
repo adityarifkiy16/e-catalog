@@ -25,57 +25,9 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
     <!-- custom css -->
-    <link rel="stylesheet" href="{{ asset('style.css') }}">
+    <link rel="stylesheet" href="{{ asset('dist/css/style.css') }}">
 
     @vite(['resources/js/app.js'])
-
-    <style>
-        .breadcrumb {
-            font-size: 1.1rem;
-            /* Ukuran font sedikit lebih besar untuk keterbacaan */
-        }
-
-        .breadcrumb-item a {
-            color: #333;
-            /* Warna teks yang gelap pada link */
-            transition: color 0.3s ease-in-out;
-        }
-
-        .breadcrumb-item a:hover {
-            color: #007bff;
-            /* Warna biru terang saat hover */
-            text-decoration: underline;
-            /* Menambahkan garis bawah pada hover */
-        }
-
-        .breadcrumb-item.active {
-            color: #6c757d;
-            /* Warna breadcrumb yang aktif */
-        }
-
-        .breadcrumb-item:not(:last-child):after {
-            content: "›";
-            /* Menambahkan tanda panah sebagai separator */
-            margin: 0 10px;
-            color: #6c757d;
-        }
-
-        .breadcrumb-item:last-child {
-            font-weight: bold;
-            /* Menebalkan breadcrumb terakhir */
-            color: #007bff;
-            /* Membuat breadcrumb terakhir lebih menonjol */
-        }
-
-        .nav-link-hover {
-            transition: background-color 0.2s, color 0.2s;
-        }
-
-        .nav-link-hover:hover {
-            background-color: #f4f4f4;
-            color: #000;
-        }
-    </style>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
