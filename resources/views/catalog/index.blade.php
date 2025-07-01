@@ -33,12 +33,9 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <div class="mb-2 order-md-2 order-1">
-                                    <a href="{{ route('products.pdf') }}" target="_blank" class="btn btn-primary"
-                                        id="btn-download">
-                                        <i class="fa fa-download"></i> Unduh Katalog
-                                    </a>
-                                </div>
+                                <a href="#" class="btn btn-primary d-none mb-2 order-md-2 order-1" id="btn-download">
+                                    <i class="fa fa-download"></i> Unduh Katalog
+                                </a>
                                 <div style="width: 300px;" class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" style="background-color: white !important"><i
@@ -155,6 +152,7 @@
         let currentPage = 1;
         let isLoading = false;
         let lastPage = false;
+        console.log(category);
 
         $('#btn-download').on('click', function(e) {
             e.preventDefault();
@@ -165,7 +163,7 @@
                 '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengunduh...'
             );
 
-            const url = "{{ route('products.pdf') }}";
+            let url = "{{ route('catalog.pdf') }}?category=" + encodeURIComponent(category);
             window.open(url, '_blank');
 
             // Timeout untuk reset tombol (misal 10 detik)
@@ -210,6 +208,9 @@
         }
 
         function loadMoreData() {
+            console.log("load more data");
+            console.log(category);
+
             if (isLoading || lastPage) return;
             isLoading = true;
 
@@ -309,11 +310,19 @@
         });
 
         $(document).on('click', '.category-filter', function(e) {
+            console.log(category);
             e.preventDefault();
             category = $(this).data('id');
             resetState();
             $('#categoryModal').modal('hide');
             loadMoreData();
+
+            if (!category || category === 'null' || category === '') {
+                $('#btn-download').addClass('d-none');
+            } else {
+                $('#btn-download').removeClass('d-none');
+            }
+
         });
 
         $(document).on('click', '.product-card', function() {
