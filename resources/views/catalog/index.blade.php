@@ -245,6 +245,8 @@
                     // Update kategori
                     if (response.categories) {
                         let dropdown = `<li class="nav-item">`;
+                        dropdown +=
+                            `<a class="nav-link text-dark category-filter" href="#" data-id=""><i class="fa fa-tags mr-2"></i> Semua Produk</a>`;
                         response.categories.forEach(cat => {
                             dropdown +=
                                 `<a class="nav-link text-dark category-filter" href="#" data-id="${cat.id}"><i class="fa fa-tags mr-2"></i> ${cat.name} ${cat.products_count > 0 ? `(${cat.products_count})` : ''}</a>`;

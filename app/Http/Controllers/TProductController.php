@@ -244,7 +244,6 @@ class TProductController extends Controller
                     }
 
                     if (!file_exists($jpgPath)) {
-                        // Konversi ke JPG
                         Image::make($photopath)->encode('jpg', 80)->save($jpgPath);
                     }
 
