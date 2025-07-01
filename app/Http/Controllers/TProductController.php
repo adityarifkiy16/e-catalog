@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\MJenis;
 use App\Models\TProduct;
 use App\Models\MCategories;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 class TProductController extends Controller
 {
@@ -217,5 +219,44 @@ class TProductController extends Controller
         $jenisId = $request->input('jenis_id');
         $categories = MCategories::where('jenis_id', $jenisId)->get();
         return response()->json($categories);
+    }
+
+    public function downloadPdf()
+    {
+        $arr['products'] = TProduct::with('category', 'category.jenis')->select('id', 'code', 'photo', 'category_id')->orderBy('code', 'asc')->get();
+        // dd($arr['products']);
+
+        $convertedImgs = [];
+        foreach ($arr['products'] as $product) {
+            $photopath = public_path('storage/' . $product->photo);
+            if (file_exists($photopath) && Str::endsWith($product->photo, '.webp')) {
+                $jpgName = Str::replaceLast('.webp', '.jpg', $product->photo);
+                $jpgPath = storage_path('app/temp_images/' . $jpgName);
+                $directory = dirname($jpgPath);
+                if (!file_exists($directory)) {
+                    mkdir($directory, 0755, true);
+                }
+
+                if (!file_exists($jpgPath)) {
+                    // Konversi ke JPG
+                    Image::make($photopath)->encode('jpg', 80)->save($jpgPath);
+                }
+
+                $product->converted_photo = $jpgPath;
+                $convertedImgs[] = $jpgPath;
+            } else {
+                $product->converted_photo = $photopath;
+            }
+        }
+        $pdf = FacadePdf::loadView('product.catalog', $arr)->setPaper('a4', 'potrait');
+        $output = $pdf->stream('products.pdf');
+
+        foreach ($convertedImgs as $img) {
+            if (file_exists($img)) {
+                @unlink($img);
+            }
+        }
+
+        return $output;
     }
 }

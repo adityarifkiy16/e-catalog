@@ -33,6 +33,12 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                <div class="mb-2 order-md-2 order-1">
+                                    <a href="{{ route('products.pdf') }}" target="_blank" class="btn btn-primary"
+                                        id="btn-download">
+                                        <i class="fa fa-download"></i> Unduh Katalog
+                                    </a>
+                                </div>
                                 <div style="width: 300px;" class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" style="background-color: white !important"><i
@@ -41,6 +47,7 @@
                                     <input type="text" id="search-input" class="form-control" placeholder="Search by..."
                                         value="{{ request()->query('search') }}">
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -148,6 +155,25 @@
         let currentPage = 1;
         let isLoading = false;
         let lastPage = false;
+
+        $('#btn-download').on('click', function(e) {
+            e.preventDefault();
+
+            const $btn = $(this);
+            $btn.prop('disabled', true); // disable tombol
+            $btn.html(
+                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengunduh...'
+            );
+
+            const url = "{{ route('products.pdf') }}";
+            window.open(url, '_blank');
+
+            // Timeout untuk reset tombol (misal 10 detik)
+            setTimeout(() => {
+                $btn.prop('disabled', false).html('<i class="fa fa-download"></i> Unduh Katalog');
+            }, 5000); // waktu unduh maksimum
+        });
+
 
         const url = "{{ route('catalog') }}";
 

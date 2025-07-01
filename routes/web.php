@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get("/catalog", [App\Http\Controllers\CatalogController::class, "index"])->name("catalog");
+Route::get("/products/pdf", [App\Http\Controllers\TProductController::class, "downloadPdf"])->name("products.pdf");
+
 
 Route::controller(App\Http\Controllers\AuthController::class)->middleware("guest")->group(function () {
     Route::get("/", "index")->name("login");
