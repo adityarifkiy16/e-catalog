@@ -6,7 +6,7 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <div class="w-100 d-flex justify-content-center align-items-center mb-4">
+    <div class="w-100 d-flex justify-content-center align-items-center">
         <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100" style="background-color: #1B1A55">
             <a href="https://osborn.id/" target="_blank" class="py-2"> <img src="{{ asset('dist/img/osborn.png') }}"
                     alt="osborn-logo" style="width: 130px; height: auto;"></a>
@@ -17,7 +17,8 @@
             </button>
         </div>
     </div>
-    <div class="container-fluid py-4 px-4">
+    <div class="container-fluid py-4 px-4 bg-image">
+        <div class="overlay-white"></div>
         <div class="row">
             <div class="col-md-10 col-12 order-2 order-md-1 center-content" id="catalog-col">
                 <div class="row">

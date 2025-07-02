@@ -46,7 +46,8 @@
     </style>
 </head>
 
-<body class="hold-transition layout-fixed">
+<body class="hold-transition layout-fixed bg-image">
+    <div class="overlay-white"></div>
     <div class="wrapper">
         @yield('content')
     </div>

@@ -25,7 +25,8 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
     <!-- custom css -->
-    <link rel="stylesheet" href="{{ asset('style.css') }}">
+    <link rel="stylesheet" href="{{ asset('dist/css/style.css') }}">
+
 
     @vite(['resources/js/app.js'])
 
@@ -52,9 +53,9 @@
     </style>
 </head>
 
-<body style="background-color: #f5efe0">
+<body>
     <div class="d-flex flex-column min-vh-100">
-        <div class="">
+        <div class="wraper">
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid p-0">
