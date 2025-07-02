@@ -11,41 +11,30 @@
             <a href="https://osborn.id/" target="_blank" class="py-2"> <img src="{{ asset('dist/img/osborn.png') }}"
                     alt="osborn-logo" style="width: 130px; height: auto;"></a>
             <!-- Tombol hanya tampil di mobile -->
-            <button class="btn btn-outline-light d-md-none" data-toggle="modal" data-target="#categoryModal"
+            <button class="btn btn-outline-light d-md-none" data-toggle="modal" data-target="#filterModal"
                 id="category-button">
-                <i class="fas fa-bars"></i> Kategori
+                <i class="fas fa-bars"></i> Filter
             </button>
         </div>
     </div>
     <div class="container-fluid py-4 px-4 bg-image">
         <div class="overlay-white"></div>
         <div class="row">
-            <div class="col-md-10 col-12 order-2 order-md-1 center-content" id="catalog-col">
+            <div class="col-md-10 col-12 order-2 order-md-2 center-content" id="catalog-col">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="jenis-filter">
-                            <div
-                                class="d-flex justify-content-between align-items-center mb-3 flex-column-reverse flex-md-row ">
-                                <select id="jenis-filter" class="custom-select mb-2" name="jenis" style="width: 300px">
-                                    @foreach ($jenis as $item)
-                                        <option value="{{ $item->id }}"
-                                            {{ old('jenis', request()->query('jenis')) == $item->id ? 'selected' : '' }}>
-                                            {{ $item->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <a href="#" class="btn btn-primary d-none mb-2 order-md-2 order-1" id="btn-download">
-                                    <i class="fa fa-file-download"></i> Unduh Katalog
-                                </a>
-                                <div style="width: 300px;" class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" style="background-color: white !important"><i
-                                                class="fas fa-search"></i></span>
-                                    </div>
-                                    <input type="text" id="search-input" class="form-control" placeholder="Search by..."
-                                        value="{{ request()->query('search') }}">
+                        <div
+                            class="d-flex justify-content-between align-items-center mb-3 flex-column-reverse flex-md-row ">
+                            <a href="#" class="btn btn-brown d-none mb-2 order-md-2 order-1" id="btn-download">
+                                <i class="fa fa-file-download"></i> Unduh Katalog
+                            </a>
+                            <div style="width: 300px;" class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="background-color: white !important"><i
+                                            class="fas fa-search"></i></span>
                                 </div>
-
+                                <input type="text" id="search-input" class="form-control" placeholder="Search by..."
+                                    value="{{ request()->query('search') }}">
                             </div>
                         </div>
                     </div>
@@ -76,8 +65,18 @@
                     </div>
                 </div>
                 <div id="loading" class="text-center d-none my-4">
-                    <div class="spinner-border text-primary" role="status"></div>
-                    <p class="mt-2">Memuat data...</p>
+                    <div class="spinner-grow text-primary mr-2" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-success mr-2" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-danger mr-2" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-warning" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
                 </div>
             </div>
 
@@ -102,50 +101,70 @@
 
 
             <!-- Modal Kategori -->
-            <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel"
+            <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable" role="document">
                     <div class="modal-content">
                         <div class="modal-header bg-light">
-                            <h5 class="modal-title font-weight-bold" id="categoryModalLabel">Kategori</h5>
+                            <h5 class="modal-title font-weight-bold" id="filterModalLabel">Filter By</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
+                            <h5>Jenis</h5>
+                            @foreach ($jenis as $item)
+                                <ul class="nav flex-column jenis-filter">
+                                    <li class="nav-item"><a class="nav-link h6 jenis-link" href="#"
+                                            data-jenis="{{ $item->id }}"><i
+                                                class="fa fa-tags mr-2"></i>{{ $item->name }}</a>
+                                    </li>
+                                </ul>
+                            @endforeach
+                            <h5>Kategori</h5>
                             <!-- Daftar kategori -->
                             <ul class="nav flex-column" id="category-menu-item-modal">
                                 <!-- Akan diisi oleh JS -->
-                                <li class="nav-item"><a class="nav-link font-weight-bold h6 text-danger"
-                                        href="#">choose design
-                                        first😇</a>
-                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-2 col-12 order-1 order-md-2 d-none" id="category-container">
-                <div class="sidebarborder-end">
+            <div class="col-md-2 col-12 order-1 order-md-1" id="filter-container">
+                <div class="sidebar border-end">
                     <div class="accordion" id="accordionExample">
-                        <div class="" style="background: #f5efe0">
+                        <div class="">
                             <div class="" id="headingOne">
-                                <h2 class="mb-0">
-                                    <span class="font-weight-bold h4 px-3 pt-3 d-block">Kategori</span>
-                                </h2>
+                                <h3 class="mx-1">
+                                    Filtered By
+                                </h3>
                             </div>
-                            <div class="pt-2">
-                                <div class="card-body">
-                                    <ul class="nav flex-column" id="category-menu-item">
-                                        <!-- Kategori akan diisi oleh JavaScript -->
-                                    </ul>
+                            <div id="" class="collapse show" aria-labelledby="headingOne"
+                                data-parent="#accordionExample">
+                                <div class="pt-2">
+                                    <h5>Jenis</h5>
+                                    @foreach ($jenis as $item)
+                                        <ul class="nav flex-column jenis-filter">
+                                            <li class="nav-item"><a class="nav-link h6 jenis-link" href="#"
+                                                    data-jenis="{{ $item->id }}"><i
+                                                        class="fa fa-tags mr-2"></i>{{ $item->name }}</a>
+                                            </li>
+                                        </ul>
+                                    @endforeach
+                                    <div id="category-container">
+                                        <h5>Category</h5>
+                                        <ul class="nav flex-column" id="category-menu-item">
+                                            <!-- Kategori akan diisi oleh JavaScript -->
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 @endsection
@@ -157,7 +176,7 @@
         let currentPage = 1;
         let isLoading = false;
         let lastPage = false;
-        console.log(category);
+        let selectedJenis = null;
 
         $('#btn-download').on('click', function(e) {
             e.preventDefault();
@@ -176,7 +195,6 @@
                 $btn.prop('disabled', false).html('<i class="fa fa-file-download"></i> Unduh Katalog');
             }, 5000); // waktu unduh maksimum
         });
-
 
         const url = "{{ route('catalog') }}";
 
@@ -214,14 +232,15 @@
 
         function loadMoreData() {
             console.log("load more data");
-            console.log(category);
+            console.log(`category: ${category}`);
+            console.log(`selectedJenis: ${selectedJenis}`);
 
             if (isLoading || lastPage) return;
             isLoading = true;
             $("#loading").removeClass("d-none")
 
             const search = $('#search-input').val();
-            const jenis = $('#jenis-filter').val();
+
 
             $.ajax({
                 url: url,
@@ -229,7 +248,7 @@
                 data: {
                     page: currentPage,
                     search,
-                    jenis,
+                    jenis: selectedJenis,
                     category
                 },
                 success: function(response) {
@@ -279,7 +298,10 @@
         }
 
         $(document).ready(function() {
-            $('#jenis-filter').trigger('change');
+            const firstJenis = $('.jenis-link').first();
+            if (firstJenis.length) {
+                firstJenis.trigger('click');
+            }
             $('#product-list').html('<div class="row"></div>');
             loadMoreData();
 
@@ -298,16 +320,18 @@
             }, 500);
         });
 
-        $('#jenis-filter').on('change', function() {
-            const selectedJenis = $(this).val();
+        $(document).on('click', '.jenis-link', function(e) {
+            e.preventDefault();
+            $('#filterModal').modal('hide');
+            selectedJenis = $(this).data('jenis');
 
             // Tampilkan atau sembunyikan sidebar
             if (selectedJenis) {
                 $('#category-container').removeClass('d-md-none');
                 if (window.innerWidth < 768) {
-                    $('#category-container').addClass('d-none');
+                    $('#filter-container').addClass('d-none');
                 } else {
-                    $('#category-container').removeClass('d-none');
+                    $('#filter-container').removeClass('d-none');
                 }
                 $('#catalog-col').removeClass('center-content');
             } else {
@@ -326,7 +350,7 @@
             e.preventDefault();
             category = $(this).data('id');
             resetState();
-            $('#categoryModal').modal('hide');
+            $('#filterModal').modal('hide');
             loadMoreData();
 
             if (!category || category === 'null' || category === '') {
