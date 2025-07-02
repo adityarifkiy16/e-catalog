@@ -13,13 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get("/catalog", [App\Http\Controllers\CatalogController::class, "index"])->name("catalog");
+Route::get("/", [App\Http\Controllers\CatalogController::class, "index"])->name("catalog");
 Route::get("/catalog/pdf", [App\Http\Controllers\TProductController::class, "downloadPdf"])->name("catalog.pdf");
 
 
 Route::controller(App\Http\Controllers\AuthController::class)->middleware("guest")->group(function () {
-    Route::get("/", "index")->name("login");
-    Route::post("/", "store")->name("login.post");
+    Route::get("/admin", "index")->name("login");
+    Route::post("/admin", "store")->name("login.post");
     Route::get("/forget-password", "forgetPassword")->name("forget-password");
     Route::post("/forget-password", "forgetPasswordPost")->name("forget-password.post");
     Route::get("/reset-password", "resetPassword")->name("reset-password");
