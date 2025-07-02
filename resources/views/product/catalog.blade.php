@@ -1,10 +1,8 @@
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>CATALOG - PDF</title>
     <style>
         @page {
-            size: A4;
+            size: A4 landscape;
             margin: 15mm 15mm 15mm 15mm;
         }
 
@@ -56,7 +54,7 @@
                     <strong class="uppercase">{{ $product->category->name ?? 'Tanpa Kategori' }}</strong>
                     <p>{{ $product->code }}</p>
                 </td>
-                @if (($i + 1) % 3 == 0)
+                @if (($i + 1) % 4 == 0)
         </tr>
         <tr>
             @endif

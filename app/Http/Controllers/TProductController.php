@@ -22,7 +22,12 @@ class TProductController extends Controller
     {
         $arr['categories'] = MCategories::all();
         if ($request->ajax()) {
-            $query = TProduct::with('category', 'category.jenis')->orderBy('code', 'asc');
+            $query = TProduct::with([
+                'category' => fn($q) => $q->select('id', 'name', 'jenis_id'),
+                'category.jenis' => fn($q) => $q->select('id', 'name')
+            ])
+                ->select('id', 'code', 'photo', 'category_id')
+                ->orderBy('code', 'asc');
             if ($request->has('filter')) {
                 $query = $query->where('category_id', $request->filter);
             }
@@ -39,7 +44,9 @@ class TProductController extends Controller
                     return $row->category ? $row->category->name : '-';
                 })
                 ->addColumn('jenis', function ($row) {
-                    return $row->category->jenis ? $row->category->jenis->name : "Tidak ada jenis";
+                    return ($row->category && $row->category->jenis)
+                        ? $row->category->jenis->name
+                        : "Tidak ada jenis";
                 })
                 ->rawColumns(['action'])
                 ->toJson();
@@ -223,14 +230,13 @@ class TProductController extends Controller
 
     public function downloadPdf(Request $request)
     {
-        // dd($request->all());
+
         $query = TProduct::with('category', 'category.jenis')->select('id', 'code', 'photo', 'category_id');
-        // dd($arr['products']);
+
         if ($request->filled('category')) {
             $arr['products'] =  $query->whereHas('category', function ($q) use ($request) {
                 $q->where('id', $request->category);
             })->get();
-            // dd($arr['products']);
 
             $convertedImgs = [];
             foreach ($arr['products'] as $product) {
@@ -244,7 +250,13 @@ class TProductController extends Controller
                     }
 
                     if (!file_exists($jpgPath)) {
-                        Image::make($photopath)->encode('jpg', 80)->save($jpgPath);
+                        Image::make($photopath)
+                            ->resize(600, null, function ($constraint) {
+                                $constraint->aspectRatio();
+                                $constraint->upsize();
+                            })
+                            ->encode('jpg', 70)
+                            ->save($jpgPath);
                     }
 
                     $product->converted_photo = $jpgPath;
@@ -253,7 +265,7 @@ class TProductController extends Controller
                     $product->converted_photo = $photopath;
                 }
             }
-            $pdf = FacadePdf::loadView('product.catalog', $arr)->setPaper('a4', 'potrait');
+            $pdf = FacadePdf::loadView('product.catalog', $arr)->setPaper('a4', 'landscape');
             $output = $pdf->stream('products.pdf');
 
             foreach ($convertedImgs as $img) {
