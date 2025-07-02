@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
@@ -95,17 +96,18 @@ class TProductController extends Controller
                             $constraint->upsize();
                         });
 
-                    // Proses gambar
-                    Image::make($file)
-                        ->resize(800, null, function ($constraint) {
-                            $constraint->aspectRatio();
-                            $constraint->upsize();
-                        })
-                        ->insert($watermark, 'center', 10, 10)
-                        ->encode('webp', 100)
-                        ->save($fullPath);
-
                     if (!TProduct::where('code', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))->exists()) {
+
+                        // Proses gambar
+                        Image::make($file)
+                            ->resize(800, null, function ($constraint) {
+                                $constraint->aspectRatio();
+                                $constraint->upsize();
+                            })
+                            ->insert($watermark, 'center', 10, 10)
+                            ->encode('webp', 100)
+                            ->save($fullPath);
+
                         TProduct::create([
                             'code' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
                             'photo' => $path,
@@ -275,6 +277,24 @@ class TProductController extends Controller
             }
 
             return $output;
+        }
+    }
+
+    public function deleteImage()
+    {
+        $folderPath = storage_path('app/public/images/products/2025/07/02');
+        $files = File::glob($folderPath . '/*.webp');
+
+        foreach ($files as $file) {
+            // Ubah path absolut jadi relatif ke public storage
+            $relativePath = str_replace(storage_path('app/public/'), '', $file); // misal: images/products/2025/07/02/xxx.webp
+
+            // Hapus file jika tidak ditemukan di DB
+            if (!TProduct::where('photo', $relativePath)->exists()) {
+                if (file_exists($file)) {
+                    unlink($file);
+                }
+            }
         }
     }
 }
