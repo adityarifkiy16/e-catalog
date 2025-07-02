@@ -75,6 +75,10 @@
                         @endforelse
                     </div>
                 </div>
+                <div id="loading" class="text-center d-none my-4">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="mt-2">Memuat data...</p>
+                </div>
             </div>
 
             <!-- Modal -->
@@ -214,6 +218,7 @@
 
             if (isLoading || lastPage) return;
             isLoading = true;
+            $("#loading").removeClass("d-none")
 
             const search = $('#search-input').val();
             const jenis = $('#jenis-filter').val();
@@ -265,6 +270,10 @@
                 error: function() {
                     isLoading = false;
                     console.log('Gagal memuat data.');
+                },
+                complete: function() {
+                    isLoading = false;
+                    $("#loading").addClass("d-none");
                 }
             });
         }
