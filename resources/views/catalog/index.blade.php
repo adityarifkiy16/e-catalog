@@ -241,6 +241,12 @@
 
             const search = $('#search-input').val();
 
+            if (!category || category === 'null' || category === '') {
+                $('#btn-download').addClass('d-none');
+            } else {
+                $('#btn-download').removeClass('d-none');
+            }
+
 
             $.ajax({
                 url: url,
@@ -324,6 +330,12 @@
             e.preventDefault();
             $('#filterModal').modal('hide');
             selectedJenis = $(this).data('jenis');
+
+            if (!category || category === 'null' || category === '') {
+                $('#btn-download').addClass('d-none');
+            } else {
+                $('#btn-download').removeClass('d-none');
+            }
 
             // Tampilkan atau sembunyikan sidebar
             if (selectedJenis) {
