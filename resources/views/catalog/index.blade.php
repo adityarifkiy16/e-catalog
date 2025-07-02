@@ -34,7 +34,7 @@
                                     @endforeach
                                 </select>
                                 <a href="#" class="btn btn-primary d-none mb-2 order-md-2 order-1" id="btn-download">
-                                    <i class="fa fa-download"></i> Unduh Katalog
+                                    <i class="fa fa-file-download"></i> Unduh Katalog
                                 </a>
                                 <div style="width: 300px;" class="input-group mb-2">
                                     <div class="input-group-prepend">
@@ -168,7 +168,7 @@
 
             // Timeout untuk reset tombol (misal 10 detik)
             setTimeout(() => {
-                $btn.prop('disabled', false).html('<i class="fa fa-download"></i> Unduh Katalog');
+                $btn.prop('disabled', false).html('<i class="fa fa-file-download"></i> Unduh Katalog');
             }, 5000); // waktu unduh maksimum
         });
 
