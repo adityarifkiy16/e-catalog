@@ -116,7 +116,7 @@
                 let formData = new FormData(this);
                 $('#btn-tambah').html(
                     '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Loading...'
-                    ).attr("disabled", true);
+                ).attr("disabled", true);
 
                 $.ajax({
                     headers: {
