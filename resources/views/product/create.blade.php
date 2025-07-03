@@ -37,13 +37,13 @@
 
 
                             <label class="mt-3"><i class="fas fa-tags"></i> Kategori</label>
-                            <select class="custom-select" name="category_id">
+                            <select class="custom-select" name="category_id" id="category_id">
                                 <option value="">Silahkan Pilih Jenis dahulu</option>
                             </select>
 
                             <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar</label>
-                            <input type="file" class="custom-select" id="img" name="image[]" multiple
-                                accept="image/*">
+                            <div class="dropzone" id="image-dropzone"></div>
+
                             @error('image')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -66,6 +66,8 @@
 
 @push('scripts')
     <script>
+        // Initialize Dropzone
+        Dropzone.autoDiscover = false;
         $(document).ready(function() {
             const Toast = Swal.mixin({
                 toast: true,
@@ -108,79 +110,65 @@
                 }
             });
 
-            $("#form-tambah").on('submit', function(e) {
-                e.preventDefault();
-                console.log("submit");
-                let form = $(this);
-                let url = form.attr('action');
-                let formData = new FormData(this);
-                $('#btn-tambah').html(
-                    '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Loading...'
-                ).attr("disabled", true);
+            if ($("#image-dropzone").hasClass("dz-clickable")) {
+                // Dropzone is already initialized, don't initialize again
+                return;
+            }
 
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url: url,
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        console.log(response);
-                        if (response.status == "success") {
-                            Toast.fire({
-                                icon: 'success',
-                                title: response.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                            if (response.warning && response.warning.length > 0) {
-                                let warningMessages = response.warning;
-                                Swal.fire({
-                                    icon: 'warning',
-                                    title: 'Duplikasi Data!',
-                                    html: warningMessages.join(', '),
-                                    confirmButtonText: 'OK',
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        setTimeout(() => {
-                                            location.reload();
-                                        }, 1500);
-                                    }
-                                });
-                            } else {
-                                setTimeout(() => {
-                                    location.reload();
-                                }, 1500);
+            const myDropzone = new Dropzone("#image-dropzone", {
+                url: "{{ route('products.store') }}",
+                paramName: "image", // matches your backend expectation
+                maxFilesize: 2, // MB
+                acceptedFiles: "image/jpeg,image/png,image/jpg,image/gif,image/svg,image/webp",
+                addRemoveLinks: true,
+                autoProcessQueue: false, // important for manual submit
+                parallelUploads: 10,
+                uploadMultiple: true, // send all files in one request
+                maxFilesize: 10,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                init: function() {
+                    const dz = this;
+
+                    // When submit button is clicked
+                    document.getElementById("btn-tambah").addEventListener("click",
+                        function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            console.log("submit");
+                            console.log(`category_id: ${$('#category_id').val()}`);
+                            const categoryId = $('#category_id').val();
+                            if (!categoryId) {
+                                alert('Please select a category first');
+                                return;
                             }
-                        } else {
-                            Toast.fire({
-                                icon: 'error',
-                                title: response.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                            setTimeout(() => {
-                                location.reload();
-                            }, 1500);
+
+                            // Process the queue
+                            dz.processQueue();
+                        });
+
+                    // Send all required data with the file
+                    this.on("sendingmultiple", function(file, xhr, formData) {
+                        formData.append("category_id", $('#category_id').val());
+                    });
+
+                    this.on("successmultiple", function(files, response) {
+                        // Handle success response
+                        if (response.warning && response.warning.length > 0) {
+                            alert('Warning: Some products already exist: ' +
+                                response.warning.join(', '));
                         }
-                    },
-                    error: function(response) {
-                        if (response.status === 422) {
-                            Toast.fire({
-                                icon: 'error',
-                                title: response.responseJSON.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                            setTimeout(() => {
-                                location.reload();
-                            }, 1500);
-                        }
-                    }
-                });
+
+                        alert('Upload successful!');
+                        this.removeAllFiles(true);
+                    });
+
+                    this.on("errormultiple", function(files, response) {
+                        // Handle error response
+                        alert('Error: ' + response.message);
+                    });
+                }
             });
         });
     </script>

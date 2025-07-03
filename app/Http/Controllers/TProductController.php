@@ -70,8 +70,8 @@ class TProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'image' => 'required|array|max:10',
-            'image.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'image' => 'required',
+            'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'category_id' => 'required|exists:m_categories,id',
         ]);
 
@@ -245,7 +245,7 @@ class TProductController extends Controller
                 $photopath = public_path('storage/' . $product->photo);
                 if (file_exists($photopath) && Str::endsWith($product->photo, '.webp')) {
                     $jpgName = Str::replaceLast('.webp', '.jpg', $product->photo);
-                    $jpgPath = storage_path('app/temp_images/' . $jpgName);
+                    $jpgPath = public_path('storage/temp_images/' . $jpgName);
                     $directory = dirname($jpgPath);
                     if (!file_exists($directory)) {
                         mkdir($directory, 0755, true);
