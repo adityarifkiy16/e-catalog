@@ -70,7 +70,7 @@ class TProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'image' => 'required|array',
+            'image' => 'required|array|max:10',
             'image.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'category_id' => 'required|exists:m_categories,id',
         ]);
