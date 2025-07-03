@@ -131,7 +131,7 @@
                 </div>
             </div>
 
-            <div class="col-md-2 col-12 order-1 order-md-1" id="filter-container">
+            <div class="col-md-2 col-12 order-1 order-md-1 d-none" id="filter-container">
                 <div class="sidebar border-end">
                     <div class="accordion" id="accordionExample">
                         <div class="">
@@ -231,6 +231,11 @@
         }
 
         function loadMoreData() {
+          if (!category || category === 'null' || category === '') {
+                $('#btn-download').addClass('d-none');
+            } else {
+                $('#btn-download').removeClass('d-none');
+            }
             console.log("load more data");
             console.log(`category: ${category}`);
             console.log(`selectedJenis: ${selectedJenis}`);
@@ -327,6 +332,12 @@
         });
 
         $(document).on('click', '.jenis-link', function(e) {
+        if (!category || category === 'null' || category === '') {
+                $('#btn-download').addClass('d-none');
+            } else {
+                $('#btn-download').removeClass('d-none');
+            }
+
             e.preventDefault();
             $('#filterModal').modal('hide');
             selectedJenis = $(this).data('jenis');
