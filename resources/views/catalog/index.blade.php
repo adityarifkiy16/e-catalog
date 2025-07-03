@@ -231,7 +231,7 @@
         }
 
         function loadMoreData() {
-          if (!category || category === 'null' || category === '') {
+            if (!category || category === 'null' || category === '') {
                 $('#btn-download').addClass('d-none');
             } else {
                 $('#btn-download').removeClass('d-none');
@@ -332,7 +332,7 @@
         });
 
         $(document).on('click', '.jenis-link', function(e) {
-        if (!category || category === 'null' || category === '') {
+            if (!category || category === 'null' || category === '') {
                 $('#btn-download').addClass('d-none');
             } else {
                 $('#btn-download').removeClass('d-none');
