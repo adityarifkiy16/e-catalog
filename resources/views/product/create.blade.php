@@ -179,7 +179,7 @@
                                 timer: 1500
                             })
                             setTimeout(function() {
-                                window.location.href = "{{ route('product.index') }}";
+                                window.location.href = "{{ route('products.index') }}";
                             }, 1500);
                         } else {
                             Toast.fire({
