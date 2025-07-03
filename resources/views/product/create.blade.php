@@ -110,37 +110,43 @@
                 }
             });
 
-            if ($("#image-dropzone").hasClass("dz-clickable")) {
-                // Dropzone is already initialized, don't initialize again
-                return;
-            }
 
-            const myDropzone = new Dropzone("#image-dropzone", {
+            new Dropzone("#image-dropzone", {
                 url: "{{ route('products.store') }}",
                 paramName: "image", // matches your backend expectation
                 maxFilesize: 2, // MB
                 acceptedFiles: "image/jpeg,image/png,image/jpg,image/gif,image/svg,image/webp",
-                addRemoveLinks: true,
+                addRemoveLinks: false,
                 autoProcessQueue: false, // important for manual submit
                 parallelUploads: 10,
                 uploadMultiple: true, // send all files in one request
-                maxFilesize: 10,
+                maxFiles: 10,
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 init: function() {
                     const dz = this;
-
                     // When submit button is clicked
                     document.getElementById("btn-tambah").addEventListener("click",
                         function(e) {
+                            $("#btn-tambah").prop('disabled', true);
+                            $("#btn-tambah").html(
+                                '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Loading...'
+                            );
                             e.preventDefault();
                             e.stopPropagation();
                             console.log("submit");
                             console.log(`category_id: ${$('#category_id').val()}`);
                             const categoryId = $('#category_id').val();
                             if (!categoryId) {
-                                alert('Please select a category first');
+                                Toast.fire({
+                                    icon: 'warning',
+                                    title: 'Silahkan Pilih Kategori Dahulu',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                                $("#btn-tambah").prop('disabled', false);
+                                $("#btn-tambah").html('Kirim');
                                 return;
                             }
 
@@ -156,19 +162,49 @@
                     this.on("successmultiple", function(files, response) {
                         // Handle success response
                         if (response.warning && response.warning.length > 0) {
-                            alert('Warning: Some products already exist: ' +
-                                response.warning.join(', '));
+                            console.log(response.warning);
+                            Toast.fire({
+                                icon: 'warning',
+                                title: response.warning,
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
                         }
 
-                        alert('Upload successful!');
+                        if (response.status == "success") {
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                            setTimeout(function() {
+                                window.location.href = "{{ route('product.index') }}";
+                            }, 1500);
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.responseJSON.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        }
                         this.removeAllFiles(true);
                     });
 
                     this.on("errormultiple", function(files, response) {
-                        // Handle error response
-                        alert('Error: ' + response.message);
+                        Toast.fire({
+                            icon: 'error',
+                            title: response,
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        // Remove all failed files
+                        files.forEach(file => {
+                            this.removeFile(file);
+                        });
                     });
-                }
+                },
             });
         });
     </script>
