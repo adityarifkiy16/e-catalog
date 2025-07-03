@@ -15,6 +15,8 @@
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
+    <!-- dropzone -->
+    <link rel="stylesheet" href="{{ asset('plugins/dropzone/min/dropzone.min.css') }}">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <!-- DataTables -->
@@ -27,7 +29,7 @@
     <!-- custom css -->
     <link rel="stylesheet" href="{{ asset('dist/css/style.css') }}">
 
-    @vite(['resources/js/app.js'])
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -143,6 +145,9 @@
     <!-- Scripts -->
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+    <!-- dropzone -->
+    <script src="{{ asset('plugins/dropzone/dropzone.js') }}"></script>
 
     <!-- DataTables & Plugins -->
     <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
