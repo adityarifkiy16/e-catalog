@@ -21,6 +21,14 @@
                 id="category-button">
                 <i class="fas fa-bars"></i> Filter
             </button>
+            <div style="width: 300px;" class="input-group mb-2 d-none d-md-flex">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" style="background-color: white !important"><i
+                            class="fas fa-search"></i></span>
+                </div>
+                <input type="text" id="search-input" class="form-control" placeholder="Search by..."
+                    value="{{ request()->query('search') }}">
+            </div>
         </div>
     </div>
     <div class="container-fluid py-4 px-4" style="background-color: #f5efe0">
@@ -33,14 +41,7 @@
                             <a href="#" class="btn btn-brown d-none mb-2 order-md-2 order-1" id="btn-download">
                                 <i class="fa fa-file-download"></i> Unduh Katalog
                             </a>
-                            <div style="width: 300px;" class="input-group mb-2">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" style="background-color: white !important"><i
-                                            class="fas fa-search"></i></span>
-                                </div>
-                                <input type="text" id="search-input" class="form-control" placeholder="Search by..."
-                                    value="{{ request()->query('search') }}">
-                            </div>
+
                         </div>
                     </div>
                 </div>
