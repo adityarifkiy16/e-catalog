@@ -5,7 +5,8 @@
         style="bottom: 20px; right: 20px; z-index: 999;">
         <i class="fab fa-whatsapp"></i>
     </a>
-    <button type="button" class="btn btn-info rounded-circle  btn-lg" id="btn-scroll-top" style="display: none; position: fixed; bottom: 80px; right: 20px; z-index: 999;">
+    <button type="button" class="btn btn-info rounded-circle  btn-lg" id="btn-scroll-top"
+        style="display: none; position: fixed; bottom: 80px; right: 20px; z-index: 999;">
         <i class="fas fa-arrow-up"></i>
     </button>
 
@@ -44,11 +45,12 @@
                     </div>
                 </div>
                 <div class="row mb-2 d-none" id="mockup">
-                 
-                        <div class="col-12">
-                            <img src="#" id="mockup-image" alt="mockup" class="img-fluid w-100 rounded-lg" style=" object-fit: cover;">
-                        </div>
-                  
+
+                    <div class="col-12">
+                        <img src="#" id="mockup-image" alt="mockup" class="img-fluid w-100 rounded-lg"
+                            style=" object-fit: cover;">
+                    </div>
+
                 </div>
                 <div id="product-list">
                     <div class="row">
@@ -63,15 +65,18 @@
                                     <div class="card-body d-flex flex-column">
                                         <h4 class="card-title font-weight-bold text-uppercase mb-2"
                                             style="font-family: 'Poppins', sans-serif; font-size: 1.2rem; letter-spacing: 2px;">
-                                           {{ $product->code }}
+                                            {{ $product->code }}
                                         </h4>
-                                        <h6 class="card-text text-muted">{{ $product->category->name ?? 'Tanpa Kategori' }}</h6>
+                                        <h6 class="card-text text-muted">{{ $product->category->name ?? 'Tanpa Kategori' }}
+                                        </h6>
                                     </div>
                                 </div>
                             </div>
                         @empty
-                            <img src="{{ asset('dist/img/no-data.png') }}" alt="no-data"
-                                class="img-fluid mx-auto d-block mt-5" style="max-width: 100%; height: auto;">
+                            <div class="col-12">
+                                <img src="{{ asset('dist/img/no-data.png') }}" alt="no-data"
+                                    class="img-fluid mx-auto d-block my-5" style="max-width: 100%; height: auto;">
+                            </div>
                         @endforelse
                     </div>
                 </div>
@@ -101,21 +106,22 @@
                                 <span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body d-flex flex-column justify-content-center align-items-center">
-                            
-                       <!-- Carousel Gambar -->
-                        <div id="modalCarousel" class="carousel slide mb-3" style="max-width: 60%;" data-ride="carousel">
-                        <div class="carousel-inner" id="carouselInner">
-                            <!-- Slide gambar akan di-inject lewat JS -->
-                        </div>
-                        <a class="carousel-control-prev" href="#modalCarousel" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Sebelumnya</span>
-                        </a>
-                        <a class="carousel-control-next" href="#modalCarousel" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Berikutnya</span>
-                        </a>
-                        </div>
+
+                            <!-- Carousel Gambar -->
+                            <div id="modalCarousel" class="carousel slide mb-3" style="max-width: 60%;"
+                                data-ride="carousel">
+                                <div class="carousel-inner" id="carouselInner">
+                                    <!-- Slide gambar akan di-inject lewat JS -->
+                                </div>
+                                <a class="carousel-control-prev" href="#modalCarousel" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Sebelumnya</span>
+                                </a>
+                                <a class="carousel-control-next" href="#modalCarousel" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Berikutnya</span>
+                                </a>
+                            </div>
                             <h4 id="modalCode" class="font-weight-bold"></h4>
                             <p id="modalCategory" class="text-muted"></p>
                         </div>
@@ -142,7 +148,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link text-dark  h6 jenis-link" href="#"
                                             data-jenis="{{ $item->id }}"><i
-                                                class="fa fa-tags mr-2"></i>{{ $item->name }}</a>
+                                                class="fa fa-check-square mr-2"></i>{{ $item->name }}</a>
                                     </li>
                                 </ul>
                             @endforeach
@@ -174,7 +180,7 @@
                                             <li class="nav-item">
                                                 <a class="nav-link text-dark  h6 jenis-link font-poppins" href="#"
                                                     data-jenis="{{ $item->id }}"><i
-                                                        class="fa fa-tags mr-2"></i>{{ $item->name }}</a>
+                                                        class="fa fa-check-square mr-2"></i>{{ $item->name }}</a>
                                             </li>
                                         </ul>
                                     @endforeach
@@ -239,7 +245,7 @@
                     'https://via.placeholder.com/300x200?text=No+Image';
                 const images = product.images.map(image => `/storage/${image.path}`);
                 const categoryName = product.category?.name ?? 'Tanpa Kategori';
-          
+
                 html += `
                 <div class="col-md-3 mb-4">
                     <div class="card h-100 shadow-sm product-card"
@@ -297,7 +303,7 @@
                     if (products.length > 0) {
                         $('#mockup').removeClass('d-none');
                         const category = response.data.data[0].category ?? {};
-                        if(!category.path) {
+                        if (!category.path) {
                             $('#mockup').addClass('d-none');
                         }
                         const image = `/storage/${category.path}`;
@@ -309,8 +315,8 @@
                         if (currentPage === 1) {
                             $('#mockup').addClass('d-none');
                             $('#product-list .row').append(
-                                `<img src="{{ asset('dist/img/no-data.png') }}" alt="no-data"
-                            class="img-fluid mx-auto d-block mt-5" style="max-width: 100%; height: auto;">`
+                                `<div class="col-12"><img src="{{ asset('dist/img/no-data.png') }}" alt="no-data"
+                            class="img-fluid mx-auto d-block" style="max-width: 100%; height: auto; margin-top: 100px; margin-bottom: 100px;"></div>`
                             );
                         }
                         lastPage = true;
@@ -319,28 +325,28 @@
 
                     // Update kategori
                     if (response.jenis.categories) {
-                      switch (response.jenis.name) {
-                        case 'PVC Board':
-                          $("#category-menu-item-label").html('Ketebalan');
-                          break;
-                        case 'Wallboard':
-                          $("#category-menu-item-label").html('Motif');
-                          break;
-                        case 'Wallpanel':
-                          $("#category-menu-item-label").html('Tipe');
-                          break;
-                        case 'UV Board':
-                          $("#category-menu-item-label").html('Motif');
-                          break;
-                        default:
-                          $("#category-menu-item-label").html('Kategori');
-                      }
+                        switch (response.jenis.name) {
+                            case 'PVC Board':
+                                $("#category-menu-item-label").html('Ketebalan');
+                                break;
+                            case 'Wallboard':
+                                $("#category-menu-item-label").html('Motif');
+                                break;
+                            case 'Wallpanel':
+                                $("#category-menu-item-label").html('Tipe');
+                                break;
+                            case 'UV Board':
+                                $("#category-menu-item-label").html('Motif');
+                                break;
+                            default:
+                                $("#category-menu-item-label").html('Kategori');
+                        }
                         let dropdown = `<li class="nav-item font-poppins">`;
                         dropdown +=
-                            `<a class="nav-link text-dark category-filter" href="#" data-id=""><i class="fa fa-tags mr-2"></i> Semua Produk</a>`;
+                            `<a class="nav-link text-dark category-filter" href="#" data-id=""><i class="fa fa-check-square mr-2"></i> Semua Produk</a>`;
                         response.jenis.categories.forEach(cat => {
                             dropdown +=
-                                `<a class="nav-link text-dark category-filter" href="#" data-id="${cat.id}"><i class="fa fa-tags mr-2"></i> ${cat.name} ${cat.products_count > 0 ? `(${cat.products_count})` : ''}</a>`;
+                                `<a class="nav-link text-dark category-filter" href="#" data-id="${cat.id}"><i class="fa fa-check-square mr-2"></i> ${cat.name} ${cat.products_count > 0 ? `(${cat.products_count})` : ''}</a>`;
                         });
                         dropdown += `</li>`;
                         $('#category-menu-item, #category-menu-item-modal').html(dropdown);
@@ -378,14 +384,17 @@
                 }, 500);
                 return false;
             });
+
             const firstJenis = $('.jenis-link').first();
+
             if (firstJenis.length) {
                 firstJenis.trigger('click');
             }
+
             $('#product-list').html('<div class="row"></div>');
             loadMoreData();
 
-          $('#product-list').on('scroll', function () {
+            $('#product-list').on('scroll', function() {
                 let $this = $(this);
                 if ($this.scrollTop() + $this.innerHeight() >= this.scrollHeight - 150) {
                     loadMoreData();
@@ -403,12 +412,6 @@
         });
 
         $(document).on('click', '.jenis-link', function(e) {
-            if (!category || category === 'null' || category === '') {
-                $('#btn-download').addClass('d-none');
-            } else {
-                $('#btn-download').removeClass('d-none');
-            }
-
             e.preventDefault();
             $('#filterModal').modal('hide');
             selectedJenis = $(this).data('jenis');
@@ -461,7 +464,7 @@
             const category = $(this).data('category');
             $('#modalCode').text(code);
             $('#modalCategory').text('Kategori: ' + category);
-             const $carouselInner = $('#carouselInner');
+            const $carouselInner = $('#carouselInner');
             $carouselInner.empty();
 
             images.forEach((imgUrl, index) => {

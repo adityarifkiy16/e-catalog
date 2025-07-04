@@ -118,14 +118,14 @@
     text-transform: capitalize;
 }
 
-#product-list {
-    max-height: 75vh; /* Batasi tinggi maksimal */
-    overflow-y: auto; /* Aktifkan scroll vertikal */
+/* #product-list {
+    max-height: 75vh; 
+    overflow-y: auto; 
     overflow-x: hidden;
-    padding-right: 10px; /* Ruang untuk scrollbar */
+    padding-right: 10px; 
 }
 
-/* Opsional: agar tidak padding terlalu ke kanan saat scroll */
+
 #product-list::-webkit-scrollbar {
     width: 8px;
 }
@@ -133,10 +133,10 @@
 #product-list::-webkit-scrollbar-thumb {
     background-color: #ccc;
     border-radius: 4px;
-}
+} */
 
 #filter-container {
-    max-height: 75vh; /* Batasi tinggi maksimal */
+    max-height: 80vh; /* Batasi tinggi maksimal */
     overflow-y: auto; /* Aktifkan scroll vertikal */
     overflow-x: hidden;
     padding-right: 10px; /
