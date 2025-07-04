@@ -134,3 +134,20 @@
     background-color: #ccc;
     border-radius: 4px;
 }
+
+#filter-container {
+    max-height: 75vh; /* Batasi tinggi maksimal */
+    overflow-y: auto; /* Aktifkan scroll vertikal */
+    overflow-x: hidden;
+    padding-right: 10px; /
+}
+
+/* Opsional: agar tidak padding terlalu ke kanan saat scroll */
+#filter-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+#filter-container::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
