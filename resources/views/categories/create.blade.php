@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ route('categories.store') }}" method="POST" id="form-tambah">
+                    <form action="{{ route('categories.store') }}" method="POST" id="form-tambah" enctype="multipart/form-data">
                         @csrf
                         @method('POST')
 
@@ -39,8 +39,10 @@
                                     {{ $item->name }}
                                 </option>
                             @endforeach
-                        </select>
-                        <button class="btn btn-primary mt-3" type="submit">Kirim</button>
+                        </select>                        
+                        <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar</label>
+                        <input type="file" class="form-control" id="img" name="image" accept="image/*">
+                        <button class="btn btn-primary mt-3" type="submit" id="btn-submit">Kirim</button>
                     </form>
                 </div>
             </div>
@@ -66,15 +68,23 @@
             $("#form-tambah").on('submit', function(e) {
                 e.preventDefault();
                 console.log("submit");
+                $("#btn-submit").prop('disabled', true);
+                $("#btn-submit").html(
+                    '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Loading...'
+                );
                 let form = $(this);
                 let url = form.attr('action');
+                let formData = new FormData(this);
+
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     url: url,
                     type: 'POST',
-                    data: form.serialize(),
+                    data: formData,
+                    contentType: false, // ⬅️ WAJIB
+                    processData: false, // ⬅️ WAJIB
                     success: function(response) {
                         console.log(response);
                         if (response.status == "success") {

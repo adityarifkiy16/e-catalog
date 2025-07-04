@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ route('categories.update', $categories) }}" method="POST" id="form-edit">
+                    <form action="{{ route('categories.update', $categories) }}" method="POST" id="form-edit" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="form-group">
@@ -39,7 +39,9 @@
                                 </option>
                             @endforeach
                         </select>
-                        <button class="btn btn-primary mt-3" type="submit">Kirim</button>
+                        <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar</label>
+                        <input type="file" class="form-control" id="img" name="image" accept="image/*">
+                        <button class="btn btn-primary mt-3" id="btn-submit" type="submit">Kirim</button>
                     </form>
                 </div>
             </div>
@@ -65,15 +67,22 @@
             $("#form-edit").on('submit', function(e) {
                 e.preventDefault();
                 console.log("submit");
+                $("#btn-submit").prop('disabled', true);
+                $("#btn-submit").html(
+                    '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Loading...'
+                )
                 let form = $(this);
                 let url = form.attr('action');
+                let formData = new FormData(this);
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     url: url,
                     type: 'POST',
-                    data: form.serialize(),
+                    data: formData,
+                    contentType: false, // ⬅️ WAJIB
+                    processData: false, 
                     success: function(response) {
                         console.log(response);
                         if (response.status == "success") {

@@ -43,6 +43,13 @@
                         </div>
                     </div>
                 </div>
+                <div class="row mb-2 d-none" id="mockup">
+                 
+                        <div class="col-12">
+                            <img src="#" id="mockup-image" alt="mockup" class="img-fluid w-100 rounded-lg" style=" object-fit: cover;">
+                        </div>
+                  
+                </div>
                 <div id="product-list">
                     <div class="row">
                         @forelse ($data as $product)
@@ -232,7 +239,7 @@
                     'https://via.placeholder.com/300x200?text=No+Image';
                 const images = product.images.map(image => `/storage/${image.path}`);
                 const categoryName = product.category?.name ?? 'Tanpa Kategori';
-
+          
                 html += `
                 <div class="col-md-3 mb-4">
                     <div class="card h-100 shadow-sm product-card"
@@ -285,13 +292,22 @@
                     category
                 },
                 success: function(response) {
+                    console.log(response.data);
                     const products = response.data.data ?? [];
                     if (products.length > 0) {
+                        $('#mockup').removeClass('d-none');
+                        const category = response.data.data[0].category ?? {};
+                        if(!category.path) {
+                            $('#mockup').addClass('d-none');
+                        }
+                        const image = `/storage/${category.path}`;
+                        $('#mockup-image').attr('src', image);
                         renderProducts(products);
                         currentPage++;
                         if (currentPage > response.data.last_page) lastPage = true;
                     } else {
                         if (currentPage === 1) {
+                            $('#mockup').addClass('d-none');
                             $('#product-list .row').append(
                                 `<img src="{{ asset('dist/img/no-data.png') }}" alt="no-data"
                             class="img-fluid mx-auto d-block mt-5" style="max-width: 100%; height: auto;">`

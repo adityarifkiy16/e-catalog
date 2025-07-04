@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MCategories;
 use App\Models\MJenis;
+use App\Models\MCategories;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class MCategoriesController extends Controller
 {
@@ -34,11 +35,43 @@ class MCategoriesController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'image' => 'nullable',
+            'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'jenis_id' => 'required|exists:m_jenis,id',
         ]);
 
-        MCategories::create($request->all());
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $folder = 'images/categories/' . now()->format('Y/m/d');
+            $filename = time() . '_' . uniqid() . '.webp';
+            $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
+            $path = $folder . '/' . $filename;
 
+            $directory = dirname($fullPath);
+            if (!file_exists($directory)) {
+                mkdir($directory, 0755, true);
+            }
+
+            // Proses gambar
+            Image::make($file)
+                ->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })
+                ->encode('webp', 100)
+                ->save($fullPath);
+
+            MCategories::create([
+                'name' => $request->name,
+                'jenis_id' => $request->jenis_id,
+                'path' => $path
+            ]);
+        } else {
+            MCategories::create([
+                'name' => $request->name,
+                'jenis_id' => $request->jenis_id
+            ]);
+        }
         return response()->json([
             'status' => 'success',
             'message' => 'category created successfully.',
@@ -71,9 +104,49 @@ class MCategoriesController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'jenis_id' => 'required|exists:m_jenis,id',
+            'image' => 'required',
+            'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $folder = 'images/categories/' . now()->format('Y/m/d');
+            $filename = time() . '_' . uniqid() . '.webp';
+            $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
+            $path = $folder . '/' . $filename;
 
-        $categories->update($request->all());
+            $directory = dirname($fullPath);
+            if (!file_exists($directory)) {
+                mkdir($directory, 0755, true);
+            }
+
+            // Hapus gambar lama jika ada
+            if ($categories->path) {
+                $oldPath = storage_path('app/public/' . $categories->path);
+                if (file_exists($oldPath)) {
+                    unlink($oldPath);
+                }
+            }
+
+            // Proses gambar
+            Image::make($file)
+                ->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })
+                ->encode('webp', 100)
+                ->save($fullPath);
+
+            $categories->update([
+                'name' => $request->name,
+                'jenis_id' => $request->jenis_id,
+                'path' => $path
+            ]);
+        } else {
+            $categories->update([
+                'name' => $request->name,
+                'jenis_id' => $request->jenis_id,
+            ]);
+        }
 
         return response()->json([
             'status' => 'success',
