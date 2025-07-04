@@ -369,11 +369,13 @@
             $('#product-list').html('<div class="row"></div>');
             loadMoreData();
 
-            $(window).scroll(function() {
-                if ($(window).scrollTop() + $(window).height() >= $(document).height() - 150) {
+          $('#product-list').on('scroll', function () {
+                let $this = $(this);
+                if ($this.scrollTop() + $this.innerHeight() >= this.scrollHeight - 150) {
                     loadMoreData();
                 }
             });
+
         });
 
         $('#search-input').on('input', function() {
