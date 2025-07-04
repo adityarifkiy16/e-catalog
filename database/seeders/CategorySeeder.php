@@ -13,6 +13,7 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
+        MCategories::truncate();
         // $arr['categories'] = ['Wood', '3D', 'Animal', 'Abstract', 'Arabasque', 'Artistic', 'Baby', 'Brick', 'Commercial', 'Concrete', 'Floral', 'Geek', 'Geometric', 'Golden', 'Infant', 'Landscape', 'Leaves', 'Marble', 'Metal', 'Render', 'Stone', 'Stripped', 'Texture', 'Tile', 'Urban'];
         $pvc = [
             '3mm', '4mm', '5mm', '6mm', '7mm', '8mm', '9mm', '10mm', '11mm', '12mm', '13mm', '14mm', '15mm', '16mm', '17mm', '18mm', '19mm', '20mm'
