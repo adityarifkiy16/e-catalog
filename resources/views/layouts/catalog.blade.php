@@ -69,7 +69,7 @@
         </div>
 
         <!-- Footer -->
-        <footer class="footer mt-auto py-3 text-center">
+        <footer class="footer mt-auto py-3 text-center" style="position: fixed; bottom: 0; width: 100%; z-index: 100; background-color: #f8f9fa">
             <strong>&copy; <a href="https://osborn.id">Osborn</a>.</strong> All rights reserved.
         </footer>
     </div>
