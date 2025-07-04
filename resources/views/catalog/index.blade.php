@@ -63,9 +63,9 @@
                                     <div class="card-body d-flex flex-column">
                                         <h4 class="card-title font-weight-bold text-uppercase mb-2"
                                             style="font-family: 'Poppins', sans-serif; font-size: 1.2rem; letter-spacing: 2px;">
-                                            {{ $product->category->name ?? 'Tanpa Kategori' }}
+                                           {{ $product->code }}
                                         </h4>
-                                        <h6 class="card-text text-muted">{{ $product->code }}</h6>
+                                        <h6 class="card-text text-muted">{{ $product->category->name ?? 'Tanpa Kategori' }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -250,8 +250,8 @@
                     >
                         <img src="${image}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
                         <div class="card-body d-flex flex-column">
-                            <h4 class="card-title font-weight-bold text-uppercase mb-2">${categoryName}</h4>
-                            <h6 class="card-text text-muted mb-1">${product.code}</h6>
+                            <h4 class="card-title font-weight-bold text-uppercase mb-2">${product.code}</h4>
+                            <h6 class="card-text text-muted mb-1">${categoryName}</h6>
                         </div>
                     </div>
                 </div>`;
