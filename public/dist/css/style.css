@@ -1,29 +1,27 @@
 @font-face {
-    font-family: "cocogoose";
-    src: url(../font/cocogoose/Cocogoose-Pro-Regular-trial.ttf)
-        format("truetype");
+    font-family: 'cocogoose';
+    src: url(../font/cocogoose/Cocogoose-Pro-Regular-trial.ttf) format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "cocogoose";
-    src: url(../font/cocogoose/Cocogoose-Pro-Bold-trial.ttf) format("truetype");
+    font-family: 'cocogoose';
+    src: url(../font/cocogoose/Cocogoose-Pro-Bold-trial.ttf) format('truetype');
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "cocogoose";
-    src: url(../font/cocogoose/Cocogoose-Pro-Light-trial.ttf) format("truetype");
+    font-family: 'cocogoose';
+    src: url(../font/cocogoose/Cocogoose-Pro-Light-trial.ttf) format('truetype');
     font-weight: lighter;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "cocogoose";
-    src: url(../font/cocogoose/Cocogoose-Pro-Semilight-trial.ttf)
-        format("truetype");
+    font-family: 'cocogoose';
+    src: url(../font/cocogoose/Cocogoose-Pro-Semilight-trial.ttf) format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -52,7 +50,7 @@
 }
 
 .breadcrumb-item:not(:last-child):after {
-    content: "›";
+    content: '›';
     /* Menambahkan tanda panah sebagai separator */
     margin: 0 10px;
     color: #6c757d;
@@ -91,7 +89,7 @@
 }
 
 .bg-image {
-    background-image: url("../img/osborn-background.png");
+    background-image: url('../img/osborn-background.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -116,6 +114,23 @@
 }
 
 .font-poppins {
-    font-family: "Poppins", sans-serif;
+    font-family: 'Poppins', sans-serif;
     text-transform: capitalize;
+}
+
+#product-list {
+    max-height: 75vh; /* Batasi tinggi maksimal */
+    overflow-y: auto; /* Aktifkan scroll vertikal */
+    overflow-x: hidden;
+    padding-right: 10px; /* Ruang untuk scrollbar */
+}
+
+/* Opsional: agar tidak padding terlalu ke kanan saat scroll */
+#product-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+#product-list::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
 }
