@@ -1,3 +1,33 @@
+@font-face {
+    font-family: "cocogoose";
+    src: url(../font/cocogoose/Cocogoose-Pro-Regular-trial.ttf)
+        format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "cocogoose";
+    src: url(../font/cocogoose/Cocogoose-Pro-Bold-trial.ttf) format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "cocogoose";
+    src: url(../font/cocogoose/Cocogoose-Pro-Light-trial.ttf) format("truetype");
+    font-weight: lighter;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "cocogoose";
+    src: url(../font/cocogoose/Cocogoose-Pro-Semilight-trial.ttf)
+        format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
 .breadcrumb {
     font-size: 1.1rem;
     /* Ukuran font sedikit lebih besar untuk keterbacaan */
@@ -22,7 +52,7 @@
 }
 
 .breadcrumb-item:not(:last-child):after {
-    content: '›';
+    content: "›";
     /* Menambahkan tanda panah sebagai separator */
     margin: 0 10px;
     color: #6c757d;
@@ -61,7 +91,7 @@
 }
 
 .bg-image {
-    background-image: url('../img/osborn-background.png');
+    background-image: url("../img/osborn-background.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -76,4 +106,16 @@
     bottom: 0;
     background-color: rgba(255, 255, 255, 0.8);
     z-index: 0;
+}
+
+.font-cocogoose {
+    font-family: cocogoose, sans-serif;
+    text-transform: capitalize;
+    font-weight: normal;
+    font-style: normal;
+}
+
+.font-poppins {
+    font-family: "Poppins", sans-serif;
+    text-transform: capitalize;
 }

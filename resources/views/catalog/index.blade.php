@@ -5,6 +5,11 @@
         style="bottom: 20px; right: 20px; z-index: 999;">
         <i class="fab fa-whatsapp"></i>
     </a>
+    <button type="button" class="btn btn-info rounded-circle  btn-lg" id="btn-scroll-top" style="display: none; position: fixed; bottom: 80px; right: 20px; z-index: 999;">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+
 
     <div class="w-100 d-flex justify-content-center align-items-center">
         <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100" style="background-color: #1B1A55">
@@ -17,8 +22,7 @@
             </button>
         </div>
     </div>
-    <div class="container-fluid py-4 px-4 bg-image">
-        <div class="overlay-white"></div>
+    <div class="container-fluid py-4 px-4" style="background-color: #f5efe0">
         <div class="row">
             <div class="col-md-10 col-12 order-2 order-md-2 center-content" id="catalog-col">
                 <div class="row">
@@ -115,7 +119,8 @@
                             <h5>Jenis</h5>
                             @foreach ($jenis as $item)
                                 <ul class="nav flex-column jenis-filter">
-                                    <li class="nav-item"><a class="nav-link h6 jenis-link" href="#"
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark  h6 jenis-link" href="#"
                                             data-jenis="{{ $item->id }}"><i
                                                 class="fa fa-tags mr-2"></i>{{ $item->name }}</a>
                                     </li>
@@ -143,17 +148,18 @@
                             <div id="" class="collapse show" aria-labelledby="headingOne"
                                 data-parent="#accordionExample">
                                 <div class="pt-2">
-                                    <h5>Jenis</h5>
+                                    <h5 class="font-cocogoose">Jenis</h5>
                                     @foreach ($jenis as $item)
                                         <ul class="nav flex-column jenis-filter">
-                                            <li class="nav-item"><a class="nav-link h6 jenis-link" href="#"
+                                            <li class="nav-item">
+                                                <a class="nav-link text-dark  h6 jenis-link font-poppins" href="#"
                                                     data-jenis="{{ $item->id }}"><i
                                                         class="fa fa-tags mr-2"></i>{{ $item->name }}</a>
                                             </li>
                                         </ul>
                                     @endforeach
                                     <div id="category-container">
-                                        <h5>Category</h5>
+                                        <h5 id="category-menu-item-label" class="font-cocogoose">Category</h5>
                                         <ul class="nav flex-column" id="category-menu-item">
                                             <!-- Kategori akan diisi oleh JavaScript -->
                                         </ul>
@@ -277,13 +283,30 @@
                         }
                         lastPage = true;
                     }
+                    console.log(response);
 
                     // Update kategori
-                    if (response.categories) {
-                        let dropdown = `<li class="nav-item">`;
+                    if (response.jenis.categories) {
+                      switch (response.jenis.name) {
+                        case 'PVC Board':
+                          $("#category-menu-item-label").html('Ketebalan');
+                          break;
+                        case 'Wallboard':
+                          $("#category-menu-item-label").html('Motif');
+                          break;
+                        case 'Wallpanel':
+                          $("#category-menu-item-label").html('Tipe');
+                          break;
+                        case 'UV Board':
+                          $("#category-menu-item-label").html('Motif');
+                          break;
+                        default:
+                          $("#category-menu-item-label").html('Kategori');
+                      }
+                        let dropdown = `<li class="nav-item font-poppins">`;
                         dropdown +=
                             `<a class="nav-link text-dark category-filter" href="#" data-id=""><i class="fa fa-tags mr-2"></i> Semua Produk</a>`;
-                        response.categories.forEach(cat => {
+                        response.jenis.categories.forEach(cat => {
                             dropdown +=
                                 `<a class="nav-link text-dark category-filter" href="#" data-id="${cat.id}"><i class="fa fa-tags mr-2"></i> ${cat.name} ${cat.products_count > 0 ? `(${cat.products_count})` : ''}</a>`;
                         });
@@ -309,6 +332,20 @@
         }
 
         $(document).ready(function() {
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 100) {
+                    $('#btn-scroll-top').fadeIn();
+                } else {
+                    $('#btn-scroll-top').fadeOut();
+                }
+            });
+
+            $('#btn-scroll-top').click(function() {
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 500);
+                return false;
+            });
             const firstJenis = $('.jenis-link').first();
             if (firstJenis.length) {
                 firstJenis.trigger('click');

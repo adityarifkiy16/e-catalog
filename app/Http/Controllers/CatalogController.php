@@ -30,18 +30,17 @@ class CatalogController extends Controller
             }
 
             // Filter berdasarkan jenis (lewat relasi category.jenis)
-            if ($request->filled('jenis')) {
+           if ($request->filled('jenis')) {
                 $jenisId = $request->jenis;
 
                 $query->whereHas('category.jenis', function ($q) use ($jenisId) {
                     $q->where('id', $jenisId);
                 });
 
-                // Ambil kategori yang cocok dengan jenis tersebut
-                $arr['categories'] = MCategories::where('jenis_id', $jenisId)
-                    ->withCount('products')
-                    ->get();
+                $jenis = MJenis::with('categories.products')->find($jenisId);
+                $arr['jenis'] = $jenis;
             }
+
 
             // Ambil data hasil filter
             $arr['data'] = $query->paginate(8);
