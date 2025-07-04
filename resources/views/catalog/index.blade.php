@@ -94,8 +94,21 @@
                                 <span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body d-flex flex-column justify-content-center align-items-center">
-                            <img id="modalImage" src="" class="img-fluid mb-3" alt="Product Image"
-                                style="max-width: 60%; height: auto;">
+                            
+                       <!-- Carousel Gambar -->
+                        <div id="modalCarousel" class="carousel slide mb-3" style="max-width: 60%;" data-ride="carousel">
+                        <div class="carousel-inner" id="carouselInner">
+                            <!-- Slide gambar akan di-inject lewat JS -->
+                        </div>
+                        <a class="carousel-control-prev" href="#modalCarousel" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Sebelumnya</span>
+                        </a>
+                        <a class="carousel-control-next" href="#modalCarousel" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Berikutnya</span>
+                        </a>
+                        </div>
                             <h4 id="modalCode" class="font-weight-bold"></h4>
                             <p id="modalCategory" class="text-muted"></p>
                         </div>
@@ -217,6 +230,7 @@
                 const image = product.photo ?
                     `/storage/${product.photo}` :
                     'https://via.placeholder.com/300x200?text=No+Image';
+                const images = product.images.map(image => `/storage/${image.path}`);
                 const categoryName = product.category?.name ?? 'Tanpa Kategori';
 
                 html += `
@@ -224,7 +238,9 @@
                     <div class="card h-100 shadow-sm product-card"
                     data-code="${product.code}"
                     data-category="${categoryName}"
-                    data-image="${image}">
+                    data-image="${image}"
+                    data-images=${JSON.stringify(images)}
+                    >
                         <img src="${image}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
                         <div class="card-body d-flex flex-column">
                             <h4 class="card-title font-weight-bold text-uppercase mb-2">${categoryName}</h4>
@@ -422,12 +438,21 @@
         });
 
         $(document).on('click', '.product-card', function() {
-            const image = $(this).data('image');
+            const images = $(this).data('images');
             const code = $(this).data('code');
             const category = $(this).data('category');
-            $('#modalImage').attr('src', image);
             $('#modalCode').text(code);
             $('#modalCategory').text('Kategori: ' + category);
+             const $carouselInner = $('#carouselInner');
+            $carouselInner.empty();
+
+            images.forEach((imgUrl, index) => {
+                $carouselInner.append(`
+                <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                    <img src="${imgUrl}" class="d-block w-100" alt="Gambar ${index + 1}">
+                </div>
+                `);
+            });
             $('#productModal').modal('show');
         });
     </script>
