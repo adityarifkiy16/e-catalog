@@ -32,7 +32,7 @@
                             @enderror
 
                             <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar</label>
-                            <input type="file" class="form-control" id="img" name="image" accept="image/*">
+                            <input type="file" class="form-control" id="img" name="image[]" accept="image/*" multiple>
                             @error('image')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -55,7 +55,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <button class="btn btn-primary mt-3" type="submit">Kirim</button>
+                        <button class="btn btn-primary mt-3" id="btn-submit" type="submit">Kirim</button>
                     </form>
                 </div>
             </div>
@@ -81,6 +81,10 @@
             $("#form-edit").on('submit', function(e) {
                 e.preventDefault();
                 console.log("submit");
+                $("#btn-submit").prop('disabled', true);
+                $("#btn-submit").html(
+                    '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Loading...'
+                );
                 let form = $(this);
                 let url = form.attr('action');
                 let formData = new FormData(this);

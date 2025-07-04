@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MJenis;
+use App\Models\TImage;
 use App\Models\TProduct;
 use App\Models\MCategories;
 use Illuminate\Support\Str;
@@ -11,6 +12,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
@@ -25,9 +27,9 @@ class TProductController extends Controller
         if ($request->ajax()) {
             $query = TProduct::with([
                 'category' => fn($q) => $q->select('id', 'name', 'jenis_id'),
-                'category.jenis' => fn($q) => $q->select('id', 'name')
+                'category.jenis' => fn($q) => $q->select('id', 'name'),
             ])
-                ->select('id', 'code', 'photo', 'category_id')
+                ->select('id', 'photo', 'code','category_id')
                 ->orderBy('code', 'asc');
             if ($request->has('filter')) {
                 $query = $query->where('category_id', $request->filter);
@@ -108,11 +110,15 @@ class TProductController extends Controller
                             ->encode('webp', 100)
                             ->save($fullPath);
 
-                        TProduct::create([
+                        $product = TProduct::create([
                             'code' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
                             'photo' => $path,
                             'category_id' => $request->input('category_id'),
                         ]);
+                        $images = TImage::create([
+                            'path' => $path
+                        ]); 
+                        $product->images()->attach($images->id);
                     } else {
                         $arr['warning'][] =  pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                     }
@@ -165,36 +171,81 @@ class TProductController extends Controller
                     ->whereNull('deleted_at')
             ],
             'name' => 'nullable|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|array',
+            'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'category_id' => 'required|exists:m_categories,id',
         ]);
 
-        if (!$request->hasFile('image')) {
+        DB::beginTransaction();
+
+        try {
+            // Update data produk utama
             $product->update([
                 'code' => $request->input('code'),
                 'name' => $request->input('name'),
                 'category_id' => $request->input('category_id'),
             ]);
+
+            // Ambil semua relasi gambar (pivot)
+            $currentImageIds = $product->images()->pluck('t_images.id')->toArray();
+
+            // Pertahankan gambar pertama sebagai thumbnail (jika ada)
+            $thumbnailId = $currentImageIds[0] ?? null;
+            $newImageIds = [];
+
+            if ($request->hasFile('image')) {
+                foreach ($request->file('image') as $file) {
+                    $filename = time() . '_' . uniqid() . '.webp';
+                    $folder = 'images/products/' . now()->format('Y/m/d');
+                    $path = $folder . '/' . $filename;
+                    $fullPath = storage_path('app/public/' . $path);
+
+                    // Buat folder jika belum ada
+                    if (!file_exists(dirname($fullPath))) {
+                        mkdir(dirname($fullPath), 0755, true);
+                    }
+
+                    // Simpan file gambar baru
+                    Image::make($file)
+                        ->resize(800, null, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        })
+                        ->encode('webp', 100)
+                        ->save($fullPath);
+
+                    // Simpan ke DB
+                    $image = TImage::create([
+                        'path' => $path
+                    ]);
+
+                    $newImageIds[] = $image->id;
+                }
+            }
+
+            // Gabungkan thumbnail + gambar baru → sync ulang
+            $syncIds = array_filter(array_merge([$thumbnailId], $newImageIds));
+
+            $product->images()->sync($syncIds);
+            // 🔥 Auto delete gambar yang orphan (tidak dipakai produk manapun)
+            $this->deleteUnusedImages();
+
+            DB::commit();
+
             return response()->json([
                 'status' => 'success',
-                'message' => 'Product updated successfully.',
+                'message' => 'Produk berhasil diperbarui (gambar dipertahankan sebagian).',
             ]);
-        }
 
-        $file = $request->file('image');
-        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-        $path = $file->storeAs('images/products/' . now()->format('Y/m/d'), $filename, 'public');
-        $product->update([
-            'code' => $request->input('code'),
-            'name' => $request->input('name'),
-            'photo' => $path,
-            'category_id' => $request->input('category_id'),
-        ]);
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Product updated successfully.',
-        ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal update: ' . $e->getMessage(),
+            ], 500);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -297,4 +348,19 @@ class TProductController extends Controller
             }
         }
     }
+
+    protected function deleteUnusedImages()
+    {
+        $unusedImages = TImage::doesntHave('product')->get();
+
+        foreach ($unusedImages as $image) {
+            $filePath = 'public/' . $image->path;
+            if (Storage::exists($filePath)) {
+                Storage::delete($filePath);
+            }
+
+            $image->delete();
+        }
+    }
+
 }

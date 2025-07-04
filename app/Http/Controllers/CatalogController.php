@@ -14,7 +14,7 @@ class CatalogController extends Controller
         $arr = [];
 
         // Inisialisasi query produk dengan eager loading
-        $query = TProduct::with(['category', 'category.jenis'])->orderBy('code', 'asc');
+        $query = TProduct::with(['category', 'category.jenis', 'images'])->orderBy('code', 'asc');
 
         if ($request->ajax()) {
             // Filter berdasarkan kategori
