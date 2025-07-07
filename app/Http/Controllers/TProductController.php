@@ -23,7 +23,8 @@ class TProductController extends Controller
      */
     public function index(Request $request)
     {
-        $arr['categories'] = MCategories::all();
+        $arr['categories'] = MCategories::with('jenis')->get();
+        // dd($arr['categories']);
         if ($request->ajax()) {
             $query = TProduct::with([
                 'category' => fn($q) => $q->select('id', 'name', 'jenis_id'),
@@ -99,22 +100,38 @@ class TProductController extends Controller
                         });
 
                     if (!TProduct::where('code', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))->exists()) {
-
-                        // Proses gambar
-                        Image::make($file)
-                            ->resize(800, null, function ($constraint) {
-                                $constraint->aspectRatio();
-                                $constraint->upsize();
-                            })
-                            ->insert($watermark, 'center', 10, 10)
-                            ->encode('webp', 100)
-                            ->save($fullPath);
-
+                        
                         $product = TProduct::create([
                             'code' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
                             'photo' => $path,
                             'category_id' => $request->input('category_id'),
                         ]);
+
+                        // CEK KATEGORI SOLID TANPA WATERMARK
+                        if($product->category_id == 19)
+                        {
+                             // Proses gambar
+                            Image::make($file)
+                            ->resize(800, null, function ($constraint) {
+                                $constraint->aspectRatio();
+                                $constraint->upsize();
+                            })
+                            ->encode('webp', 100)
+                            ->save($fullPath);
+                        } else {
+                            // Proses gambar
+                            Image::make($file)
+                                ->resize(800, null, function ($constraint) {
+                                    $constraint->aspectRatio();
+                                    $constraint->upsize();
+                                })
+                                ->insert($watermark, 'center', 10, 10)
+                                ->encode('webp', 100)
+                                ->save($fullPath);
+                        }
+
+                       
+
                         $images = TImage::create([
                             'path' => $path
                         ]); 

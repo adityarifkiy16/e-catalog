@@ -14,9 +14,10 @@ class JenisSeeder extends Seeder
     public function run(): void
     {
         MJenis::truncate();
-        $jenis = ['PVC Board', 'Wallboard', 'Wallpanel', 'Aksesoris','UV Board'];
-        foreach($jenis as $item){
+        $jenis = [1 => 'PVC Board', 2 => 'Wallboard', 3 => 'Wallpanel', 4 => 'Aksesoris', 5 => 'UV Board'];
+        foreach($jenis as $id => $item){
             MJenis::firstOrCreate([
+                'id' => $id,
                 'name' => $item,
             ]);
         };

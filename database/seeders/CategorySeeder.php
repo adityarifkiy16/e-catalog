@@ -26,10 +26,11 @@ class CategorySeeder extends Seeder
         }
 
         $wallboard = [
-            'solid', 'linen', 'wood', 'marble', 'stainless', 'stone', 'mirror'
+            19 => 'solid', 20 => 'linen', 21 => 'wood', 22 => 'marble', 23 => 'stainless', 24 => 'stone', 25 => 'mirror'
         ];
-        foreach ($wallboard as $item) {
+        foreach ($wallboard as $id => $item) {
             MCategories::firstOrCreate([
+                'id' => $id,
                 'name' => $item,
                 'jenis_id' => 2
             ]);
