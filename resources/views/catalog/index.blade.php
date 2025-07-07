@@ -58,7 +58,7 @@
                         @forelse ($data as $product)
                             <div class="col-md-3 mb-4">
                                 <div class="card h-100 shadow-md product-card" data-code="{{ $product->code }}"
-                                    data-category="{{ $product->category->name }}"
+                                    data-category="{{ $product->category->name ?? 'Tanpa Kategori' }}"
                                     data-image="{{ $product->photo ? asset('storage/' . $product->photo) : 'https://via.placeholder.com/300x200?text=No+Image' }}">
                                     <img src="{{ $product->photo ? asset('storage/' . $product->photo) : 'https://via.placeholder.com/300x200?text=No+Image' }}"
                                         class="card-img-top" alt="{{ $product->name }}"
