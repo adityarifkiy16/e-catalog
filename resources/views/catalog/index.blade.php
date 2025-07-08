@@ -151,7 +151,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <h5>Jenis</h5>
+                            <h5 class="font-cocogoose">Jenis</h5>
                         
                                 <ul class="nav flex-column jenis-filter">
                                         @foreach ($jenis as $item)
