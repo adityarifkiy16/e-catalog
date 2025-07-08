@@ -34,6 +34,7 @@
                                 <th style="width: 0.5rem;">No</th>
                                 <th>Name</th>
                                 <th>Jenis</th>
+                                <th>Foto</th>
                                 @if ($isAuthenticated && ($user->hasPermission('edit_categories') || $user->hasPermission('edit_categories')))
                                     <th style="text-align: end;">Action</th>
                                 @endif
@@ -45,6 +46,13 @@
                                     <td style="width: 10px;">{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->jenis->name ?? 'Tidak Diketahui' }}</td>
+                                    <td>
+                                        @if ($item->path)
+                                            <img src="{{ asset('storage/' . $item->path) }}" alt="Gambar {{ $item->name }}" class="img-thumbnail" style="max-width: 100px;">
+                                        @else
+                                            Tidak ada gambar
+                                        @endif
+                                    </td>
                                     @if ($isAuthenticated && ($user->hasPermission('edit_categories') || $user->hasPermission('edit_categories')))
                                         <td style="width: 100px;">
                                             <div class="d-flex justify-content-end align-items-center gap-1">
