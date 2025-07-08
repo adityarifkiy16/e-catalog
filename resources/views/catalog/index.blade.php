@@ -217,6 +217,7 @@
         let isLoading = false;
         let lastPage = false;
         let selectedJenis = null;
+        let uniqueCategories = {};
 
         $('#btn-download').on('click', function(e) {
             e.preventDefault();
@@ -293,6 +294,8 @@
                 $('#btn-download').removeClass('d-none');
             }
 
+             console.log("uniqueCategories", uniqueCategories);
+
 
             $.ajax({
                 url: url,
@@ -309,8 +312,7 @@
                     if (products.length > 0) {
                         // Hilangkan mockup
                         $('#mockup').removeClass('d-none');
-                        // Ambil semua kategori unik yang memiliki path
-                        const uniqueCategories = {};
+                        
                         products.forEach(product => {
                             const cat = product.category;
                             if (cat && cat.path && !uniqueCategories[cat.id]) {
@@ -319,7 +321,6 @@
                         });
 
                         const paths = Object.values(uniqueCategories);
-                        console.log(paths.length);
 
                         if (paths.length > 0) {
                             const $carouselInner = $('#mockup-carousel-inner');
@@ -448,6 +449,7 @@
 
         $(document).on('click', '.jenis-link', function(e) {
             e.preventDefault();
+            uniqueCategories = {};
             $('#filterModal').modal('hide');
             selectedJenis = $(this).data('jenis');
             console.log("triger click");
