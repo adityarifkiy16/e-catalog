@@ -397,12 +397,16 @@
             $('#product-list').html('<div class="row"></div>');
             loadMoreData();
 
-            $(window).on('scroll', function() {
-                let $this = $(this);
-                if ($this.scrollTop() + $this.innerHeight() >= this.scrollHeight - 150) {
+           $(window).on('scroll', function() {
+                const scrollTop = $(window).scrollTop();
+                const windowHeight = $(window).height();
+                const documentHeight = $(document).height();
+
+                if (scrollTop + windowHeight >= documentHeight - 150) {
                     loadMoreData();
                 }
             });
+
 
         });
 
