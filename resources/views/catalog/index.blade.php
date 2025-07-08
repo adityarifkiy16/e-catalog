@@ -10,8 +10,6 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-
-
     <div class="w-100 d-flex justify-content-center align-items-center">
         <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100" style="background-color: #1B1A55">
             <a href="https://osborn.id/" target="_blank" class="py-2"> <img src="{{ asset('dist/img/osborn.png') }}"
@@ -21,6 +19,7 @@
                 id="category-button">
                 <i class="fas fa-bars"></i> Filter
             </button>
+            <!-- Form pencarian -->
             <div style="width: 300px;" class="input-group mb-2 d-none d-md-flex">
                 <div class="input-group-prepend">
                     <span class="input-group-text" style="background-color: white !important"><i
@@ -45,17 +44,21 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Slider Mockup -->
                 <div id="mockup" class="d-none">
                     <div class="row mb-2">
                         <div class="col-12">
                             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner" id="mockup-carousel-inner">
                                     <!-- Slide gambar akan di-inject lewat JS -->
-                                </div>
+                                </div>                               
                             </div>
                         </div>
                     </div>
                 </div>
+               
+                <!-- Product list -->
                 <div id="product-list">
                     <div class="row">
                         @forelse ($data as $product)
@@ -84,6 +87,8 @@
                         @endforelse
                     </div>
                 </div>
+                
+                <!-- Loading indicator -->
                 <div id="loading" class="text-center d-none my-4">
                     <div class="spinner-grow text-primary mr-2" role="status">
                         <span class="sr-only">Loading...</span>
@@ -168,6 +173,7 @@
                 </div>
             </div>
 
+            <!-- Sidebar Filter -->
             <div class="col-md-2 col-12 order-1 order-md-1 d-none" id="filter-container">
                 <div class="sidebar border-end">
                     <div class="accordion" id="accordionExample">
@@ -240,9 +246,11 @@
         const url = "{{ route('catalog') }}";
 
         function resetState() {
+            console.log('resetState');
             currentPage = 1;
             isLoading = false;
             lastPage = false;
+            uniqueCategories = {};
             $('#product-list').html('<div class="row"></div>');
         }
 
@@ -274,28 +282,52 @@
             $('#product-list .row').append(html);
         }
 
+        function renderMockup(products) {
+            console.log('renderMockup');
+            // Hilangkan mockup
+            $('#mockup').removeClass('d-none');
+            
+            // insert path tiap product
+            products.forEach(product => {
+                const cat = product.category;
+                if (cat && cat.path && !uniqueCategories[cat.id]) {
+                    uniqueCategories[cat.id] = cat.path;
+                }
+            });
+
+            const paths = Object.values(uniqueCategories);
+
+            if (paths.length > 0) {
+                const $carouselInner = $('#mockup-carousel-inner');
+                $carouselInner.empty(); // Bersihkan isi sebelumnya
+
+                paths.forEach((path, i) => {
+                    $carouselInner.append(`
+                        <div class="carousel-item ${i === 0 ? 'active' : ''}">
+                            <img src="/storage/${path}" id="mockup-image" alt="mockup" class="img-fluid w-100 rounded-lg"
+                                    style="object-fit: cover; object-position: 5% 70%;">
+                        </div>
+                    `);
+                });
+
+                $('#mockup').removeClass('d-none');
+            } else {
+                $('#mockup').addClass('d-none');
+            }
+        }
+
         function loadMoreData() {
             if (!category || category === 'null' || category === '') {
                 $('#btn-download').addClass('d-none');
             } else {
                 $('#btn-download').removeClass('d-none');
             }
-            console.log("load more data");
 
             if (isLoading || lastPage) return;
             isLoading = true;
             $("#loading").removeClass("d-none")
 
             const search = $('#search-input').val();
-
-            if (!category || category === 'null' || category === '') {
-                $('#btn-download').addClass('d-none');
-            } else {
-                $('#btn-download').removeClass('d-none');
-            }
-
-             console.log("uniqueCategories", uniqueCategories);
-
 
             $.ajax({
                 url: url,
@@ -307,39 +339,9 @@
                     category
                 },
                 success: function(response) {
-                    console.log(response.data);
                     const products = response.data.data ?? [];
                     if (products.length > 0) {
-                        // Hilangkan mockup
-                        $('#mockup').removeClass('d-none');
-                        
-                        products.forEach(product => {
-                            const cat = product.category;
-                            if (cat && cat.path && !uniqueCategories[cat.id]) {
-                                uniqueCategories[cat.id] = cat.path;
-                            }
-                        });
-
-                        const paths = Object.values(uniqueCategories);
-
-                        if (paths.length > 0) {
-                            const $carouselInner = $('#mockup-carousel-inner');
-                            $carouselInner.empty(); // Bersihkan isi sebelumnya
-
-                            paths.forEach((path, i) => {
-                                $carouselInner.append(`
-                                    <div class="carousel-item ${i === 0 ? 'active' : ''}">
-                                       <img src="/storage/${path}" id="mockup-image" alt="mockup" class="img-fluid w-100 rounded-lg"
-                                                style="object-fit: cover; object-position: 5% 70%;">
-                                    </div>
-                                `);
-                            });
-
-                            $('#mockup').removeClass('d-none');
-                        } else {
-                            $('#mockup').addClass('d-none');
-                        }
-
+                        renderMockup(products);
                         renderProducts(products);
                         currentPage++;
                         if (currentPage > response.data.last_page) lastPage = true;
@@ -353,9 +355,8 @@
                         }
                         lastPage = true;
                     }
-                    console.log(response);
 
-                    // Update kategori
+                    // Update label kategori
                     if (response.jenis.categories) {
                         switch (response.jenis.name) {
                             case 'PVC Board':
@@ -449,23 +450,13 @@
 
         $(document).on('click', '.jenis-link', function(e) {
             e.preventDefault();
-            uniqueCategories = {};
             $('#filterModal').modal('hide');
             selectedJenis = $(this).data('jenis');
-            console.log("triger click");
-            console.log('remove class active');
             // Hapus semua 'active' dari .nav-link
             $('.jenis-filter .jenis-link').removeClass('active');
 
             // Tambahkan 'active' ke link yang sesuai
             $(`.jenis-link[data-jenis="${selectedJenis}"]`).addClass('active');
-
-
-            if (!category || category === 'null' || category === '') {
-                $('#btn-download').addClass('d-none');
-            } else {
-                $('#btn-download').removeClass('d-none');
-            }
 
             // Tampilkan atau sembunyikan sidebar
             if (selectedJenis) {
@@ -488,19 +479,11 @@
         });
 
         $(document).on('click', '.category-filter', function(e) {
-            console.log(category);
             e.preventDefault();
             category = $(this).data('id');
             resetState();
             $('#filterModal').modal('hide');
             loadMoreData();
-
-            if (!category || category === 'null' || category === '') {
-                $('#btn-download').addClass('d-none');
-            } else {
-                $('#btn-download').removeClass('d-none');
-            }
-
         });
 
         $(document).on('click', '.product-card', function() {
