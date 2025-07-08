@@ -397,7 +397,7 @@
             $('#product-list').html('<div class="row"></div>');
             loadMoreData();
 
-            $('#product-list').on('scroll', function() {
+            $(window).on('scroll', function() {
                 let $this = $(this);
                 if ($this.scrollTop() + $this.innerHeight() >= this.scrollHeight - 150) {
                     loadMoreData();
