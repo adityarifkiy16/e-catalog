@@ -45,13 +45,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mb-2 d-none" id="mockup">
-
-                    <div class="col-12">
-                        <img src="#" id="mockup-image" alt="mockup" class="img-fluid w-100 rounded-lg"
-                            style="object-fit: cover; object-position: 5% 70%;">
+                <div id="mockup" class="d-none">
+                    <div class="row mb-2">
+                        <div class="col-12">
+                            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner" id="mockup-carousel-inner">
+                                    <!-- Slide gambar akan di-inject lewat JS -->
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
                 <div id="product-list">
                     <div class="row">
@@ -304,13 +307,38 @@
                     console.log(response.data);
                     const products = response.data.data ?? [];
                     if (products.length > 0) {
+                        // Hilangkan mockup
                         $('#mockup').removeClass('d-none');
-                        const category = response.data.data[0].category ?? {};
-                        if (!category.path) {
+                        // Ambil semua kategori unik yang memiliki path
+                        const uniqueCategories = {};
+                        products.forEach(product => {
+                            const cat = product.category;
+                            if (cat && cat.path && !uniqueCategories[cat.id]) {
+                                uniqueCategories[cat.id] = cat.path;
+                            }
+                        });
+
+                        const paths = Object.values(uniqueCategories);
+                        console.log(paths.length);
+
+                        if (paths.length > 0) {
+                            const $carouselInner = $('#mockup-carousel-inner');
+                            $carouselInner.empty(); // Bersihkan isi sebelumnya
+
+                            paths.forEach((path, i) => {
+                                $carouselInner.append(`
+                                    <div class="carousel-item ${i === 0 ? 'active' : ''}">
+                                       <img src="/storage/${path}" id="mockup-image" alt="mockup" class="img-fluid w-100 rounded-lg"
+                                                style="object-fit: cover; object-position: 5% 70%;">
+                                    </div>
+                                `);
+                            });
+
+                            $('#mockup').removeClass('d-none');
+                        } else {
                             $('#mockup').addClass('d-none');
                         }
-                        const image = `/storage/${category.path}`;
-                        $('#mockup-image').attr('src', image);
+
                         renderProducts(products);
                         currentPage++;
                         if (currentPage > response.data.last_page) lastPage = true;
