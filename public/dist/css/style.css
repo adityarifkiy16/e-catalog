@@ -72,6 +72,11 @@
     color: #000;
 }
 
+.nav-link.active {
+    color: #000 !important;
+    font-weight: bold;
+}
+
 .bg-darkBlue {
     background-color: #001c4b;
     color: #fff;

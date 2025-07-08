@@ -49,7 +49,7 @@
 
                     <div class="col-12">
                         <img src="#" id="mockup-image" alt="mockup" class="img-fluid w-100 rounded-lg"
-                            style=" object-fit: cover;">
+                            style="object-fit: cover; object-position: 5% 70%;">
                     </div>
 
                 </div>
@@ -144,16 +144,18 @@
                         </div>
                         <div class="modal-body">
                             <h5>Jenis</h5>
-                            @foreach ($jenis as $item)
+                        
                                 <ul class="nav flex-column jenis-filter">
+                                        @foreach ($jenis as $item)
                                     <li class="nav-item">
                                         <a class="nav-link text-dark  h6 jenis-link" href="#"
                                             data-jenis="{{ $item->id }}"><i
                                                 class="fa fa-check-square mr-2"></i>{{ $item->name }}</a>
                                     </li>
+                                       @endforeach
                                 </ul>
-                            @endforeach
-                            <h5>Kategori</h5>
+                         
+                            <h5 id="category-modal-item-label" class="font-cocogoose">Category</h5>
                             <!-- Daftar kategori -->
                             <ul class="nav flex-column" id="category-menu-item-modal">
                                 <!-- Akan diisi oleh JS -->
@@ -176,15 +178,17 @@
                                 data-parent="#accordionExample">
                                 <div class="pt-2">
                                     <h5 class="font-cocogoose">Jenis</h5>
-                                    @foreach ($jenis as $item)
+                                 
                                         <ul class="nav flex-column jenis-filter">
+                                               @foreach ($jenis as $item)
                                             <li class="nav-item">
                                                 <a class="nav-link text-dark  h6 jenis-link font-poppins" href="#"
                                                     data-jenis="{{ $item->id }}"><i
                                                         class="fa fa-check-square mr-2"></i>{{ $item->name }}</a>
                                             </li>
+                                               @endforeach
                                         </ul>
-                                    @endforeach
+                                 
                                     <div id="category-container">
                                         <h5 id="category-menu-item-label" class="font-cocogoose">Category</h5>
                                         <ul class="nav flex-column" id="category-menu-item">
@@ -273,8 +277,6 @@
                 $('#btn-download').removeClass('d-none');
             }
             console.log("load more data");
-            console.log(`category: ${category}`);
-            console.log(`selectedJenis: ${selectedJenis}`);
 
             if (isLoading || lastPage) return;
             isLoading = true;
@@ -328,19 +330,19 @@
                     if (response.jenis.categories) {
                         switch (response.jenis.name) {
                             case 'PVC Board':
-                                $("#category-menu-item-label").html('Ketebalan');
+                                $("#category-menu-item-label, #category-modal-item-label").html('Ketebalan');
                                 break;
                             case 'Wallboard':
-                                $("#category-menu-item-label").html('Motif');
+                                $("#category-menu-item-label, #category-modal-item-label").html('Motif');
                                 break;
                             case 'Wallpanel':
-                                $("#category-menu-item-label").html('Tipe');
+                                $("#category-menu-item-label, #category-modal-item-label").html('Tipe');
                                 break;
                             case 'UV Board':
-                                $("#category-menu-item-label").html('Motif');
+                                $("#category-menu-item-label, #category-modal-item-label").html('Motif');
                                 break;
                             default:
-                                $("#category-menu-item-label").html('Kategori');
+                                $("#category-menu-item-label, #category-modal-item-label").html('Kategori');
                         }
                         let dropdown = `<li class="nav-item font-poppins">`;
                         dropdown +=
@@ -416,6 +418,14 @@
             e.preventDefault();
             $('#filterModal').modal('hide');
             selectedJenis = $(this).data('jenis');
+            console.log("triger click");
+            console.log('remove class active');
+            // Hapus semua 'active' dari .nav-link
+            $('.jenis-filter .jenis-link').removeClass('active');
+
+            // Tambahkan 'active' ke link yang sesuai
+            $(`.jenis-link[data-jenis="${selectedJenis}"]`).addClass('active');
+
 
             if (!category || category === 'null' || category === '') {
                 $('#btn-download').addClass('d-none');
