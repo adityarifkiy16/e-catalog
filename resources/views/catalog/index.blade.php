@@ -283,6 +283,7 @@
         }
 
         function renderMockup(products) {
+            console.log(uniqueCategories);
             console.log('renderMockup');
             // Hilangkan mockup
             $('#mockup').removeClass('d-none');
