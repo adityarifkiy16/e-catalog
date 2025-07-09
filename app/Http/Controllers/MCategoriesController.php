@@ -38,6 +38,7 @@ class MCategoriesController extends Controller
             'image' => 'nullable',
             'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'jenis_id' => 'required|exists:m_jenis,id',
+            'display_style' => 'nullable|string|max:255|in:square,rectangle',
         ]);
 
         if ($request->hasFile('image')) {
@@ -64,12 +65,14 @@ class MCategoriesController extends Controller
             MCategories::create([
                 'name' => $request->name,
                 'jenis_id' => $request->jenis_id,
-                'path' => $path
+                'path' => $path,
+                'display_style' => $request->display_style
             ]);
         } else {
             MCategories::create([
                 'name' => $request->name,
-                'jenis_id' => $request->jenis_id
+                'jenis_id' => $request->jenis_id,
+                'display_style' => $request->display_style
             ]);
         }
         return response()->json([
@@ -104,8 +107,9 @@ class MCategoriesController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'jenis_id' => 'required|exists:m_jenis,id',
-            'image' => 'required',
+            'image' => 'nullable',
             'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'display_style' => 'nullable|string|max:255|in:square,rectangle',
         ]);
         if ($request->hasFile('image')) {
             $file = $request->file('image');
@@ -139,12 +143,14 @@ class MCategoriesController extends Controller
             $categories->update([
                 'name' => $request->name,
                 'jenis_id' => $request->jenis_id,
-                'path' => $path
+                'path' => $path,
+                'display_style' => $request->display_style
             ]);
         } else {
             $categories->update([
                 'name' => $request->name,
                 'jenis_id' => $request->jenis_id,
+                'display_style' => $request->display_style
             ]);
         }
 
