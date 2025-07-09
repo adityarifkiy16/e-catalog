@@ -224,6 +224,8 @@
     let lastPage = false;
     let selectedJenis = null;
     let uniqueCategories = {};
+    let shouldResetCategory = false;
+
 
     $('#btn-download').on('click', function(e) {
         e.preventDefault();
@@ -328,6 +330,7 @@
     }
 
     function loadMoreData() {
+        console.log('loadMoreData');
         if (!category || category === 'null' || category === '') {
             $('#btn-download').addClass('d-none');
         } else {
@@ -392,11 +395,18 @@
                     });
                     dropdown += `</li>`;
                     $('#category-menu-item, #category-menu-item-modal').html(dropdown);
-                    // ✅ Tambahkan ini setelah kategori di-inject ke DOM
-                    const firstCat = $(`.category-filter[data-jenis-id="${selectedJenis}"]`).first();
-                    if (firstCat.length) {
-                        category = firstCat.data('id');
-                        console.log('First category ID:', category);
+                    if (shouldResetCategory || !category) {
+                        const firstCat = $(`.category-filter[data-jenis-id="${selectedJenis}"]`).first();
+                        if (firstCat.length) {
+                            category = firstCat.data('id');
+                            console.log('Reset category to:', category);
+
+                            $(`.category-filter[data-id="${category}"]`).addClass('active');
+                            firstCat.addClass('active');
+                        }
+                        shouldResetCategory = false; // reset flag setelah digunakan
+                    } else if (category) {
+                        $(`.category-filter[data-id="${category}"]`).addClass('active');
                     }
                 } else {
                     $('#category-menu-item, #category-menu-item-modal').html(
@@ -467,10 +477,8 @@
         e.preventDefault();
         $('#filterModal').modal('hide');
         selectedJenis = $(this).data('jenis');
-        // Hapus semua 'active' dari .nav-link
+        shouldResetCategory = true;
         $('.jenis-filter .jenis-link').removeClass('active');
-
-        // Tambahkan 'active' ke link yang sesuai
         $(`.jenis-link[data-jenis="${selectedJenis}"]`).addClass('active');
 
         // Tampilkan atau sembunyikan sidebar
@@ -490,15 +498,14 @@
         // Reset dan load ulang
         resetState();
         category = null;
-        // category = $(`.category-filter[data-jenis="${selectedJenis}"]`).first();
         loadMoreData();
     });
 
     $(document).on('click', '.category-filter', function(e) {
         e.preventDefault();
         category = $(this).data('id');
-        resetState();
         $('#filterModal').modal('hide');
+        resetState();
         loadMoreData();
     });
 
