@@ -386,14 +386,18 @@
                             $("#category-menu-item-label, #category-modal-item-label").html('Kategori');
                     }
                     let dropdown = `<li class="nav-item font-poppins">`;
-                    dropdown +=
-                        `<a class="nav-link text-dark category-filter" href="#" data-id=""><i class="fa fa-check-square mr-2"></i> Semua Produk</a>`;
                     response.jenis.categories.forEach(cat => {
                         dropdown +=
-                            `<a class="nav-link text-dark category-filter" href="#" data-id="${cat.id}"><i class="fa fa-check-square mr-2"></i> ${cat.name} ${cat.products_count > 0 ? `(${cat.products_count})` : ''}</a>`;
+                            `<a class="nav-link text-dark category-filter" href="#" data-jenis-id="${cat.jenis_id}" data-id="${cat.id}"><i class="fa fa-check-square mr-2"></i> ${cat.name} ${cat.products_count > 0 ? `(${cat.products_count})` : ''}</a>`;
                     });
                     dropdown += `</li>`;
                     $('#category-menu-item, #category-menu-item-modal').html(dropdown);
+                    // ✅ Tambahkan ini setelah kategori di-inject ke DOM
+                    const firstCat = $(`.category-filter[data-jenis-id="${selectedJenis}"]`).first();
+                    if (firstCat.length) {
+                        category = firstCat.data('id');
+                        console.log('First category ID:', category);
+                    }
                 } else {
                     $('#category-menu-item, #category-menu-item-modal').html(
                         `<li class="nav-item"><a class="nav-link font-weight-bold h6 text-danger" href="#">choose design first 😇</a></li>`
@@ -486,6 +490,7 @@
         // Reset dan load ulang
         resetState();
         category = null;
+        // category = $(`.category-filter[data-jenis="${selectedJenis}"]`).first();
         loadMoreData();
     });
 
