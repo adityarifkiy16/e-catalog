@@ -312,6 +312,7 @@
         resetState();
         category = null;
         loadMoreData();
+        history.replaceState(null, null, `?jenis=${selectedJenis}`);
     });
 
     $(document).on('click', '.category-card', function() {

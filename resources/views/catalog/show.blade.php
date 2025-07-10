@@ -488,6 +488,7 @@
         $('#filterModal').modal('hide');
         resetState();
         loadMoreData();
+        history.replaceState(null, null, `/catalog?jenis=${selectedJenis}&category=${category}`);
     });
 
     $(document).on('click', '.product-card', function() {
