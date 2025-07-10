@@ -38,7 +38,6 @@
                 <div class="row">
                 </div>
             </div>
-
             <!-- Loading indicator -->
             <div id="loading" class="text-center d-none my-4">
                 <div class="spinner-grow text-primary mr-2" role="status">
@@ -130,24 +129,6 @@
     let shouldResetCategory = false;
 
 
-    $('#btn-download').on('click', function(e) {
-        e.preventDefault();
-
-        const $btn = $(this);
-        $btn.prop('disabled', true); // disable tombol
-        $btn.html(
-            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengunduh...'
-        );
-
-        let url = "{{ route('catalog.pdf') }}?category=" + encodeURIComponent(category);
-        window.open(url, '_blank');
-
-        // Timeout untuk reset tombol (misal 10 detik)
-        setTimeout(() => {
-            $btn.prop('disabled', false).html('<i class="fa fa-file-download"></i> Unduh Katalog');
-        }, 5000); // waktu unduh maksimum
-    });
-
     const url = "{{ route('catalog') }}";
 
     function resetState() {
@@ -167,7 +148,7 @@
         categories.forEach((category, index) => {
             const image = category.path ?
                 `/storage/${category.path}` :
-                'https://placehold.jp/3d4070/ffffff/150x150.png';
+                '/dist/img/osborn-background.png';
             const categoryName = category?.name ?? 'Tanpa Kategori';
 
             // Jika jumlah total ganjil dan ini adalah elemen terakhir, buat full width
@@ -195,19 +176,10 @@
 
     function loadMoreData() {
         console.log('loadMoreData');
-        console.log('Request page: ', currentPage);
-        if (!category || category === 'null' || category === '') {
-            $('#btn-download').addClass('d-none');
-        } else {
-            $('#btn-download').removeClass('d-none');
-        }
-
         if (isLoading || lastPage) return;
         isLoading = true;
         $("#loading").removeClass("d-none")
-
         const search = $('#search-input').val();
-
         $.ajax({
             url: url,
             type: "GET",
@@ -251,6 +223,11 @@
         selectedJenis = new URLSearchParams(window.location.search).get('jenis') || null;
         $('#category-list').html('<div class="row"></div>');
         loadMoreData();
+
+        if ($(window).width() < 768) {
+            $('#filter-container').addClass('d-none');
+        }
+
 
         $(window).scroll(function() {
             if ($(this).scrollTop() > 100) {

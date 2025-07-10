@@ -434,10 +434,16 @@
         $('#product-list .row').html('');
         loadMoreData();
 
+
         if (selectedJenis) {
             $('#filter-container').removeClass('d-none');
             $('#category-container').removeClass('d-md-none');
             $('#catalog-col').removeClass('center-content');
+        }
+
+
+        if ($(window).width() < 768) {
+            $('#filter-container').addClass('d-none');
         }
 
         $(window).scroll(function() {
