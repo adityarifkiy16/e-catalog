@@ -40,12 +40,12 @@ class MCategoriesController extends Controller
             'jenis_id' => 'required|exists:m_jenis,id',
             'display_style' => 'nullable|string|max:255|in:square,rectangle',
         ]);
-        // Buat watermark dan resize (misal lebar 100px)
-        $watermark = Image::make(public_path('dist/img/osborn.png'))
-            ->resize(80, null, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
+        // // Buat watermark dan resize (misal lebar 100px)
+        // $watermark = Image::make(public_path('dist/img/osborn.png'))
+        //     ->resize(80, null, function ($constraint) {
+        //         $constraint->aspectRatio();
+        //         $constraint->upsize();
+        //     });
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
@@ -65,7 +65,6 @@ class MCategoriesController extends Controller
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 })
-                ->insert($watermark, 'top-left', 10, 10)
                 ->encode('webp', 100)
                 ->save($fullPath);
 
@@ -117,13 +116,8 @@ class MCategoriesController extends Controller
             'image' => 'nullable',
             'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'display_style' => 'nullable|string|max:255|in:square,rectangle',
+            'order' => 'nullable|numeric',
         ]);
-        // Buat watermark dan resize (misal lebar 100px)
-        $watermark = Image::make(public_path('dist/img/osborn.png'))
-            ->resize(80, null, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $folder = 'images/categories/' . now()->format('Y/m/d');
@@ -150,7 +144,6 @@ class MCategoriesController extends Controller
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 })
-                ->insert($watermark, 'top-left', 10, 10)
                 ->encode('webp', 100)
                 ->save($fullPath);
 
@@ -158,13 +151,15 @@ class MCategoriesController extends Controller
                 'name' => $request->name,
                 'jenis_id' => $request->jenis_id,
                 'path' => $path,
-                'display_style' => $request->display_style
+                'display_style' => $request->display_style,
+                'order' => $request->order
             ]);
         } else {
             $categories->update([
                 'name' => $request->name,
                 'jenis_id' => $request->jenis_id,
-                'display_style' => $request->display_style
+                'display_style' => $request->display_style,
+                'order' => $request->order
             ]);
         }
 

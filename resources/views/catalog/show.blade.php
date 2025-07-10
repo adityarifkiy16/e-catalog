@@ -40,7 +40,6 @@
                         <a href="#" class="btn btn-brown d-none mb-2 order-md-2 order-1" id="btn-download">
                             <i class="fa fa-file-download"></i> Unduh Katalog
                         </a>
-
                     </div>
                 </div>
             </div>
@@ -63,7 +62,10 @@
                 <div class="row">
                     @forelse ($data as $product)
                     <div class="col-md-3 mb-4">
-                        <div class="h-100 product-card" data-code="{{ $product->code }}"
+                        <div class="h-100 product-card"
+                            data-id="{{ $product->id }}"
+                            data-jenis="{{ $product->category->jenis->name ?? '' }}"
+                            data-code="{{ $product->code }}"
                             data-category="{{ $product->category->name ?? 'Tanpa Kategori' }}"
                             data-image="{{ $product->photo ? asset('storage/' . $product->photo) : 'https://via.placeholder.com/300x200?text=No+Image' }}">
                             <img src="{{ $product->photo ? asset('storage/' . $product->photo) : 'https://via.placeholder.com/300x200?text=No+Image' }}"
@@ -114,25 +116,44 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
                             <span aria-hidden="true">&times;</span></button>
                     </div>
-                    <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <!-- Gambar produk - kolom kiri -->
+                                <div class="col-md-6 col-12 mb-3 mb-md-0 d-flex align-items-center justify-content-center">
+                                    <img id="modalImage" class="img-fluid rounded shadow-sm" alt="Product Image" style="max-height: 300px; object-fit: contain;">
+                                </div>
 
-                        <!-- Carousel Gambar -->
-                        <div id="modalCarousel" class="carousel slide mb-3" style="max-width: 60%;"
-                            data-ride="carousel">
-                            <div class="carousel-inner" id="carouselInner">
-                                <!-- Slide gambar akan di-inject lewat JS -->
+                                <!-- Detail produk - kolom kanan -->
+                                <div class="col-md-6 col-12">
+                                    <div class="product-details">
+                                        <h3 id="modalCode" class="font-weight-bold mb-2 text-dark"></h3>
+
+                                        <div class="mb-3">
+                                            <span id="modalCategory" class="text-muted text-lowercase"></span>
+                                        </div>
+
+                                        <div class="specifications">
+                                            <div class="spec-item d-flex align-items-center mb-2">
+                                                <i class="fas fa-ruler mr-2 text-muted"></i>
+                                                <span id="modalUkuran" class="text-dark"> Ukuran: 3mm</span>
+                                            </div>
+                                            <div class="spec-item d-flex align-items-center mb-2">
+                                                <i class="fas fa-arrows-alt mr-2 text-muted"></i>
+                                                <span id="modalPanjang" class="text-dark"> Panjang: 5X20X20</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tambahan elemen untuk responsif -->
+                                        <div class="mt-4 d-flex flex-wrap gap-2">
+                                            <a class="btn btn-sm btn-secondary modalDownload" id="modalDownload" href="#" target="_blank">
+                                                <i class="fas fa-download mr-1"></i> Download
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <a class="carousel-control-prev" href="#modalCarousel" role="button" data-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Sebelumnya</span>
-                            </a>
-                            <a class="carousel-control-next" href="#modalCarousel" role="button" data-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Berikutnya</span>
-                            </a>
                         </div>
-                        <h4 id="modalCode" class="font-weight-bold"></h4>
-                        <p id="modalCategory" class="text-muted"></p>
                     </div>
                 </div>
             </div>
@@ -151,7 +172,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <h5 class="font-cocogoose">Jenis</h5>
+                        <h5 class="font-cocogoose">Produk</h5>
 
                         <ul class="nav flex-column jenis-filter">
                             @foreach ($jenis as $item)
@@ -162,12 +183,13 @@
                             </li>
                             @endforeach
                         </ul>
-
-                        <h5 id="category-modal-item-label" class="font-cocogoose">Category</h5>
-                        <!-- Daftar kategori -->
-                        <ul class="nav flex-column" id="category-menu-item-modal">
-                            <!-- Akan diisi oleh JS -->
-                        </ul>
+                        <div class="category-modal-container">
+                            <h5 id="category-modal-item-label" class="font-cocogoose">Category</h5>
+                            <!-- Daftar kategori -->
+                            <ul class="nav flex-column" id="category-menu-item-modal">
+                                <!-- Akan diisi oleh JS -->
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -186,7 +208,7 @@
                         <div id="" class="collapse show" aria-labelledby="headingOne"
                             data-parent="#accordionExample">
                             <div class="pt-2">
-                                <h5 class="font-cocogoose">Jenis</h5>
+                                <h5 class="font-cocogoose">Produk</h5>
 
                                 <ul class="nav flex-column jenis-filter">
                                     @foreach ($jenis as $item)
@@ -223,8 +245,28 @@
     let isLoading = false;
     let lastPage = false;
     let selectedJenis = null;
-    let uniqueCategories = {};
+    const uniquePaths = new Set();
     let shouldResetCategory = false;
+
+    $(document).on('click', '.modalDownload', function(e) {
+        e.preventDefault();
+
+        const productId = $(this).data('id');
+
+        const $btn = $(this);
+        $btn.prop('disabled', true); // disable tombol
+        $btn.html(
+            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengunduh...'
+        );
+
+        let url = "{{ route('catalog.pdf.product') }}?id=" + encodeURIComponent(productId);
+        window.open(url, '_blank');
+
+        // Timeout untuk reset tombol (misal 10 detik)
+        setTimeout(() => {
+            $btn.prop('disabled', false).html('<i class="fa fa-file-download"></i> Unduh Katalog');
+        }, 5000); // waktu unduh maksimum
+    });
 
 
     $('#btn-download').on('click', function(e) {
@@ -244,6 +286,7 @@
             $btn.prop('disabled', false).html('<i class="fa fa-file-download"></i> Unduh Katalog');
         }, 5000); // waktu unduh maksimum
     });
+
     const productId = window.location.pathname.split('/').pop();
 
 
@@ -252,7 +295,7 @@
         currentPage = 1;
         isLoading = false;
         lastPage = false;
-        uniqueCategories = {};
+        uniquePaths.clear();
         $('#product-list').html('<div class="row"></div>');
     }
 
@@ -262,7 +305,6 @@
             const image = product.photo ?
                 `/storage/${product.photo}` :
                 'https://via.placeholder.com/300x200?text=No+Image';
-            const images = product.images.map(image => `/storage/${image.path}`);
             const categoryName = product.category?.name ?? 'Tanpa Kategori';
 
             if (product.category && product.category.display_style == 'square' || product.category.display_style == null) {
@@ -278,10 +320,11 @@
             }
 
             html += `
+                    data-id="${product.id}"
                     data-code="${product.code}"
                     data-category="${categoryName}"
+                    data-jenis="${product.category?.jenis?.name ?? ''}"
                     data-image="${image}"
-                    data-images=${JSON.stringify(images)}
                     >
                         <img src="${image}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
                         <div class="card-body bg-product-body d-flex flex-column text-center">
@@ -295,40 +338,42 @@
     }
 
     function renderMockup(products) {
-        console.log(uniqueCategories);
+        console.log('products', products);
         console.log('renderMockup');
 
-        // Hilangkan mockup
-        $('#mockup').removeClass('d-none');
 
-        // insert path tiap product
+        console.log('uniquePaths', uniquePaths);
+
+        // Ambil path dari setiap product.images
         products.forEach(product => {
-            const cat = product.category;
-            if (cat && cat.path && !uniqueCategories[cat.id]) {
-                uniqueCategories[cat.id] = cat.path;
-            }
+            const images = product.images ?? [];
+            images.forEach(image => {
+                if (image.path) {
+                    uniquePaths.add(image.path);
+                }
+            });
         });
 
-        const paths = Object.values(uniqueCategories);
+        const paths = Array.from(uniquePaths);
+        const $carouselInner = $('#mockup-carousel-inner');
+        $carouselInner.empty(); // Bersihkan isi sebelumnya
 
         if (paths.length > 0) {
-            const $carouselInner = $('#mockup-carousel-inner');
-            $carouselInner.empty(); // Bersihkan isi sebelumnya
-
             paths.forEach((path, i) => {
                 $carouselInner.append(`
-                        <div class="carousel-item ${i === 0 ? 'active' : ''}">
-                            <img src="/storage/${path}" id="mockup-image" alt="mockup" class="img-fluid w-100 h-100 rounded-lg"
-                                    style="object-fit: cover; object-position: 5% 70%;">
-                        </div>
-                    `);
+                <div class="carousel-item ${i === 0 ? 'active' : ''}">
+                    <img src="/storage/${path}" id="mockup-image" alt="mockup" 
+                         class="img-fluid w-100 h-auto rounded-lg"
+                         style="object-fit: cover; object-position: 5% 70%;">
+                </div>
+            `);
             });
-
             $('#mockup').removeClass('d-none');
         } else {
             $('#mockup').addClass('d-none');
         }
     }
+
 
     function loadMoreData() {
         console.log('loadMoreData');
@@ -375,7 +420,7 @@
                 if (response.jenis.categories) {
                     switch (response.jenis.name) {
                         case 'PVC Board':
-                            $("#category-menu-item-label, #category-modal-item-label").html('Ketebalan');
+                            $("#category-container, #category-modal-container").addClass("d-none");
                             break;
                         case 'Wallboard':
                             $("#category-menu-item-label, #category-modal-item-label").html('Motif');
@@ -485,6 +530,10 @@
         e.preventDefault();
         $('#filterModal').modal('hide');
         selectedJenis = $(this).data('jenis');
+        if (selectedJenis == 1) {
+            window.location.href = `/catalog?jenis=${selectedJenis}&category=32`;
+            return;
+        }
         window.location.href = '/?jenis=' + selectedJenis;
     });
 
@@ -498,21 +547,13 @@
     });
 
     $(document).on('click', '.product-card', function() {
-        const images = $(this).data('images');
         const code = $(this).data('code');
         const category = $(this).data('category');
+        const jenis = $(this).data('jenis');
         $('#modalCode').text(code);
-        $('#modalCategory').text('Kategori: ' + category);
-        const $carouselInner = $('#carouselInner');
-        $carouselInner.empty();
-
-        images.forEach((imgUrl, index) => {
-            $carouselInner.append(`
-                <div class="carousel-item ${index === 0 ? 'active' : ''}">
-                    <img src="${imgUrl}" class="d-block w-100" alt="Gambar ${index + 1}">
-                </div>
-                `);
-        });
+        $('#modalCategory').text(jenis + ' / ' + category);
+        $('#modalImage').attr('src', $(this).data('image'));
+        $('#modalDownload').data('id', $(this).data('id'));
         $('#productModal').modal('show');
     });
 </script>

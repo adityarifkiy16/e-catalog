@@ -56,5 +56,11 @@ class CategorySeeder extends Seeder
                 'jenis_id' => 3
             ]);
         }
+
+        MCategories::firstOrCreate([
+            'id' => 32,
+            'name' => 'pvc',
+            'jenis_id' => 1
+        ]);
     }
 }

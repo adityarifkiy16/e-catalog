@@ -148,15 +148,17 @@
         categories.forEach((category, index) => {
             const image = category.path ?
                 `/storage/${category.path}` :
-                '/dist/img/osborn-background.png';
+                '/dist/img/default.png';
             const categoryName = category?.name ?? 'Tanpa Kategori';
 
             // Jika jumlah total ganjil dan ini adalah elemen terakhir, buat full width
             const isLastAndOdd = total % 2 === 1 && index === total - 1;
-            const colClass = isLastAndOdd ? 'col-md-12' : 'col-md-6';
-
+            const colClass = isLastAndOdd ?
+                'col-md-12 col-12 mb-3' :
+                'col-md-4 col-12 mb-3';
+            const hClass = isLastAndOdd ? 400 : 250;
             html += `
-                    <div class="${colClass} col-12 mb-4">
+                    <div class="${colClass}">
                         <div class="h-100 category-card"
                     `;
 
@@ -164,7 +166,7 @@
                     data-id="${category.id}"
                     data-jenis="${category.jenis_id}"
                     >
-                        <img src="${image}" class="card-img-top" alt="${category.name}" style="height: 200px; object-fit: cover;">
+                        <img src="${image}" class="card-img-top" alt="${category.name}" style="height:${hClass}px; object-fit: cover;">
                         <div class="card-body bg-product-body d-flex flex-column text-center">
                             <h4 class="card-title font-weight-bold text-uppercase mb-2">${category.name}</h4>
                         </div>
@@ -283,6 +285,10 @@
             $('#catalog-col').removeClass('center-content');
         } else {
             $('#catalog-col').addClass('center-content');
+        }
+
+        if (selectedJenis == 1) {
+            window.location.href = `/catalog?jenis=${selectedJenis}&category=32`;
         }
 
         // Reset dan load ulang

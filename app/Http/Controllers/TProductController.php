@@ -24,13 +24,12 @@ class TProductController extends Controller
     public function index(Request $request)
     {
         $arr['categories'] = MCategories::with('jenis')->get();
-        // dd($arr['categories']);
         if ($request->ajax()) {
             $query = TProduct::with([
                 'category' => fn($q) => $q->select('id', 'name', 'jenis_id'),
                 'category.jenis' => fn($q) => $q->select('id', 'name'),
             ])
-                ->select('id', 'photo', 'code','category_id')
+                ->select('id', 'photo', 'code', 'category_id')
                 ->orderBy('code', 'asc');
             if ($request->has('filter')) {
                 $query = $query->where('category_id', $request->filter);
@@ -92,50 +91,29 @@ class TProductController extends Controller
                         mkdir($directory, 0755, true);
                     }
 
-                    // Buat watermark dan resize (misal lebar 100px)
-                    $watermark = Image::make(public_path('dist/img/osborn.png'))
-                        ->resize(200, null, function ($constraint) {
-                            $constraint->aspectRatio();
-                            $constraint->upsize();
-                        });
+                    // // Buat watermark dan resize (misal lebar 100px)
+                    // $watermark = Image::make(public_path('dist/img/osborn.png'))
+                    //     ->resize(200, null, function ($constraint) {
+                    //         $constraint->aspectRatio();
+                    //         $constraint->upsize();
+                    //     });
 
                     if (!TProduct::where('code', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))->exists()) {
-                        
+
                         $product = TProduct::create([
                             'code' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
                             'photo' => $path,
                             'category_id' => $request->input('category_id'),
                         ]);
 
-                        // CEK KATEGORI SOLID TANPA WATERMARK
-                        if($product->category_id == 19)
-                        {
-                             // Proses gambar
-                            Image::make($file)
+                        // Proses gambar
+                        Image::make($file)
                             ->resize(800, null, function ($constraint) {
                                 $constraint->aspectRatio();
                                 $constraint->upsize();
                             })
                             ->encode('webp', 100)
                             ->save($fullPath);
-                        } else {
-                            // Proses gambar
-                            Image::make($file)
-                                ->resize(800, null, function ($constraint) {
-                                    $constraint->aspectRatio();
-                                    $constraint->upsize();
-                                })
-                                ->insert($watermark, 'center', 10, 10)
-                                ->encode('webp', 100)
-                                ->save($fullPath);
-                        }
-
-                       
-
-                        $images = TImage::create([
-                            'path' => $path
-                        ]); 
-                        $product->images()->attach($images->id);
                     } else {
                         $arr['warning'][] =  pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                     }
@@ -188,32 +166,42 @@ class TProductController extends Controller
                     ->whereNull('deleted_at')
             ],
             'name' => 'nullable|string|max:255',
-            'image' => 'nullable|array',
-            'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'image-mockup' => 'nullable|array',
+            'image-mockup.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:3072',
             'category_id' => 'required|exists:m_categories,id',
         ]);
 
         DB::beginTransaction();
 
         try {
-            // Update data produk utama
-            $product->update([
-                'code' => $request->input('code'),
-                'name' => $request->input('name'),
-                'category_id' => $request->input('category_id'),
-            ]);
+            $data = [
+                'code' => $request->code,
+                'name' => $request->name,
+                'category_id' => $request->category_id,
+            ];
 
-            // Ambil semua relasi gambar (pivot)
-            $currentImageIds = $product->images()->pluck('t_images.id')->toArray();
+            if ($request->hasFile('image-mockup')) {
+                // Hapus semua gambar sebelumnya dari relasi dan storage
+                foreach ($product->images as $existingImage) {
+                    $oldPath = storage_path('app/public/' . $existingImage->path);
 
-            // Pertahankan gambar pertama sebagai thumbnail (jika ada)
-            $thumbnailId = $currentImageIds[0] ?? null;
-            $newImageIds = [];
+                    // Hapus file dari storage jika ada
+                    if (file_exists($oldPath)) {
+                        @unlink($oldPath);
+                    }
 
-            if ($request->hasFile('image')) {
-                foreach ($request->file('image') as $file) {
+                    // Hapus record dari tabel pivot (detach)
+                    $product->images()->detach($existingImage->id);
+
+                    // Hapus record dari tabel images (optional, jika tidak dipakai di tempat lain)
+                    $existingImage->delete();
+                }
+
+                // Simpan gambar baru
+                foreach ($request->file('image-mockup') as $file) {
                     $filename = time() . '_' . uniqid() . '.webp';
-                    $folder = 'images/products/' . now()->format('Y/m/d');
+                    $folder = 'images/mockup/' . now()->format('Y/m/d');
                     $path = $folder . '/' . $filename;
                     $fullPath = storage_path('app/public/' . $path);
 
@@ -231,19 +219,47 @@ class TProductController extends Controller
                         ->encode('webp', 100)
                         ->save($fullPath);
 
-                    // Simpan ke DB
+                    // Simpan gambar ke database images
                     $image = TImage::create([
-                        'path' => $path
+                        'path' => $path,
                     ]);
 
-                    $newImageIds[] = $image->id;
+                    // Tambahkan relasi produk dengan gambar
+                    $product->images()->attach($image->id);
                 }
             }
 
-            // Gabungkan thumbnail + gambar baru → sync ulang
-            $syncIds = array_filter(array_merge([$thumbnailId], $newImageIds));
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $filename = time() . '_' . uniqid() . '.webp';
+                $folder = 'images/products/' . now()->format('Y/m/d');
+                $path = $folder . '/' . $filename;
+                $fullPath = storage_path('app/public/' . $path);
 
-            $product->images()->sync($syncIds);
+                // Hapus photo thumbnail lama
+                if ($product->photo) {
+                    $imagePath = storage_path('app/public/' . $product->photo);
+                    if (file_exists($imagePath)) {
+                        @unlink($imagePath);
+                    }
+                }
+
+                // Simpan file gambar baru
+                Image::make($file)
+                    ->resize(800, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })
+                    ->encode('webp', 100)
+                    ->save($fullPath);
+
+                $data = [
+                    'photo' => $path
+                ];
+            }
+
+            $product->update($data);
+
             // 🔥 Auto delete gambar yang orphan (tidak dipakai produk manapun)
             $this->deleteUnusedImages();
 
@@ -253,7 +269,6 @@ class TProductController extends Controller
                 'status' => 'success',
                 'message' => 'Produk berhasil diperbarui (gambar dipertahankan sebagian).',
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
@@ -274,7 +289,7 @@ class TProductController extends Controller
         if ($product->photo) {
             $imagePath = storage_path('app/public/' . $product->photo);
             if (file_exists($imagePath)) {
-                unlink($imagePath);
+                @unlink($imagePath);
             }
         }
 
@@ -380,4 +395,71 @@ class TProductController extends Controller
         }
     }
 
+    public function downloadPdfProduct(Request $request)
+    {
+        if ($request->query('id')) {
+            $product = TProduct::with('category', 'category.jenis')->find($request->query('id'));
+            $arr['product'] = $product;
+            $convertedImgs = [];
+            $photopath = public_path('storage/' . $product->photo);
+            if (file_exists($photopath) && Str::endsWith($product->photo, '.webp')) {
+                $jpgName = Str::replaceLast('.webp', '.jpg', $product->photo);
+                $jpgPath = public_path('storage/temp_images/' . $jpgName);
+                $directory = dirname($jpgPath);
+                if (!file_exists($directory)) {
+                    mkdir($directory, 0755, true);
+                }
+
+                if (!file_exists($jpgPath)) {
+                    Image::make($photopath)
+                        ->resize(600, null, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        })
+                        ->encode('jpg', 70)
+                        ->save($jpgPath);
+                }
+
+                $product->converted_photo = $jpgPath;
+                $convertedImgs[] = $jpgPath;
+            } else {
+                $product->converted_photo = $photopath;
+            }
+            // dd($product);
+            $pdf = FacadePdf::loadView('product.pdf', $arr)->setPaper('a4', 'landscape');
+            $output = $pdf->stream('products.pdf');
+
+            foreach ($convertedImgs as $img) {
+                if (file_exists($img)) {
+                    @unlink($img);
+                }
+            }
+
+            return $output;
+        }
+    }
+
+    public function destroyByCategory(Request $request)
+    {
+        $categoryId = $request->query('category');
+
+        $products = TProduct::where('category_id', $categoryId)->get();
+
+        foreach ($products as $product) {
+            // Hapus foto jika ada
+            if ($product->photo) {
+                $imagePath = storage_path('app/public/' . $product->photo);
+                if (file_exists($imagePath)) {
+                    @unlink($imagePath);
+                }
+            }
+
+            // Hapus produk
+            $product->delete();
+        }
+
+        return response()->json([
+            'message' => 'Produk dalam kategori berhasil dihapus.'
+        ]);
+    }
 }

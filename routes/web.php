@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get("/", [App\Http\Controllers\CatalogController::class, "index"])->name("catalog");
 Route::get("/catalog", [App\Http\Controllers\CatalogController::class, "show"])->name("catalog.show");
 Route::get("/catalog/pdf", [App\Http\Controllers\TProductController::class, "downloadPdf"])->name("catalog.pdf");
-
+Route::get("/catalog/pdf/product", [App\Http\Controllers\TProductController::class, "downloadPdfProduct"])->name("catalog.pdf.product");
 
 Route::controller(App\Http\Controllers\AuthController::class)->middleware("guest")->group(function () {
     Route::get("/admin", "index")->name("login");
@@ -66,4 +66,5 @@ Route::middleware("auth")->group(function () {
     Route::get("/products/search", [App\Http\Controllers\TProductController::class, "search"])->name("products.search");
     Route::get("/products/categories", [App\Http\Controllers\TProductController::class, "getCategoriesByJenis"])->name("products.getCategories");
     Route::get("/products/delete-image", [App\Http\Controllers\TProductController::class, "deleteImage"])->name("products.delete-image");
+    Route::get("/products/delete-by-category", [App\Http\Controllers\TProductController::class, "destroyByCategory"])->name("products.destroy-by-category");
 });

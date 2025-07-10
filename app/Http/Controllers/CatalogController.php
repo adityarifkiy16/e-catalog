@@ -14,7 +14,7 @@ class CatalogController extends Controller
     public function index(Request $request)
     {
 
-        $query = MCategories::with(['products', 'jenis'])->orderBy('name', 'asc');
+        $query = MCategories::with(['products', 'jenis'])->orderBy('order', 'asc');
         $arr['jenis'] = MJenis::all();
         if ($request->ajax()) {
             // Filter berdasarkan jenis (lewat relasi category.jenis)
@@ -69,7 +69,6 @@ class CatalogController extends Controller
         }
 
         if ($isAjax) {
-            Log::info('Current Page: ' . $request->query('page')); // Debug
             $data = $query->orderBy('code', 'asc')->paginate(8);
 
             $response = ['data' => $data];

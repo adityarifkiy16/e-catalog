@@ -45,6 +45,8 @@
                         <option value="square" {{ old('display_style', $categories->display_style) == 'square' ? 'selected' : '' }}>Persegi</option>
                         <option value="rectangle" {{ old('display_style', $categories->display_style) == 'rectangle' ? 'selected' : '' }}>Persegi panjang</option>
                     </select>
+                    <label class="mt-3"><i class="fas fa-tags"></i> Order</label>
+                    <input type="text" class="form-control" name="order" value="{{ old('order', $categories->order) }}">
                     <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar</label>
                     <input type="file" class="form-control" id="img" name="image" accept="image/*">
                     <button class="btn btn-primary mt-3" id="btn-submit" type="submit">Kirim</button>
