@@ -257,7 +257,6 @@
     }
 
     function renderProducts(products) {
-        console.log('products', products);
         let html = '';
         products.forEach((product) => {
             const image = product.photo ?
@@ -298,6 +297,7 @@
     function renderMockup(products) {
         console.log(uniqueCategories);
         console.log('renderMockup');
+
         // Hilangkan mockup
         $('#mockup').removeClass('d-none');
 
@@ -343,9 +343,8 @@
         $("#loading").removeClass("d-none")
 
         const search = $('#search-input').val();
-
         $.ajax({
-            url: `/catalog/${category}?page=${currentPage}`,
+            url: `/catalog`,
             type: "GET",
             data: {
                 page: currentPage,
@@ -430,6 +429,17 @@
     }
 
     $(document).ready(function() {
+        selectedJenis = new URLSearchParams(window.location.search).get('jenis') || null;
+        category = new URLSearchParams(window.location.search).get('category') || null;
+        $('#product-list .row').html('');
+        loadMoreData();
+
+        if (selectedJenis) {
+            $('#filter-container').removeClass('d-none');
+            $('#category-container').removeClass('d-md-none');
+            $('#catalog-col').removeClass('center-content');
+        }
+
         $(window).scroll(function() {
             if ($(this).scrollTop() > 100) {
                 $('#btn-scroll-top').fadeIn();
@@ -445,20 +455,10 @@
             return false;
         });
 
-        const firstJenis = $('.jenis-link').first();
-
-        if (firstJenis.length) {
-            firstJenis.trigger('click');
-        }
-
-        $('#product-list').html('<div class="row"></div>');
-        loadMoreData();
-
         $(window).on('scroll', function() {
             const scrollTop = $(window).scrollTop();
             const windowHeight = $(window).height();
             const documentHeight = $(document).height();
-
             if (scrollTop + windowHeight >= documentHeight - 150) {
                 loadMoreData();
             }
@@ -479,28 +479,7 @@
         e.preventDefault();
         $('#filterModal').modal('hide');
         selectedJenis = $(this).data('jenis');
-        shouldResetCategory = true;
-        $('.jenis-filter .jenis-link').removeClass('active');
-        $(`.jenis-link[data-jenis="${selectedJenis}"]`).addClass('active');
-
-        // Tampilkan atau sembunyikan sidebar
-        if (selectedJenis) {
-            $('#category-container').removeClass('d-md-none');
-            if (window.innerWidth < 768) {
-                $('#filter-container').addClass('d-none');
-            } else {
-                $('#filter-container').removeClass('d-none');
-            }
-            $('#catalog-col').removeClass('center-content');
-        } else {
-            $('#category-container').addClass('d-md-none d-none');
-            $('#catalog-col').addClass('center-content');
-        }
-
-        // Reset dan load ulang
-        resetState();
-        category = null;
-        loadMoreData();
+        window.location.href = '/?jenis=' + selectedJenis;
     });
 
     $(document).on('click', '.category-filter', function(e) {

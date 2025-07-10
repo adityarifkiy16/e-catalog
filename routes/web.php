@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get("/", [App\Http\Controllers\CatalogController::class, "index"])->name("catalog");
-Route::get("/catalog/{id}", [App\Http\Controllers\CatalogController::class, "show"])->name("catalog.show");
+Route::get("/catalog", [App\Http\Controllers\CatalogController::class, "show"])->name("catalog.show");
 Route::get("/catalog/pdf", [App\Http\Controllers\TProductController::class, "downloadPdf"])->name("catalog.pdf");
 
 

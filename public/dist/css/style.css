@@ -127,6 +127,10 @@
     text-transform: capitalize;
 }
 
+#catalog-col {
+    min-height: 100vh; /* atau 100% dari tinggi layar */
+}
+
 /* #product-list {
     max-height: 75vh; 
     overflow-y: auto; 

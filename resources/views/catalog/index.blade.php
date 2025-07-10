@@ -36,27 +36,6 @@
             <!-- category list -->
             <div id="category-list">
                 <div class="row">
-                    @forelse ($data as $category)
-                    <div class="col-md-3 mb-4">
-                        <div class="h-100 category-card"
-                            data-id="{{ $category->name ?? 'Tanpa Kategori' }}">
-                            <img src="{{ $category->path ? asset('storage/' . $category->photo) : 'https://via.placeholder.com/300x200?text=No+Image' }}"
-                                class="card-img-top" alt="{{ $category->name }}"
-                                style="height: 200px; object-fit: cover;">
-                            <div class="card-body bg-product-body text-center d-flex flex-column">
-                                <h4 class="card-title font-weight-bold text-uppercase mb-2"
-                                    style="font-family: 'Poppins', sans-serif; font-size: 1.2rem; letter-spacing: 2px;">
-                                    {{ $category->name }}
-                                </h4>
-                            </div>
-                        </div>
-                    </div>
-                    @empty
-                    <div class="col-12">
-                        <img src="{{ asset('dist/img/no-data.png') }}" alt="no-data"
-                            class="img-fluid mx-auto d-block my-5" style="max-width: 100%; height: auto;">
-                    </div>
-                    @endforelse
                 </div>
             </div>
 
@@ -106,20 +85,19 @@
         </div>
 
         <!-- Sidebar Filter -->
-        <div class="col-md-2 col-12 order-1 order-md-1 d-none" id="filter-container">
+        <div class="col-md-2 col-12 order-1 order-md-1" id="filter-container">
             <div class="sidebar border-end">
                 <div class="accordion" id="accordionExample">
-                    <div class="">
+                    <div>
                         <div class="" id="headingOne">
-                            <h3 class="mx-1">
+                            <h3>
                                 Filtered By
                             </h3>
                         </div>
-                        <div id="" class="collapse show" aria-labelledby="headingOne"
+                        <div class="collapse show" aria-labelledby="headingOne"
                             data-parent="#accordionExample">
                             <div class="pt-2">
-                                <h5 class="font-cocogoose">Jenis</h5>
-
+                                <h5 class="font-cocogoose">Produk</h5>
                                 <ul class="nav flex-column jenis-filter">
                                     @foreach ($jenis as $item)
                                     <li class="nav-item">
@@ -203,8 +181,12 @@
 
             html += `
                     data-id="${category.id}"
+                    data-jenis="${category.jenis_id}"
                     >
                         <img src="${image}" class="card-img-top" alt="${category.name}" style="height: 200px; object-fit: cover;">
+                        <div class="card-body bg-product-body d-flex flex-column text-center">
+                            <h4 class="card-title font-weight-bold text-uppercase mb-2">${category.name}</h4>
+                        </div>
                     </div>
                 </div>`;
         });
@@ -213,6 +195,7 @@
 
     function loadMoreData() {
         console.log('loadMoreData');
+        console.log('Request page: ', currentPage);
         if (!category || category === 'null' || category === '') {
             $('#btn-download').addClass('d-none');
         } else {
@@ -251,7 +234,6 @@
                     lastPage = true;
                 }
 
-
                 isLoading = false;
             },
             error: function() {
@@ -266,6 +248,10 @@
     }
 
     $(document).ready(function() {
+        selectedJenis = new URLSearchParams(window.location.search).get('jenis') || null;
+        $('#category-list').html('<div class="row"></div>');
+        loadMoreData();
+
         $(window).scroll(function() {
             if ($(this).scrollTop() > 100) {
                 $('#btn-scroll-top').fadeIn();
@@ -280,15 +266,6 @@
             }, 500);
             return false;
         });
-
-        const firstJenis = $('.jenis-link').first();
-
-        if (firstJenis.length) {
-            firstJenis.trigger('click');
-        }
-
-        $('#category-list').html('<div class="row"></div>');
-        loadMoreData();
 
         $(window).on('scroll', function() {
             const scrollTop = $(window).scrollTop();
@@ -339,8 +316,9 @@
 
     $(document).on('click', '.category-card', function() {
         const categoryId = $(this).data('id');
+        const jenisId = $(this).data('jenis');
         const $carouselInner = $('#carouselInner');
-        window.location.href = `/catalog/${categoryId}`;
+        window.location.href = `/catalog?jenis=${jenisId}&category=${categoryId}`;
     });
 </script>
 @endpush

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MCategories;
+
 use App\Models\MJenis;
 use App\Models\TProduct;
+use App\Models\MCategories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CatalogController extends Controller
 {
@@ -29,7 +31,7 @@ class CatalogController extends Controller
 
             // Filter berdasarkan search (kode produk)
             if ($request->filled('search')) {
-                $query->where('code', 'like', '%' . $request->search . '%');
+                $query->where('name', 'like', '%' . $request->search . '%');
             }
 
             // Ambil data hasil filter
@@ -40,50 +42,51 @@ class CatalogController extends Controller
         $arr['data'] = MCategories::with(['products', 'jenis'])->get();
         return view('catalog.index', $arr);
     }
-    public function show(Request $request, $id)
+    public function show(Request $request)
     {
-        $arr = [];
+        $isAjax = $request->ajax();
+        $categoryId = $request->query('category');
+        $search = $request->query('search');
+        $jenisId = $request->query('jenis');
 
-        // Inisialisasi query produk dengan eager loading
-        $query = TProduct::with(['category', 'category.jenis', 'images'])->where('category_id', $id)->orderBy('code', 'asc');
+        $query = TProduct::with(['category', 'category.jenis', 'images']);
 
-        if ($request->ajax()) {
-            // Filter berdasarkan kategori
-            if ($request->filled('category')) {
-                $query->whereHas('category', function ($q) use ($request) {
-                    $q->where('id', $request->category);
-                });
-            }
-
-            // Filter berdasarkan search (kode produk)
-            if ($request->filled('search')) {
-                $query->where('code', 'like', '%' . $request->search . '%');
-            }
-
-            // Filter berdasarkan jenis (lewat relasi category.jenis)
-            if ($request->filled('jenis')) {
-                $jenisId = $request->jenis;
-
-                $query->whereHas('category.jenis', function ($q) use ($jenisId) {
-                    $q->where('id', $jenisId);
-                });
-
-                $jenis = MJenis::with('categories.products')->find($jenisId);
-                $arr['jenis'] = $jenis;
-            }
-
-
-            // Ambil data hasil filter
-            $arr['data'] = $query->paginate(8);
-
-            return response()->json($arr);
+        // Filter jika ada kategori
+        if ($categoryId) {
+            $query->where('category_id', $categoryId);
         }
 
-        // Request biasa (bukan AJAX)
-        $arr['data'] = TProduct::with('category', 'category.jenis')->get();
-        $arr['jenis'] = MJenis::with('categories')->get();
-        $arr['categories'] = MCategories::all();
+        // Filter kode produk (search)
+        if ($search) {
+            $query->where('code', 'like', '%' . $search . '%');
+        }
 
-        return view('catalog.show', $arr);
+        // Filter berdasarkan jenis (relasi category.jenis)
+        if ($jenisId) {
+            $query->whereHas('category.jenis', function ($q) use ($jenisId) {
+                $q->where('id', $jenisId);
+            });
+        }
+
+        if ($isAjax) {
+            Log::info('Current Page: ' . $request->query('page')); // Debug
+            $data = $query->orderBy('code', 'asc')->paginate(8);
+
+            $response = ['data' => $data];
+
+            if ($jenisId) {
+                $jenis = MJenis::with('categories.products')->find($jenisId);
+                $response['jenis'] = $jenis;
+            }
+
+            return response()->json($response);
+        }
+
+        // Jika request biasa (non-AJAX)
+        return view('catalog.show', [
+            'data' => $query->orderBy('code', 'asc')->get(),
+            'jenis' => MJenis::with('categories')->get(),
+            'categories' => MCategories::all(),
+        ]);
     }
 }
