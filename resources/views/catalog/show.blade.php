@@ -46,7 +46,7 @@
 
             <!-- Slider Mockup -->
             <div id="mockup" class="d-none">
-                <div class="row mb-2">
+                <div class="row mb-3">
                     <div class="col-12">
                         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                             <div class="carousel-inner" id="mockup-carousel-inner">
@@ -373,8 +373,12 @@
                 $carouselInner.append(`
                 <div class="carousel-item ${i === 0 ? 'active' : ''}">
                     <img src="/storage/${path}" id="mockup-image" alt="mockup" 
-                         class="img-fluid w-100 h-auto rounded-lg"
-                         style="object-fit: cover; object-position: 5% 70%;">
+                        class="img-fluid w-100 rounded-lg d-block mx-auto"
+                        style="
+                            object-fit: cover; 
+                            object-position: 5% 40%; 
+                            max-width: 100vw;
+                        ">
                 </div>
             `);
             });
