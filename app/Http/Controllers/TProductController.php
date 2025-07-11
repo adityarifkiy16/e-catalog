@@ -401,10 +401,10 @@ class TProductController extends Controller
             $product = TProduct::with('category', 'category.jenis')->find($request->query('id'));
             $arr['product'] = $product;
             $convertedImgs = [];
-            $photopath = public_path('storage/' . $product->photo);
+            $photopath = storage_path('app/public/' . $product->photo);
             if (file_exists($photopath) && Str::endsWith($product->photo, '.webp')) {
                 $jpgName = Str::replaceLast('.webp', '.jpg', $product->photo);
-                $jpgPath = public_path('storage/temp_images/' . $jpgName);
+                $jpgPath = storage_path('app/public/temp_images/' . $jpgName);
                 $directory = dirname($jpgPath);
                 if (!file_exists($directory)) {
                     mkdir($directory, 0755, true);
