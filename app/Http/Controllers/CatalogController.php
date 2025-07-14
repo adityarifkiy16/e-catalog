@@ -54,6 +54,12 @@ class CatalogController extends Controller
         // Filter jika ada kategori
         if ($categoryId) {
             $query->where('category_id', $categoryId);
+
+            if ($categoryId == 32) {
+                $query->orderBy('code', 'asc');
+            } else {
+                $query->orderBy('created_at', 'asc');
+            }
         }
 
         // Filter kode produk (search)
@@ -69,7 +75,7 @@ class CatalogController extends Controller
         }
 
         if ($isAjax) {
-            $data = $query->orderBy('created_at', 'asc')->paginate(8);
+            $data = $query->paginate(8);
 
             $response = ['data' => $data];
 
@@ -81,9 +87,14 @@ class CatalogController extends Controller
             return response()->json($response);
         }
 
+        // Pastikan orderBy tidak double
+        if (!$categoryId) {
+            $query->orderBy('code', 'asc');
+        }
+
         // Jika request biasa (non-AJAX)
         return view('catalog.show', [
-            'data' => $query->orderBy('code', 'asc')->get(),
+            'data' => $query->get(),
             'jenis' => MJenis::with('categories')->get(),
             'categories' => MCategories::all(),
         ]);
