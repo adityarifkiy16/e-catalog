@@ -340,7 +340,17 @@
                     data-jenis="${product.category?.jenis?.name ?? ''}"
                     data-image="${image}"
                     >
-                        <img src="${image}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
+                       <img 
+                            src="${image}" 
+                            class="card-img-top" 
+                            alt="${product.name}" 
+                            style="
+                                height: 200px; 
+                                width: 100%; 
+                                object-fit: cover; 
+                                object-position: ${product.category?.jenis?.name === 'PVC Board' ? 'bottom center' : 'center center'};
+                            "
+                        >
                         <div class="card-body bg-product-body d-flex flex-column text-center">
                             <h4 class="card-title font-weight-bold text-uppercase mb-2">${product.code}</h4>
                             <h6 class="card-text text-muted mb-1">${categoryName}</h6>
