@@ -31,7 +31,8 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
     <!-- custom css -->
-    <link rel="stylesheet" href="{{ asset('dist/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('dist/css/style.css') }}?v={{ time() }}">
+
 
 
     @vite(['resources/js/app.js'])
