@@ -30,7 +30,7 @@ class TProductController extends Controller
                 'category.jenis' => fn($q) => $q->select('id', 'name'),
             ])
                 ->select('id', 'photo', 'code', 'category_id')
-                ->orderBy('code', 'asc');
+                ->orderBy('created_at', 'asc');
             if ($request->has('filter')) {
                 $query = $query->where('category_id', $request->filter);
             }
