@@ -69,7 +69,7 @@ class CatalogController extends Controller
         }
 
         if ($isAjax) {
-            $data = $query->orderBy('code', 'asc')->paginate(8);
+            $data = $query->orderBy('created_at', 'asc')->paginate(8);
 
             $response = ['data' => $data];
 
