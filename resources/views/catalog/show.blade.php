@@ -378,7 +378,7 @@
                         class="img-fluid w-100 rounded-lg d-block mx-auto"
                         style="
                             object-fit: cover; 
-                            object-position: 5% 40%; 
+                            object-position: left top; 
                             max-width: 100vw;
                         ">
                 </div>
