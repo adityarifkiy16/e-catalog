@@ -323,7 +323,7 @@
         }
 
         function renderProducts(products) {
-            console.log("selectedjenis", selectedJenis);
+            console.log("renderProducts selectedjenis", selectedJenis);
             let html = '';
             products.forEach((product) => {
                 const image = product.photo ?
@@ -422,6 +422,7 @@
 
         function loadMoreData() {
             console.log('loadMoreData');
+            console.log('category', category);
             if (!category || category === 'null' || category === '') {
                 $('#btn-download').addClass('d-none');
             } else {
@@ -463,7 +464,7 @@
 
                     // Update label kategori
                     if (response.jenis?.categories) {
-                        console.log('categories', response.jenis.categories);
+                        console.log('ajax categories', response.jenis.categories);
                         if (response.jenis.categories.length === 0) {
                             $("#category-container").addClass("d-none");
                         } else {
@@ -498,8 +499,10 @@
                             if (firstCat.length) {
                                 category = firstCat.data('id');
                                 console.log('Reset category to:', category);
-                                $(`.category-filter[data-id="${category}"]`).addClass('active');
-                                firstCat.addClass('active');
+                                // Trigger ulang load
+                                resetState();
+                                loadMoreData();
+                                return;
                             }
                         } else if (category) {
                             $(`.category-filter[data-id="${category}"]`).addClass('active');
