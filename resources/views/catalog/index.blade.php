@@ -406,9 +406,13 @@
                     <img src="/storage/${path}" id="mockup-image" alt="mockup" 
                         class="img-fluid w-100 rounded-lg d-block mx-auto"
                         style="
-                            object-fit: cover; 
-                            object-position: left top; 
-                            max-width: 100vw;
+                            max-width: 100%;
+                            max-height: 80vh;
+                            width: auto;
+                            height: auto;
+                            object-fit: contain;
+                            margin: 0 auto;
+                            display: block; 
                         ">
                 </div>
             `);

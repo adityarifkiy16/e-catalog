@@ -431,7 +431,7 @@ class TProductController extends Controller
                     $relativePath = ltrim($relativePath, '/');
 
                     // Gunakan path absolut ke public/storage
-                    $source = public_path('storage/' . $relativePath);
+                    $source = storage_path("app/public/$relativePath");
 
                     Image::make($source)
                         ->resize($key === 'mockup' ? 1200 : 100, null, function ($constraint) {
