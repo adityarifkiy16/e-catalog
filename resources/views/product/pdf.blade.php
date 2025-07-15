@@ -51,20 +51,34 @@
 </head>
 
 <body>
-    <table style="height: 100%;">
+    <table style="height: 100%; width: 100%;">
         <tr>
-            <td width="50%" align="center" valign="top">
+            <td align="center" valign="top" colspan="2">
                 <img src="{{ $product->converted_photo }}" alt="{{ $product->code }}">
             </td>
-            <td width="50%" align="center" valign="middle">
-                <h1><strong>{{ $product->code }}</strong></h1>
-                <br>
-                <p style="margin-top: 0px;" class="uppercase">Kategori: {{ $product->category->name ?? 'Tanpa Kategori' }}</p><br>
-                <p style="margin-top: 0px;" class="uppercase">Ukuran: 3mm</p><br>
-                <p style="margin-top: 0px;" class="uppercase">Panjang: 20x20x20</p>
+        </tr>
+        <tr>
+            <td width="90%" align="left" valign="middle" style="padding: 10px;">
+                <h1 style="margin: 0;"><strong>{{ $product->code }}</strong></h1>
+                <p style="margin-top: 10px; text-align: left;" class="uppercase">
+                    <span style="font-weight: bold;">Kategori:</span>
+                    {{ $product->category->name ?? 'Tanpa Kategori' }}
+                </p>
+                <p style="margin-top: 10px; text-align: left;">
+                    <span style="font-weight: bold;" class="uppercase">Ukuran:</span>
+                    3mm
+                </p>
+                <p style="margin-top: 10px; text-align: left;">
+                    <span style="font-weight: bold;" class="uppercase">Panjang:</span>
+                    20x20x20
+                </p>
+            </td>
+            <td width="23%" align="right" valign="top" style="padding: 10px;">
+                <img src="{{ $product->converted_photo2 }}" alt="{{ $product->code }}">
             </td>
         </tr>
     </table>
+
 
     <div class="footer">
         <p>&copy; {{ date('Y') }} Osborn</p>

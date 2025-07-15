@@ -398,21 +398,32 @@ class TProductController extends Controller
     public function downloadPdfProduct(Request $request)
     {
         if ($request->query('id')) {
-            $product = TProduct::with('category', 'category.jenis')->find($request->query('id'));
+            $product = TProduct::with('category', 'category.jenis', 'images')->find($request->query('id'));
             $arr['product'] = $product;
             $convertedImgs = [];
             $photopath = storage_path('app/public/' . $product->photo);
+            $photoMockup = storage_path('app/public/' . $product->images->first()?->path ?? '');
+            // dd($photoMockup);
             if (file_exists($photopath) && Str::endsWith($product->photo, '.webp')) {
                 $jpgName = Str::replaceLast('.webp', '.jpg', $product->photo);
-                $jpgPath = storage_path('app/public/temp_images/' . $jpgName);
+                $jpgPath = storage_path('app/public/temp_images/mockup/' . $jpgName);
+                $jpgPath2 = storage_path('app/public/temp_images/motif/' . $jpgName);
                 $directory = dirname($jpgPath);
+                $directory2 = dirname($jpgPath2);
+
                 if (!file_exists($directory)) {
                     mkdir($directory, 0755, true);
                 }
 
+                if (!file_exists($directory2)) {
+                    mkdir($directory2, 0755, true);
+                }
+
+
+
                 if (!file_exists($jpgPath)) {
-                    Image::make($photopath)
-                        ->resize(600, null, function ($constraint) {
+                    Image::make($photoMockup)
+                        ->resize(1200, null, function ($constraint) {
                             $constraint->aspectRatio();
                             $constraint->upsize();
                         })
@@ -420,8 +431,20 @@ class TProductController extends Controller
                         ->save($jpgPath);
                 }
 
+                if (!file_exists($jpgPath2)) {
+                    Image::make($photopath)
+                        ->resize(100, null, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        })
+                        ->encode('jpg', 70)
+                        ->save($jpgPath2);
+                }
+
                 $product->converted_photo = $jpgPath;
+                $product->converted_photo2 = $jpgPath2;
                 $convertedImgs[] = $jpgPath;
+                $convertedImgs[] =  $jpgPath2;
             } else {
                 $product->converted_photo = $photopath;
             }
