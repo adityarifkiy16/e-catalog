@@ -70,32 +70,7 @@
                 <!-- Product list -->
                 <div id="product-list">
                     <div class="row">
-                        @forelse ($data as $product)
-                            <div class="col-md-3 mb-4">
-                                <div class="h-100 product-card" data-id="{{ $product->id }}"
-                                    data-jenis="{{ $product->category->jenis->name ?? '' }}"
-                                    data-code="{{ $product->code }}"
-                                    data-category="{{ $product->category->name ?? 'Tanpa Kategori' }}"
-                                    data-image="{{ $product->photo ? asset('storage/' . $product->photo) : 'https://via.placeholder.com/300x200?text=No+Image' }}">
-                                    <img src="{{ $product->photo ? asset('storage/' . $product->photo) : 'https://via.placeholder.com/300x200?text=No+Image' }}"
-                                        class="card-img-top" alt="{{ $product->name }}"
-                                        style="height: 200px; object-fit: cover;">
-                                    <div class="card-body bg-product-body text-center d-flex flex-column">
-                                        <h4 class="card-title font-weight-bold text-uppercase mb-2"
-                                            style="font-family: 'Poppins', sans-serif; font-size: 1.2rem; letter-spacing: 2px;">
-                                            {{ $product->code }}
-                                        </h4>
-                                        <h6 class="card-text text-muted">{{ $product->category->name ?? 'Tanpa Kategori' }}
-                                        </h6>
-                                    </div>
-                                </div>
-                            </div>
-                        @empty
-                            <div class="col-12">
-                                <img src="{{ asset('dist/img/no-data.png') }}" alt="no-data"
-                                    class="img-fluid mx-auto d-block my-5" style="max-width: 100%; height: auto;">
-                            </div>
-                        @endforelse
+                        {{-- akan di isi js --}}
                     </div>
                 </div>
 
@@ -117,8 +92,7 @@
             </div>
 
             <!-- Modal -->
-            <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel"
-                aria-hidden="true">
+            <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -260,6 +234,8 @@
         const uniquePaths = new Set();
 
         $(document).ready(function() {
+
+            loadMoreData();
 
             if (selectedJenis) {
                 $('#category-container').removeClass('d-md-none');

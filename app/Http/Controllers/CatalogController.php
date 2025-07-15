@@ -55,14 +55,9 @@ class CatalogController extends Controller
 
             return response()->json($response);
         }
-
-        // Pastikan orderBy tidak double
         if (!$categoryId) {
             $query->orderBy('code', 'asc');
         }
-
-        // dd($request->ajax());
-        // Jika request biasa (non-AJAX)
         return view('catalog.index', [
             'data' => $query->get(),
             'jenis' => MJenis::with('categories')->get(),
