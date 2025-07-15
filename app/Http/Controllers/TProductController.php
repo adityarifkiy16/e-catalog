@@ -397,69 +397,63 @@ class TProductController extends Controller
 
     public function downloadPdfProduct(Request $request)
     {
-        if ($request->query('id')) {
-            $product = TProduct::with('category', 'category.jenis', 'images')->find($request->query('id'));
-            $arr['product'] = $product;
-            $convertedImgs = [];
-            $photopath = storage_path('app/public/' . $product->photo);
-            $photoMockup = storage_path('app/public/' . $product->images->first()?->path ?? '');
-            // dd($photoMockup);
-            if (file_exists($photopath) && Str::endsWith($product->photo, '.webp')) {
-                $jpgName = Str::replaceLast('.webp', '.jpg', $product->photo);
-                $jpgPath = storage_path('app/public/temp_images/mockup/' . $jpgName);
-                $jpgPath2 = storage_path('app/public/temp_images/motif/' . $jpgName);
-                $directory = dirname($jpgPath);
-                $directory2 = dirname($jpgPath2);
+        $productId = $request->query('id');
+        $product = TProduct::with('category', 'category.jenis', 'images')->find($productId);
 
+        if (!$product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
+        $arr['product'] = $product;
+
+        $convertedImgs = [];
+
+        // Handle conversion WEBP TO JPG
+        if ($product->photo && Str::endsWith($product->photo, '.webp')) {
+            $jpgName = Str::replaceLast('.webp', '.jpg', $product->photo);
+            $paths = [
+                'mockup' => storage_path("app/public/temp_images/mockup/$jpgName"),
+                'motif' => storage_path("app/public/temp_images/motif/$jpgName"),
+            ];
+
+            foreach ($paths as $key => $jpgPath) {
+                $directory = dirname($jpgPath);
                 if (!file_exists($directory)) {
                     mkdir($directory, 0755, true);
                 }
 
-                if (!file_exists($directory2)) {
-                    mkdir($directory2, 0755, true);
-                }
-
-
-
                 if (!file_exists($jpgPath)) {
-                    Image::make($photoMockup)
-                        ->resize(1200, null, function ($constraint) {
+                    $source = $key === 'mockup'
+                        ? ($product->images->first()->path ?? $product->photo)
+                        : $product->photo;
+
+                    Image::make($source)
+                        ->resize($key === 'mockup' ? 1200 : 100, null, function ($constraint) {
                             $constraint->aspectRatio();
                             $constraint->upsize();
                         })
                         ->encode('jpg', 70)
                         ->save($jpgPath);
                 }
-
-                if (!file_exists($jpgPath2)) {
-                    Image::make($photopath)
-                        ->resize(100, null, function ($constraint) {
-                            $constraint->aspectRatio();
-                            $constraint->upsize();
-                        })
-                        ->encode('jpg', 70)
-                        ->save($jpgPath2);
-                }
-
-                $product->converted_photo = $jpgPath;
-                $product->converted_photo2 = $jpgPath2;
                 $convertedImgs[] = $jpgPath;
-                $convertedImgs[] =  $jpgPath2;
-            } else {
-                $product->converted_photo = $photopath;
             }
-            // dd($product);
-            $pdf = FacadePdf::loadView('product.pdf', $arr)->setPaper('a4', 'landscape');
-            $output = $pdf->stream('products.pdf');
-
-            foreach ($convertedImgs as $img) {
-                if (file_exists($img)) {
-                    @unlink($img);
-                }
-            }
-
-            return $output;
+            $product->converted_photo = $paths['mockup'];
+            $product->converted_photo2 = $paths['motif'];
+        } else {
+            $product->converted_photo = $product->photo;
         }
+
+        // Generate PDF
+        $pdf = FacadePdf::loadView('product.pdf', $arr)->setPaper('a4', 'landscape');
+        $output = $pdf->stream('products.pdf');
+
+        foreach ($convertedImgs as $img) {
+            if (file_exists($img)) {
+                @unlink($img);
+            }
+        }
+
+        return $output;
     }
 
     public function destroyByCategory(Request $request)
