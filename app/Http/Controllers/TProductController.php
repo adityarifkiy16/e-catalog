@@ -423,9 +423,15 @@ class TProductController extends Controller
                 }
 
                 if (!file_exists($jpgPath)) {
-                    $source = $key === 'mockup'
+                    $relativePath = $key === 'mockup'
                         ? ($product->images->first()->path ?? $product->photo)
                         : $product->photo;
+
+                    // Pastikan path relatif (tanpa awalan slash)
+                    $relativePath = ltrim($relativePath, '/');
+
+                    // Gunakan path absolut ke public/storage
+                    $source = public_path('storage/' . $relativePath);
 
                     Image::make($source)
                         ->resize($key === 'mockup' ? 1200 : 100, null, function ($constraint) {
