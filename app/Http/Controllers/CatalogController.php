@@ -13,8 +13,11 @@ class CatalogController extends Controller
 {
     public function index(Request $request)
     {
+        $product =  TProduct::with(['category', 'category.jenis', 'images'])->take(10)->get();
+        // dd($product);
         return view('catalog.index', [
-            'jenis' => MJenis::with('categories')->get(),
+            'products' => TProduct::with(['category', 'category.jenis', 'images'])->take(10)->get(),
+            'jenis' => MJenis::withCount('categories')->get(),
         ]);
     }
     public function catalog(Request $request)
