@@ -17,7 +17,7 @@ class CatalogController extends Controller
         // dd($product);
         return view('catalog.index', [
             'products' => TProduct::with(['category', 'category.jenis', 'images'])->take(10)->get(),
-            'jenis' => MJenis::with('categories')->get(),
+            'jenis' => MJenis::withCount('categories')->get(),
         ]);
     }
     public function catalog(Request $request)

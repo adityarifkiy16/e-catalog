@@ -109,6 +109,7 @@
                             alt="{{ $item->name }}">
                         <div class="card-body p-2">
                             <h4 class="card-text font-weight-bold">{{ $item->name }}</h4>
+                            <p class="card-text text-muted">{{ $item->categories_count }} Categories</p>
                         </div>
                     </div>
                 </div>
