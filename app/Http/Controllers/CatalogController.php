@@ -27,7 +27,7 @@ class CatalogController extends Controller
             if ($categoryId == 32) {
                 $query->orderByRaw("CAST(SUBSTRING_INDEX(code, 'mm', 1) AS UNSIGNED) ASC");
             } else {
-                $query->orderBy('created_at', 'asc');
+                $query->orderBy('code', 'asc');
             }
         }
 
