@@ -118,9 +118,9 @@
                 acceptedFiles: "image/jpeg,image/png,image/jpg,image/gif,image/svg,image/webp",
                 addRemoveLinks: false,
                 autoProcessQueue: false, // important for manual submit
-                parallelUploads: 10,
+                parallelUploads: 50,
                 uploadMultiple: true, // send all files in one request
-                maxFiles: 10,
+                maxFiles: 50,
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
