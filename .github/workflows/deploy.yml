@@ -12,6 +12,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Debug SSH Key
+        run: |
+          ls -l ~/.ssh
+          cat ~/.ssh/id_ed25519 | head -5
+
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
