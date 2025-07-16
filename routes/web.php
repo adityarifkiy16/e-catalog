@@ -13,7 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get("/", [App\Http\Controllers\CatalogController::class, "index"])->name("catalog");
+Route::get("/catalog", [App\Http\Controllers\CatalogController::class, "catalog"])->name("catalog");
+Route::get("/", [App\Http\Controllers\CatalogController::class, "index"])->name("catalog.index");
+
+
 // DOWNLOAD PDF
 Route::get("/catalog/pdf", [App\Http\Controllers\TProductController::class, "downloadPdf"])->name("catalog.pdf");
 Route::get("/catalog/pdf/product", [App\Http\Controllers\TProductController::class, "downloadPdfProduct"])->name("catalog.pdf.product");
