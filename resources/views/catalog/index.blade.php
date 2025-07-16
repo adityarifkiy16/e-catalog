@@ -1,5 +1,32 @@
 @extends ('layouts.catalog')
 @section('content')
+    <!-- Page Title -->
+    <div class="w-100 d-flex justify-content-center align-items-center">
+        <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100" style="background-color: #000;">
+            <a href="https://osborn.id/" target="_blank" class="py-2"> <img src="{{ asset('dist/img/osborn.png') }}"
+                    alt="osborn-logo" style="width: 130px; height: auto;"></a>
+        </div>
+    </div>
+    <!-- Carousel Content -->
+    <div class="container-fluid p-0 mb-5 rounded">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                @for ($key = 0; $key < 2; $key++)
+                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ $key }}"
+                        class="{{ $key == 0 ? 'active' : '' }}"></li>
+                @endfor
+            </ol>
+            <div class="carousel-inner">
+                @for ($key = 0; $key < 2; $key++)
+                    <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                        <img src="{{ asset('dist/img/slider/' . ($key + 1) . '.webp') }}" class="d-block w-100 img-fluid"
+                            alt="{{ 'Slide ' . ($key + 1) }}">
+                    </div>
+                @endfor
+            </div>
+        </div>
+    </div>
+
     <!-- Main Content -->
     <div class="container my-5">
         <div class="text-center mb-5">
