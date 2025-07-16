@@ -12,18 +12,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Debug check key file exists
-        run: |
-          ls -lah ~/.ssh
-          cat ~/.ssh/id_rsa | head -n 5
-
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.PRIVATE_KEY_PROD }}" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 153.92.8.220 >> ~/.ssh/known_hosts
-          sh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
 
       - name: Deploy via SSH
         run: |
