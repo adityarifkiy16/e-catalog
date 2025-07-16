@@ -1,4 +1,42 @@
 @extends ('layouts.catalog')
+@push('styles')
+    <style>
+        .slider-container {
+            overflow: hidden;
+            width: 100%;
+            background: #fff;
+            padding: 10px 0;
+        }
+
+        .slider-track {
+            display: flex;
+            width: max-content;
+            animation: scrollLeft 25s linear infinite;
+        }
+
+        .slider-item {
+            flex: 0 0 auto;
+            margin: 0 10px;
+        }
+
+        .slider-item img {
+            height: 200px;
+            width: auto;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        @keyframes scrollLeft {
+            0% {
+                transform: translateX(0%);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+@endpush
 @section('content')
     <!-- Page Title -->
     <div class="w-100 d-flex justify-content-center align-items-center">
@@ -7,8 +45,9 @@
                     alt="osborn-logo" style="width: 130px; height: auto;"></a>
         </div>
     </div>
+
     <!-- Carousel Content -->
-    <div class="container-fluid p-0 mb-5 rounded">
+    <div class="container-fluid p-0 mb-2 rounded">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
                 @for ($key = 0; $key < 2; $key++)
@@ -26,6 +65,26 @@
             </div>
         </div>
     </div>
+
+    <!-- slider product -->
+    <!-- Slider Berjalan Horizontal -->
+    <div class="slider-container">
+        <div class="slider-track">
+            @foreach ($products as $product)
+                <div class="slider-item">
+                    <img src="{{ asset('storage/' . $product->photo) }}" alt="Product" />
+                </div>
+            @endforeach
+
+            {{-- Duplicate untuk looping tak henti --}}
+            @foreach ($products as $product)
+                <div class="slider-item">
+                    <img src="{{ asset('storage/' . $product->photo) }}" alt="Product" />
+                </div>
+            @endforeach
+        </div>
+    </div>
+
 
     <!-- Main Content -->
     <div class="container my-5">
