@@ -16,7 +16,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.PRIVATE_KEY_PROD }}" | tr -d '\r' > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/\id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H 153.92.8.220 >> ~/.ssh/known_hosts
           ssh-keyscan github.com >> ~/.ssh/known_hosts
 
