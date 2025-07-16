@@ -5,13 +5,13 @@
         style="bottom: 20px; right: 20px; z-index: 999;">
         <i class="fab fa-whatsapp"></i>
     </a>
-    <button type="button" class="btn btn-info rounded-circle  btn-lg" id="btn-scroll-top"
+    <button type="button" class="btn btn-secondary rounded-circle  btn-lg" id="btn-scroll-top"
         style="display: none; position: fixed; bottom: 80px; right: 20px; z-index: 999;">
         <i class="fas fa-arrow-up"></i>
     </button>
 
     <div class="w-100 d-flex justify-content-center align-items-center">
-        <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100" style="background-color: #1B1A55">
+        <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100" style="background-color: #000;">
             <a href="https://osborn.id/" target="_blank" class="py-2"> <img src="{{ asset('dist/img/osborn.png') }}"
                     alt="osborn-logo" style="width: 130px; height: auto;"></a>
             <!-- Tombol hanya tampil di mobile -->
@@ -35,13 +35,12 @@
             <div class="col-md-10 col-12 order-2 order-md-1 center-content" id="catalog-col">
                 <div class="row">
                     <div class="col-md-12">
-                        <div
-                            class="d-flex justify-content-between align-items-center mb-3 flex-column-reverse flex-md-row ">
+                        <div class="d-flex justify-content-start align-items-center mb-3 flex-column-reverse flex-md-row ">
                             <a href="#" class="btn btn-brown d-none mb-2 order-md-2 order-1" id="btn-download">
-                                <i class="fa fa-file-download"></i> Unduh Katalog
+                                <i class="fa fa-file-download"></i> Download
                             </a>
-                            <a href="{{ route('catalog.index') }}" class="btn btn-secondary mb-2 order-md-2 order-1">
-                                <i class="fa fa-arrow-left"></i> Back
+                            <a href="{{ route('catalog.index') }}" class="btn btn-secondary mb-2 ml-2 order-md-2 order-1">
+                                <i class="fa fa-home"></i> Home
                             </a>
                         </div>
                     </div>
@@ -271,7 +270,7 @@
 
             // Timeout untuk reset tombol (misal 10 detik)
             setTimeout(() => {
-                $btn.prop('disabled', false).html('<i class="fa fa-file-download"></i> Unduh Katalog');
+                $btn.prop('disabled', false).html('<i class="fa fa-file-download"></i> Download');
             }, 5000); // waktu unduh maksimum
         });
 
@@ -290,7 +289,7 @@
 
             // Timeout untuk reset tombol (misal 10 detik)
             setTimeout(() => {
-                $btn.prop('disabled', false).html('<i class="fa fa-file-download"></i> Unduh Katalog');
+                $btn.prop('disabled', false).html('<i class="fa fa-file-download"></i> Download');
             }, 5000); // waktu unduh maksimum
         });
 
@@ -314,7 +313,7 @@
 
                 if (product.category?.display_style === 'square' || selectedJenis === null) {
                     html += `
-                    <div class="col-md-3 mb-4">
+                    <div class="col-md-2 mb-4">
                         <div class="h-100 product-card"
                     `;
                 } else if (product.category?.display_style === 'rectangle') {
@@ -324,7 +323,7 @@
                     `;
                 } else {
                     html += `
-                    <div class="col-md-3 mb-4">
+                    <div class="col-md-2 mb-4">
                         <div class="h-100 product-card"
                     `;
                 }
