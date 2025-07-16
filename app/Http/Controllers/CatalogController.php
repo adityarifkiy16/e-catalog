@@ -13,6 +13,12 @@ class CatalogController extends Controller
 {
     public function index(Request $request)
     {
+        return view('catalog.index', [
+            'jenis' => MJenis::with('categories')->get(),
+        ]);
+    }
+    public function catalog(Request $request)
+    {
         $isAjax = $request->ajax();
         $categoryId = $request->query('category');
         $search = $request->query('search');
@@ -58,7 +64,7 @@ class CatalogController extends Controller
         if (!$categoryId) {
             $query->orderBy('code', 'asc');
         }
-        return view('catalog.index', [
+        return view('catalog.catalog', [
             'data' => $query->get(),
             'jenis' => MJenis::with('categories')->get(),
             'categories' => MCategories::all(),
