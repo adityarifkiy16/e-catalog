@@ -26,6 +26,26 @@
             object-fit: cover;
         }
 
+        .contact-btn {
+            background-color: #000;
+            color: #fff;
+            padding: 12px 20px;
+            font-size: 1.25rem;
+            border-radius: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .contact-btn i {
+            margin-right: 8px;
+        }
+
+        .contact-btn:hover {
+            background-color: #fff;
+            transform: translateY(-2px);
+        }
+
         @keyframes scrollLeft {
             0% {
                 transform: translateX(0%);
@@ -43,6 +63,9 @@
         <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100" style="background-color: #000;">
             <a href="https://osborn.id/" target="_blank" class="py-2"> <img src="{{ asset('dist/img/osborn.png') }}"
                     alt="osborn-logo" style="width: 130px; height: auto;"></a>
+            <a href="https://example.com/contact-us" class="contact-btn font-weight-bold">
+                Contact Us
+            </a>
         </div>
     </div>
 
