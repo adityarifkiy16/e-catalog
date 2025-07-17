@@ -59,7 +59,7 @@ class CatalogController extends Controller
         }
 
         if ($isAjax) {
-            $data = $query->paginate(8);
+            $data = $query->paginate(12);
 
             $response = ['data' => $data];
 
