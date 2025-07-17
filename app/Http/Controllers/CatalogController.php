@@ -7,6 +7,7 @@ use App\Models\MJenis;
 use App\Models\TProduct;
 use App\Models\MCategories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class CatalogController extends Controller
@@ -17,7 +18,12 @@ class CatalogController extends Controller
         // dd($product);
         return view('catalog.index', [
             'products' => TProduct::with(['category', 'category.jenis', 'images'])->take(10)->get(),
-            'jenis' => MJenis::withCount('categories')->get(),
+            'jenis' => MJenis::withCount([
+                'categories as products_count' => function ($query) {
+                    $query->select(DB::raw('count(t_products.id)'))
+                        ->join('t_products', 'm_categories.id', '=', 't_products.category_id');
+                }
+            ])->get()
         ]);
     }
     public function catalog(Request $request)
