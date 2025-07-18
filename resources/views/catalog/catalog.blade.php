@@ -77,20 +77,15 @@
                 </div>
 
                 <!-- Loading indicator -->
-                <div id="loading" class="text-center d-none my-4">
-                    <div class="spinner-grow text-primary mr-2" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                    <div class="spinner-grow text-success mr-2" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                    <div class="spinner-grow text-danger mr-2" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                    <div class="spinner-grow text-warning" role="status">
-                        <span class="sr-only">Loading...</span>
+                <div id="loading" class="text-center d-none my-5">
+                    <div class="elegant-spinner">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
                     </div>
                 </div>
+
             </div>
 
             <!-- Modal -->
@@ -192,11 +187,6 @@
                 <div class="sidebar border-end">
                     <div class="accordion" id="accordionExample">
                         <div class="">
-                            {{-- <div class="" id="headingOne">
-                                <h3 class="mx-1">
-                                    Filtered By
-                                </h3>
-                            </div> --}}
                             <div id="" class="collapse show" aria-labelledby="headingOne"
                                 data-parent="#accordionExample">
                                 <div class="pt-2">

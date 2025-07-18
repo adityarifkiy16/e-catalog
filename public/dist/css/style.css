@@ -132,7 +132,6 @@
     padding-right: 8px;
 }
 
-
 /* #product-list {
     max-height: 75vh; 
     overflow-y: auto; 
@@ -150,30 +149,84 @@
     border-radius: 4px;
 } */
 
-#filter-container {
-    max-height: 80vh; /* Batasi tinggi maksimal */
-    overflow-y: auto; /* Aktifkan scroll vertikal */
+#category-menu-item {
+    max-height: 65vh;
+    overflow-y: auto;
     overflow-x: hidden;
-    padding-right: 10px; /
+    padding-right: 10px;
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: #bbb transparent; /* Untuk Firefox */
 }
 
-/* Opsional: agar tidak padding terlalu ke kanan saat scroll */
-#filter-container::-webkit-scrollbar {
+/* WebKit (Chrome, Edge, Safari) */
+#category-menu-item::-webkit-scrollbar {
     width: 8px;
 }
 
-#filter-container::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 4px;
+#category-menu-item::-webkit-scrollbar-track {
+    background: transparent; /* Biar tidak mengganggu tampilan */
+}
+
+#category-menu-item::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+#category-menu-item:hover::-webkit-scrollbar-thumb {
+    background-color: #888; /* Sedikit lebih gelap saat hover */
 }
 
 #mockup-image {
     height: 200px;
     object-fit: cover;
-  }
+}
+
+.elegant-spinner {
+    display: inline-block;
+    position: relative;
+    width: 64px;
+    height: 64px;
+}
+
+.elegant-spinner div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 51px;
+    height: 51px;
+    margin: 6px;
+    border: 6px solid #999;
+    border-radius: 50%;
+    animation: elegant-spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #999 transparent transparent transparent;
+}
+
+.elegant-spinner div:nth-child(1) {
+    animation-delay: -0.45s;
+}
+.elegant-spinner div:nth-child(2) {
+    animation-delay: -0.3s;
+}
+.elegant-spinner div:nth-child(3) {
+    animation-delay: -0.15s;
+}
+.elegant-spinner div:nth-child(4) {
+    animation-delay: 0s;
+}
+
+@keyframes elegant-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
 @media (min-width: 768px) {
     #mockup-image {
-      height: 400px;
+        height: 400px;
     }
 }
