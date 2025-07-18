@@ -340,7 +340,7 @@
                 const orderedImage = prepareImageOrder(product.images);
 
                 // Masukkan gambar utama di paling depan
-                const allImages = [image, ...images];
+                const allImages = [image, ...orderedImage];
 
                 // Simpan array ini sebagai string JSON yang aman untuk HTML
                 const imagesJson = JSON.stringify(allImages).replace(/"/g, '&quot;');
@@ -395,9 +395,6 @@
         }
 
         function renderMockup(products) {
-            console.log('products', products);
-            console.log('renderMockup');
-            console.log('uniquePaths', uniquePaths);
             // jika tidak ada jenis dipilih maka skip fungsi render produk
             if (selectedJenis == null) {
                 return
@@ -441,6 +438,13 @@
             } else {
                 $('#mockup').addClass('d-none');
             }
+
+            if (paths.length <= 1) {
+                const nextArrow = $('#mockup .carousel-control-next');
+                const prevArrow = $('#mockup .carousel-control-prev');
+                nextArrow.addClass('d-none');
+                prevArrow.addClass('d-none');
+            }
         }
 
         function renderCarouselProduct(images) {
@@ -462,8 +466,14 @@
                             ">
                     </div>
                 `);
-
             });
+
+            if (images.length <= 1) {
+                const nextArrow = $('#carouselProduct .carousel-control-next');
+                const prevArrow = $('#carouselProduct .carousel-control-prev');
+                nextArrow.addClass('d-none');
+                prevArrow.addClass('d-none');
+            }
         }
 
         function loadMoreData() {
