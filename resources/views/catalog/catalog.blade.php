@@ -192,11 +192,6 @@
                 <div class="sidebar border-end">
                     <div class="accordion" id="accordionExample">
                         <div class="">
-                            {{-- <div class="" id="headingOne">
-                                <h3 class="mx-1">
-                                    Filtered By
-                                </h3>
-                            </div> --}}
                             <div id="" class="collapse show" aria-labelledby="headingOne"
                                 data-parent="#accordionExample">
                                 <div class="pt-2">
