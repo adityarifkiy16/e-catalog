@@ -545,8 +545,8 @@
                         let dropdown = `<li class="nav-item font-poppins">`;
                         response.jenis.categories.forEach(cat => {
                             dropdown += `
-                                <a class="nav-link text-dark category-filter d-flex align-items-center" href="#" data-jenis-id="${cat.jenis_id}" data-id="${cat.id}">
-                                    <img src="${cat.image ?? 'dist/img/product/1.webp'}" alt="${cat.name}" class="mr-2 img-thumbnail" style="width: 80px; height: 50px; object-fit: contain;">
+                                <a class="nav-link text-dark category-filter d-flex align-items-center justify-content-start" href="#" data-jenis-id="${cat.jenis_id}" data-id="${cat.id}">
+                                    <img src="${cat.image ?? 'dist/img/product/1.webp'}" alt="${cat.name}" class="mr-2 img-thumbnail" style="width: 50px; height: 50px; object-fit: contain;">
                                     <span>${cat.name} ${cat.products_count > 0 ? `(${cat.products_count})` : ''}</span>
                                 </a>`;
                         });
