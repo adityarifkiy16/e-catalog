@@ -21,9 +21,10 @@ class CatalogController extends Controller
             'jenis' => MJenis::withCount([
                 'categories as products_count' => function ($query) {
                     $query->select(DB::raw('count(t_products.id)'))
-                        ->join('t_products', 'm_categories.id', '=', 't_products.category_id');
+                        ->join('t_products', 'm_categories.id', '=', 't_products.category_id')
+                        ->whereNull('t_products.deleted_at');
                 }
-            ])->get()
+            ])->whereNull('deleted_at')->get()
         ]);
     }
     public function catalog(Request $request)
