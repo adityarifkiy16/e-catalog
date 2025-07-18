@@ -11,7 +11,7 @@
         .slider-track {
             display: flex;
             width: max-content;
-            animation: scrollLeft 25s linear infinite;
+            animation: scrollLeft 0.5s linear infinite;
         }
 
         .slider-item {
@@ -73,13 +73,13 @@
     <div class="container-fluid p-0 mb-2 rounded">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
-                @for ($key = 0; $key < 2; $key++)
+                @for ($key = 0; $key < 5; $key++)
                     <li data-target="#carouselExampleIndicators" data-slide-to="{{ $key }}"
                         class="{{ $key == 0 ? 'active' : '' }}"></li>
                 @endfor
             </ol>
             <div class="carousel-inner">
-                @for ($key = 0; $key < 2; $key++)
+                @for ($key = 0; $key < 5; $key++)
                     <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                         <img src="{{ asset('dist/img/slider/' . ($key + 1) . '.webp') }}" class="d-block w-100 img-fluid"
                             alt="{{ 'Slide ' . ($key + 1) }}">
