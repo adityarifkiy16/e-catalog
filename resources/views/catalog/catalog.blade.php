@@ -108,8 +108,22 @@
                                     <!-- Gambar produk - kolom kiri -->
                                     <div
                                         class="col-md-6 col-12 mb-3 mb-md-0 d-flex align-items-center justify-content-center">
-                                        <img id="modalImage" class="img-fluid rounded shadow-sm" alt="Product Image"
-                                            style="max-height: 300px; object-fit: contain;">
+
+                                        <div id="carouselProduct" class="carousel slide" data-ride="carousel">
+                                            <div class="carousel-inner" id="carousel-product-image">
+                                                <!-- Slide gambar akan di-inject lewat JS -->
+                                            </div>
+                                            <a class="carousel-control-prev" href="#carouselProduct" role="button"
+                                                data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#carouselProduct" role="button"
+                                                data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </div>
                                     </div>
 
                                     <!-- Detail produk - kolom kanan -->
@@ -304,11 +318,22 @@
 
         function renderProducts(products) {
             console.log("renderProducts selectedjenis", selectedJenis);
+            console.log(products);
             let html = '';
             products.forEach((product) => {
                 const image = product.photo ?
                     `/storage/${product.photo}` :
                     'https://via.placeholder.com/300x200?text=No+Image';
+
+                // Ambil relasi images sebagai array of string path
+                const images = product.images.map(img => `/storage/${img.path}`);
+
+                // Masukkan gambar utama di paling depan
+                const allImages = [image, ...images];
+
+                // Simpan array ini sebagai string JSON yang aman untuk HTML
+                const imagesJson = JSON.stringify(allImages).replace(/"/g, '&quot;');
+
                 const categoryName = product.category?.name ?? 'Tanpa Kategori';
 
                 if (product.category?.display_style === 'square' || selectedJenis === null) {
@@ -333,6 +358,7 @@
                     data-code="${product.code}"
                     data-category="${categoryName}"
                     data-jenis="${product.category?.jenis?.name ?? ''}"
+                    data-images="${imagesJson}"
                     data-image="${image}"
                     >
                        <img 
@@ -403,6 +429,28 @@
             }
         }
 
+        function renderCarouselProduct(images) {
+            $('#carousel-product-image').empty();
+            images.forEach((img, i) => {
+                const activeClass = i === 0 ? 'active' : '';
+                $('#carousel-product-image').append(`
+                    <div class="carousel-item ${activeClass}">
+                        <img src="${img}" alt="mockup" 
+                            class="img-fluid rounded-lg d-block mx-auto"
+                            style="
+                                width: 100%;
+                                aspect-ratio: 1 / 1;
+                                object-fit: contain;
+                                width: 400px;
+                                height: 400px;
+                                max-width: 100%;
+                                max-height: 100%;
+                            ">
+                    </div>
+                `);
+
+            });
+        }
 
         function loadMoreData() {
             console.log('loadMoreData');
@@ -533,10 +581,11 @@
         $(document).on('click', '.product-card', function() {
             const code = $(this).data('code');
             const category = $(this).data('category');
+            const images = JSON.parse($(this).attr('data-images').replace(/&quot;/g, '"'));
             const jenis = $(this).data('jenis');
+            renderCarouselProduct(images);
             $('#modalCode').text(code);
             $('#modalCategory').text(jenis + ' / ' + category);
-            $('#modalImage').attr('src', $(this).data('image'));
             $('#modalDownload').data('id', $(this).data('id'));
             $('#productModal').modal('show');
         });
