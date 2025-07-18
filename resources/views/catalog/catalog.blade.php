@@ -90,7 +90,7 @@
 
             <!-- Modal -->
             <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title font-weight-bold" id="productModalLabel">Detail</h5>
@@ -99,7 +99,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="container-fluid">
-                                <div class="row d-flex align-items-center justify-content-center">
+                                <div class="row d-flex justify-content-center">
                                     <!-- Gambar produk - kolom kiri -->
                                     <div
                                         class="col-md-6 col-12 mb-3 mb-md-0 d-flex align-items-center justify-content-center">
@@ -147,6 +147,14 @@
                                                     id="modalDownload" href="#" target="_blank">
                                                     <i class="fas fa-download mr-1"></i> Download as PDF
                                                 </a>
+                                            </div>
+
+                                            <!-- Tambahan thumbnail gambar -->
+                                            <div class="mt-4">
+                                                <h6 class="font-weight-bold mb-2">Preview Image</h6>
+                                                <div id="thumbnailGallery" class="d-flex flex-wrap gap-2">
+                                                    <!-- Foto kecil akan di-inject lewat JS -->
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -439,32 +447,48 @@
 
         function renderCarouselProduct(images) {
             $('#carousel-product-image').empty();
+            $('#thumbnailGallery').empty(); // kosongkan galeri dulu
+
             images.forEach((img, i) => {
                 const activeClass = i === 0 ? 'active' : '';
+
+                // Carousel utama
                 $('#carousel-product-image').append(`
-                    <div class="carousel-item ${activeClass}">
-                        <img src="${img}" alt="mockup" 
-                            class="img-fluid rounded-lg d-block mx-auto"
-                            style="
-                                width: 100%;
-                                aspect-ratio: 1 / 1;
-                                object-fit: contain;
-                                width: 400px;
-                                height: 400px;
-                                max-width: 100%;
-                                max-height: 100%;
-                            ">
-                    </div>
-                `);
+            <div class="carousel-item ${activeClass}">
+                <img src="${img}" class="img-fluid d-block mx-auto"
+                    style="
+                        width: 100%;
+                        max-width: 50vw;
+                        height: auto;
+                        max-height: 70vh;
+                        object-fit: contain;
+                    ">
+            </div>
+        `);
+
+                // Tambahkan thumbnail
+                $('#thumbnailGallery').append(`
+            <img src="${img}" class="img-thumbnail m-1 thumbnail-image" style="width: 100px; height: 100px; object-fit: cover; cursor: pointer;" data-index="${i}">
+        `);
             });
 
+            // Sembunyikan kontrol jika hanya 1 gambar
             if (images.length <= 1) {
-                const nextArrow = $('#carouselProduct .carousel-control-next');
-                const prevArrow = $('#carouselProduct .carousel-control-prev');
-                nextArrow.addClass('d-none');
-                prevArrow.addClass('d-none');
+                $('#carouselProduct .carousel-control-next').addClass('d-none');
+                $('#carouselProduct .carousel-control-prev').addClass('d-none');
+            } else {
+                $('#carouselProduct .carousel-control-next').removeClass('d-none');
+                $('#carouselProduct .carousel-control-prev').removeClass('d-none');
             }
+
+            // Thumbnail click event
+            $('#thumbnailGallery').on('click', '.thumbnail-image', function() {
+                const index = $(this).data('index');
+                $('#carouselProduct .carousel-item').removeClass('active');
+                $('#carouselProduct .carousel-item').eq(index).addClass('active');
+            });
         }
+
 
         function loadMoreData() {
             console.log('loadMoreData');
