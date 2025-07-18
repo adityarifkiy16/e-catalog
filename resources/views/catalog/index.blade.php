@@ -55,6 +55,12 @@
                 transform: translateX(-50%);
             }
         }
+
+        @media (max-width: 767.98px) {
+            .slider-item img {
+                height: 100px;
+            }
+        }
     </style>
 @endpush
 @section('content')
@@ -63,9 +69,6 @@
         <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100" style="background-color: #000;">
             <a href="https://osborn.id/" target="_blank" class="py-2"> <img src="{{ asset('dist/img/osborn.png') }}"
                     alt="osborn-logo" style="width: 130px; height: auto;"></a>
-            <a href="https://example.com/contact-us" class="contact-btn font-weight-bold">
-                Contact Us
-            </a>
         </div>
     </div>
 
@@ -89,7 +92,6 @@
         </div>
     </div>
 
-    <!-- slider product -->
     <!-- Slider Berjalan Horizontal -->
     <div class="slider-container">
         <div class="slider-track">
@@ -112,14 +114,16 @@
     <!-- Main Content -->
     <div class="container my-5">
         <div class="text-center mb-5">
-            <h1 class="display-4 font-weight-bold mb-5">Welcome to <a href="https://osborn.id">Osborn</a> Catalog</h1>
+            <h1 class="display-5 display-md-4 display-lg-3 font-weight-bold mb-5">Welcome to <a href="https://osborn.id"
+                    target="_blank">Osborn</a>
+                Catalog</h1>
             <h4 class="font-weight-bold text-dark mb-2">
                 To help you visualize the image pack,<br>
                 we have separated it into four different products
             </h4>
             <p class="text-muted lead">
                 Tap on the boxes below to explore<br>
-                all the models within the categories 👇
+                all the models within the categories
             </p>
         </div>
 
