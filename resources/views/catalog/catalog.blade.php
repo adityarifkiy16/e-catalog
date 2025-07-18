@@ -98,13 +98,13 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="productModalLabel">Detail Produk</h5>
+                            <h5 class="modal-title font-weight-bold" id="productModalLabel">Detail</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
                                 <span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
                             <div class="container-fluid">
-                                <div class="row">
+                                <div class="row d-flex align-items-center justify-content-center">
                                     <!-- Gambar produk - kolom kiri -->
                                     <div
                                         class="col-md-6 col-12 mb-3 mb-md-0 d-flex align-items-center justify-content-center">
@@ -148,9 +148,9 @@
 
                                             <!-- Tambahan elemen untuk responsif -->
                                             <div class="mt-4 d-flex flex-wrap gap-2">
-                                                <a class="btn btn-sm btn-secondary modalDownload" id="modalDownload"
-                                                    href="#" target="_blank">
-                                                    <i class="fas fa-download mr-1"></i> Download
+                                                <a class="btn btn-sm btn-outline-secondary modalDownload"
+                                                    id="modalDownload" href="#" target="_blank">
+                                                    <i class="fas fa-download mr-1"></i> Download as PDF
                                                 </a>
                                             </div>
                                         </div>
@@ -545,8 +545,8 @@
                         let dropdown = `<li class="nav-item font-poppins">`;
                         response.jenis.categories.forEach(cat => {
                             dropdown += `
-                                <a class="nav-link text-dark category-filter d-flex align-items-center" href="#" data-jenis-id="${cat.jenis_id}" data-id="${cat.id}">
-                                    <img src="${cat.image ?? 'dist/img/product/1.webp'}" alt="${cat.name}" class="mr-2 img-thumbnail" style="width: 80px; height: 50px; object-fit: contain;">
+                                <a class="nav-link text-dark category-filter d-flex align-items-center justify-content-start" href="#" data-jenis-id="${cat.jenis_id}" data-id="${cat.id}">
+                                    <img src="${cat.image ?? 'dist/img/product/1.webp'}" alt="${cat.name}" class="mr-2 img-thumbnail" style="width: 50px; height: 50px; object-fit: contain;">
                                     <span>${cat.name} ${cat.products_count > 0 ? `(${cat.products_count})` : ''}</span>
                                 </a>`;
                         });
