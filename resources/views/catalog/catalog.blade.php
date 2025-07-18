@@ -316,17 +316,28 @@
             $('#product-list').html('<div class="row"></div>');
         }
 
+        function prepareImageOrder(images) {
+            return images
+                .slice()
+                .sort((a, b) => {
+                    if (a.pivot.motif && !b.pivot.motif) {
+                        return -1;
+                    } else if (!a.pivot.motif && b.pivot.motif) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }).map((image) => "/storage/" + image.path);
+        }
+
         function renderProducts(products) {
-            console.log("renderProducts selectedjenis", selectedJenis);
-            console.log(products);
             let html = '';
             products.forEach((product) => {
                 const image = product.photo ?
                     `/storage/${product.photo}` :
                     'https://via.placeholder.com/300x200?text=No+Image';
 
-                // Ambil relasi images sebagai array of string path
-                const images = product.images.map(img => `/storage/${img.path}`);
+                const orderedImage = prepareImageOrder(product.images);
 
                 // Masukkan gambar utama di paling depan
                 const allImages = [image, ...images];
@@ -336,6 +347,7 @@
 
                 const categoryName = product.category?.name ?? 'Tanpa Kategori';
 
+                // Tampilan sesuai bentuk
                 if (product.category?.display_style === 'square' || selectedJenis === null) {
                     html += `
                     <div class="col-md-2 mb-4">
@@ -393,35 +405,37 @@
 
             // Ambil path dari setiap product.images
             products.forEach(product => {
-                const images = product.images ?? [];
-                images.forEach(image => {
-                    if (image.path) {
+                (product.images ?? []).forEach(image => {
+                    console.log('image', image);
+                    const isMotif = Boolean(image.pivot.motif); // true untuk nilai truthy
+                    if (image.path && !isMotif) {
                         uniquePaths.add(image.path);
                     }
                 });
             });
 
+
             const paths = Array.from(uniquePaths);
             const $carouselInner = $('#mockup-carousel-inner');
-            $carouselInner.empty(); // Bersihkan isi sebelumnya
+            $carouselInner.empty();
 
             if (paths.length > 0) {
                 paths.forEach((path, i) => {
                     $carouselInner.append(`
-                <div class="carousel-item ${i === 0 ? 'active' : ''}">
-                    <img src="/storage/${path}" id="mockup-image" alt="mockup" 
-                        class="img-fluid w-100 rounded-lg d-block mx-auto"
-                        style="
-                            max-width: 100%;
-                            max-height: 80vh;
-                            width: auto;
-                            height: auto;
-                            object-fit: contain;
-                            margin: 0 auto;
-                            display: block; 
-                        ">
-                </div>
-            `);
+                        <div class="carousel-item ${i === 0 ? 'active' : ''}">
+                            <img src="/storage/${path}" id="mockup-image" alt="mockup" 
+                                class="img-fluid w-100 rounded-lg d-block mx-auto"
+                                style="
+                                    max-width: 100%;
+                                    max-height: 80vh;
+                                    width: auto;
+                                    height: auto;
+                                    object-fit: cover;
+                                    margin: 0 auto;
+                                    display: block; 
+                                ">
+                        </div>
+                    `);
                 });
                 $('#mockup').removeClass('d-none');
             } else {

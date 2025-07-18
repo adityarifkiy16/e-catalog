@@ -22,6 +22,6 @@ class TProduct extends Model
 
     public function images()
     {
-        return $this->belongsToMany(TImage::class, 'image_product', 'product_id', 'image_id');
+        return $this->belongsToMany(TImage::class, 'image_product', 'product_id', 'image_id')->withPivot('motif');
     }
 }

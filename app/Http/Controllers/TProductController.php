@@ -167,6 +167,7 @@ class TProductController extends Controller
             ],
             'name' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'image-motif' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'image-mockup' => 'nullable|array|max:5',
             'image-mockup.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:5024',
             'category_id' => 'required|exists:m_categories,id',
@@ -256,6 +257,51 @@ class TProductController extends Controller
                 $data = [
                     'photo' => $path
                 ];
+            }
+
+            if ($request->hasFile('image-motif')) {
+                $file = $request->file('image-motif');
+                $filename = time() . '_' . uniqid() . '.webp';
+                $folder = 'images/motif/' . now()->format('Y/m/d');
+                $path = $folder . '/' . $filename;
+                $fullPath = storage_path('app/public/' . $path);
+                $motifImage = $product->images->where('motif', true)->first();
+
+                // Buat folder jika belum ada
+                if (!file_exists(dirname($fullPath))) {
+                    mkdir(dirname($fullPath), 0755, true);
+                }
+
+                // Hapus photo motif lama
+                if ($motifImage) {
+                    $imagePath = storage_path('app/public/' . $motifImage->path); // Ganti 'path' dengan nama kolom file di tabel images
+                    if (file_exists($imagePath)) {
+                        @unlink($imagePath);
+                    }
+
+                    // Hapus relasi dan gambar lama dari DB (opsional)
+                    $product->images()->detach($motifImage->id);
+                    $motifImage->delete();
+                }
+
+                // Simpan file gambar baru
+                Image::make($file)
+                    ->resize(800, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })
+                    ->encode('webp', 100)
+                    ->save($fullPath);
+
+                // Simpan gambar ke database images
+                $image = TImage::create([
+                    'path' => $path,
+                ]);
+
+                // Tambahkan relasi produk dengan gambar
+                $product->images()->attach($image->id, [
+                    'motif' => true
+                ]);
             }
 
             $product->update($data);
