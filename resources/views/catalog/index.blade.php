@@ -11,7 +11,7 @@
         .slider-track {
             display: flex;
             width: max-content;
-            animation: scrollLeft 0.5s linear infinite;
+            animation: scrollLeft 60s linear infinite;
         }
 
         .slider-item {
