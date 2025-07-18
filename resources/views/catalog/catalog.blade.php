@@ -454,22 +454,22 @@
 
                 // Carousel utama
                 $('#carousel-product-image').append(`
-            <div class="carousel-item ${activeClass}">
-                <img src="${img}" class="img-fluid d-block mx-auto"
-                    style="
-                        width: 100%;
-                        max-width: 50vw;
-                        height: auto;
-                        max-height: 70vh;
-                        object-fit: contain;
-                    ">
-            </div>
-        `);
+                    <div class="carousel-item ${activeClass}">
+                        <img src="${img}" class="img-fluid d-block mx-auto"
+                            style="
+                                width: 35rem;
+                                max-width: 50vw;
+                                height: auto;
+                                max-height: 70vh;
+                                object-fit: contain;
+                            ">
+                    </div>
+                `);
 
                 // Tambahkan thumbnail
                 $('#thumbnailGallery').append(`
-            <img src="${img}" class="img-thumbnail m-1 thumbnail-image" style="width: 100px; height: 100px; object-fit: cover; cursor: pointer;" data-index="${i}">
-        `);
+                    <img src="${img}" class="img-thumbnail m-1 thumbnail-image" style="width: 5rem; height: 5rem; object-fit: cover; cursor: pointer;" data-index="${i}">
+                `);
             });
 
             // Sembunyikan kontrol jika hanya 1 gambar
