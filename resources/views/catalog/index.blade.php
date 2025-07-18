@@ -84,8 +84,8 @@
             <div class="carousel-inner">
                 @for ($key = 0; $key < 5; $key++)
                     <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                        <img src="{{ asset('dist/img/slider/' . ($key + 1) . '.webp') }}" class="d-block w-100 img-fluid"
-                            alt="{{ 'Slide ' . ($key + 1) }}">
+                        <img src="{{ asset('dist/img/slider/' . ($key + 1) . '.webp') }}?v{{ time() }}"
+                            class="d-block w-100 img-fluid" alt="{{ 'Slide ' . ($key + 1) }}">
                     </div>
                 @endfor
             </div>
@@ -97,14 +97,14 @@
         <div class="slider-track">
             @foreach ($products as $product)
                 <div class="slider-item">
-                    <img src="{{ asset('storage/' . $product->photo) }}" alt="Product" />
+                    <img src="{{ asset('storage/' . $product->photo) }}?v{{ time() }}" alt="Product" />
                 </div>
             @endforeach
 
             {{-- Duplicate untuk looping tak henti --}}
             @foreach ($products as $product)
                 <div class="slider-item">
-                    <img src="{{ asset('storage/' . $product->photo) }}" alt="Product" />
+                    <img src="{{ asset('storage/' . $product->photo) }}?v{{ time() }}" alt="Product" />
                 </div>
             @endforeach
         </div>
