@@ -132,6 +132,29 @@
     padding-right: 8px;
 }
 
+.carousel-indicators li {
+    background-color: #ccc; /* dot biasa */
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+#mockup-carousel-indicators {
+    background-color: rgba(0, 0, 0, 0.5); /* transparan */
+    position: absolute;
+    width: 100px;
+    border-radius: 10px;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 2;
+}
+
+.carousel-indicators .active {
+    background-color: #ff8819; /* dot aktif */
+}
+
 /* #product-list {
     max-height: 75vh; 
     overflow-y: auto; 
