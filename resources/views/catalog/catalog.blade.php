@@ -419,6 +419,15 @@
             $carouselIndicators.empty(); // kosongkan indikator
 
             if (paths.length > 0) {
+                // Sembunyikan panah jika hanya ada satu gambar
+                if (paths.length === 1) {
+                    $('#mockup .carousel-control-next').addClass('d-none');
+                    $('#mockup .carousel-control-prev').addClass('d-none');
+                } else {
+                    $('#mockup .carousel-control-next').removeClass('d-none');
+                    $('#mockup .carousel-control-prev').removeClass('d-none');
+                }
+
                 paths.slice(0, 5).forEach((path, i) => {
                     $carouselInner.append(`
                         <div class="carousel-item ${i === 0 ? 'active' : ''}">
@@ -446,13 +455,6 @@
                 $('#mockup').removeClass('d-none');
             } else {
                 $('#mockup').addClass('d-none');
-            }
-
-            if (paths.length <= 1) {
-                const nextArrow = $('#mockup .carousel-control-next');
-                const prevArrow = $('#mockup .carousel-control-prev');
-                nextArrow.addClass('d-none');
-                prevArrow.addClass('d-none');
             }
         }
 
