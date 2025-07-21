@@ -578,10 +578,6 @@ class TProductController extends Controller
                     }
 
                     Image::make($file)
-                        ->resize(1200, null, function ($constraint) {
-                            $constraint->aspectRatio();
-                            $constraint->upsize();
-                        })
                         ->encode('webp', 100)
                         ->save($fullPath);
 
