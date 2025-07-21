@@ -376,6 +376,7 @@
                             class="card-img-top" 
                             alt="${product.name}" 
                             style="
+                                border : 1px solid #ccc;
                                 height: 200px; 
                                 width: 100%; 
                                 object-fit: cover; 
