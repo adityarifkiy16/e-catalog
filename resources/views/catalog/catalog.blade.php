@@ -64,6 +64,7 @@
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="sr-only">Next</span>
                                 </a>
+                                <ol id="mockup-carousel-indicators" class="carousel-indicators"></ol>
                             </div>
                         </div>
                     </div>
@@ -413,10 +414,12 @@
 
             const paths = Array.from(uniquePaths);
             const $carouselInner = $('#mockup-carousel-inner');
+            const $carouselIndicators = $('#mockup-carousel-indicators');
             $carouselInner.empty();
+            $carouselIndicators.empty(); // kosongkan indikator
 
             if (paths.length > 0) {
-                paths.forEach((path, i) => {
+                paths.slice(0, 5).forEach((path, i) => {
                     $carouselInner.append(`
                         <div class="carousel-item ${i === 0 ? 'active' : ''}">
                             <img src="/storage/${path}" id="mockup-image" alt="mockup" 
@@ -432,6 +435,11 @@
                                     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
                                 ">
                         </div>
+                    `);
+
+                    // Tambahkan dot (indikator)
+                    $carouselIndicators.append(`
+                        <li data-target="#carouselExampleControls" data-slide-to="${i}" ${i === 0 ? 'class="active"' : ''}></li>
                     `);
                 });
                 $('#mockup').removeClass('d-none');
