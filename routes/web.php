@@ -70,4 +70,6 @@ Route::middleware("auth")->group(function () {
     Route::get("/products/categories", [App\Http\Controllers\TProductController::class, "getCategoriesByJenis"])->name("products.getCategories");
     Route::get("/products/delete-image", [App\Http\Controllers\TProductController::class, "deleteImage"])->name("products.delete-image");
     Route::get("/products/delete-by-category", [App\Http\Controllers\TProductController::class, "destroyByCategory"])->name("products.destroy-by-category");
+    Route::get("/products/mockup/create", [App\Http\Controllers\TProductController::class, "mockup"])->name("products.mockup");
+    Route::post("/products/mockup", [App\Http\Controllers\TProductController::class, "storeMockup"])->name("products.mockup.store");
 });

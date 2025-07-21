@@ -531,4 +531,77 @@ class TProductController extends Controller
             'message' => 'Produk dalam kategori berhasil dihapus.'
         ]);
     }
+
+    public function mockup()
+    {
+        return view('product.create_mockup');
+    }
+
+    public function storeMockup(Request $request)
+    {
+        $request->validate([
+            'image.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            if ($request->hasFile('image')) {
+                foreach ($request->file('image') as $file) {
+                    $filename = time() . '_' . uniqid() . '.webp';
+                    $folder = 'images/mockup/' . now()->format('Y/m/d');
+                    $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
+                    $path =  $folder . '/' . $filename;
+
+                    $directory = dirname($fullPath);
+                    if (!file_exists($directory)) {
+                        mkdir($directory, 0755, true);
+                    }
+                    $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    $part = explode(' ', $filename);
+                    $kode = implode(' ', array_slice($part, -2)); // hasil: "3D 0001"
+
+                    $product = TProduct::where('code', $kode)->first();
+                    if (!$product) {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'Kode produk tidak ditemukan.'
+                        ], 404);
+                    }
+
+                    foreach ($product->images as $img) {
+                        $oldPath = storage_path('app/public/' . $img->path);
+                        if (file_exists($oldPath)) {
+                            @unlink($oldPath);
+                        }
+                        $product->images()->detach($img->id);
+                        $img->delete();
+                    }
+
+                    Image::make($file)
+                        ->resize(1200, null, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        })
+                        ->encode('webp', 100)
+                        ->save($fullPath);
+
+                    $image = TImage::create([
+                        'path' => $path,
+                    ]);
+
+                    $product->images()->attach($image->id);
+                }
+            }
+            DB::commit();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Mockup berhasil diupload.'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengupload mockup.'
+            ], 500);
+        }
+    }
 }
