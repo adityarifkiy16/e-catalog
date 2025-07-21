@@ -425,7 +425,8 @@
                             <img src="/storage/${path}" id="mockup-image" alt="mockup" 
                                 class="img-fluid w-100 rounded-lg d-block mx-auto"
                                 style="
-                                    width: 100%;                  
+                                    width: 100%;  
+                                    height: 70vh;                
                                     aspect-ratio: 16 / 9;      
                                     object-fit: cover;        
                                     object-position: center 75%;   
