@@ -6,16 +6,35 @@ use App\Models\MJenis;
 use App\Models\MCategories;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use Yajra\DataTables\Facades\DataTables;
 
 class MCategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $arr['categories'] = MCategories::all();
-        $arr['jenis'] = MJenis::all();
+        $arr['jenises'] = MJenis::all();
+        if ($request->ajax()) {
+            $query = MCategories::with('jenis')->orderBy('id', 'desc');
+            if ($request->has('filter')) {
+                $query = $query->where('jenis_id', $request->filter);
+            }
+            if ($request->has('search') && $request->search['value'] !== null) {
+                $search = $request->search['value'];
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', '%' . $search . '%');
+                });
+            }
+            return DataTables::of($query)
+                ->addIndexColumn()
+                ->addColumn('jenis', function ($row) {
+                    return $row->jenis ? $row->jenis->name : '-';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
         return view('categories.index', $arr);
     }
 
