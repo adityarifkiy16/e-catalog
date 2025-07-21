@@ -422,13 +422,14 @@
                             <img src="/storage/${path}" id="mockup-image" alt="mockup" 
                                 class="img-fluid w-100 rounded-lg d-block mx-auto"
                                 style="
-                                    max-width: 100%;
-                                    max-height: 80vh;
-                                    width: auto;
-                                    height: auto;
-                                    object-fit: cover;
-                                    margin: 0 auto;
-                                    display: block; 
+                                    width: 100%;                  
+                                    aspect-ratio: 16 / 9;      
+                                    object-fit: cover;        
+                                    object-position: center 75%;   
+                                    display: block;
+                                    margin: 0 auto;          
+                                    border-radius: 8px;        
+                                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
                                 ">
                         </div>
                     `);
