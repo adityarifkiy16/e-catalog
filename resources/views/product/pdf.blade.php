@@ -50,37 +50,34 @@
     </style>
 </head>
 
-<body>
-    <table style="height: 100%; width: 100%;">
+<body
+    style="margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center; font-family: Arial, sans-serif;">
+
+    <table style="width: 100%; max-width: 1000px; border-collapse: collapse;">
         <tr>
-            <td align="center" valign="top" colspan="2">
-                <img src="{{ $product->converted_photo }}" alt="{{ $product->code }}">
+            <!-- Kolom Kiri: Mockup -->
+            <td align="center" width="100%" valign="middle">
+                <img src="{{ $product->converted_photo }}" alt="{{ $product->code }}"
+                    style="max-width: 100%; height: auto; display: block;">
             </td>
-        </tr>
-        <tr>
-            <td width="90%" align="left" valign="middle" style="padding: 10px;">
-                <h1 style="margin: 0;"><strong>{{ $product->code }}</strong></h1>
-                <p style="margin-top: 10px; text-align: left;" class="uppercase">
-                    <span style="font-weight: bold;">Kategori:</span>
-                    {{ $product->category->name ?? 'Tanpa Kategori' }}
-                </p>
-                <p style="margin-top: 10px; text-align: left;">
-                    <span style="font-weight: bold;" class="uppercase">Ukuran:</span>
-                    3mm
-                </p>
-                <p style="margin-top: 10px; text-align: left;">
-                    <span style="font-weight: bold;" class="uppercase">Panjang:</span>
-                    20x20x20
-                </p>
-            </td>
-            <td width="23%" align="right" valign="top" style="padding: 10px;">
-                <img src="{{ $product->converted_photo2 }}" alt="{{ $product->code }}">
+
+            <!-- Kolom Kanan: Motif + Informasi -->
+            <td width="50%" valign="middle" align="center">
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <img src="{{ $product->converted_photo2 }}" alt="{{ $product->code }}"
+                        style="width: 50%; height: auto; margin-bottom: 10px;">
+                    <h1 style="margin: 10px 0; font-size: 24px;"><strong>{{ $product->code }}</strong></h1>
+                    <p style="margin: 2px 0;"><strong>Kategori:</strong>
+                        {{ $product->category->name ?? 'Tanpa Kategori' }}</p>
+                    <p style="margin: 2px 0;"><strong>Ukuran:</strong> 3mm</p>
+                    <p style="margin: 2px 0;"><strong>Panjang:</strong> 20x20x20</p>
+                </div>
             </td>
         </tr>
     </table>
 
-
-    <div class="footer">
-        <p>&copy; {{ date('Y') }} Osborn</p>
+    <div class="footer" style="position: absolute; bottom: 10px; width: 100%; text-align: center;">
+        <b>&copy; {{ date('Y') }} Osborn</b>
     </div>
+
 </body>
