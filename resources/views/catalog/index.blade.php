@@ -5,10 +5,6 @@
             background-color: #EAE4D5;
         }
 
-        footer {
-            background-color: #EAE4D5 !important;
-        }
-
         .slider-container {
             overflow: hidden;
             width: 100%;
@@ -230,9 +226,32 @@
                             <a href="tel:08123456789" class="text-decoration-none text-dark">08123456789</a>
                         </li>
                     </ul>
+                </div>
 
-                    <h5 class="text-uppercase mb-3">Follow Us</h5>
-                    <ul class="list-unstyled d-flex">
+                <div class="col-md-5 offset-md-1">
+                    <div class="square-wrapper">
+                        <img src="{{ asset('dist/img/slider/2.webp') }}" alt="contact" class="img-fluid w-100">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+@section('footer')
+    <footer class="text-white py-4 border-top" style="background-color: black">
+        <div class="container">
+            <div class="row justify-content-between align-items-start">
+                <!-- Kiri -->
+                <div class="col-md-6 mb-3">
+                    <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn Logo" height="30" class="mb-2">
+                    <p class="mb-1">support@osborn.id</p>
+                    <p class="mb-0 text-info">Osborn PVC Board | GROUP</p>
+                </div>
+
+                <!-- Kanan -->
+                <div class="col-md-6 text-md-right">
+                    <h5 class="text-uppercase mt-0 mb-3">Follow Us</h5>
+                    <ul class="list-unstyled d-flex justify-content-end">
                         <li>
                             <a href="https://instagram.com/osborn.pvcboard" class="social-link">
                                 <i class="fab fa-instagram"></i>
@@ -254,17 +273,11 @@
                             </a>
                         </li>
                     </ul>
-                </div>
-
-                <div class="col-md-5 offset-md-1">
-                    <div class="square-wrapper">
-                        <img src="{{ asset('dist/img/slider/2.webp') }}" alt="contact" class="img-fluid w-100">
-                    </div>
+                    <p class="mt-5 mb-0">&copy; Osborn. All rights reserved.</p>
                 </div>
             </div>
         </div>
-
-    </div>
+    </footer>
 @endsection
 @push('scripts')
     <script>
