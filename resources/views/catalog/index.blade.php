@@ -1,10 +1,18 @@
 @extends ('layouts.catalog')
 @push('styles')
     <style>
+        body {
+            background-color: #EAE4D5;
+        }
+
+        footer {
+            background-color: #EAE4D5 !important;
+        }
+
         .slider-container {
             overflow: hidden;
             width: 100%;
-            background: #fff;
+            background: #EAE4D5;
             padding: 10px 0;
         }
 
@@ -28,22 +36,13 @@
 
         .contact-btn {
             background-color: #000;
-            color: #fff;
+            color: #EAE4D5;
             padding: 12px 20px;
             font-size: 1.25rem;
             border-radius: 32px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             text-decoration: none;
             transition: all 0.3s ease;
-        }
-
-        .contact-btn i {
-            margin-right: 8px;
-        }
-
-        .contact-btn:hover {
-            background-color: #fff;
-            transform: translateY(-2px);
         }
 
         .square-wrapper {
@@ -77,7 +76,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background-color: #f0f0f0;
+            background-color: #EAE4D5;
             color: #333;
             width: 40px;
             height: 40px;
@@ -89,7 +88,7 @@
 
         .social-link:hover {
             background-color: #000;
-            color: #fff;
+            color: #EAE4D5;
         }
 
 
@@ -177,7 +176,7 @@
         <div class="row justify-content-center">
             @foreach ($jenis as $key => $item)
                 <div class="col-6 col-sm-4 col-md-2 text-center mb-4 product-card" data-id="{{ $item->id }}">
-                    <div class="card border-0 shadow-sm h-100 pointer">
+                    <div class="border-0 h-100 pointer">
                         <img src="{{ asset('dist/img/product/' . $key . '.webp') }}" class="card-img-top p-3"
                             alt="{{ $item->name }}">
                         <div class="card-body p-2">
