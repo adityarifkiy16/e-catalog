@@ -101,11 +101,11 @@
                         </div>
                         <div class="modal-body">
                             <div class="container-fluid">
-                                <div class="row d-flex justify-content-center">
+                                <div class="row d-flex justify-content-center align-items-center">
                                     <div
                                         class="col-md-6 col-12 mb-3 mb-md-0 d-flex align-items-center justify-content-center">
 
-                                        <div id="carouselProduct" class="carousel slide carousel-fade" data-ride="carousel">
+                                        <div id="carouselProduct" class="carousel slide" data-ride="carousel">
                                             <div class="carousel-inner" id="carousel-product-image">
                                                 <!-- Slide gambar akan di-inject lewat JS -->
                                             </div>
@@ -124,14 +124,15 @@
 
                                     <!-- Detail produk - kolom kanan -->
                                     <div class="col-md-6 col-12">
-                                        <div class="product-details">
-                                            <h3 id="modalCode" class="font-weight-bold mb-2 text-dark"></h3>
+                                        <div
+                                            class="product-details d-flex flex-column justify-content-center align-items-center justify-content-md-start ">
+                                            <h3 id="modalCode" class="font-weight-bold mb-2 text-dark order-2"></h3>
 
-                                            <div class="mb-3">
+                                            <div class="mb-3 order-2">
                                                 <span id="modalCategory" class="text-muted text-lowercase"></span>
                                             </div>
 
-                                            <div class="specifications">
+                                            {{-- <div class="specifications order-2">
                                                 <div class="spec-item d-flex align-items-center mb-2">
                                                     <i class="fas fa-ruler mr-2 text-muted"></i>
                                                     <span id="modalUkuran" class="text-dark"> Ukuran: 3mm</span>
@@ -140,20 +141,20 @@
                                                     <i class="fas fa-arrows-alt mr-2 text-muted"></i>
                                                     <span id="modalPanjang" class="text-dark"> Panjang: 5X20X20</span>
                                                 </div>
-                                            </div>
+                                            </div> --}}
 
                                             <!-- Tambahan elemen untuk responsif -->
-                                            <div class="mt-4 d-flex flex-wrap gap-2">
-                                                <a class="btn btn-sm btn-outline-secondary modalDownload"
+                                            <div class="mt-2 d-flex flex-wrap gap-2 order-2">
+                                                <a class="btn btn-md btn-outline-secondary modalDownload"
                                                     id="modalDownload" href="#" target="_blank">
                                                     <i class="fas fa-download mr-1"></i> Download as PDF
                                                 </a>
                                             </div>
 
                                             <!-- Tambahan thumbnail gambar -->
-                                            <div class="mt-4">
-                                                <h6 class="font-weight-bold mb-2">Preview Image</h6>
-                                                <div id="thumbnailGallery" class="d-flex flex-wrap gap-2">
+                                            <div class="my-4 order-1 order-md-2">
+                                                <div id="thumbnailGallery"
+                                                    class="d-flex flex-wrap gap-2 align-items-center justify-content-center justify-content-md-start">
                                                     <!-- Foto kecil akan di-inject lewat JS -->
                                                 </div>
                                             </div>
