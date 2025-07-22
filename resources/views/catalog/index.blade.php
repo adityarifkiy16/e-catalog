@@ -117,20 +117,21 @@
     <!-- Carousel Content -->
     <div class="container-fluid p-0 mb-2 rounded">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                @for ($key = 0; $key < 5; $key++)
+                    <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                        <img src="{{ asset('dist/img/slider/' . ($key + 1) . '.webp') }}?v{{ time() }}"
+                            class="d-block w-100 img-fluid" alt="{{ 'Slide ' . ($key + 1) }}"
+                            style="object-fit: cover;height: 70vh;">
+                    </div>
+                @endfor
+            </div>
             <ol class="carousel-indicators" id="mockup-carousel-indicators">
                 @for ($key = 0; $key < 5; $key++)
                     <li data-target="#carouselExampleIndicators" data-slide-to="{{ $key }}"
                         class="{{ $key == 0 ? 'active' : '' }}"></li>
                 @endfor
             </ol>
-            <div class="carousel-inner">
-                @for ($key = 0; $key < 5; $key++)
-                    <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                        <img src="{{ asset('dist/img/slider/' . ($key + 1) . '.webp') }}?v{{ time() }}"
-                            class="d-block w-100 img-fluid" alt="{{ 'Slide ' . ($key + 1) }}">
-                    </div>
-                @endfor
-            </div>
         </div>
     </div>
 
