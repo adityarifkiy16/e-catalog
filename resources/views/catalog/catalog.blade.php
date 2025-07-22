@@ -50,7 +50,7 @@
                 <div id="mockup" class="d-none">
                     <div class="row mb-3">
                         <div class="col-12">
-                            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                            <div id="carouselExampleControls" class="carousel slide carousel-fade" data-ride="carousel">
                                 <div class="carousel-inner" id="mockup-carousel-inner">
                                     <!-- Slide gambar akan di-inject lewat JS -->
                                 </div>
@@ -101,11 +101,10 @@
                         <div class="modal-body">
                             <div class="container-fluid">
                                 <div class="row d-flex justify-content-center">
-                                    <!-- Gambar produk - kolom kiri -->
                                     <div
                                         class="col-md-6 col-12 mb-3 mb-md-0 d-flex align-items-center justify-content-center">
 
-                                        <div id="carouselProduct" class="carousel slide" data-ride="carousel">
+                                        <div id="carouselProduct" class="carousel slide carousel-fade" data-ride="carousel">
                                             <div class="carousel-inner" id="carousel-product-image">
                                                 <!-- Slide gambar akan di-inject lewat JS -->
                                             </div>

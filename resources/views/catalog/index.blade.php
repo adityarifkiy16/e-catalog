@@ -186,7 +186,7 @@
         </div>
 
         <!-- About -->
-        <div class="container mt-4">
+        <div class="container mt-5">
             <div class="row align-items-center justify-content-center">
                 <!-- Gambar -->
                 <div class="col-md-5 mb-3 mb-md-0">
@@ -244,8 +244,8 @@
             <div class="row justify-content-center align-items-center justify-content-md-between align-items-md-start">
                 <!-- Kiri -->
                 <div class="col-md-6 mb-3 text-center text-md-left">
-                    <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn Logo" height="30" class="mb-2">
-                    <p class="mb-1">support@osborn.id</p>
+                    <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn Logo" height="30" class="mb-4">
+                    <p class="mb-2 h5">support@osborn.id</p>
                     <p class="mb-0 text-muted">Osborn PVC Board | GROUP</p>
                 </div>
 
