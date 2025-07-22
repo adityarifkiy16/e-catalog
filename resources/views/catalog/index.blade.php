@@ -246,7 +246,7 @@
                 <div class="col-md-6 mb-3 text-center text-md-left">
                     <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn Logo" height="30" class="mb-2">
                     <p class="mb-1">support@osborn.id</p>
-                    <p class="mb-0 text-dark">Osborn PVC Board | GROUP</p>
+                    <p class="mb-0 text-muted">Osborn PVC Board | GROUP</p>
                 </div>
 
                 <!-- Kanan -->
@@ -274,7 +274,9 @@
                             </a>
                         </li>
                     </ul>
-                    <p class="mt-5 mb-0">&copy; Osborn. All rights reserved.</p>
+                    <p class="mt-5 mb-1">&copy; 2025 Osborn. All rights reserved.</p>
+                    <span class="text-muted">Updated: 22 Jul 2025 | v1.0</span>
+
                 </div>
             </div>
         </div>
