@@ -480,7 +480,7 @@ class TProductController extends Controller
                     $source = storage_path("app/public/$relativePath");
 
                     Image::make($source)
-                        ->resize($key === 'mockup' ? 1200 : 100, null, function ($constraint) {
+                        ->resize($key === 'mockup' ? 1200 : 200, null, function ($constraint) {
                             $constraint->aspectRatio();
                             $constraint->upsize();
                         })
