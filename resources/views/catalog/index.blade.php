@@ -241,18 +241,18 @@
 @section('footer')
     <footer class="text-white py-4 border-top" style="background-color: black">
         <div class="container">
-            <div class="row justify-content-between align-items-start">
+            <div class="row justify-content-center align-items-center justify-content-md-between align-items-md-start">
                 <!-- Kiri -->
-                <div class="col-md-6 mb-3">
+                <div class="col-md-6 mb-3 text-center text-md-left">
                     <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn Logo" height="30" class="mb-2">
                     <p class="mb-1">support@osborn.id</p>
-                    <p class="mb-0 text-info">Osborn PVC Board | GROUP</p>
+                    <p class="mb-0 text-dark">Osborn PVC Board | GROUP</p>
                 </div>
 
                 <!-- Kanan -->
-                <div class="col-md-6 text-md-right">
+                <div class="col-md-6 text-md-right text-center">
                     <h5 class="text-uppercase mt-0 mb-3">Follow Us</h5>
-                    <ul class="list-unstyled d-flex justify-content-start justify-content-md-end">
+                    <ul class="list-unstyled d-flex justify-content-center justify-content-md-end">
                         <li>
                             <a href="https://instagram.com/osborn.pvcboard" class="social-link">
                                 <i class="fab fa-instagram"></i>
