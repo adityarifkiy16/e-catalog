@@ -58,7 +58,7 @@
             <!-- Kolom Kiri: Mockup -->
             <td align="center" width="100%" valign="middle">
                 <img src="{{ $product->converted_photo }}" alt="{{ $product->code }}"
-                    style="max-width: 100%; height: auto; display: block;">
+                    style="max-width: 80vh; height: auto; display: block;">
             </td>
 
             <!-- Kolom Kanan: Motif + Informasi -->
