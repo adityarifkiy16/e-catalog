@@ -46,6 +46,53 @@
             transform: translateY(-2px);
         }
 
+        .square-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 100%;
+            overflow: hidden;
+            border-radius: 0.25rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        .square-wrapper img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .social-icons {
+            padding: 0;
+            margin: 0;
+        }
+
+        .social-icons li {
+            list-style: none;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
+            color: #333;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            background-color: #000;
+            color: #fff;
+        }
+
+
         @keyframes scrollLeft {
             0% {
                 transform: translateX(0%);
@@ -75,7 +122,7 @@
     <!-- Carousel Content -->
     <div class="container-fluid p-0 mb-2 rounded">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
+            <ol class="carousel-indicators" id="mockup-carousel-indicators">
                 @for ($key = 0; $key < 5; $key++)
                     <li data-target="#carouselExampleIndicators" data-slide-to="{{ $key }}"
                         class="{{ $key == 0 ? 'active' : '' }}"></li>
@@ -114,9 +161,8 @@
     <!-- Main Content -->
     <div class="container my-5">
         <div class="text-center mb-5">
-            <h1 class="display-5 display-md-4 display-lg-3 font-weight-bold mb-5">Welcome to <a href="https://osborn.id"
-                    target="_blank">Osborn</a>
-                Catalog</h1>
+            <h1 class="display-5 display-md-4 display-lg-3 font-weight-bold mb-3 text-capitalize">Discover Our Collections
+            </h1>
             <h4 class="font-weight-bold text-dark mb-2">
                 To help you visualize the image pack,<br>
                 we have separated it into four different products
@@ -142,6 +188,83 @@
                 </div>
             @endforeach
         </div>
+
+        <!-- About -->
+        <div class="container mt-4">
+            <div class="row align-items-center justify-content-center">
+                <!-- Gambar -->
+                <div class="col-md-5 mb-3 mb-md-0">
+                    <div class="square-wrapper">
+                        <img src="{{ asset('dist/img/slider/1.webp') }}" alt="about" class="img-fluid w-100">
+                    </div>
+                </div>
+
+                <!-- Teks -->
+                <div class="col-md-6 offset-md-1">
+                    <span class="text-muted text-uppercase">Crafted for Your Space</span>
+                    <h1 class="font-weight-bold mb-3">Unleash Your Design Vision with Over 70 Premium Motifs</h1>
+                    <ul class="list-styled">
+                        <li>70+ elegant and exclusive motifs</li>
+                        <li>Durable, lightweight, and easy-to-install material</li>
+                        <li>Perfect for any interior style</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="container mt-4">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-md-5 mb-3 mb-md-0">
+                    <span class="text-muted text-uppercase small">Ready to Get Started?</span>
+                    <h1 class="font-weight-bold mb-3">Contact Us</h1>
+
+                    <ul class="list-unstyled mb-4">
+                        <li class="mb-2">
+                            <strong>Support:</strong>
+                            <a href="mailto:{{ config('mail.from.address') }}" class="text-decoration-none text-dark">
+                                {{ config('mail.from.address') }}
+                            </a>
+                        </li>
+                        <li>
+                            <strong>Call:</strong>
+                            <a href="tel:08123456789" class="text-decoration-none text-dark">08123456789</a>
+                        </li>
+                    </ul>
+
+                    <h5 class="text-uppercase mb-3">Follow Us</h5>
+                    <ul class="list-unstyled d-flex">
+                        <li>
+                            <a href="https://instagram.com/osborn.pvcboard" class="social-link">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/@osborn.pvcboard" class="social-link ml-2">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://facebook.com/profile.php?id=61560927238237" class="social-link ml-2">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://tiktok.com/@osborn.pvcboard?_t=8nISbYs42Fc&_r=1" class="social-link ml-2">
+                                <i class="fab fa-tiktok"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-5 offset-md-1">
+                    <div class="square-wrapper">
+                        <img src="{{ asset('dist/img/slider/2.webp') }}" alt="contact" class="img-fluid w-100">
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 @endsection
 @push('scripts')
