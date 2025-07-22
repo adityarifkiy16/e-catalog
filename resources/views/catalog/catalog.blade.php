@@ -35,7 +35,8 @@
             <div class="col-md-10 col-12 order-2 order-md-1 center-content" id="catalog-col">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="d-flex justify-content-start align-items-center mb-3 flex-column-reverse flex-md-row ">
+                        <div
+                            class="d-flex justify-content-center justify-content-md-start align-items-center mb-3 flex-row ">
                             <a href="#" class="btn btn-brown d-none mb-2 order-md-2 order-1" id="btn-download">
                                 <i class="fa fa-file-download"></i> Download
                             </a>
