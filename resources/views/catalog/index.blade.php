@@ -2,13 +2,13 @@
 @push('styles')
     <style>
         body {
-            background-color: #EAE4D5;
+            background-color: #FFFFFF;
         }
 
         .slider-container {
             overflow: hidden;
             width: 100%;
-            background: #EAE4D5;
+            background: #FFFFFF;
             padding: 10px 0;
         }
 
@@ -32,7 +32,7 @@
 
         .contact-btn {
             background-color: #000;
-            color: #EAE4D5;
+            color: #FFFFFF;
             padding: 12px 20px;
             font-size: 1.25rem;
             border-radius: 32px;
@@ -72,7 +72,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background-color: #EAE4D5;
+            background-color: #FFFFFF;
             color: #333;
             width: 40px;
             height: 40px;
@@ -84,7 +84,7 @@
 
         .social-link:hover {
             background-color: #000;
-            color: #EAE4D5;
+            color: #FFFFFF;
         }
 
 
@@ -251,7 +251,7 @@
                 <!-- Kanan -->
                 <div class="col-md-6 text-md-right">
                     <h5 class="text-uppercase mt-0 mb-3">Follow Us</h5>
-                    <ul class="list-unstyled d-flex justify-content-end">
+                    <ul class="list-unstyled d-flex justify-content-start justify-content-md-end">
                         <li>
                             <a href="https://instagram.com/osborn.pvcboard" class="social-link">
                                 <i class="fab fa-instagram"></i>
