@@ -32,6 +32,9 @@ class MCategoriesController extends Controller
                 ->addColumn('jenis', function ($row) {
                     return $row->jenis ? $row->jenis->name : '-';
                 })
+                ->addColumn('product_count', function ($row) {
+                    return $row->products()->count();
+                })
                 ->rawColumns(['action'])
                 ->make(true);
         }

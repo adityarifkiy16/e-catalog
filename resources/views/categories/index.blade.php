@@ -46,8 +46,9 @@
                         <thead>
                             <tr>
                                 <th style="width: 0.5rem;">No</th>
-                                <th>Nama Kategory</th>
+                                <th>Nama Kategori</th>
                                 <th>Jenis</th>
+                                <th>Jumlah Produk</th>
                                 <th>Foto</th>
                                 <th style="text-align: end; width: 2rem;">Action</th>
                             </tr>
@@ -162,6 +163,10 @@
                     },
                     {
                         data: 'jenis',
+                        orderable: false,
+                    },
+                    {
+                        data: 'product_count',
                         orderable: false,
                     },
                     {
