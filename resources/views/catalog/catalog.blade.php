@@ -478,11 +478,11 @@
                     <div class="carousel-item ${activeClass}">
                         <img src="${img}" class="img-fluid d-block mx-auto"
                             style="
-                                width: 35rem;
-                                max-width: 50vw;
-                                height: 35rem;
-                                max-height: 70vh;
+                                width: 100%;
+                                max-width: 400px;
+                                aspect-ratio: 1 / 1;
                                 object-fit: cover;
+                                border-radius: 8px;
                             ">
                     </div>
                 `);
