@@ -291,11 +291,12 @@
             const phone = '6289616110208';
 
             const message =
-                `Halo Admin,%0A` +
-                `Saya tertarik dengan produk berikut:%0A` +
-                `• Kode Produk: *${productName}*%0A` +
-                `• Jenis: *${productJenis}*%0A` +
-                `• Kategori: *${productCategory}*%0A%0A` +
+                `Halo Admin,\n` +
+                `Saya tertarik dengan produk berikut:\n` +
+                `\n` +
+                `• Kode Produk: *${productName}*\n` +
+                `• Jenis: *${productJenis}*\n` +
+                `• Kategori: *${productCategory}*\n\n` +
                 `Apakah produk ini masih tersedia? Terima kasih.`;
 
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
