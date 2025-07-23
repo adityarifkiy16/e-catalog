@@ -143,14 +143,22 @@
                                                 </div>
                                             </div> --}}
 
-                                            <!-- Tambahan elemen untuk responsif -->
-                                            <div class="mt-2 d-flex flex-wrap gap-2 order-2">
-                                                <a class="btn btn-md btn-outline-secondary modalDownload"
-                                                    id="modalDownload" href="#" target="_blank">
-                                                    <i class="fas fa-download mr-1"></i> Download as PDF
-                                                </a>
-                                            </div>
+                                            <div class="d-flex flex-row order-2">
+                                                <div class="mt-2 d-flex flex-wrap">
+                                                    <a class="btn btn-md btn-outline-primary modalDownload"
+                                                        id="modalDownload" href="#" target="_blank">
+                                                        <i class="fas fa-arrow-down"></i>
+                                                    </a>
+                                                </div>
 
+                                                <div class="mt-2 d-flex flex-wrap ml-2">
+                                                    <a class="btn btn-md btn-outline-success modalContact"
+                                                        id="modalContact" href="#" target="_blank">
+                                                        <i class="fas fa-cart-plus"></i>
+                                                    </a>
+                                                </div>
+
+                                            </div>
                                             <!-- Tambahan thumbnail gambar -->
                                             <div class="my-4 order-1 order-md-2">
                                                 <div id="thumbnailGallery"
@@ -274,6 +282,27 @@
 
 
         });
+
+        $(document).on('click', '.modalContact', function(e) {
+            e.preventDefault();
+            const productJenis = $(this).data('jenis');
+            const productCategory = $(this).data('category');
+            const productName = $(this).data('code');
+            const phone = '6289616110208';
+
+            const message =
+                `Halo Admin,%0A` +
+                `Saya tertarik dengan produk berikut:%0A` +
+                `• Kode Produk: *${productName}*%0A` +
+                `• Jenis: *${productJenis}*%0A` +
+                `• Kategori: *${productCategory}*%0A%0A` +
+                `Apakah produk ini masih tersedia? Terima kasih.`;
+
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+            window.open(url, '_blank');
+        });
+
 
         $(document).on('click', '.modalDownload', function(e) {
             e.preventDefault();
@@ -647,6 +676,9 @@
             $('#modalCategory').text(jenis + ' / ' + category);
             $('#modalDownload').data('id', $(this).data('id'));
             $('#productModal').modal('show');
+            $('#modalContact').data('jenis', jenis);
+            $('#modalContact').data('category', category);
+            $('#modalContact').data('code', code);
         });
     </script>
 @endpush
