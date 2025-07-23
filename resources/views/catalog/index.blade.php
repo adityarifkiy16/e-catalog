@@ -189,14 +189,14 @@
         <div class="container mt-5">
             <div class="row align-items-center justify-content-center">
                 <!-- Gambar -->
-                <div class="col-md-5 mb-3 mb-md-0">
+                <div class="col-md-5 mb-3 mb-md-0 animate__animated animate__faster animate__fadeInLeft">
                     <div class="square-wrapper">
                         <img src="{{ asset('dist/img/slider/1.webp') }}" alt="about" class="img-fluid w-100">
                     </div>
                 </div>
 
                 <!-- Teks -->
-                <div class="col-md-6 offset-md-1">
+                <div class="col-md-6 offset-md-1 animate__animated animate__faster animate__fadeInRight">
                     <span class="text-muted text-uppercase">Crafted for Your Space</span>
                     <h1 class="font-weight-bold mb-3">Unleash Your Design Vision with Over 70 Premium Motifs</h1>
                     <ul class="list-styled">
@@ -210,7 +210,8 @@
 
         <!-- Contact -->
         <div class="container mt-4">
-            <div class="row align-items-center justify-content-center">
+            <div
+                class="row align-items-center justify-content-center animate__animated animate__faster animate__fadeInLeft">
                 <div class="col-md-5 mb-3 mb-md-0">
                     <span class="text-muted text-uppercase small">Ready to Get Started?</span>
                     <h1 class="font-weight-bold mb-3">Contact Us</h1>
@@ -229,7 +230,7 @@
                     </ul>
                 </div>
 
-                <div class="col-md-5 offset-md-1">
+                <div class="col-md-5 offset-md-1 animate__animated animate__faster animate__fadeInRight">
                     <div class="square-wrapper">
                         <img src="{{ asset('dist/img/slider/2.webp') }}" alt="contact" class="img-fluid w-100">
                     </div>
@@ -239,7 +240,8 @@
     </div>
 @endsection
 @section('footer')
-    <footer class="text-white py-4 border-top" style="background-color: black">
+    <footer class="text-white py-4 border-top animate__animated animate__faster animate__fadeInUp"
+        style="background-color: black">
         <div class="container">
             <div class="row justify-content-center align-items-center justify-content-md-between align-items-md-start">
                 <!-- Kiri -->
