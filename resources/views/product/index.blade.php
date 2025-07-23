@@ -42,8 +42,8 @@
                             <a href="{{ route('products.create') }}" class="btn btn-success ml-2">
                                 <i class="fa fa-plus"></i> Tambah Produk
                             </a>
-                            <a href="{{ route('products.mockup') }}" class="btn btn-success ml-2">
-                                <i class="fa fa-plus"></i> Upload Mockup
+                            <a href="{{ route('products.bulk.create') }}" class="btn btn-primary ml-2">
+                                <i class="fa fa-plus"></i> Bulk Upload Motif / Mockup
                             </a>
                         @endif
                     </div>

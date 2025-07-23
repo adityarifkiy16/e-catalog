@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::get("/catalog", [App\Http\Controllers\CatalogController::class, "catalog"])->name("catalog");
 Route::get("/", [App\Http\Controllers\CatalogController::class, "index"])->name("catalog.index");
 
+// Delete unused images
+Route::get("/delete-unused-image", [App\Http\Controllers\TProductController::class, "deleteUnusedImages"])->name("delete-unused-image");
+
 
 // DOWNLOAD PDF
 Route::get("/catalog/pdf", [App\Http\Controllers\TProductController::class, "downloadPdf"])->name("catalog.pdf");
@@ -70,6 +73,6 @@ Route::middleware("auth")->group(function () {
     Route::get("/products/categories", [App\Http\Controllers\TProductController::class, "getCategoriesByJenis"])->name("products.getCategories");
     Route::get("/products/delete-image", [App\Http\Controllers\TProductController::class, "deleteImage"])->name("products.delete-image");
     Route::get("/products/delete-by-category", [App\Http\Controllers\TProductController::class, "destroyByCategory"])->name("products.destroy-by-category");
-    Route::get("/products/mockup/create", [App\Http\Controllers\TProductController::class, "mockup"])->name("products.mockup");
-    Route::post("/products/mockup", [App\Http\Controllers\TProductController::class, "storeMockup"])->name("products.mockup.store");
+    Route::get("/products/bulk-upload/create", [App\Http\Controllers\TProductController::class, "bulkUpload"])->name("products.bulk.create");
+    Route::post("/products/bulk-upload", [App\Http\Controllers\TProductController::class, "storeBulkUpload"])->name("products.bulk.store");
 });
