@@ -589,6 +589,7 @@ class TProductController extends Controller
                         $product->images()->detach($motifImage->id);
                         $motifImage->delete();
                     }
+                    $processedMotifProducts[] = $product->id;
                 }
 
 
