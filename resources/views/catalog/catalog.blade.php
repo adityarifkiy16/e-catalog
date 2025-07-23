@@ -92,16 +92,16 @@
 
             <!-- Modal -->
             <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content">
-                        <div class="modal-header">
+                        <div class="modal-header text-white" style="background: #000">
                             <h5 class="modal-title font-weight-bold" id="productModalLabel">Detail</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
                                 <span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
                             <div class="container-fluid">
-                                <div class="row d-flex justify-content-center align-items-center">
+                                <div class="row d-flex flex-row justify-content-center align-items-center">
                                     <div
                                         class="col-md-6 col-12 mb-3 mb-md-0 d-flex align-items-center justify-content-center">
 
@@ -129,38 +129,25 @@
                                             <h3 id="modalCode" class="font-weight-bold mb-2 text-dark order-2"></h3>
 
                                             <div class="mb-3 order-2">
-                                                <span id="modalCategory" class="text-muted text-lowercase"></span>
+                                                <span id="modalCategory" class="text-muted text-uppercase"></span>
                                             </div>
 
-                                            {{-- <div class="specifications order-2">
+                                            <div class="specifications order-2">
                                                 <div class="spec-item d-flex align-items-center mb-2">
-                                                    <i class="fas fa-ruler mr-2 text-muted"></i>
-                                                    <span id="modalUkuran" class="text-dark"> Ukuran: 3mm</span>
+                                                    <i class="fas fa-cubes mr-2 text-muted"></i>
+                                                    <span id="modalUkuran" class="text-dark"> Thickness: 3mm</span>
                                                 </div>
                                                 <div class="spec-item d-flex align-items-center mb-2">
                                                     <i class="fas fa-arrows-alt mr-2 text-muted"></i>
-                                                    <span id="modalPanjang" class="text-dark"> Panjang: 5X20X20</span>
+                                                    <span id="modalPanjang" class="text-dark"> Size: 5X20X20</span>
                                                 </div>
-                                            </div> --}}
+                                            </div>
 
                                             <div class="d-flex flex-row order-2">
-                                                <div class="mt-2 d-flex flex-wrap">
-                                                    <a class="btn btn-md btn-outline-primary modalDownload"
-                                                        id="modalDownload" href="#" target="_blank">
-                                                        <i class="fas fa-arrow-down"></i>
-                                                    </a>
-                                                </div>
-
-                                                <div class="mt-2 d-flex flex-wrap ml-2">
-                                                    <a class="btn btn-md btn-outline-success modalContact"
-                                                        id="modalContact" href="#" target="_blank">
-                                                        <i class="fas fa-cart-plus"></i>
-                                                    </a>
-                                                </div>
 
                                             </div>
                                             <!-- Tambahan thumbnail gambar -->
-                                            <div class="my-4 order-1 order-md-2">
+                                            <div class="my-4 order-1 order-md-1">
                                                 <div id="thumbnailGallery"
                                                     class="d-flex flex-wrap gap-2 align-items-center justify-content-center justify-content-md-start">
                                                     <!-- Foto kecil akan di-inject lewat JS -->
@@ -169,6 +156,22 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div
+                            class="modal-footer d-flex justify-content-center align-items-center justify-content-md-end align-items-md-center">
+                            <div class="mt-2 d-flex flex-wrap">
+                                <a class="btn btn-md modalDownload text-white" style="background: #000"
+                                    id="modalDownload" href="#" target="_blank">
+                                    <i class="fas fa-arrow-down mr-2"></i>Download
+                                </a>
+                            </div>
+
+                            <div class="mt-2 d-flex flex-wrap ml-2">
+                                <a class="btn btn-md btn-outline-secondary modalContact" id="modalContact" href="#"
+                                    target="_blank">
+                                    <i class="fas fa-cart-plus mr-2"></i>Order
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -674,6 +677,7 @@
             const jenis = $(this).data('jenis');
             renderCarouselProduct(images);
             $('#modalCode').text(code);
+            $('#productModalLabel').text(code);
             $('#modalCategory').text(jenis + ' / ' + category);
             $('#modalDownload').data('id', $(this).data('id'));
             $('#productModal').modal('show');
