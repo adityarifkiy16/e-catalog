@@ -24,11 +24,18 @@
                         <i>MOCKUP KODE PRODUK, contoh: <b>MOCKUP 3D 0001</b></i>
                     </div>
 
-                    <form action="{{ route('products.mockup.store') }}" method="POST" id="form-tambah"
+                    <form action="{{ route('products.bulk.store') }}" method="POST" id="form-tambah"
                         enctype="multipart/form-data">
                         @csrf
                         @method('POST')
                         <div class="form-group">
+                            <label for="type" class="fas fa-type"> Tipe</label>
+                            <select class="form-control" name="type" id="type">
+                                <option value="">Pilih Tipe</option>
+                                <option value="motif">Motif</option>
+                                <option value="mockup">Mockup</option>
+                            </select>
+
                             <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar</label>
                             <div class="dropzone" id="image-dropzone"></div>
 
@@ -71,14 +78,14 @@
 
 
             new Dropzone("#image-dropzone", {
-                url: "{{ route('products.mockup.store') }}",
-                paramName: "image", // matches your backend expectation
-                maxFilesize: 2, // MB
+                url: "{{ route('products.bulk.store') }}",
+                paramName: "image",
+                maxFilesize: 2,
                 acceptedFiles: "image/jpeg,image/png,image/jpg,image/gif,image/svg,image/webp",
                 addRemoveLinks: false,
-                autoProcessQueue: false, // important for manual submit
+                autoProcessQueue: false,
                 parallelUploads: 50,
-                uploadMultiple: true, // send all files in one request
+                uploadMultiple: true,
                 maxFiles: 50,
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -97,8 +104,11 @@
                             dz.processQueue();
                         });
 
+                    this.on("sendingmultiple", function(file, xhr, formData) {
+                        formData.append("type", $('#type').val());
+                    });
+
                     this.on("successmultiple", function(files, response) {
-                        // Handle success response
                         if (response.warning && response.warning.length > 0) {
                             console.log(response.warning);
                             Toast.fire({
@@ -133,7 +143,7 @@
                     this.on("errormultiple", function(files, response) {
                         Toast.fire({
                             icon: 'error',
-                            title: response,
+                            title: response.message,
                             showConfirmButton: false,
                             timer: 1500
                         })
@@ -141,6 +151,9 @@
                         files.forEach(file => {
                             this.removeFile(file);
                         });
+
+                        $("#btn-tambah").prop('disabled', false);
+                        $("#btn-tambah").html('Kirim');
                     });
                 },
             });

@@ -306,9 +306,6 @@ class TProductController extends Controller
 
             $product->update($data);
 
-            // 🔥 Auto delete gambar yang orphan (tidak dipakai produk manapun)
-            $this->deleteUnusedImages();
-
             DB::commit();
 
             return response()->json([
@@ -427,10 +424,10 @@ class TProductController extends Controller
         }
     }
 
-    protected function deleteUnusedImages()
+
+    public function deleteUnusedImages()
     {
         $unusedImages = TImage::doesntHave('product')->get();
-
         foreach ($unusedImages as $image) {
             $filePath = 'public/' . $image->path;
             if (Storage::exists($filePath)) {
@@ -438,7 +435,10 @@ class TProductController extends Controller
             }
 
             $image->delete();
+            return response()->json(['message' => 'Image deleted successfully', 'data' => $image], 200);
         }
+
+        return response()->json(['message' => 'No unused images found'], 404);
     }
 
     public function downloadPdfProduct(Request $request)
@@ -532,42 +532,45 @@ class TProductController extends Controller
         ]);
     }
 
-    public function mockup()
+    public function bulkUpload()
     {
-        return view('product.create_mockup');
+        return view('product.bulk-create');
     }
 
-    public function storeMockup(Request $request)
+    public function storeBulkUpload(Request $request)
     {
         $request->validate([
+            'type' => 'required|in:mockup,motif',
             'image.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         DB::beginTransaction();
         try {
-            if ($request->hasFile('image')) {
-                foreach ($request->file('image') as $file) {
-                    $filename = time() . '_' . uniqid() . '.webp';
-                    $folder = 'images/mockup/' . now()->format('Y/m/d');
-                    $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
-                    $path =  $folder . '/' . $filename;
+            $folder = $request->type == 'mockup' ? 'images/mockup/' . now()->format('Y/m/d') : 'images/motif/' . now()->format('Y/m/d');
+            $fullPath = storage_path('app/public/' . $folder);
 
-                    $directory = dirname($fullPath);
-                    if (!file_exists($directory)) {
-                        mkdir($directory, 0755, true);
-                    }
-                    $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                    $part = explode(' ', $filename);
-                    $kode = implode(' ', array_slice($part, -2)); // hasil: "3D 0001"
+            if (!file_exists($fullPath)) {
+                mkdir($fullPath, 0755, true);
+            }
 
-                    $product = TProduct::where('code', $kode)->first();
-                    if (!$product) {
-                        return response()->json([
-                            'status' => 'error',
-                            'message' => 'Kode produk tidak ditemukan.'
-                        ], 404);
-                    }
+            foreach ($request->file('image') as $file) {
+                $newName = time() . '_' . uniqid() . '.webp';
+                $path =  $folder . '/' . $newName;
 
+                $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $part = explode(' ', $filename);
+                $kode = implode(' ', array_slice($part, -2));
+
+                $product = TProduct::where('code', $kode)->first();
+
+                if (!$product) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => "Kode produk $kode tidak ditemukan."
+                    ], 404);
+                }
+
+                if ($request->type == 'mockup') {
                     foreach ($product->images as $img) {
                         $oldPath = storage_path('app/public/' . $img->path);
                         if (file_exists($oldPath)) {
@@ -576,22 +579,39 @@ class TProductController extends Controller
                         $product->images()->detach($img->id);
                         $img->delete();
                     }
+                } elseif ($request->type == 'motif') {
+                    $motifImage = $product->images->where('motif', true)->first();
+                    if ($motifImage) {
+                        $oldPath = storage_path('app/public/' . $motifImage->path);
+                        if (file_exists($oldPath)) {
+                            @unlink($oldPath);
+                        }
+                        $product->images()->detach($motifImage->id);
+                        $motifImage->delete();
+                    }
+                }
 
-                    Image::make($file)
-                        ->encode('webp', 100)
-                        ->save($fullPath);
 
-                    $image = TImage::create([
-                        'path' => $path,
-                    ]);
 
+                Image::make($file)
+                    ->encode('webp', 100)
+                    ->save($fullPath . '/' . $newName);
+
+
+                $image = TImage::create([
+                    'path' => $path,
+                ]);
+
+                if ($request->type == 'mockup') {
                     $product->images()->attach($image->id);
+                } elseif ($request->type == 'motif') {
+                    $product->images()->attach($image->id, ['motif' => true]);
                 }
             }
             DB::commit();
             return response()->json([
                 'status' => 'success',
-                'message' => 'Mockup berhasil diupload.'
+                'message' => 'berhasil diupload.'
             ]);
         } catch (\Exception $e) {
             DB::rollBack();

@@ -480,9 +480,9 @@
                             style="
                                 width: 35rem;
                                 max-width: 50vw;
-                                height: auto;
+                                height: 35rem;
                                 max-height: 70vh;
-                                object-fit: contain;
+                                object-fit: cover;
                             ">
                     </div>
                 `);
