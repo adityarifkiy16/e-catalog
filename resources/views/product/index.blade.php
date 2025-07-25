@@ -18,35 +18,42 @@
 @section('content')
     <div class="row">
         <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h3 class="h3 font-weight-bold">Product List</h3>
+                        <div class="d-flex justify-content-end align-items-center">
+                            <form action="{{ route('products.index') }}" method="GET">
+                                <div class="d-flex justify-content-between align-items-center ml-2">
+                                    <select id="category-filter" class="custom-select mr-2" name="filter">
+                                        <option value="">All Categories</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}"
+                                                {{ old('category', request()->query('filter')) == $category->id ? 'selected' : '' }}>
+                                                {{ $category->name }} ({{ $category->jenis->name ?? 'Unknown' }})
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <button class="btn btn-secondary" type="submit" id="btn-filter-category"
+                                        style="width: 100px;">
+                                        Filter
+                                    </button>
+                                </div>
+                            </form>
+                            @if ($isAuthenticated && $user->hasPermission('create_products'))
+                                <a href="{{ route('products.create') }}" class="btn btn-success ml-2">
+                                    <i class="fa fa-plus"></i> Tambah
+                                </a>
+                                <a href="{{ route('products.bulk.create') }}" class="btn btn-primary ml-2">
+                                    <i class="fa fa-plus"></i> Upload
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="card card-primary">
                 <div class="card-body table-responsive">
-
-                    <form action="{{ route('products.index') }}" method="GET">
-                        <div class="d-flex justify-content-between align-items-center mb-3 ">
-                            <select id="category-filter" class="custom-select mr-2" name="filter">
-                                <option value="">All Categories</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}"
-                                        {{ old('category', request()->query('filter')) == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name }} ({{ $category->jenis->name ?? 'Unknown' }})
-                                    </option>
-                                @endforeach
-                            </select>
-                            <button class="btn btn-secondary" type="submit" id="btn-filter-category" style="width: 100px;">
-                                Filter
-                            </button>
-                        </div>
-                    </form>
-                    <div class="d-flex justify-content-end align-items-center mb-3">
-                        @if ($isAuthenticated && $user->hasPermission('create_products'))
-                            <a href="{{ route('products.create') }}" class="btn btn-success ml-2">
-                                <i class="fa fa-plus"></i> Tambah Produk
-                            </a>
-                            <a href="{{ route('products.bulk.create') }}" class="btn btn-primary ml-2">
-                                <i class="fa fa-plus"></i> Bulk Upload Motif / Mockup
-                            </a>
-                        @endif
-                    </div>
                     <table id="product-table" class="table table-bordered">
                         <thead>
                             <tr>
