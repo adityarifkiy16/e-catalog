@@ -254,9 +254,15 @@
                 $('#catalog-col').removeClass('center-content');
             }
 
-
-            if ($(window).width() < 768 || selectedJenis == 1) {
+            if ($(window).width() < 768) {
                 $('#filter-container').addClass('d-none');
+
+            }
+
+            if (selectedJenis == 1) {
+                $('#filter-container').addClass('d-none');
+                $('#catalog-col').removeClass('col-md-10');
+                $('#catalog-col').addClass('col-md-12');
             }
 
             $(window).scroll(function() {
