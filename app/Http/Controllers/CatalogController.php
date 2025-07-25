@@ -16,12 +16,13 @@ class CatalogController extends Controller
     {
         return view('catalog.index', [
             'products' => TProduct::with(['category', 'category.jenis', 'images'])
+                ->whereIn('category_id', [33, 34, 35, 36, 37, 38, 39, 40, 41, 42])
                 ->get()
                 ->groupBy(function ($product) {
                     return $product->category->name ?? 'Tanpa Kategori';
                 })
                 ->map(function ($group) {
-                    return $group->random(); // ambil satu random dari tiap kategori
+                    return $group->random();
                 })
                 ->values(),
             'jenis' => MJenis::withCount([
