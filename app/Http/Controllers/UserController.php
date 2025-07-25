@@ -77,7 +77,43 @@ class UserController extends Controller
             'email' => 'nullable|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
             'role_id' => 'required|exists:m_roles,id',
+            'path_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,jfif|max:2048',
         ]);
+
+        $file = $request->file('path_image');
+        $filename = time() . '_' . uniqid() . '.webp';
+        $folder = 'images/users/' . now()->format('Y/m/d');
+        $path = $folder . '/' . $filename;
+        $fullPath = storage_path('app/public/' . $path);
+
+        if (!file_exists(dirname($fullPath))) {
+            mkdir(dirname($fullPath), 0755, true);
+        }
+
+        if ($file) {
+            if ($user->path_image) {
+                $imagePath = storage_path('app/public/' . $user->path_image);
+                if (file_exists($imagePath)) {
+                    @unlink($imagePath);
+                }
+            }
+
+            Image::make($file)
+                ->resize(100, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })
+                ->encode('webp', 100)
+                ->save($fullPath);
+
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => $request->password ? bcrypt($request->password) : $user->password,
+                'role_id' => $request->role_id,
+                'path_image' => $path
+            ]);
+        }
 
         $user->update([
             'name' => $request->name,
