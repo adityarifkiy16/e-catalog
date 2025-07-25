@@ -51,7 +51,6 @@
 
                             <label class="mt-3"><i class="fas fa-user-tag"></i> Role</label>
                             <select class="form-control" name="role_id">
-                                <option value="">Pilih Role</option>
                                 @foreach ($roles as $role)
                                     <option value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : '' }}>
                                         {{ $role->name }}

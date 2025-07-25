@@ -31,32 +31,35 @@ class UserController extends Controller
             'path_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $file = $request->file('path_image');
-        $filename = time() . '_' . uniqid() . '.webp';
-        $folder = 'images/users/' . now()->format('Y/m/d');
-        $path = $folder . '/' . $filename;
-        $fullPath = storage_path('app/public/' . $path);
-
-        if (!file_exists(dirname($fullPath))) {
-            mkdir(dirname($fullPath), 0755, true);
-        }
-
-        \App\Models\User::create([
+        $data = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'role_id' => $request->role_id,
-            'path_image' => $path
-        ]);
+            'role_id' => $request->role_id
+        ];
 
-        Image::make($file)
-            ->resize(100, null, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            })
-            ->encode('webp', 100)
-            ->save($fullPath);
+        if ($request->hasFile('path_image')) {
+            $file = $request->file('path_image');
+            $filename = time() . '_' . uniqid() . '.webp';
+            $folder = 'images/users/' . now()->format('Y/m/d');
+            $path = $folder . '/' . $filename;
+            $fullPath = storage_path('app/public/' . $path);
 
+            if (!file_exists(dirname($fullPath))) {
+                mkdir(dirname($fullPath), 0755, true);
+            }
+
+            Image::make($file)
+                ->resize(100, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })
+                ->encode('webp', 100)
+                ->save($fullPath);
+            $data['path_image'] = $path;
+        }
+
+        \App\Models\User::create($data);
         return response()->json([
             'status' => 'success',
             'message' => 'User created successfully.',
