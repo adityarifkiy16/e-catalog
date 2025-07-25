@@ -56,6 +56,9 @@
                                         {{ $role->name }}</option>
                                 @endforeach
                             </select>
+
+                            <label for="path_image"> <i class="fas fa-image"></i> Gambar</label>
+                            <input type="file" class="form-control" name="path_image">
                         </div>
                         <button class="btn btn-primary mt-3" type="submit">Kirim</button>
                     </form>

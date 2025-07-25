@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MCategories;
 use App\Models\User;
+use App\Models\MCategories;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class UserController extends Controller
 {
     public function index(Request $request)
     {
         $arr['users'] = \App\Models\User::with('role')->get();
-        // dd($arr['users']);
         return view('user.index', $arr);
     }
 
@@ -23,21 +23,39 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-
-        // dd($request);
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'role_id' => 'required|exists:m_roles,id',
+            'path_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        $file = $request->file('path_image');
+        $filename = time() . '_' . uniqid() . '.webp';
+        $folder = 'images/users/' . now()->format('Y/m/d');
+        $path = $folder . '/' . $filename;
+        $fullPath = storage_path('app/public/' . $path);
+
+        if (!file_exists(dirname($fullPath))) {
+            mkdir(dirname($fullPath), 0755, true);
+        }
 
         \App\Models\User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'role_id' => $request->role_id,
+            'path_image' => $path
         ]);
+
+        Image::make($file)
+            ->resize(100, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })
+            ->encode('webp', 100)
+            ->save($fullPath);
 
         return response()->json([
             'status' => 'success',

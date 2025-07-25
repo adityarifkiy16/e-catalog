@@ -58,6 +58,9 @@
                                     </option>
                                 @endforeach
                             </select>
+
+                            <label for="path_image"> <i class="fas fa-image"></i> Gambar</label>
+                            <input type="file" class="form-control" name="path_image">
                         </div>
                         <button class="btn btn-primary mt-3" type="submit">Kirim</button>
                     </form>
@@ -87,13 +90,16 @@
                 console.log("submit");
                 let form = $(this);
                 let url = form.attr('action');
+                let formData = new FormData(this);
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     url: url,
                     type: 'POST',
-                    data: form.serialize(),
+                    contentType: false, // ⬅️ WAJIB
+                    processData: false, // ⬅️ WAJIB
+                    data: formData,
                     success: function(response) {
                         console.log(response);
                         if (response.status == "success") {
