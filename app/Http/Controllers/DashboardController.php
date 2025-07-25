@@ -13,7 +13,7 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $produkPerJenis = TProduct::with('category.jenis')
+        $produkPerJenis = TProduct::with('category.jenis')->whereNull('deleted_at')
             ->get()
             ->groupBy(function ($item) {
                 return $item->category->jenis->name ?? 'Tanpa Jenis';
