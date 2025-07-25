@@ -4,7 +4,7 @@
         <x-breadcrumb :items="[
             ['label' => 'Home', 'url' => route('dashboard')],
             ['label' => 'product', 'url' => route('products.index')],
-            ['label' => 'Upload Mockup'],
+            ['label' => 'Upload Files'],
         ]">
         </x-breadcrumb>
     </div>
@@ -13,23 +13,32 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-maroon">
+            <div class="alert alert-danger mt-2" role="alert">
+                <i class="fas fa-exclamation-triangle mr-1"></i>
+                <strong>Perhatian:</strong> Pastikan gambar anda menggunakan nama file dengan format "JENIS KODE
+                PRODUK"<br>
+                <i>contoh: <b>MOCKUP 3D 0001</b></i>
+            </div>
+            <div class="card card-secondary">
                 <div class="card-header">
-                    <h2 class="card-title">Upload Mockup</h2>
+                    <h3 class="card-title">Upload Files</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="card-body">
-                    <div class="alert alert-danger mt-2" role="alert">
-                        <strong>Perhatian:</strong> Pastikan gambar anda menggunakan nama file dengan format berikut<br>
-                        <i>MOCKUP KODE PRODUK, contoh: <b>MOCKUP 3D 0001</b></i>
-                    </div>
-
                     <form action="{{ route('products.bulk.store') }}" method="POST" id="form-tambah"
                         enctype="multipart/form-data">
                         @csrf
                         @method('POST')
                         <div class="form-group">
-                            <label for="type" class="fas fa-type"> Tipe</label>
+                            <label for="type"> <i class="fas fa-tag"></i> Tipe</label>
                             <select class="form-control" name="type" id="type">
                                 <option value="">Pilih Tipe</option>
                                 <option value="motif">Motif</option>
@@ -37,7 +46,15 @@
                             </select>
 
                             <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar</label>
-                            <div class="dropzone" id="image-dropzone"></div>
+                            <div class="dropzone" id="image-dropzone">
+                                <div class="dz-message" id="dz-message">
+                                    <div style="font-size: 3rem; color: #bbb;">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <p class="font-weight-bold">choose a file or drag and drop it here</p>
+                                    <p class="text-muted">jpeg, webp, jpg up to 2 MB.</p>
+                                </div>
+                            </div>
 
                             @error('image')
                                 <span class="text-danger">{{ $message }}</span>
@@ -52,6 +69,7 @@
                             @endif
                         </div>
                         <button class="btn btn-primary mt-3" type="submit" id="btn-tambah">Kirim</button>
+                        <a href="{{ route('products.index') }}" class="btn btn-secondary mt-3">Kembali</a>
                     </form>
                 </div>
             </div>
