@@ -12,12 +12,18 @@ use Illuminate\Support\Facades\Log;
 
 class CatalogController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $product =  TProduct::with(['category', 'category.jenis', 'images'])->take(10)->get();
-        // dd($product);
         return view('catalog.index', [
-            'products' => TProduct::with(['category', 'category.jenis', 'images'])->take(10)->get(),
+            'products' => TProduct::with(['category', 'category.jenis', 'images'])
+                ->get()
+                ->groupBy(function ($product) {
+                    return $product->category->name ?? 'Tanpa Kategori';
+                })
+                ->map(function ($group) {
+                    return $group->random(); // ambil satu random dari tiap kategori
+                })
+                ->values(),
             'jenis' => MJenis::withCount([
                 'categories as products_count' => function ($query) {
                     $query->select(DB::raw('count(t_products.id)'))
