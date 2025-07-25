@@ -80,21 +80,29 @@ class UserController extends Controller
             'path_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,jfif|max:2048',
         ]);
 
-        $file = $request->file('path_image');
-        $filename = time() . '_' . uniqid() . '.webp';
-        $folder = 'images/users/' . now()->format('Y/m/d');
-        $path = $folder . '/' . $filename;
-        $fullPath = storage_path('app/public/' . $path);
+        $updateData = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password ? bcrypt($request->password) : $user->password,
+            'role_id' => $request->role_id,
+        ];
 
-        if (!file_exists(dirname($fullPath))) {
-            mkdir(dirname($fullPath), 0755, true);
-        }
+        if ($request->hasFile('path_image')) {
+            $file = $request->file('path_image');
+            $filename = time() . '_' . uniqid() . '.webp';
+            $folder = 'images/users/' . now()->format('Y/m/d');
+            $path = $folder . '/' . $filename;
+            $fullPath = storage_path('app/public/' . $path);
 
-        if ($file) {
+            if (!file_exists(dirname($fullPath))) {
+                mkdir(dirname($fullPath), 0755, true);
+            }
+
+            // Hapus gambar lama jika ada
             if ($user->path_image) {
-                $imagePath = storage_path('app/public/' . $user->path_image);
-                if (file_exists($imagePath)) {
-                    @unlink($imagePath);
+                $oldPath = storage_path('app/public/' . $user->path_image);
+                if (file_exists($oldPath)) {
+                    @unlink($oldPath);
                 }
             }
 
@@ -106,27 +114,17 @@ class UserController extends Controller
                 ->encode('webp', 100)
                 ->save($fullPath);
 
-            $user->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => $request->password ? bcrypt($request->password) : $user->password,
-                'role_id' => $request->role_id,
-                'path_image' => $path
-            ]);
+            $updateData['path_image'] = $path;
         }
 
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password ? bcrypt($request->password) : $user->password,
-            'role_id' => $request->role_id,
-        ]);
+        $user->update($updateData);
 
         return response()->json([
             'status' => 'success',
             'message' => 'User updated successfully.',
         ], 200);
     }
+
 
 
     public function search(Request $request)
