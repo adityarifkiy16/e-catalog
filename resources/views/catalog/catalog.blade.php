@@ -255,7 +255,7 @@
             }
 
 
-            if ($(window).width() < 768) {
+            if ($(window).width() < 768 || selectedJenis == 1) {
                 $('#filter-container').addClass('d-none');
             }
 
