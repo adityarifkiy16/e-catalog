@@ -135,6 +135,7 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        $user->update(['email' => $user->email . '_deleted']);
         $user->delete();
         return response()->json([
             'status' => 'success',

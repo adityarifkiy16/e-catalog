@@ -43,7 +43,7 @@
                                 <th style="width: 0.5rem;">No</th>
                                 <th>Name</th>
                                 <th>Role</th>
-                                @if ($isAuthenticated && ($user->hasPermission('edit_users') || $user->hasPermission('edit_users')))
+                                @if ($isAuthenticated && ($user->hasPermission('edit_users') || $user->hasPermission('delete_users')))
                                     <th style="text-align: end;">Action</th>
                                 @endif
                             </tr>
@@ -54,17 +54,17 @@
                                     <td style="width: 10px;">{{ $loop->index + 1 }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->role->name }}</td>
-                                    @if ($isAuthenticated && ($user->hasPermission('edit_users') || $user->hasPermission('edit_users')))
+                                    @if ($isAuthenticated && ($user->hasPermission('edit_users') || $user->hasPermission('delete_users')))
                                         <td style="width: 100px;">
                                             <div class="d-flex justify-content-end align-items-center gap-1">
-                                                @if ($isAuthenticated && $user->hasPermission('edit_users'))
+                                                @if ($isAuthenticated && $user->hasPermission('edit_users') && $item->id != 1)
                                                     <a href="{{ route('users.edit', $item) }}"
                                                         class="btn btn-sm btn-primary mr-2" title="Edit">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
                                                 @endif
 
-                                                @if ($isAuthenticated && $user->hasPermission('delete_users'))
+                                                @if ($isAuthenticated && $user->hasPermission('delete_users') && $item->id != auth()->user()->id && $item->id != 1)
                                                     <form action="{{ route('users.destroy', $item) }}" method="POST"
                                                         style="display: inline;" class="delete-user">
                                                         @csrf
