@@ -108,7 +108,7 @@
 @section('content')
     <!-- Page Title -->
     <div class="w-100 d-flex justify-content-center align-items-center">
-        <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100" style="background-color: #000;">
+        <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100" style="background-color: #bbaa91;">
             <a href="https://osborn.id/" target="_blank" class="py-2"> <img src="{{ asset('dist/img/osborn.png') }}"
                     alt="osborn-logo" style="width: 130px; height: auto;"></a>
         </div>
@@ -122,7 +122,7 @@
                     <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                         <img src="{{ asset('dist/img/slider/' . ($key + 1) . '.webp') }}?v{{ time() }}"
                             class="d-block w-100 img-fluid" alt="{{ 'Slide ' . ($key + 1) }}"
-                            style="object-fit: cover;height: 70vh;">
+                            style="object-fit: cover; object-position: center bottom; height: 65vh;">
                     </div>
                 @endfor
             </div>
@@ -241,7 +241,7 @@
 @endsection
 @section('footer')
     <footer class="text-white py-4 border-top animate__animated animate__faster animate__fadeInUp"
-        style="background-color: black">
+        style="background-color: #242424">
         <div class="container">
             <div class="row justify-content-center align-items-center justify-content-md-between align-items-md-start">
                 <!-- Kiri -->
