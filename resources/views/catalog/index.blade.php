@@ -225,7 +225,7 @@
                         </li>
                         <li>
                             <strong>Call:</strong>
-                            <a href="tel:08123456789" class="text-decoration-none text-dark">08123456789</a>
+                            <a href="tel:0816659688" class="text-decoration-none text-dark">+62816659688</a>
                         </li>
                     </ul>
                 </div>
@@ -247,8 +247,8 @@
                 <!-- Kiri -->
                 <div class="col-md-6 mb-3 text-center text-md-left">
                     <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn Logo" height="30" class="mb-4">
-                    <p class="mb-2 h5">support@osborn.id</p>
-                    <p class="mb-0 text-muted">Osborn PVC Board | GROUP</p>
+                    <p class="mb-2 h5">admin@osborn.id</p>
+                    <p class="mb-0 text-muted">Design Beyond Limits</p>
                 </div>
 
                 <!-- Kanan -->
