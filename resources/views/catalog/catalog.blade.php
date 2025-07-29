@@ -297,7 +297,7 @@
             const productJenis = $(this).data('jenis');
             const productCategory = $(this).data('category');
             const productName = $(this).data('code');
-            const phone = '6289616110208';
+            const phone = '62816659688';
 
             const message =
                 `Halo Admin,\n` +
