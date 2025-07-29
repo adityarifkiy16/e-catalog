@@ -175,7 +175,7 @@
                 <div class="col-6 col-sm-4 col-md-2 text-center mb-4 product-card" data-id="{{ $item->id }}">
                     <div class="border-0 h-100 pointer d-flex flex-column justify-content-center align-items-center">
                         <img src="{{ asset('dist/img/product/' . $key . '.png') }} ?v{{ time() }}"
-                            style="width: 250px; height: auto;" alt="{{ $item->name }}">
+                            class="img-fluid w-100" alt="{{ $item->name }}">
                         <div class="card-body mt-0">
                             <h4 class="card-text font-weight-bold">{{ $item->name }}</h4>
                             <p class="card-text text-muted">{{ $item->products_count }} Product</p>
