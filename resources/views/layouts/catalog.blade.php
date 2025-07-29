@@ -34,7 +34,7 @@
     <!-- custom css -->
     <link rel="stylesheet" href="{{ asset('dist/css/style.css') }}?v={{ time() }}">
 
-    @vite(['resources/js/app.js'])
+    @vite(['resources/js/app.js', 'resources/js/catalog.js'])
 
     <style>
         .card:hover {

@@ -13,5 +13,11 @@
     "css": [
       "assets/app-BaVkx4tQ.css"
     ]
+  },
+  "resources/js/catalog.js": {
+    "file": "assets/catalog-CKS-DsAJ.js",
+    "name": "catalog",
+    "src": "resources/js/catalog.js",
+    "isEntry": true
   }
 }
