@@ -174,8 +174,8 @@
             @foreach ($jenis as $key => $item)
                 <div class="col-6 col-sm-4 col-md-2 text-center mb-4 product-card" data-id="{{ $item->id }}">
                     <div class="border-0 h-100 pointer">
-                        <img src="{{ asset('dist/img/product/' . $key . '.webp') }}" class="card-img-top p-3"
-                            alt="{{ $item->name }}">
+                        <img src="{{ asset('dist/img/product/' . $key . '.png') }}" class="card-img-top p-3"
+                            style="width: 100%; height: auto;" alt="{{ $item->name }}">
                         <div class="card-body p-2">
                             <h4 class="card-text font-weight-bold">{{ $item->name }}</h4>
                             <p class="card-text text-muted">{{ $item->products_count }} Product</p>
