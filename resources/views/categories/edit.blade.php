@@ -76,8 +76,8 @@
 
 @push('scripts')
     <script>
-        // Initialize Dropzone
         Dropzone.autoDiscover = false;
+
         $(document).ready(function() {
             const Toast = Swal.mixin({
                 toast: true,
@@ -88,15 +88,14 @@
                 didOpen: (toast) => {
                     toast.onmouseenter = Swal.stopTimer;
                     toast.onmouseleave = Swal.resumeTimer;
-                }
+                },
             });
 
-
-            new Dropzone("#image-dropzone", {
+            const dz = new Dropzone("#image-dropzone", {
                 url: "{{ route('categories.update', $categories) }}",
                 paramName: "image-mockup",
                 maxFilesize: 2,
-                acceptedFiles: "image/jpeg,image/png,image/jpg,image/gif,image/svg,image/webp",
+                acceptedFiles: "image/*",
                 addRemoveLinks: false,
                 autoProcessQueue: false,
                 parallelUploads: 5,
@@ -106,77 +105,89 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 init: function() {
-                    const dz = this;
-                    // When submit button is clicked
-                    document.getElementById("btn-submit").addEventListener("click",
-                        function(e) {
-                            $("#btn-submit").prop('disabled', true);
-                            $("#btn-submit").html(
-                                '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Loading...'
-                            );
-                            e.preventDefault();
-                            e.stopPropagation();
-                            dz.processQueue();
-                        });
-
                     this.on("sendingmultiple", function(file, xhr, formData) {
                         formData.append("name", $('#name').val());
-                        formData.append('_method', 'PUT'); // jika pakai route update
+                        formData.append('_method', 'PUT');
                         formData.append("jenis_id", $('#jenis').val());
                         formData.append("display_style", $('#display_style').val());
                         formData.append("order", $('#order').val());
-                        formData.append("image", $('#img')[0].files[0]);
+
+                        const imageInput = $('#img')[0].files[0];
+                        if (imageInput) {
+                            formData.append("image", imageInput);
+                        }
                     });
 
                     this.on("successmultiple", function(files, response) {
-                        if (response.warning && response.warning.length > 0) {
-                            console.log(response.warning);
-                            Toast.fire({
-                                icon: 'warning',
-                                title: response.warning,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                        }
-
-                        if (response.status == "success") {
-                            Toast.fire({
-                                icon: 'success',
-                                title: response.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                            setTimeout(function() {
-                                window.location.href =
-                                    "{{ route('categories.index') }}";
-                            }, 1500);
-                        } else {
-                            Toast.fire({
-                                icon: 'error',
-                                title: response.responseJSON.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                        }
-                        this.removeAllFiles(true);
+                        Toast.fire({
+                            icon: 'success',
+                            title: response.message
+                        });
+                        window.location.href = "{{ route('categories.index') }}";
                     });
 
                     this.on("errormultiple", function(files, response) {
                         Toast.fire({
                             icon: 'error',
-                            title: response.message,
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                        // Remove all failed files
-                        files.forEach(file => {
-                            this.removeFile(file);
+                            title: response.message
                         });
-
-                        $("#btn-tambah").prop('disabled', false);
-                        $("#btn-tambah").html('Kirim');
+                        this.removeAllFiles(true);
                     });
                 },
+            });
+
+            // ✅ Jika tidak ada file di Dropzone, jalankan AJAX biasa
+            $("#btn-submit").on("click", function(e) {
+                e.preventDefault();
+
+                const hasDropzoneFiles = dz.getAcceptedFiles().length > 0;
+
+                if (hasDropzoneFiles) {
+                    dz.processQueue(); // Proses Dropzone
+                } else {
+                    // Proses AJAX manual
+                    const formData = new FormData();
+                    formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
+                    formData.append('_method', 'PUT');
+                    formData.append("name", $('#name').val());
+                    formData.append("jenis_id", $('#jenis').val());
+                    formData.append("display_style", $('#display_style').val());
+                    formData.append("order", $('#order').val());
+
+                    const imageFile = $('#img')[0].files[0];
+                    if (imageFile) {
+                        formData.append("image", imageFile);
+                    }
+
+                    $("#btn-submit").prop("disabled", true).html(
+                        '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Loading...'
+                    );
+
+                    $.ajax({
+                        url: "{{ route('categories.update', $categories) }}",
+                        method: "POST",
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function(response) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.message
+                            });
+                            setTimeout(() => {
+                                window.location.href =
+                                    "{{ route('categories.index') }}";
+                            }, 1500);
+                        },
+                        error: function(xhr) {
+                            Toast.fire({
+                                icon: 'error',
+                                title: xhr.responseJSON?.message || 'Terjadi kesalahan.'
+                            });
+                            $("#btn-submit").prop("disabled", false).html("Submit");
+                        }
+                    });
+                }
             });
         });
     </script>
