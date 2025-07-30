@@ -75,9 +75,4 @@
             </td>
         </tr>
     </table>
-
-    <div class="footer" style="position: absolute; bottom: 10px; width: 100%; text-align: center;">
-        <b>&copy; {{ date('Y') }} Osborn</b>
-    </div>
-
 </body>
