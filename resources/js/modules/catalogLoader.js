@@ -99,7 +99,7 @@ function updateCategoryMenu(response) {
             $('#category-menu-item-label, #category-modal-item-label').html('Motif');
             break;
         case 'Wallpanel':
-            $('#category-menu-item-label, #category-modal-item-label').addClass('d-none');
+            $('#category-container, #category-modal-container').addClass('d-none');
             break;
         default:
             $('#category-menu-item-label, #category-modal-item-label').html('Kategori');
