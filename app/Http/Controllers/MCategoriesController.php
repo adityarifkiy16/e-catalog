@@ -212,7 +212,7 @@ class MCategoriesController extends Controller
 
                 // Proses gambar
                 Image::make($file)
-                    ->resize(800, null, function ($constraint) {
+                    ->resize(1200, null, function ($constraint) {
                         $constraint->aspectRatio();
                         $constraint->upsize();
                     })
