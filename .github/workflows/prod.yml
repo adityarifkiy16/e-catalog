@@ -19,7 +19,7 @@ jobs:
           command: |
             cd /home/u153231468/domains/osborn.id/public_html/laravel/e-catalog
             git pull origin production
-            cp -r public/build /home/u153231468/domains/osborn.id/public_html/catalog
+            cp -r public/* /home/u153231468/domains/osborn.id/public_html/catalog
             composer2 install --no-dev --optimize-autoloader
         env:
           CI: true
