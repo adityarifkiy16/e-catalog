@@ -28,7 +28,7 @@ Apakah produk ini masih tersedia? Terima kasih.`;window.open(`https://wa.me/${a}
                             alt="${o.name}" 
                             style="
                                 border : 1px solid #ccc;
-                                height: 12.5rem; 
+                                height: auto; 
                                 width: 100%; 
                                 object-fit: cover; 
                                 object-position: ${((x=(C=o.category)==null?void 0:C.jenis)==null?void 0:x.name)==="PVC Board"?"bottom center":"center center"};
