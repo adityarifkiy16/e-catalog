@@ -61,6 +61,7 @@ $(document).ready(function () {
                                 aspect-ratio: 1 / 1;
                                 object-fit: cover;
                                 border-radius: 8px;
+                                border: 1px solid #ccc;
                             ">
                     </div>
                 `);
