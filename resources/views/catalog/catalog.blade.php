@@ -15,8 +15,7 @@
             <a href="https://osborn.id/" target="_blank" class="py-2"> <img src="{{ asset('dist/img/osborn.png') }}"
                     alt="osborn-logo" style="width: 130px; height: auto;"></a>
             <!-- Tombol hanya tampil di mobile -->
-            <button class="btn btn-outline-light d-md-none" data-toggle="modal" data-target="#filterModal"
-                id="category-button">
+            <button class="btn btn-brown d-md-none" data-toggle="modal" data-target="#filterModal" id="category-button">
                 <i class="fas fa-bars"></i> Filter
             </button>
             <!-- Form pencarian -->
