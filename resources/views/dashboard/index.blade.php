@@ -40,16 +40,16 @@
                         style="background-color: white;">
                         <div class="mb-2">
                             @if ($item == 'desain')
-                                <i class="fas fa-box fa-2x" style="color: #1B1A55"></i>
+                                <i class="fas fa-box fa-2x" style="color: #bbaa91"></i>
                             @endif
                             @if ($item == 'produk')
-                                <i class="fas fa-tags fa-2x" style="color: #1B1A55"></i>
+                                <i class="fas fa-tags fa-2x" style="color: #bbaa91"></i>
                             @endif
                             @if ($item == 'kategori')
-                                <i class="fas fa-tags fa-2x" style="color: #1B1A55"></i>
+                                <i class="fas fa-tags fa-2x" style="color: #bbaa91"></i>
                             @endif
                             @if ($item == 'gambar')
-                                <i class="fas fa-image fa-2x" style="color: #1B1A55"></i>
+                                <i class="fas fa-image fa-2x" style="color: #bbaa91"></i>
                             @endif
                         </div>
                         <h5 class="fw-bold text-secondary mb-1">{{ ucwords($item) }}</h5>
