@@ -47,7 +47,7 @@ export function renderProducts(products, selectedJenis) {
                             alt="${product.name}" 
                             style="
                                 border : 1px solid #ccc;
-                                height: 200px; 
+                                height: 12.5rem; 
                                 width: 100%; 
                                 object-fit: cover; 
                                 object-position: ${
