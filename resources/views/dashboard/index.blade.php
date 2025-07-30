@@ -39,17 +39,14 @@
                     <div class="card-body d-flex flex-column justify-content-center align-items-center text-center p-4"
                         style="background-color: white;">
                         <div class="mb-2">
-                            @if ($item == 'product')
+                            @if ($item == 'desain')
                                 <i class="fas fa-box fa-2x" style="color: #1B1A55"></i>
                             @endif
-                            @if ($item == 'jenis')
+                            @if ($item == 'produk')
                                 <i class="fas fa-tags fa-2x" style="color: #1B1A55"></i>
                             @endif
-                            @if ($item == 'category')
+                            @if ($item == 'kategori')
                                 <i class="fas fa-tags fa-2x" style="color: #1B1A55"></i>
-                            @endif
-                            @if ($item == 'user')
-                                <i class="fas fa-users fa-2x" style="color: #1B1A55"></i>
                             @endif
                             @if ($item == 'gambar')
                                 <i class="fas fa-image fa-2x" style="color: #1B1A55"></i>
