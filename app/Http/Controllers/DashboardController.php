@@ -25,9 +25,9 @@ class DashboardController extends Controller
             ->toArray();
 
         $arr['count'] = [
-            'product' => TProduct::count(),
-            'jenis' => MJenis::count(),
-            'category' => MCategories::count(),
+            'desain' => TProduct::count(),
+            'produk' => MJenis::count(),
+            'kategori' => MCategories::count(),
             'gambar' => TImage::count(),
         ];
         $arr['produkPerJenis'] = $produkPerJenis;
