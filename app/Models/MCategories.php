@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\MJenis;
+use App\Models\TImage;
 use App\Models\TProduct;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -23,5 +24,10 @@ class MCategories extends Model
     public function jenis()
     {
         return $this->belongsTo(MJenis::class, 'jenis_id', 'id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(TImage::class, "category_id", "id");
     }
 }

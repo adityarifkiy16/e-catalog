@@ -41,7 +41,7 @@ class CatalogController extends Controller
         $search = $request->query('search');
         $jenisId = $request->query('jenis');
 
-        $query = TProduct::with(['category', 'category.jenis', 'images']);
+        $query = TProduct::with(['category', 'category.jenis', 'images', "category.images"]);
 
         // Filter jika ada kategori
         if ($categoryId) {
@@ -68,8 +68,15 @@ class CatalogController extends Controller
 
         if ($isAjax) {
             $data = $query->paginate(12);
-
             $response = ['data' => $data];
+
+            if ($categoryId) {
+                $category = MCategories::with(['jenis', 'images'])->find($categoryId);
+                $response['category'] = $category;
+            } else {
+                $category = MCategories::with(['jenis', 'images'])->first();
+                $response['category'] = $category;
+            }
 
             if ($jenisId) {
                 $jenis = MJenis::with('categories.products')->find($jenisId);
@@ -83,7 +90,7 @@ class CatalogController extends Controller
         }
         return view('catalog.catalog', [
             'data' => $query->get(),
-            'jenis' => MJenis::with('categories')->get(),
+            'jenis' => MJenis::with('categories.products.images')->get(),
             'categories' => MCategories::all(),
         ]);
     }

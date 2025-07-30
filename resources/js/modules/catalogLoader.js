@@ -46,7 +46,6 @@ export function loadMoreData() {
         success: function (response) {
             const products = response.data.data ?? [];
             if (products.length > 0) {
-                renderMockup(products, selectedJenis, uniquePaths);
                 renderProducts(products, selectedJenis);
                 currentPage++;
                 if (currentPage > response.data.last_page) lastPage = true;
@@ -81,12 +80,15 @@ export function loadMoreData() {
 function updateCategoryMenu(response) {
     const categories = response.jenis?.categories ?? [];
     const name = response.jenis?.name;
+    const data = response;
 
     if (categories.length === 0) {
         $('#category-container').addClass('d-none');
     } else {
         $('#category-container').removeClass('d-none');
     }
+
+    renderMockup(data.category.images, selectedJenis, uniquePaths);
 
     switch (name) {
         case 'PVC Board':
@@ -108,7 +110,7 @@ function updateCategoryMenu(response) {
         dropdown += `
             <a class="nav-link text-dark category-filter d-flex align-items-center justify-content-start" 
                 href="#" data-jenis-id="${cat.jenis_id}" data-id="${cat.id}">
-                <img src="${cat.image ?? 'dist/img/product/1.webp'}" alt="${cat.name}" 
+                <img src="${cat.path ? 'storage/' + cat.path : 'dist/img/product/1.webp'}" alt="${cat.name}" 
                 class="mr-2 img-thumbnail" style="width: 50px; height: 50px; object-fit: contain;">
                 <span>${cat.name} ${cat.products_count > 0 ? `(${cat.products_count})` : ''}</span>
             </a>`;

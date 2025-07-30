@@ -1,29 +1,25 @@
 /**
- * Renders a mockup carousel for products based on the selected type.
+ * Renders a mockup carousel for categories based on the selected type.
  *
- * This function processes the provided products to extract and display
+ * This function processes the provided categories to extract and display
  * images in a carousel format. It filters images to exclude those marked
  * as motifs and uses unique image paths for the carousel. The carousel
  * is updated with up to five image slides, and the navigation controls
  * are adjusted based on the number of images.
  *
- * @param {Array} products - The list of products to render images from.
- * @param {string|null} selectedJenis - The selected type identifier for filtering products.
+ * @param {Array} categories - The list of categories to render images from.
+ * @param {string|null} selectedJenis - The selected type identifier for filtering cats.
  * @param {Set} uniquePaths - A set to store unique image paths.
  */
 
-export function renderMockup(products, selectedJenis, uniquePaths) {
+export function renderMockup(categories, selectedJenis, uniquePaths) {
     if (selectedJenis == null) {
         return;
     }
-    products.forEach((product) => {
-        (product.images ?? []).forEach((image) => {
-            console.log('image', image);
-            const isMotif = Boolean(image.pivot.motif);
-            if (image.path && !isMotif) {
-                uniquePaths.add(image.path);
-            }
-        });
+    categories.forEach((image) => {
+        if (image.path) {
+            uniquePaths.add(image.path);
+        }
     });
 
     const paths = Array.from(uniquePaths);

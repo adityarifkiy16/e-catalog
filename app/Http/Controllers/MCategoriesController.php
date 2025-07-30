@@ -139,10 +139,12 @@ class MCategoriesController extends Controller
             'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'display_style' => 'nullable|string|max:255|in:square,rectangle',
             'order' => 'nullable|numeric',
+            'image-mockup' => 'nullable',
+            'image-mockup.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $folder = 'images/categories/' . now()->format('Y/m/d');
+            $folder = 'images/3Dcategories/' . now()->format('Y/m/d');
             $filename = time() . '_' . uniqid() . '.webp';
             $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
             $path = $folder . '/' . $filename;
@@ -177,6 +179,53 @@ class MCategoriesController extends Controller
                 'order' => $request->order
             ]);
         } else {
+            $categories->update([
+                'name' => $request->name,
+                'jenis_id' => $request->jenis_id,
+                'display_style' => $request->display_style,
+                'order' => $request->order
+            ]);
+        }
+
+        if ($request->hasFile('image-mockup')) {
+            $files = $request->file('image-mockup');
+            $folder = 'images/mockupcategories/' . now()->format('Y/m/d');
+
+            foreach ($files as $file) {
+                $filename = time() . '_' . uniqid() . '.webp';
+                $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
+                $path = $folder . '/' . $filename;
+
+                $directory = dirname($fullPath);
+                if (!file_exists($directory)) {
+                    mkdir($directory, 0755, true);
+                }
+
+                // Hapus gambar lama jika ada
+                foreach ($categories->images as $oldImage) {
+                    $oldPath = storage_path('app/public/' . $oldImage->path);
+                    if (file_exists($oldPath)) {
+                        unlink($oldPath);
+                    }
+                    $oldImage->delete();
+                }
+
+                // Proses gambar
+                Image::make($file)
+                    ->resize(800, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })
+                    ->encode('webp', 100)
+                    ->save($fullPath);
+
+                // Simpan ke relasi images (One to Many)
+                $categories->images()->create([
+                    'path' => $path,
+                ]);
+            }
+
+            // Update data kategori
             $categories->update([
                 'name' => $request->name,
                 'jenis_id' => $request->jenis_id,
