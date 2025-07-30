@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\MJenis;
+use App\Models\TImage;
 use App\Models\TProduct;
 use App\Models\MCategories;
 use Illuminate\Http\Request;
@@ -24,10 +25,10 @@ class DashboardController extends Controller
             ->toArray();
 
         $arr['count'] = [
-            'user' => User::count(),
             'product' => TProduct::count(),
             'jenis' => MJenis::count(),
             'category' => MCategories::count(),
+            'gambar' => TImage::count(),
         ];
         $arr['produkPerJenis'] = $produkPerJenis;
         // dd($arr);

@@ -51,6 +51,9 @@
                             @if ($item == 'user')
                                 <i class="fas fa-users fa-2x" style="color: #1B1A55"></i>
                             @endif
+                            @if ($item == 'gambar')
+                                <i class="fas fa-image fa-2x" style="color: #1B1A55"></i>
+                            @endif
                         </div>
                         <h5 class="fw-bold text-secondary mb-1">{{ ucwords($item) }}</h5>
                         <h2 class="fw-bold text-secondary">{{ $value }}</h2>
