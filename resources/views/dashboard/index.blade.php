@@ -62,15 +62,24 @@
             </div>
         @endforeach
         <div class="col-12">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h2 class="card-title">Total Produk Per Jenis</h2>
+            <div class="card border-0 shadow-sm rounded-lg">
+                <div class="card-header bg-primary">
+                    <h4 class="card-title mb-0"><i class="fas fa-boxes mr-2"></i> Total Produk Per Jenis</h4>
+                    <div class="card-tools">
+                        <!-- Collapse Button -->
+                        <button type="button" class="btn btn-tool text-white" data-card-widget="collapse"><i
+                                class="fas fa-minus"></i></button>
+                    </div>
                 </div>
                 <div class="card-body">
-                    @foreach ($produkPerJenis as $key => $value)
-                        <h5 class="font-weight-bold text-secondary mb-1">- {{ $key }} : {{ $value }} pcs
-                        </h5>
-                    @endforeach
+                    @forelse ($produkPerJenis as $key => $value)
+                        <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                            <span class="text-dark font-weight-semibold">{{ $key }}</span>
+                            <span class="badge badge-pill badge-info">{{ $value }} pcs</span>
+                        </div>
+                    @empty
+                        <p class="text-muted">Belum ada data produk.</p>
+                    @endforelse
                 </div>
             </div>
         </div>
