@@ -15,8 +15,8 @@
             <a href="https://osborn.id/" target="_blank" class="py-2"> <img src="{{ asset('dist/img/osborn.png') }}"
                     alt="osborn-logo" style="width: 130px; height: auto;"></a>
             <!-- Tombol hanya tampil di mobile -->
-            <button class="btn btn-brown d-md-none" data-toggle="modal" data-target="#filterModal" id="category-button">
-                <i class="fas fa-bars"></i> Filter
+            <button class="btn btn-xl btn-outline-dark d-md-none" data-toggle="modal" data-target="#filterModal"
+                id="category-button"> <i class="fa fa-bars"></i> Filter
             </button>
             <!-- Form pencarian -->
             <div style="width: 300px;" class="input-group mb-2 d-none d-md-flex">
@@ -36,10 +36,11 @@
                     <div class="col-md-12">
                         <div
                             class="d-flex justify-content-center justify-content-md-start align-items-center mb-3 flex-row ">
-                            <a href="#" class="btn btn-brown d-none mb-2 order-md-2 order-1" id="btn-download">
-                                <i class="fa fa-file-download"></i> Download
+                            <a href="#" class="btn btn-xl btn-brown d-none mb-2 order-md-2 order-1" id="btn-download">
+                                <i class="fa fa-arrow-down"></i> Download
                             </a>
-                            <a href="{{ route('catalog.index') }}" class="btn btn-secondary mb-2 ml-2 order-md-2 order-1">
+                            <a href="{{ route('catalog.index') }}"
+                                class="btn btn-xl btn-outline-dark mb-2 ml-2 order-md-2 order-1">
                                 <i class="fa fa-home"></i> Home
                             </a>
                         </div>
