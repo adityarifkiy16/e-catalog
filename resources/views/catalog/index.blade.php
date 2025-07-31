@@ -161,7 +161,7 @@
             </h1>
             <h4 class="font-weight-bold text-dark mb-2">
                 To help you visualize the image pack,<br>
-                we have separated it into four different products
+                we have separated it into six different products
             </h4>
             <p class="text-muted lead">
                 Tap on the boxes below to explore<br>
@@ -172,13 +172,15 @@
         <!-- Product Categories -->
         <div class="row justify-content-center">
             @foreach ($jenis as $key => $item)
-                <div class="col-6 col-sm-4 col-md-2 text-center mb-4 product-card" data-id="{{ $item->id }}">
+                <div class="col-6 col-sm-4 col-md-2 text-center mb-5 product-card" data-id="{{ $item->id }}">
                     <div class="border-0 h-100 pointer d-flex flex-column justify-content-center align-items-center">
                         <img src="{{ asset('dist/img/product/' . $key . '.png') }}?v={{ time() }}"
-                            class="img-fluid" style="height: 350px; object-fit: cover;" alt="{{ $item->name }}">
+                            class="img-fluid d-block w-100"
+                            style="height: 200px; object-fit: cover; object-position:center; transform: scale(1.6);"
+                            alt="{{ $item->name }}">
                         <div class="card-body mt-0">
                             <h4 class="card-text font-weight-bold">{{ $item->name }}</h4>
-                            <p class="card-text text-muted">{{ $item->products_count }} Product</p>
+                            <h5 class="card-text text-muted">{{ $item->products_count }} Product</h5>
                         </div>
                     </div>
                 </div>
