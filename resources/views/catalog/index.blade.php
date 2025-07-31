@@ -211,34 +211,54 @@
         </div>
 
         <!-- Contact -->
-        <div class="container mt-4">
-            <div
-                class="row align-items-center justify-content-center animate__animated animate__faster animate__fadeInLeft">
-                <div class="col-md-5 mb-3 mb-md-0">
-                    <span class="text-muted text-uppercase small">Ready to Get Started?</span>
-                    <h1 class="font-weight-bold mb-3">Contact Us</h1>
+        <section class="py-5" style="background: #fdfcf9;">
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-md-5 mb-4 mb-md-0">
+                        <span class="text-muted text-uppercase small d-block mb-2">Ready to Get Started?</span>
+                        <h2 class="font-weight-bold mb-3">Contact Us</h2>
 
-                    <ul class="list-unstyled mb-4">
-                        <li class="mb-2">
-                            <strong>Support:</strong>
-                            <a href="mailto:{{ config('mail.from.address') }}" class="text-decoration-none text-dark">
-                                {{ config('mail.from.address') }}
-                            </a>
-                        </li>
-                        <li>
-                            <strong>Call:</strong>
-                            <a href="tel:0816659688" class="text-decoration-none text-dark">+62816659688</a>
-                        </li>
-                    </ul>
-                </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-3">
+                                <i class="fa fa-envelope mr-2 text-brown"></i>
+                                <strong>Email:</strong>
+                                <a href="mailto:{{ config('mail.from.address') }}" class="text-dark">
+                                    {{ config('mail.from.address') }}
+                                </a>
+                            </li>
+                            <li class="mb-3">
+                                <i class="fa fa-phone mr-2 text-brown"></i>
+                                <strong>Call:</strong>
+                                <a href="tel:0816659688" class="text-dark">+62816659688</a>
+                            </li>
+                            <li>
+                                <i class="fa fa-map-marker mr-2 text-brown"></i>
+                                <strong>Address:</strong> Jl. Kamajaya No. 8A Wonosari, Ngaliyan, Semarang
+                            </li>
+                        </ul>
 
-                <div class="col-md-5 offset-md-1 animate__animated animate__faster animate__fadeInRight">
-                    <div class="square-wrapper">
-                        <img src="{{ asset('dist/img/slider/2.webp') }}" alt="contact" class="img-fluid w-100">
+                        <div class="d-flex">
+                            <a href="https://instagram.com/osborn.pvcboard" class="text-dark mr-3"><i
+                                    class="fab fa-instagram fa-lg"></i></a>
+                            <a href="https://www.youtube.com/@osborn.pvcboard" class="text-dark mr-3"><i
+                                    class="fab fa-youtube fa-lg"></i></a>
+                            <a href="https://facebook.com/profile.php?id=61560927238237" class="text-dark mr-3"><i
+                                    class="fab fa-facebook fa-lg"></i></a>
+                            <a href="https://tiktok.com/@osborn.pvcboard?_t=8nISbYs42Fc&_r=1" class="text-dark"><i
+                                    class="fab fa-tiktok fa-lg"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Gambar -->
+                    <div class="col-md-5 mb-3 mb-md-0 animate__animated animate__faster animate__fadeInLeft">
+                        <div class="square-wrapper">
+                            <img src="{{ asset('dist/img/slider/3.webp') }}" alt="about" class="img-fluid w-100">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
+
     </div>
 @endsection
 @section('footer')
@@ -279,7 +299,7 @@
                         </li>
                     </ul>
                     <p class="mt-5 mb-1">&copy; 2025 Osborn. All rights reserved.</p>
-                    <span class="text-muted">Updated: 29 Jul 2025 | v1.1</span>
+                    <span class="text-muted">Updated: 30 Jul 2025 | v1.2</span>
 
                 </div>
             </div>
