@@ -93,6 +93,21 @@
     outline: #a3764c solid 2px;
 }
 
+.btn-outline-brown {
+    color: #a3764c; /* Warna coklat */
+    border: 2px solid #a3764c;
+    background-color: transparent;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-outline-brown:hover {
+    background-color: #a3764c;
+    color: white;
+    text-decoration: none;
+}
+
 .bg-image {
     background-image: url('../img/osborn-background.png');
     background-size: cover;

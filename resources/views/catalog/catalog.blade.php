@@ -40,7 +40,7 @@
                                 <i class="fa fa-arrow-down"></i> Download
                             </a>
                             <a href="{{ route('catalog.index') }}"
-                                class="btn btn-xl btn-outline-dark mb-2 ml-2 order-md-2 order-1">
+                                class="btn btn-xl btn-outline-brown mb-2 ml-2 order-md-2 order-1">
                                 <i class="fa fa-home"></i> Home
                             </a>
                         </div>
