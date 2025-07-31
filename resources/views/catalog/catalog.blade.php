@@ -11,39 +11,61 @@
     </button>
 
     <div class="w-100 d-flex justify-content-center align-items-center">
-        <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100" style="background-color: #bbaa91;">
-            <a href="https://osborn.id/" target="_blank" class="py-2"> <img src="{{ asset('dist/img/osborn.png') }}"
-                    alt="osborn-logo" style="width: 130px; height: auto;"></a>
-            <!-- Tombol hanya tampil di mobile -->
-            <button class="btn btn-xl btn-outline-dark d-md-none" data-toggle="modal" data-target="#filterModal"
-                id="category-button"> <i class="fa fa-bars"></i> Filter
+        <div class="w-100 shadow-sm py-3 px-4 d-flex justify-content-between align-items-center"
+            style="background-color: #bbaa91">
+            <!-- Logo -->
+            <a href="https://osborn.id/" target="_blank" class="d-flex align-items-center">
+                <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn-logo" style="width: 130px; height: auto;">
+            </a>
+
+            <!-- Tombol filter (khusus mobile) -->
+            <button class="btn btn-outline-dark d-md-none d-flex align-items-center" data-toggle="modal"
+                data-target="#filterModal" id="category-button">
+                <i class="fa fa-bars"></i>
+                <span class="ml-2">Filter</span>
             </button>
-            <!-- Form pencarian -->
-            <div style="width: 300px;" class="input-group mb-2 d-none d-md-flex">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" style="background-color: white !important"><i
-                            class="fas fa-search"></i></span>
-                </div>
-                <input type="text" id="search-input" class="form-control" placeholder="Search by..."
-                    value="{{ request()->query('search') }}">
-            </div>
         </div>
+
     </div>
     <div class="container-fluid py-4 px-4">
         <div class="row">
             <div class="col-md-10 col-12 order-2 order-md-1 center-content" id="catalog-col">
                 <div class="row">
                     <div class="col-md-12">
-                        <div
-                            class="d-flex justify-content-center justify-content-md-start align-items-center mb-3 flex-row ">
-                            <a href="#" class="btn btn-xl btn-brown d-none mb-2 order-md-2 order-1" id="btn-download">
-                                <i class="fa fa-arrow-down"></i> Download
-                            </a>
-                            <a href="{{ route('catalog.index') }}"
-                                class="btn btn-xl btn-outline-brown mb-2 ml-2 order-md-2 order-1">
-                                <i class="fa fa-home"></i> Home
-                            </a>
+                        <!-- Toolbar Responsif & Estetik -->
+                        <div class="bg-white rounded shadow-sm p-3 mb-4">
+                            <div
+                                class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center justify-content-between">
+                                <!-- Input Search -->
+                                <div class="mb-2 mb-md-0 flex-grow-1 mr-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-white">
+                                                <i class="fas fa-search text-muted"></i>
+                                            </span>
+                                        </div>
+                                        <input type="text" id="search-input" class="form-control"
+                                            placeholder="Cari produk..." value="{{ request()->query('search') }}">
+                                    </div>
+                                </div>
+
+                                <!-- Tombol Home -->
+                                <div class="mb-2 mb-md-0 text-center text-md-left mr-2">
+                                    <a href="{{ route('catalog.index') }}" class="btn btn-outline-dark w-100 w-md-auto">
+                                        <i class="fa fa-home mr-1"></i> Home
+                                    </a>
+                                </div>
+
+                                <!-- Tombol Download -->
+                                <div class="text-center text-md-right mr-2">
+                                    <a href="#" class="btn btn-dark w-100 w-md-auto" id="btn-download">
+                                        <i class="fa fa-arrow-down mr-1"></i> Download
+                                    </a>
+                                </div>
+
+                            </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -185,7 +207,7 @@
                 <div class="modal-dialog modal-dialog-scrollable" role="document">
                     <div class="modal-content">
                         <div class="modal-header bg-light">
-                            <h5 class="modal-title font-weight-bold" id="filterModalLabel">Filter By</h5>
+                            <h5 class="modal-title font-weight-bold" id="filterModalLabel">Filter</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
                                 <span aria-hidden="true">&times;</span>
                             </button>

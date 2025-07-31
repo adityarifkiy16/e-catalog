@@ -49,6 +49,7 @@ export function renderProducts(products, selectedJenis) {
                                 border : 1px solid #ccc;
                                 min-height: 200px;
                                 height: auto; 
+                                border-radius: 8px;
                                 width: 100%; 
                                 object-fit: cover; 
                                 object-position: ${
