@@ -112,7 +112,9 @@ function updateCategoryMenu(response) {
                 href="#" data-jenis-id="${cat.jenis_id}" data-id="${cat.id}">
                 <img src="${cat.path ? 'storage/' + cat.path : 'dist/img/product/1.webp'}" alt="${cat.name}" 
                 class="mr-2 img-thumbnail" style="width: 50px; height: 50px; object-fit: contain;">
-                <span>${cat.name} ${cat.products_count > 0 ? `(${cat.products_count})` : ''}</span>
+                <span class="text-capitalize">${cat.name} ${
+            cat.products_count > 0 ? `(${cat.products_count})` : ''
+        }</span>
             </a>`;
     });
 
