@@ -13,7 +13,7 @@
                     <div class="card-body mb-1">
                         <label for="login" class="fw-bold">Email</label>
                         <div class="form-group form-group-feedback form-group-feedback-left">
-                            <input type="text" name="email" class="form-control" placeholder="adityarifkiy@mail.com"
+                            <input type="text" name="email" class="form-control" placeholder="example@mail.com"
                                 id="email">
                             <div class="form-control-feedback">
                                 <small id="email-error" class="text-danger"></small>
@@ -24,7 +24,7 @@
                         <div class="form-group form-group-feedback form-group-feedback-left">
                             <div class="position-relative">
                                 <input type="password" name="password" autocomplete="off" class="form-control pr-5"
-                                    placeholder="Password" id="password">
+                                    placeholder="type your password" id="password">
                                 <i class="fa fa-eye-slash password-toggle" id="toggleIcon" style="display: none"></i>
                             </div>
 
@@ -48,7 +48,7 @@
             $(document).ready(function() {
                 const Toast = Swal.mixin({
                     toast: true,
-                    position: "top-end",
+                    position: "top",
                     showConfirmButton: false,
                     timer: 3000,
                     timerProgressBar: true,
@@ -125,7 +125,6 @@
                                     window.location.href = response.url;
                                 }, 1500);
                             } else {
-                                console.log(response);
                                 Toast.fire({
                                     icon: 'error',
                                     title: response.message,
@@ -161,6 +160,7 @@
                                         $(`#${field}`).addClass('is-invalid');
                                     }
                                 }
+                                $('#btn-submit').html('Masuk').attr("disabled", false);
                             } else if (response.status === 500) {
                                 Toast.fire({
                                     icon: 'error',
