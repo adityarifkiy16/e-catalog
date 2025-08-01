@@ -161,7 +161,7 @@
             </h1>
             <h4 class="font-weight-bold text-dark mb-2">
                 To help you visualize the image pack,<br>
-                we have separated it into six different products
+                we have separated it into five different products
             </h4>
             <p class="text-muted lead">
                 Tap on the boxes below to explore<br>
@@ -180,7 +180,8 @@
                             alt="{{ $item->name }}">
                         <div class="card-body mt-0">
                             <h4 class="card-text font-weight-bold">{{ $item->name }}</h4>
-                            <h5 class="card-text text-muted">{{ $item->products_count }} Product</h5>
+                            <span class="card-text text-muted font-weight-normal">{{ $item->products_count }}
+                                Product</span>
                         </div>
                     </div>
                 </div>
