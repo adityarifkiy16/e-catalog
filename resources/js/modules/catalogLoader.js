@@ -87,7 +87,9 @@ function updateCategoryMenu(response) {
     } else {
         $('#category-container').removeClass('d-none');
     }
-
+    if (data.category.images.length === 0) {
+        $('#mockup').addClass('d-none');
+    }
     renderMockup(data.category.images, selectedJenis, uniquePaths);
 
     switch (name) {
