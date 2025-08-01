@@ -175,7 +175,7 @@
                 <div class="col-6 col-sm-4 col-md-2 text-center mb-5 product-card" data-id="{{ $item->id }}">
                     <div class="border-0 h-100 pointer d-flex flex-column justify-content-center align-items-center">
                         <img src="{{ asset('dist/img/product/' . $key . '.png') }}?v={{ time() }}"
-                            class="img-fluid d-block w-100"
+                            class="img-fluid"
                             style="height: 200px; object-fit: cover; object-position:center; transform: scale(1.6);"
                             alt="{{ $item->name }}">
                         <div class="card-body mt-0">
