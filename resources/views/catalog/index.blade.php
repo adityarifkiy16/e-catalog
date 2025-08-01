@@ -173,9 +173,10 @@
         <div class="row justify-content-center">
             @foreach ($jenis as $key => $item)
                 <div class="col-6 col-sm-4 col-md-2 text-center mb-5 product-card" data-id="{{ $item->id }}">
-                    <div class="border-0 h-100 pointer d-flex flex-column justify-content-center align-items-center">
+                    <div
+                        class="border-0 h-100 pointer d-flex flex-column justify-content-center align-items-center overflow-hidden">
                         <img src="{{ asset('dist/img/product/' . $key . '.png') }}?v={{ time() }}"
-                            class="img-fluid"
+                            class="img-fluid d-block w-100"
                             style="height: 200px; object-fit: cover; object-position:center; transform: scale(1.6);"
                             alt="{{ $item->name }}">
                         <div class="card-body mt-0">
@@ -253,7 +254,7 @@
                     <!-- Gambar -->
                     <div class="col-md-5 mb-3 mb-md-0 animate__animated animate__faster animate__fadeInLeft">
                         <div class="square-wrapper">
-                            <img src="{{ asset('dist/img/slider/3.webp') }}" alt="about" class="img-fluid w-100">
+                            <img src="{{ asset('dist/img/slider/2.webp') }}" alt="about" class="img-fluid w-100">
                         </div>
                     </div>
                 </div>
