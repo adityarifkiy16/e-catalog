@@ -31,16 +31,25 @@ class TProductController extends Controller
             ])
                 ->select('id', 'photo', 'code', 'category_id')
                 ->orderBy('code', 'asc');
+
             if ($request->has('filter')) {
                 $query = $query->where('category_id', $request->filter);
             }
+
             if ($request->has('search') && $request->search['value'] !== null) {
                 $search = $request->search['value'];
                 $query->where(function ($q) use ($search) {
                     $q->where('code', 'like', '%' . $search . '%')
-                        ->orWhere('name', 'like', '%' . $search . '%');
+                        ->orWhere('name', 'like', '%' . $search . '%')
+                        ->orWhereHas('category', function ($q2) use ($search) {
+                            $q2->where('m_categories.name', 'like', '%' . $search . '%');
+                        })
+                        ->orWhereHas('category.jenis', function ($q3) use ($search) {
+                            $q3->where('m_jenis.name', 'like', '%' . $search . '%');
+                        });
                 });
             }
+
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('category', function ($row) {

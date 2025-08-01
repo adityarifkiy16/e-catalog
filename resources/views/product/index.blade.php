@@ -177,12 +177,15 @@
                     },
                     {
                         data: 'jenis',
+                        name: 'category.jenis.name',
                         orderable: false,
+                        searchable: true
                     },
                     {
                         data: 'category',
-                        searchable: true,
+                        name: 'category.name',
                         orderable: false,
+                        searchable: true
                     },
                     {
                         data: null,
