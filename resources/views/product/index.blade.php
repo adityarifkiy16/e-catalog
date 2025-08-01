@@ -144,7 +144,7 @@
                 pageLength: 5,
                 lengthMenu: [5, 10, 25, 50, 100],
                 language: {
-                    searchPlaceholder: 'Cari Produk',
+                    searchPlaceholder: 'Cari Produk by Kode, Jenis, Kategori',
                     'search': '',
                     paginate: {
                         next: '<i class="fas fa-arrow-right"></i>',
