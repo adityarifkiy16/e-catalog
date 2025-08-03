@@ -62,12 +62,6 @@ class MCategoriesController extends Controller
             'jenis_id' => 'required|exists:m_jenis,id',
             'display_style' => 'nullable|string|max:255|in:square,rectangle',
         ]);
-        // // Buat watermark dan resize (misal lebar 100px)
-        // $watermark = Image::make(public_path('dist/img/osborn.png'))
-        //     ->resize(80, null, function ($constraint) {
-        //         $constraint->aspectRatio();
-        //         $constraint->upsize();
-        //     });
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');

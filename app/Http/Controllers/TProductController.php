@@ -578,7 +578,8 @@ class TProductController extends Controller
 
                 $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $part = explode(' ', $filename);
-                $kode = implode(' ', array_slice($part, -2));
+                $kode = trim(implode(' ', array_slice($part, -2)));
+                $kode = strtoupper($kode);
 
                 $product = TProduct::where('code', $kode)->first();
 
