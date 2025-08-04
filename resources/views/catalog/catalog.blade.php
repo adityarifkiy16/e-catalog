@@ -1,7 +1,7 @@
 @extends('layouts.catalog')
 
 @section('content')
-    <a href="https://wa.me/6281390153602" class="btn btn-success btn-lg rounded-circle position-fixed"
+    <a href="https://wa.me/62816659688" class="btn btn-success btn-lg rounded-circle position-fixed" target="_blank"
         style="bottom: 20px; right: 20px; z-index: 999;">
         <i class="fab fa-whatsapp"></i>
     </a>
@@ -37,7 +37,7 @@
                             <div
                                 class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center justify-content-between">
                                 <!-- Input Search -->
-                                <div class="mb-2 mb-md-0 flex-grow-1 mr-2">
+                                <div class="mb-2 mb-md-0 flex-grow-1 mr-2 order-3">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-white">
@@ -50,14 +50,14 @@
                                 </div>
 
                                 <!-- Tombol Home -->
-                                <div class="mb-2 mb-md-0 text-center text-md-left mr-2">
+                                <div class="mb-2 mb-md-0 text-center text-md-left mr-2 order-1">
                                     <a href="{{ route('catalog.index') }}" class="btn btn-outline-dark w-100 w-md-auto">
                                         <i class="fa fa-home mr-1"></i> Home
                                     </a>
                                 </div>
 
                                 <!-- Tombol Download -->
-                                <div class="text-center text-md-right mr-2">
+                                <div class="text-center text-md-right mr-2 order-2">
                                     <a href="#" class="btn btn-dark w-100 w-md-auto" id="btn-download">
                                         <i class="fa fa-arrow-down mr-1"></i> Download
                                     </a>
