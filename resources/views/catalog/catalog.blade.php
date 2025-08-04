@@ -39,13 +39,14 @@
                                 <!-- Input Search -->
                                 <div class="mb-2 mb-md-0 flex-grow-1 mr-2 order-3">
                                     <div class="input-group">
+
+                                        <input type="text" id="search-input" class="form-control"
+                                            placeholder="Cari produk..." value="{{ request()->query('search') }}">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-white">
                                                 <i class="fas fa-search text-muted"></i>
                                             </span>
                                         </div>
-                                        <input type="text" id="search-input" class="form-control"
-                                            placeholder="Cari produk..." value="{{ request()->query('search') }}">
                                     </div>
                                 </div>
 
