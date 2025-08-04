@@ -96,6 +96,9 @@ function updateCategoryMenu(response) {
         case 'Wallpanel':
             $('#category-container, #category-modal-container').addClass('d-none');
             break;
+        case 'Aksesoris':
+            $('#category-container, #category-modal-container').addClass('d-none');
+            break;
         default:
             $('#category-menu-item-label, #category-modal-item-label').html('Kategori');
     }
