@@ -240,14 +240,14 @@
                         </ul>
 
                         <div class="d-flex">
-                            <a href="https://instagram.com/osborn.pvcboard" class="text-dark mr-3"><i
+                            <a href="https://instagram.com/osborn.pvcboard" class="text-dark mr-3" target="__blank"><i
                                     class="fab fa-instagram fa-lg"></i></a>
-                            <a href="https://www.youtube.com/@osborn.pvcboard" class="text-dark mr-3"><i
+                            <a href="https://www.youtube.com/@osborn.pvcboard" class="text-dark mr-3" target="__blank"><i
                                     class="fab fa-youtube fa-lg"></i></a>
-                            <a href="https://facebook.com/profile.php?id=61560927238237" class="text-dark mr-3"><i
-                                    class="fab fa-facebook fa-lg"></i></a>
-                            <a href="https://tiktok.com/@osborn.pvcboard?_t=8nISbYs42Fc&_r=1" class="text-dark"><i
-                                    class="fab fa-tiktok fa-lg"></i></a>
+                            <a href="https://facebook.com/profile.php?id=61560927238237" class="text-dark mr-3"
+                                target="__blank"><i class="fab fa-facebook fa-lg"></i></a>
+                            <a href="https://tiktok.com/@osborn.pvcboard?_t=8nISbYs42Fc&_r=1" class="text-dark"
+                                target="__blank"><i class="fab fa-tiktok fa-lg"></i></a>
                         </div>
                     </div>
 
@@ -280,22 +280,24 @@
                     <h5 class="text-uppercase mt-0 mb-3">Follow Us</h5>
                     <ul class="list-unstyled d-flex justify-content-center justify-content-md-end">
                         <li>
-                            <a href="https://instagram.com/osborn.pvcboard" class="social-link">
+                            <a href="https://instagram.com/osborn.pvcboard" class="social-link" target="__blank">
                                 <i class="fab fa-instagram"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="https://www.youtube.com/@osborn.pvcboard" class="social-link ml-2">
+                            <a href="https://www.youtube.com/@osborn.pvcboard" class="social-link ml-2" target="__blank">
                                 <i class="fab fa-youtube"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="https://facebook.com/profile.php?id=61560927238237" class="social-link ml-2">
+                            <a href="https://facebook.com/profile.php?id=61560927238237" class="social-link ml-2"
+                                target="__blank">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="https://tiktok.com/@osborn.pvcboard?_t=8nISbYs42Fc&_r=1" class="social-link ml-2">
+                            <a href="https://tiktok.com/@osborn.pvcboard?_t=8nISbYs42Fc&_r=1" class="social-link ml-2"
+                                target="__blank">
                                 <i class="fab fa-tiktok"></i>
                             </a>
                         </li>
