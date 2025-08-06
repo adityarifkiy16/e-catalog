@@ -27,23 +27,22 @@
         </div>
 
     </div>
-    <div class="container-fluid py-4 px-4">
+    <div class="container-fluid py-4 px-4 text-white bg-night">
         <div class="row">
             <div class="col-md-10 col-12 order-2 order-md-1 center-content" id="catalog-col">
                 <div class="row">
                     <div class="col-md-12">
                         <!-- Toolbar Responsif & Estetik -->
-                        <div class="bg-white rounded shadow-sm p-3 mb-4">
+                        <div class="card-night rounded shadow-sm p-3 mb-4">
                             <div
                                 class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center justify-content-between">
                                 <!-- Input Search -->
                                 <div class="mb-2 mb-md-0 flex-grow-1 mr-2 order-3">
                                     <div class="input-group">
-
-                                        <input type="text" id="search-input" class="form-control"
+                                        <input type="text" id="search-input" class="form-control text-white bg-night"
                                             placeholder="Cari produk..." value="{{ request()->query('search') }}">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text bg-white">
+                                            <span class="input-group-text bg-night text-white">
                                                 <i class="fas fa-search text-muted"></i>
                                             </span>
                                         </div>
@@ -52,14 +51,14 @@
 
                                 <!-- Tombol Home -->
                                 <div class="mb-2 mb-md-0 text-center text-md-left mr-2 order-1">
-                                    <a href="{{ route('catalog.index') }}" class="btn btn-outline-dark w-100 w-md-auto">
+                                    <a href="{{ route('catalog.index') }}" class="btn btn-outline-light w-100 w-md-auto">
                                         <i class="fa fa-home mr-1"></i> Home
                                     </a>
                                 </div>
 
                                 <!-- Tombol Download -->
                                 <div class="text-center text-md-right mr-2 order-2">
-                                    <a href="#" class="btn btn-dark w-100 w-md-auto" id="btn-download">
+                                    <a href="#" class="btn btn-light w-100 w-md-auto" id="btn-download">
                                         <i class="fa fa-arrow-down mr-1"></i> Download
                                     </a>
                                 </div>
@@ -206,8 +205,8 @@
             <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header bg-light">
+                    <div class="modal-content bg-night text-white">
+                        <div class="modal-header">
                             <h5 class="modal-title font-weight-bold" id="filterModalLabel">Filter</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
                                 <span aria-hidden="true">&times;</span>
@@ -250,9 +249,9 @@
     </div>
 @endsection
 @section('footer')
-    <footer class="footer mt-auto py-2 text-center"
-        style="position: fixed; bottom: 0; width: 100%; z-index: 100; background-color: #f8f9fa">
-        <strong>&copy; <a href="https://osborn.id" target="_blank" class="text-dark">Osborn</a>.</strong> All rights
+    <footer class="footer mt-auto py-2 text-center bg-night text-white"
+        style="position: fixed; bottom: 0; width: 100%; z-index: 100;">
+        <strong>&copy; <a href="https://osborn.id" target="_blank" class="text-white">Osborn</a>.</strong> All rights
         reserved.
     </footer>
 @endsection

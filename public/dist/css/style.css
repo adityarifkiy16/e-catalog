@@ -1,6 +1,7 @@
 @font-face {
     font-family: 'cocogoose';
-    src: url(../font/cocogoose/Cocogoose-Pro-Regular-trial.ttf) format('truetype');
+    src: url(../font/cocogoose/Cocogoose-Pro-Regular-trial.ttf)
+        format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -21,7 +22,8 @@
 
 @font-face {
     font-family: 'cocogoose';
-    src: url(../font/cocogoose/Cocogoose-Pro-Semilight-trial.ttf) format('truetype');
+    src: url(../font/cocogoose/Cocogoose-Pro-Semilight-trial.ttf)
+        format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -228,6 +230,15 @@
     height: 64px;
 }
 
+.bg-night {
+    background-color: #15131b;
+    color: #ffffff;
+}
+
+.card-night {
+    background-color: #1a171f;
+    color: #ffffff;
+}
 .elegant-spinner div {
     box-sizing: border-box;
     display: block;
