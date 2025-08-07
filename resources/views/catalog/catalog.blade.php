@@ -11,7 +11,7 @@
     </button>
 
     <div class="w-100 d-flex justify-content-center align-items-center">
-        <div class="w-100 shadow-sm py-3 px-4 d-flex justify-content-between align-items-center bg-gold">
+        <div class="w-100 shadow-sm py-3 px-4 d-flex justify-content-between align-items-center bg-navy">
             <!-- Logo -->
             <a href="https://osborn.id/" target="_blank" class="d-flex align-items-center">
                 <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn-logo" style="width: 130px; height: auto;">

@@ -108,7 +108,7 @@
 @section('content')
     <!-- Page Title -->
     <div class="w-100 d-flex justify-content-center align-items-center">
-        <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100" style="background-color: #bbaa91;">
+        <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100 bg-navy">
             <a href="https://osborn.id/" target="_blank" class="py-2"> <img src="{{ asset('dist/img/osborn.png') }}"
                     alt="osborn-logo" style="width: 130px; height: auto;"></a>
         </div>

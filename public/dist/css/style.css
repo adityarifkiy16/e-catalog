@@ -1,7 +1,7 @@
 :root {
     --secondary: #171717;
     --background: #000101;
-    --gold: #011f41;
+    --navy: #011f41;
 }
 
 @font-face {
@@ -244,8 +244,8 @@
     color: #ffffff;
 }
 
-.bg-gold {
-    background-color: var(--gold);
+.bg-navy {
+    background-color: var(--navy);
     color: #ffffff;
 }
 
