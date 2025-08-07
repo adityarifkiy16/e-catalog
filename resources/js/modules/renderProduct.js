@@ -46,7 +46,7 @@ export function renderProducts(products, selectedJenis) {
                             class="card-img-top" 
                             alt="${product.name}" 
                             style="
-                                border : 1px solid #ccc;
+                                border : 1px solid #2c2c2c;
                                 min-height: 200px;
                                 aspect-ratio: 1/1;
                                 height: auto; 

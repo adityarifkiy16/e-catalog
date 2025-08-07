@@ -27,7 +27,7 @@ Apakah produk ini masih tersedia? Terima kasih.`;window.open(`https://wa.me/${o}
                             class="card-img-top" 
                             alt="${a.name}" 
                             style="
-                                border : 1px solid #ccc;
+                                border : 1px solid #2c2c2c;
                                 min-height: 200px;
                                 aspect-ratio: 1/1;
                                 height: auto; 
@@ -62,7 +62,7 @@ Apakah produk ini masih tersedia? Terima kasih.`;window.open(`https://wa.me/${o}
                         <li data-target="#carouselExampleControls" data-slide-to="${c}" ${c===0?'class="active"':""}></li>
                     `)}),$("#mockup").removeClass("d-none")):$("#mockup").addClass("d-none")}let g=null,i=null,r=1,u=!1,m=!1;const I=new Set;function D(e){g=e.selectedJenis,i=e.category??null}function d(){return new Promise((e,o)=>{if(!i||i==="null"||i===""?$("#btn-download").addClass("d-none"):$("#btn-download").removeClass("d-none"),u||m)return e();u=!0,S();const t=$("#search-input").val();$.ajax({url:"/catalog",type:"GET",data:{page:r,search:t,jenis:g,category:i},success:function(a){const n=a.data.data??[];n.length>0?(G(n,g),r++,r>a.data.last_page&&(m=!0)):(r===1&&($("#mockup").addClass("d-none"),$("#product-list .row").append(`<div class="col-12"><img src="dist/img/no-data.png" alt="no-data"
                                 class="img-fluid mx-auto d-block" style="max-width: 100%; height: auto; margin-top: 100px; margin-bottom: 100px;"></div>`)),m=!0),O(a),e()},error:function(){console.log("Gagal memuat data."),o()},complete:function(){u=!1,_()}})})}function O(e){var l,s;const o=((l=e.jenis)==null?void 0:l.categories)??[],t=(s=e.jenis)==null?void 0:s.name,a=e;switch(o.length===0?$("#category-container").addClass("d-none"):$("#category-container").removeClass("d-none"),i&&(a.category.images.length===0&&$("#mockup").addClass("d-none"),U(a.category.images,g,I)),t){case"PVC Board":$("#category-container, #category-modal-container").addClass("d-none");break;case"Wallboard":case"UV Board":$("#category-menu-item-label, #category-modal-item-label").html("Motif");break;case"Wallpanel":$("#category-container, #category-modal-container").addClass("d-none");break;case"Aksesoris":$("#category-container, #category-modal-container").addClass("d-none");break;default:$("#category-menu-item-label, #category-modal-item-label").html("Kategori")}let n='<li class="nav-item font-poppins">';o.forEach(c=>{n+=`
-            <a class="nav-link text-dark category-filter d-flex align-items-center justify-content-start" 
+            <a class="nav-link text-white category-filter d-flex align-items-center justify-content-start" 
                 href="#" data-jenis-id="${c.jenis_id}" data-id="${c.id}">
                 <img src="${c.path?"storage/"+c.path:"dist/img/product/1.webp"}" alt="${c.name}" 
                 class="mr-2 img-thumbnail" style="width: 50px; height: 50px; object-fit: contain;">

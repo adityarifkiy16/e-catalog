@@ -5,14 +5,13 @@
         style="bottom: 20px; right: 20px; z-index: 999;">
         <i class="fab fa-whatsapp"></i>
     </a>
-    <button type="button" class="btn btn-secondary rounded-circle  btn-lg" id="btn-scroll-top"
+    <button type="button" class="btn bg-black rounded-circle  btn-lg" id="btn-scroll-top"
         style="display: none; position: fixed; bottom: 80px; right: 20px; z-index: 999;">
         <i class="fas fa-arrow-up"></i>
     </button>
 
     <div class="w-100 d-flex justify-content-center align-items-center">
-        <div class="w-100 shadow-sm py-3 px-4 d-flex justify-content-between align-items-center"
-            style="background-color: #bbaa91">
+        <div class="w-100 shadow-sm py-3 px-4 d-flex justify-content-between align-items-center bg-gold">
             <!-- Logo -->
             <a href="https://osborn.id/" target="_blank" class="d-flex align-items-center">
                 <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn-logo" style="width: 130px; height: auto;">
@@ -27,22 +26,23 @@
         </div>
 
     </div>
-    <div class="container-fluid py-4 px-4 text-white bg-night">
+    <div class="container-fluid py-4 px-4 text-white bg-black-secondary">
         <div class="row">
             <div class="col-md-10 col-12 order-2 order-md-1 center-content" id="catalog-col">
                 <div class="row">
                     <div class="col-md-12">
                         <!-- Toolbar Responsif & Estetik -->
-                        <div class="card-night rounded shadow-sm p-3 mb-4">
+                        <div class="bg-black-secondary rounded shadow-sm p-3 mb-4">
                             <div
                                 class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center justify-content-between">
                                 <!-- Input Search -->
                                 <div class="mb-2 mb-md-0 flex-grow-1 mr-2 order-3">
                                     <div class="input-group">
-                                        <input type="text" id="search-input" class="form-control text-white bg-night"
-                                            placeholder="Cari produk..." value="{{ request()->query('search') }}">
+                                        <input type="text" id="search-input" class="form-control"
+                                            placeholder="Search product..." value="{{ request()->query('search') }}"
+                                            style="background-color: #171717; color: #FFF; border: 1px solid #444; padding: 10px;">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text bg-night text-white">
+                                            <span class="input-group-text bg-black-secondary text-white">
                                                 <i class="fas fa-search text-muted"></i>
                                             </span>
                                         </div>
@@ -233,7 +233,7 @@
                             <div id="" class="collapse show" aria-labelledby="headingOne"
                                 data-parent="#accordionExample">
                                 <div class="pt-2">
-                                    <div id="category-container" class="d-none">
+                                    <div id="category-container" class="d-none text-white">
                                         <h3 id="category-menu-item-label" class="font-cocogoose">Category</h3>
                                         <ul class="nav flex-column" id="category-menu-item">
                                         </ul>
@@ -249,7 +249,7 @@
     </div>
 @endsection
 @section('footer')
-    <footer class="footer mt-auto py-2 text-center bg-night text-white"
+    <footer class="footer mt-auto py-2 text-center bg-black-secondary text-white"
         style="position: fixed; bottom: 0; width: 100%; z-index: 100;">
         <strong>&copy; <a href="https://osborn.id" target="_blank" class="text-white">Osborn</a>.</strong> All rights
         reserved.
