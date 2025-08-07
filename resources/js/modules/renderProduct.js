@@ -60,7 +60,7 @@ export function renderProducts(products, selectedJenis) {
                         >
                         <div class="card-body d-flex flex-column text-center">
                             <h4 class="card-title font-weight-bold text-uppercase mb-2">
-                                ${product.code.split(' ').slice(1).join(' ')}
+                                ${selectedJenis == 5 ? product.code.split(' ').slice(1).join(' ') : product.code}
                             </h4>
                             <h6 class="card-text text-muted mb-1">${categoryName}</h6>
                         </div>
