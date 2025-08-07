@@ -119,20 +119,28 @@
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                 @for ($key = 0; $key < 5; $key++)
-                    <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                        <img src="{{ asset('dist/img/slider/' . ($key + 1) . '.webp') }}?v{{ time() }}"
-                            class="d-block w-100 img-fluid" alt="{{ 'Slide ' . ($key + 1) }}"
-                            style="object-fit: cover; object-position: center bottom; height: 65vh;">
-                    </div>
+                    @if ($key != 1)
+                        <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                            <img src="{{ asset('dist/img/slider/' . ($key + 1) . '.webp') }}?v={{ time() }}"
+                                class="d-block w-100 img-fluid" alt="{{ 'Slide ' . ($key + 1) }}"
+                                style="object-fit: cover; object-position: center bottom; height: 65vh;">
+                        </div>
+                    @endif
                 @endfor
             </div>
+
             <ol class="carousel-indicators" id="mockup-carousel-indicators">
+                @php $slideIndex = 0; @endphp
                 @for ($key = 0; $key < 5; $key++)
-                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ $key }}"
-                        class="{{ $key == 0 ? 'active' : '' }}"></li>
+                    @if ($key != 1)
+                        <li data-target="#carouselExampleIndicators" data-slide-to="{{ $slideIndex }}"
+                            class="{{ $slideIndex == 0 ? 'active' : '' }}"></li>
+                        @php $slideIndex++; @endphp
+                    @endif
                 @endfor
             </ol>
         </div>
+
     </div>
 
     <!-- Slider Berjalan Horizontal -->
