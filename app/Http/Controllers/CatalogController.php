@@ -62,7 +62,11 @@ class CatalogController extends Controller
         // Filter berdasarkan jenis (relasi category.jenis)
         if ($jenisId) {
             $query->whereHas('category.jenis', function ($q) use ($jenisId) {
-                $q->where('id', $jenisId);
+                if (is_array($jenisId)) {
+                    $q->whereIn('id', $jenisId);
+                } else {
+                    $q->where('id', $jenisId);
+                }
             });
         }
 
@@ -78,10 +82,19 @@ class CatalogController extends Controller
                 $response['category'] = $category;
             }
 
-            if ($jenisId) {
+            if (is_array($jenisId)) {
+                $jenisCollection = MJenis::with('categories.products')->whereIn('id', $jenisId)->get();
+                // Jika perlu, kamu bisa menggabungkan semua categories dari collection ini jadi 1 object:
+                $categories = $jenisCollection->flatMap->categories->unique('id')->values();
+                $response['jenis'] = [
+                    'name' => 'Multiple',
+                    'categories' => $categories,
+                ];
+            } else if ($jenisId) {
                 $jenis = MJenis::with('categories.products')->find($jenisId);
                 $response['jenis'] = $jenis;
             }
+
 
             return response()->json($response);
         }

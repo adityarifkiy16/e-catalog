@@ -14,7 +14,7 @@ export function setCatalogConfig(config) {
     selectedJenis = config.selectedJenis;
     category = config.category ?? null;
 }
-export function loadMoreData() {
+export function loadMoreData(selectedWallpanel = null) {
     return new Promise((resolve, reject) => {
         if (!category || category === 'null' || category === '') {
             $('#btn-download').addClass('d-none');
@@ -25,6 +25,7 @@ export function loadMoreData() {
         if (isLoading || lastPage) return resolve(); // tetap resolve untuk menghindari deadlock
         isLoading = true;
         showLoading();
+        console.log('selectedJenis', selectedJenis);
 
         const search = $('#search-input').val();
         $.ajax({
@@ -52,7 +53,8 @@ export function loadMoreData() {
                     }
                     lastPage = true;
                 }
-                updateCategoryMenu(response);
+                updateCategoryMenu(response, selectedWallpanel);
+                console.log(response);
                 resolve();
             },
             error: function () {
@@ -67,7 +69,7 @@ export function loadMoreData() {
     });
 }
 
-function updateCategoryMenu(response) {
+function updateCategoryMenu(response, selectedWallpanel = null) {
     const categories = response.jenis?.categories ?? [];
     const name = response.jenis?.name;
     const data = response;
@@ -94,7 +96,6 @@ function updateCategoryMenu(response) {
             $('#category-menu-item-label, #category-modal-item-label').html('Motif');
             break;
         case 'Wallpanel':
-            $('#category-container, #category-modal-container').addClass('d-none');
             break;
         case 'Aksesoris':
             $('#category-container, #category-modal-container').addClass('d-none');
@@ -104,7 +105,15 @@ function updateCategoryMenu(response) {
     }
 
     let dropdown = `<li class="nav-item font-poppins">`;
-    categories.forEach((cat) => {
+    let filteredCategories = categories;
+    console.log(filteredCategories);
+
+    if (selectedWallpanel) {
+        filteredCategories = categories.filter((cat) => cat.jenis_id === 5 || cat.jenis_id === 2);
+    }
+    console.log(filteredCategories);
+
+    filteredCategories.forEach((cat) => {
         dropdown += `
             <a class="nav-link text-white category-filter d-flex align-items-center justify-content-start" 
                 href="#" data-jenis-id="${cat.jenis_id}" data-id="${cat.id}">

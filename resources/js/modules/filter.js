@@ -4,9 +4,11 @@ import { setCategory } from './utils';
 let isLoading = false;
 
 export function bindFilterButton(selectedJenis) {
+    $(document).off('click', '.category-filter');
+
     $(document).on('click', '.category-filter', async function (e) {
         e.preventDefault();
-        if (isLoading) return; // prevent overlapping calls
+        if (isLoading) return;
         isLoading = true;
 
         const category = $(this).data('id');
@@ -17,7 +19,7 @@ export function bindFilterButton(selectedJenis) {
             $('#filterModal').modal('hide');
             resetState();
 
-            await loadMoreData(); // pastikan ini mengembalikan Promise
+            await loadMoreData();
         } catch (err) {
             console.error('Gagal memuat data:', err);
         } finally {

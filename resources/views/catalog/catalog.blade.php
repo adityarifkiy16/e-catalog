@@ -154,16 +154,16 @@
                                                 <span id="modalCategory" class="text-muted text-uppercase"></span>
                                             </div>
 
-                                            <div class="specifications order-2">
+                                            {{-- <div class="specifications order-2">
                                                 <div class="spec-item d-flex align-items-center mb-2">
-                                                    <i class="fas fa-cubes mr-2 text-muted"></i>
-                                                    <span id="modalUkuran" class="text-dark"> Thickness: 3mm</span>
+                                                    Tipe
+                                                    <span id="modalTipe" class="text-dark"> </span>
                                                 </div>
                                                 <div class="spec-item d-flex align-items-center mb-2">
-                                                    <i class="fas fa-arrows-alt mr-2 text-muted"></i>
-                                                    <span id="modalPanjang" class="text-dark"> Size: 5X20X20</span>
+                                                    Ukuran
+                                                    <span id="modalPanjang" class="text-dark"></span>
                                                 </div>
-                                            </div>
+                                            </div> --}}
 
                                             <div class="d-flex flex-row order-2">
 

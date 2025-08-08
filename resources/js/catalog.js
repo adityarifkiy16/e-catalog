@@ -5,9 +5,13 @@ import { resetState, setCatalogConfig, loadMoreData } from './modules/catalogLoa
 import { bindFilterButton } from './modules/filter';
 
 $(document).ready(function () {
-    const selectedJenis = new URLSearchParams(window.location.search).get('jenis');
+    let selectedJenis = new URLSearchParams(window.location.search).get('jenis');
     let category = new URLSearchParams(window.location.search).get('category');
     let delayTimer;
+
+    if (selectedJenis == 5 || selectedJenis == 2) {
+        sessionStorage.removeItem('selectedWallpanel');
+    }
 
     setCatalogConfig({ selectedJenis, category });
     loadMoreData();
@@ -88,6 +92,14 @@ $(document).ready(function () {
         });
     }
 
+    let selectedWallpanel = null;
+    const storedWallpanel = sessionStorage.getItem('selectedWallpanel');
+
+    if (storedWallpanel) {
+        selectedWallpanel = JSON.parse(storedWallpanel);
+        console.log('Restore wallpanel dari sessionStorage:', selectedWallpanel);
+    }
+
     $(document).on('click', '.product-card', function () {
         const code = $(this).data('code');
         const category = $(this).data('category');
@@ -97,15 +109,69 @@ $(document).ready(function () {
                 .replace(/&quot;/g, '"')
         );
         const jenis = $(this).data('jenis');
+        const productId = $(this).data('id');
+
+        // Klik produk wallpanel → ganti data wallpanel dan load UV Board / Wallboard
+        if (jenis.toLowerCase() === 'wallpanel') {
+            $('#filter-container').removeClass('d-none');
+            $('#catalog-col').addClass('col-md-10').removeClass('col-md-12');
+
+            selectedWallpanel = { code, images, productId, jenis };
+            sessionStorage.setItem('selectedWallpanel', JSON.stringify(selectedWallpanel));
+
+            resetState();
+            setCatalogConfig({ selectedJenis: [2, 5] });
+            loadMoreData(selectedWallpanel);
+            bindFilterButton([2, 5]);
+
+            console.log('Pilih wallpanel:', selectedWallpanel);
+            return;
+        }
+
+        // Klik UV Board / Wallboard
+        if (jenis.toLowerCase() === 'uv board' || jenis.toLowerCase() === 'wallboard') {
+            if (selectedWallpanel) {
+                console.log('Klik UV Board / Wallboard saat ada wallpanel terpilih');
+                console.log('Wallpanel saat ini:', selectedWallpanel);
+
+                // Render gambar UV Board yang diklik
+                renderCarouselProduct(images);
+
+                // Tampilkan info wallpanel di modal
+                $('#modalCode').text(code);
+                $('#productModalLabel').text(code);
+                $('#modalCategory').text('Wallpanel ' + selectedWallpanel.code);
+                $('#modalDownload').data('id', productId);
+                $('#productModal').modal('show');
+                $('#modalContact').data('jenis', selectedWallpanel.jenis);
+                $('#modalContact').data('category', category);
+                $('#modalContact').data('code', code);
+            } else {
+                console.log('Belum pilih wallpanel, tampilkan UV Board sebagai produk biasa');
+                renderCarouselProduct(images);
+                $('#modalCode').text(code);
+                $('#productModalLabel').text(code);
+                $('#modalCategory').text(jenis + ' / ' + category);
+                $('#modalDownload').data('id', productId);
+                $('#productModal').modal('show');
+                $('#modalContact').data('jenis', jenis);
+                $('#modalContact').data('category', category);
+                $('#modalContact').data('code', code);
+            }
+            return;
+        }
+
+        // Klik produk biasa
         renderCarouselProduct(images);
         $('#modalCode').text(code);
         $('#productModalLabel').text(code);
         $('#modalCategory').text(jenis + ' / ' + category);
-        $('#modalDownload').data('id', $(this).data('id'));
+        $('#modalDownload').data('id', productId);
         $('#productModal').modal('show');
         $('#modalContact').data('jenis', jenis);
         $('#modalContact').data('category', category);
         $('#modalContact').data('code', code);
+        console.log('Produk biasa:', code);
     });
 
     bindFilterButton(selectedJenis);
