@@ -48,11 +48,16 @@ $(document).ready(function () {
         }
     });
 
-    function renderCarouselProduct(images) {
+    function renderCarouselProduct(images, wallpanelImages = null) {
         $('#carousel-product-image').empty();
         $('#thumbnailGallery').empty();
+        let newimages = [...images];
 
-        images.forEach((img, i) => {
+        if (wallpanelImages) {
+            newimages = [...images, ...wallpanelImages];
+        }
+
+        newimages.forEach((img, i) => {
             const activeClass = i === 0 ? 'active' : '';
 
             // Carousel utama
@@ -117,6 +122,7 @@ $(document).ready(function () {
             $('#catalog-col').addClass('col-md-10').removeClass('col-md-12');
 
             selectedWallpanel = { code, images, productId, jenis };
+            // set selectedWallpanel ke sessionStorage
             sessionStorage.setItem('selectedWallpanel', JSON.stringify(selectedWallpanel));
 
             resetState();
@@ -138,7 +144,7 @@ $(document).ready(function () {
                 console.log('Wallpanel saat ini:', selectedWallpanel);
 
                 // Render gambar UV Board yang diklik
-                renderCarouselProduct(images);
+                renderCarouselProduct(images, selectedWallpanel.images);
 
                 // Tampilkan info wallpanel di modal
                 $('#modalCode').text(code);
