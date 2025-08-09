@@ -29,7 +29,7 @@ export function renderProducts(products, selectedJenis) {
         } else {
             html += `
                     <div class="col-md-2 col-6 mb-4">
-                        <div class="h-100 product-card"
+                        <div class="h-100 product-card d-flex flex-column justify-content-center align-items-center"
                     `;
         }
 
