@@ -18,7 +18,7 @@
             </a>
 
             <!-- Tombol filter (khusus mobile) -->
-            <button class="btn btn-outline-dark d-md-none d-flex align-items-center" data-toggle="modal"
+            <button class="btn btn-outline-light d-md-none d-flex align-items-center" data-toggle="modal"
                 data-target="#filterModal" id="category-button">
                 <i class="fa fa-bars"></i>
                 <span class="ml-2">Filter</span>
@@ -208,7 +208,7 @@
                     <div class="modal-content bg-black text-white">
                         <div class="modal-header">
                             <h5 class="modal-title font-weight-bold" id="filterModalLabel">Filter</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
