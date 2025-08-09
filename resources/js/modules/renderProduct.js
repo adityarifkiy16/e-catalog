@@ -18,17 +18,17 @@ export function renderProducts(products, selectedJenis) {
         // Tampilan sesuai bentuk
         if (product.category?.display_style === 'square' || selectedJenis === null) {
             html += `
-                    <div class="col-md-2 mb-4">
+                    <div class="col-md-2 col-6 mb-4">
                         <div class="h-100 product-card"
                     `;
         } else if (product.category?.display_style === 'rectangle') {
             html += `
-                    <div class="col-md-4 mb-4">
+                    <div class="col-md-4 col-6 mb-4">
                         <div class="h-100 product-card"
                     `;
         } else {
             html += `
-                    <div class="col-md-2 mb-4">
+                    <div class="col-md-2 col-6 mb-4">
                         <div class="h-100 product-card"
                     `;
         }
@@ -47,7 +47,8 @@ export function renderProducts(products, selectedJenis) {
                             alt="${product.name}" 
                             style="
                                 border : 1px solid #2c2c2c;
-                                min-height: 200px;
+                                min-height: 10rem;
+                                max-width: 10rem;
                                 aspect-ratio: 1/1;
                                 height: auto; 
                                 border-radius: 8px;

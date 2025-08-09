@@ -123,6 +123,9 @@ $(document).ready(function () {
             setCatalogConfig({ selectedJenis: [2, 5] });
             loadMoreData(selectedWallpanel);
             bindFilterButton([2, 5]);
+            if ($(window).width() < 768) {
+                $('#filter-container').addClass('d-none');
+            }
 
             console.log('Pilih wallpanel:', selectedWallpanel);
             return;

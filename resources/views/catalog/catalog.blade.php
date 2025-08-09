@@ -36,7 +36,7 @@
                             <div
                                 class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center justify-content-between">
                                 <!-- Input Search -->
-                                <div class="mb-2 mb-md-0 flex-grow-1 mr-2 order-3">
+                                <div class="mt-2 mb-md-0 flex-grow-1 mr-2 order-3">
                                     <div class="input-group">
                                         <input type="text" id="search-input" class="form-control"
                                             placeholder="Search product..." value="{{ request()->query('search') }}"
@@ -205,7 +205,7 @@
             <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable" role="document">
-                    <div class="modal-content bg-night text-white">
+                    <div class="modal-content bg-black text-white">
                         <div class="modal-header">
                             <h5 class="modal-title font-weight-bold" id="filterModalLabel">Filter</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
