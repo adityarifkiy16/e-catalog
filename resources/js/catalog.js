@@ -54,7 +54,7 @@ $(document).ready(function () {
         let newimages = [...images];
 
         if (wallpanelImages) {
-            newimages = [...images, ...wallpanelImages];
+            newimages = [...wallpanelImages, ...images];
         }
 
         newimages.forEach((img, i) => {
