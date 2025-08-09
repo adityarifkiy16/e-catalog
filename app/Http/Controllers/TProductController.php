@@ -641,4 +641,60 @@ class TProductController extends Controller
             ], 500);
         }
     }
+
+    public function resetMockup(TProduct $product)
+    {
+        $mockupImages = $product->images()
+            ->where('motif', false)
+            ->get();
+
+        if ($mockupImages->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Produk ini tidak memiliki gambar mockup.'
+            ], 404);
+        }
+        $product->images()->detach($mockupImages->pluck('id'));
+
+        // Hapus file dan record
+        foreach ($mockupImages as $image) {
+            if (Storage::disk('public')->exists($image->path)) {
+                Storage::disk('public')->delete($image->path);
+            }
+            $image->delete();
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Gambar mockup berhasil direset.'
+        ]);
+    }
+    public function resetMotif(TProduct $product)
+    {
+        $mockupImages = $product->images()
+            ->where('motif', true)
+            ->get();
+
+        if ($mockupImages->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Produk ini tidak memiliki gambar motif.'
+            ], 404);
+        }
+
+        $product->images()->detach($mockupImages->pluck('id'));
+
+        // Hapus file dan record
+        foreach ($mockupImages as $image) {
+            if (Storage::disk('public')->exists($image->path)) {
+                Storage::disk('public')->delete($image->path);
+            }
+            $image->delete();
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Gambar motif berhasil direset.'
+        ]);
+    }
 }

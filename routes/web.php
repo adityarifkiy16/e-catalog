@@ -75,4 +75,6 @@ Route::middleware("auth")->group(function () {
     Route::get("/products/delete-by-category", [App\Http\Controllers\TProductController::class, "destroyByCategory"])->name("products.destroy-by-category");
     Route::get("/products/bulk-upload/create", [App\Http\Controllers\TProductController::class, "bulkUpload"])->name("products.bulk.create");
     Route::post("/products/bulk-upload", [App\Http\Controllers\TProductController::class, "storeBulkUpload"])->name("products.bulk.store");
+    Route::delete("/products/reset-mockup/{product}", [App\Http\Controllers\TProductController::class, "resetMockup"])->name("products.reset-mockup");
+    Route::delete("/products/reset-motif/{product}", [App\Http\Controllers\TProductController::class, "resetMotif"])->name("products.reset-motif");
 });

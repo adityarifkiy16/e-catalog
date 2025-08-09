@@ -118,6 +118,86 @@
             });
         });
 
+        $(document).on('submit', '.reset-mockup', function(e) {
+            e.preventDefault();
+            const form = $(this);
+            const url = form.attr('action');
+
+            Swal.fire({
+                title: 'Yakin ingin menghapus?',
+                text: "Data tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: form.serialize(),
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                Swal.fire('Berhasil!', response.message, 'success');
+                                // Jika pakai DataTables
+                                $('#product-table').DataTable().ajax.reload(null, false);
+                            } else {
+                                Swal.fire('Gagal!', response.message, 'error');
+                            }
+                        },
+                        error: function(xhr) {
+                            Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+
+        $(document).on('submit', '.reset-motif', function(e) {
+            e.preventDefault();
+            const form = $(this);
+            const url = form.attr('action');
+
+            Swal.fire({
+                title: 'Yakin ingin menghapus?',
+                text: "Data tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: form.serialize(),
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                Swal.fire('Berhasil!', response.message, 'success');
+                                // Jika pakai DataTables
+                                $('#product-table').DataTable().ajax.reload(null, false);
+                            } else {
+                                Swal.fire('Gagal!', response.message, 'error');
+                            }
+                        },
+                        error: function(xhr) {
+                            Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+
         $(document).ready(function() {
             const Toast = Swal.mixin({
                 toast: true,
@@ -208,12 +288,26 @@
                         render: function(data) {
                             return `
                         <div class="d-flex flex-row justify-content-end align-items-end">
-                            <a href="/products/${data.id}/edit"><button type="button" class="btn btn-primary mx-2"><i class="fas fa-pencil-alt" title="Edit"></i></button></a>
+                                <a href="/products/${data.id}/edit"><button type="button" class="btn btn-primary mx-2"><i class="fas fa-pencil-alt" title="Edit"></i></button></a>
                                 <form action="/products/${data.id}" style="display: inline;" class="delete-product">
                                             <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <button type="submit" class="btn btn-danger delete-task-button" data-user-id="${data.id}">
                                                 <i class="fas fa-trash"></i>
+                                            </button>
+                                </form>
+                                <form action="/products/reset-mockup/${data.id}" style="display: inline;" class="reset-mockup mx-2">
+                                            <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit" class="btn btn-success" data-user-id="${data.id}">
+                                                <i class="fas fa-undo"></i>
+                                            </button>
+                                </form>
+                                <form action="/products/reset-motif/${data.id}" style="display: inline;" class="reset-motif">
+                                            <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit" class="btn btn-warning" data-user-id="${data.id}">
+                                                <i class="fas fa-undo"></i>
                                             </button>
                                 </form>
                         </div>`;
