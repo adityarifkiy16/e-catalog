@@ -106,27 +106,21 @@ function updateCategoryMenu(response, selectedWallpanel = null) {
     let filteredCategories = categories;
 
     if (selectedWallpanel) {
-        filteredCategories = categories.filter((cat) => cat.jenis_id === 5 || cat.jenis_id === 2);
+        filteredCategories = categories.filter((cat) => cat.jenis_id === 5 || (cat.jenis_id === 2 && cat.id !== 25));
     }
+    console.log(selectedWallpanel);
 
-    filteredCategories
-        .filter((cat) => {
-            if (selectedWallpanel) {
-                return cat.id !== 25;
-            }
-            return true;
-        })
-        .forEach((cat) => {
-            dropdown += `
+    filteredCategories.forEach((cat) => {
+        dropdown += `
             <a class="nav-link text-white category-filter d-flex align-items-center justify-content-start" 
                 href="#" data-jenis-id="${cat.jenis_id}" data-id="${cat.id}">
                 <img src="${cat.path ? 'storage/' + cat.path : 'dist/img/product/1.webp'}" alt="${cat.name}" 
                 class="mr-2 img-thumbnail" style="width: 50px; height: 50px; object-fit: contain;">
                 <span class="text-capitalize">${cat.name} ${
-                cat.products_count > 0 ? `(${cat.products_count})` : ''
-            }</span>
+            cat.products_count > 0 ? `(${cat.products_count})` : ''
+        }</span>
             </a>`;
-        });
+    });
 
     dropdown += `</li>`;
     $('#category-menu-item, #category-menu-item-modal').html(dropdown);
