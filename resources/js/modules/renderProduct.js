@@ -48,7 +48,6 @@ export function renderProducts(products, selectedJenis) {
                             style="
                                 border : 1px solid #2c2c2c;
                                 min-height: 10rem;
-                                max-width: 10rem;
                                 aspect-ratio: 1/1;
                                 height: auto; 
                                 border-radius: 8px;

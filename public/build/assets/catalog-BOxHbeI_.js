@@ -12,7 +12,7 @@ Saya tertarik dengan produk berikut:
 • Jenis : *${$(this).data("jenis")}*
 • Kategori: *${$(this).data("category")}*
 
-Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${i}?text=${encodeURIComponent(a)}`,"_blank")})}function K(){$(window).scroll(function(){$(this).scrollTop()>100?$("#btn-scroll-top").fadeIn():$("#btn-scroll-top").fadeOut()}),$("#btn-scroll-top").click(function(){return $("html, body").animate({scrollTop:0},500),!1})}function U(e,i){let a="";e.forEach(l=>{var t,m,f,v,x,k,j;const n=l.photo?`/storage/${l.photo}`:"https://via.placeholder.com/300x200?text=No+Image",c=J(l.images),o=[n,...c],s=JSON.stringify(o).replace(/"/g,"&quot;"),d=((t=l.category)==null?void 0:t.name)??"Tanpa Kategori";((m=l.category)==null?void 0:m.display_style)==="square"||i===null?a+=`
+Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${i}?text=${encodeURIComponent(a)}`,"_blank")})}function K(){$(window).scroll(function(){$(this).scrollTop()>100?$("#btn-scroll-top").fadeIn():$("#btn-scroll-top").fadeOut()}),$("#btn-scroll-top").click(function(){return $("html, body").animate({scrollTop:0},500),!1})}function U(e,i){let a="";e.forEach(l=>{var t,m,f,v,k,x,j;const n=l.photo?`/storage/${l.photo}`:"https://via.placeholder.com/300x200?text=No+Image",c=J(l.images),o=[n,...c],s=JSON.stringify(o).replace(/"/g,"&quot;"),d=((t=l.category)==null?void 0:t.name)??"Tanpa Kategori";((m=l.category)==null?void 0:m.display_style)==="square"||i===null?a+=`
                     <div class="col-md-2 col-6 mb-4">
                         <div class="h-100 product-card"
                     `:((f=l.category)==null?void 0:f.display_style)==="rectangle"?a+=`
@@ -25,7 +25,7 @@ Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${i}
                     data-id="${l.id}"
                     data-code="${l.code}"
                     data-category="${d}"
-                    data-jenis="${((x=(v=l.category)==null?void 0:v.jenis)==null?void 0:x.name)??""}"
+                    data-jenis="${((k=(v=l.category)==null?void 0:v.jenis)==null?void 0:k.name)??""}"
                     data-images="${s}"
                     data-image="${n}"
                     >
@@ -36,13 +36,12 @@ Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${i}
                             style="
                                 border : 1px solid #2c2c2c;
                                 min-height: 10rem;
-                                max-width: 10rem;
                                 aspect-ratio: 1/1;
                                 height: auto; 
                                 border-radius: 8px;
                                 width: 100%; 
                                 object-fit: cover; 
-                                object-position: ${((j=(k=l.category)==null?void 0:k.jenis)==null?void 0:j.name)==="PVC Board"?"bottom center":"center center"};
+                                object-position: ${((j=(x=l.category)==null?void 0:x.jenis)==null?void 0:j.name)==="PVC Board"?"bottom center":"center center"};
                             "
                         >
                         <div class="card-body d-flex flex-column text-center">
