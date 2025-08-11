@@ -149,7 +149,7 @@ $(document).ready(function () {
                 // Tampilkan info wallpanel di modal
                 $('#modalCode').text(code);
                 $('#productModalLabel').text(code);
-                $('#modalCategory').text('Wallpanel ' + selectedWallpanel.code);
+                $('#modalCategory').html('Wallpanel <strong>' + selectedWallpanel.code + '</strong>');
                 $('#modalDownload').data('id', productId);
                 $('#productModal').modal('show');
                 $('#modalContact').data('wallpanel', selectedWallpanel.code);
