@@ -25,7 +25,6 @@ export function loadMoreData(selectedWallpanel = null) {
         if (isLoading || lastPage) return resolve(); // tetap resolve untuk menghindari deadlock
         isLoading = true;
         showLoading();
-        console.log('selectedJenis', selectedJenis);
 
         const search = $('#search-input').val();
         $.ajax({
@@ -54,7 +53,6 @@ export function loadMoreData(selectedWallpanel = null) {
                     lastPage = true;
                 }
                 updateCategoryMenu(response, selectedWallpanel);
-                console.log(response);
                 resolve();
             },
             error: function () {
@@ -107,13 +105,9 @@ function updateCategoryMenu(response, selectedWallpanel = null) {
     let dropdown = `<li class="nav-item font-poppins">`;
     let filteredCategories = categories;
 
-    console.log(filteredCategories);
-
     if (selectedWallpanel) {
         filteredCategories = categories.filter((cat) => cat.jenis_id === 5 || cat.jenis_id === 2);
     }
-
-    console.log(filteredCategories);
 
     filteredCategories
         .filter((cat) => {
@@ -142,7 +136,7 @@ function updateCategoryMenu(response, selectedWallpanel = null) {
         category = categories[0].id;
         setCategory(category);
         resetState();
-        loadMoreData();
+        loadMoreData(selectedWallpanel);
     } else if (category) {
         $(`.category-filter[data-id="${category}"]`).addClass('active');
     }
