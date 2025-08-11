@@ -8,6 +8,7 @@ let category = null;
 let currentPage = 1;
 let isLoading = false;
 let lastPage = false;
+let selectedWallpanelGlobal = null;
 const uniquePaths = new Set();
 
 export function setCatalogConfig(config) {
@@ -15,6 +16,9 @@ export function setCatalogConfig(config) {
     category = config.category ?? null;
 }
 export function loadMoreData(selectedWallpanel = null) {
+    if (selectedWallpanel !== null) {
+        selectedWallpanelGlobal = selectedWallpanel;
+    }
     return new Promise((resolve, reject) => {
         if (!category || category === 'null' || category === '') {
             $('#btn-download').addClass('d-none');
@@ -68,6 +72,7 @@ export function loadMoreData(selectedWallpanel = null) {
 }
 
 function updateCategoryMenu(response, selectedWallpanel = null) {
+    selectedWallpanel = selectedWallpanel ?? selectedWallpanelGlobal;
     const categories = response.jenis?.categories ?? [];
     const name = response.jenis?.name;
     const data = response;
@@ -108,7 +113,6 @@ function updateCategoryMenu(response, selectedWallpanel = null) {
     if (selectedWallpanel) {
         filteredCategories = categories.filter((cat) => cat.jenis_id === 5 || (cat.jenis_id === 2 && cat.id !== 25));
     }
-    console.log(selectedWallpanel);
 
     filteredCategories.forEach((cat) => {
         dropdown += `
