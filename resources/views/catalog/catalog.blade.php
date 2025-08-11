@@ -11,7 +11,7 @@
     </button>
 
     <div class="w-100 d-flex justify-content-center align-items-center">
-        <div class="w-100 shadow-sm py-3 px-4 d-flex justify-content-between align-items-center bg-navy">
+        <div class="w-100 shadow-sm py-3 px-4 d-flex justify-content-between align-items-center bg-black">
             <!-- Logo -->
             <a href="https://osborn.id/" target="_blank" class="d-flex align-items-center">
                 <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn-logo" style="width: 130px; height: auto;">
@@ -24,7 +24,6 @@
                 <span class="ml-2">Filter</span>
             </button>
         </div>
-
     </div>
     <div class="container-fluid py-4 px-4 text-white bg-black-secondary">
         <div class="row">
@@ -36,7 +35,7 @@
                             <div
                                 class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center justify-content-between">
                                 <!-- Input Search -->
-                                <div class="mt-2 mb-md-0 flex-grow-1 mr-2 order-3">
+                                <div class="mb-md-0 flex-grow-1 mr-2 order-3">
                                     <div class="input-group">
                                         <input type="text" id="search-input" class="form-control"
                                             placeholder="Search product..." value="{{ request()->query('search') }}"
@@ -57,7 +56,7 @@
                                 </div>
 
                                 <!-- Tombol Download -->
-                                <div class="text-center text-md-right mr-2 order-2">
+                                <div class="mb-2 mb-md-0  text-center text-md-right mr-2 order-2">
                                     <a href="#" class="btn btn-light w-100 w-md-auto" id="btn-download">
                                         <i class="fa fa-arrow-down mr-1"></i> Download
                                     </a>

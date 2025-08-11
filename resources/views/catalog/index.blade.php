@@ -108,7 +108,7 @@
 @section('content')
     <!-- Page Title -->
     <div class="w-100 d-flex justify-content-center align-items-center">
-        <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100 bg-navy">
+        <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100 bg-black">
             <a href="https://osborn.id/" target="_blank" class="py-2"> <img src="{{ asset('dist/img/osborn.png') }}"
                     alt="osborn-logo" style="width: 130px; height: auto;"></a>
         </div>
@@ -184,13 +184,13 @@
                     <div
                         class="border-0 h-100 pointer d-flex flex-column justify-content-center align-items-center overflow-hidden">
                         <img src="{{ asset('dist/img/product/' . $key . '.png') }}?v={{ time() }}"
-                            class="img-fluid d-block w-100"
-                            style="height: 200px; object-fit: cover; object-position:center; transform: scale(1.6);"
-                            alt="{{ $item->name }}">
+                            class="img-fluid d-block w-100 product-img" alt="{{ $item->name }}">
                         <div class="card-body mt-0">
-                            <h4 class="card-text font-weight-bold">{{ $item->name }}</h4>
-                            <span class="card-text text-muted font-weight-normal">{{ $item->products_count }}
-                                Product</span>
+                            <h4 class="card-text font-weight-bold text-uppercase">{{ $item->name }}</h4>
+                            <div class="d-flex flex-row justify-content-center">
+                                <h5 class="font-weight-bold">{{ $item->products_count }}</h5>
+                                <p class="ml-1 text-muted text-uppercase">products</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -311,7 +311,7 @@
                         </li>
                     </ul>
                     <p class="mt-5 mb-1">&copy; 2025 Osborn. All rights reserved.</p>
-                    <span class="text-muted">Updated: 4 Agustus 2025 | v1.1</span>
+                    <span class="text-muted">Updated: 11 Agustus 2025 | v1.2</span>
 
                 </div>
             </div>
