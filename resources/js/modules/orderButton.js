@@ -8,14 +8,15 @@ export function bindOrderButton() {
             message =
                 `Halo Admin,\nSaya tertarik dengan produk berikut:\n\n` +
                 `• Tipe Wallpanel: *${$(this).data('wallpanel')}*\n` +
-                `• KodeMotif : *${$(this).data('code')}*\n` +
+                `• Kode Motif : *${$(this).data('code')}*\n` +
+                `• Produk : *${$(this).data('jenis')}*\n` +
                 `• Kategori: *${$(this).data('category')}*\n\n` +
                 `Apakah produk ini masih tersedia? Terima kasih.`;
         } else {
             message =
                 `Halo Admin,\nSaya tertarik dengan produk berikut:\n\n` +
                 `• Kode Motif : *${$(this).data('code')}*\n` +
-                `• Jenis : *${$(this).data('jenis')}*\n` +
+                `• Produk : *${$(this).data('jenis')}*\n` +
                 `• Kategori: *${$(this).data('category')}*\n\n` +
                 `Apakah produk ini masih tersedia? Terima kasih.`;
         }
