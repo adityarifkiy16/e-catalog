@@ -32,12 +32,16 @@ export function renderProducts(products, selectedJenis) {
                         <div class="h-100 product-card d-flex flex-column justify-content-center align-items-center"
                     `;
         }
+        console.log(product);
 
         html += `
                     data-id="${product.id}"
                     data-code="${product.code}"
                     data-category="${categoryName}"
                     data-jenis="${product.category?.jenis?.name ?? ''}"
+                    data-length="${product.panjang}"
+                    data-height="${product.tinggi}"
+                    data-density="${product.ketebalan}"
                     data-images="${imagesJson}"
                     data-image="${image}"
                     >

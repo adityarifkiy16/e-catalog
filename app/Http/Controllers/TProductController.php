@@ -174,6 +174,9 @@ class TProductController extends Controller
                     ->ignore($product->id)
                     ->whereNull('deleted_at')
             ],
+            'length' => 'nullable|decimal:0,2', // maks 2 digit di belakang koma
+            'height' => 'nullable|decimal:0,2',
+            'density' => 'nullable|decimal:0,3',
             'name' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'image-motif' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
@@ -189,6 +192,9 @@ class TProductController extends Controller
                 'code' => $request->code,
                 'name' => $request->name,
                 'category_id' => $request->category_id,
+                'panjang' => $request->length,
+                'tinggi' => $request->height,
+                'ketebalan' => $request->density
             ];
 
             if ($request->hasFile('image-mockup')) {

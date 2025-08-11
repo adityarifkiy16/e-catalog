@@ -152,6 +152,29 @@
                                             <div class="mb-3 order-2">
                                                 <span id="modalCategory" class="text-muted text-uppercase"></span>
                                             </div>
+                                            <div class="mb-3 order-2 d-flex flex-column text-dark">
+                                                <div class="row mb-1" id="panjang">
+                                                    <div class="col-3"><strong>Panjang</strong></div>
+                                                    <div class="col-auto">:</div>
+                                                    <div class="col" id="modalLength"></div>
+                                                </div>
+                                                <div class="row mb-1" id="tinggi">
+                                                    <div class="col-3"><strong>Tinggi</strong></div>
+                                                    <div class="col-auto">:</div>
+                                                    <div class="col" id="modalHeight"></div>
+                                                </div>
+                                                <div class="row mb-1" id="ketebalan">
+                                                    <div class="col-3"><strong>Ketebalan</strong></div>
+                                                    <div class="col-auto">:</div>
+                                                    <div class="col" id="modalDensity"></div>
+                                                </div>
+                                                <div class="row mb-1" id="kepadatan">
+                                                    <div class="col-3"><strong>Kepadatan</strong></div>
+                                                    <div class="col-auto">:</div>
+                                                    <div class="col" id="modalKepadatan"></div>
+                                                </div>
+
+                                            </div>
 
                                             {{-- <div class="specifications order-2">
                                                 <div class="spec-item d-flex align-items-center mb-2">

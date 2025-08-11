@@ -114,6 +114,9 @@ $(document).ready(function () {
                 .replace(/&quot;/g, '"')
         );
         const jenis = $(this).data('jenis');
+        const length = parseInt($(this).data('length'), 10);
+        const height = parseInt($(this).data('height'), 10);
+        const density = parseInt($(this).data('density'), 10);
         const productId = $(this).data('id');
 
         // Klik produk wallpanel → ganti data wallpanel dan load UV Board / Wallboard
@@ -152,6 +155,12 @@ $(document).ready(function () {
                 $('#modalCategory').html('Wallpanel <strong>' + selectedWallpanel.code + '</strong>');
                 $('#modalDownload').data('id', productId);
                 $('#productModal').modal('show');
+
+                $('#panjang').hide();
+                $('#tinggi').hide();
+                $('#ketebalan').hide();
+                $('#kepadatan').hide();
+
                 $('#modalContact').data('wallpanel', selectedWallpanel.code);
                 $('#modalContact').data('jenis', selectedWallpanel.jenis);
                 $('#modalContact').data('category', category);
@@ -164,6 +173,12 @@ $(document).ready(function () {
                 $('#modalCategory').text(jenis + ' / ' + category);
                 $('#modalDownload').data('id', productId);
                 $('#productModal').modal('show');
+
+                $('#panjang').hide();
+                $('#tinggi').hide();
+                $('#ketebalan').hide();
+                $('#kepadatan').hide();
+
                 $('#modalContact').data('jenis', jenis);
                 $('#modalContact').data('category', category);
                 $('#modalContact').data('code', code);
@@ -178,6 +193,33 @@ $(document).ready(function () {
         $('#modalCategory').text(jenis + ' / ' + category);
         $('#modalDownload').data('id', productId);
         $('#productModal').modal('show');
+        console.log('jenis' + jenis);
+        if (jenis === 'PVC Board') {
+            $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
+            $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
+            $('#modalDensity').text(density && !isNaN(density) ? density + ' mm' : '-');
+            console.log(code);
+            if (code === '3mm') {
+                $('#modalKepadatan').html(`
+                <span class="badge bg-navy">0,4 mm</span> 
+                <span class="badge bg-navy">0,55 mm</span> 
+                <span class="badge bg-navy">0,7 mm</span> 
+            `);
+            } else {
+                $('#modalKepadatan').html(`
+                <span class="badge bg-navy">0,4 mm</span> 
+                <span class="badge bg-navy">0,55 mm</span> 
+                <span class="badge bg-navy">0,7 mm</span> 
+                <span class="badge bg-navy">1 mm</span> 
+            `);
+            }
+        } else {
+            $('#panjang').hide();
+            $('#tinggi').hide();
+            $('#ketebalan').hide();
+            $('#kepadatan').hide();
+        }
+
         $('#modalContact').data('jenis', jenis);
         $('#modalContact').data('category', category);
         $('#modalContact').data('code', code);

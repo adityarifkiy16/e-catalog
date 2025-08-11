@@ -31,6 +31,58 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
 
+                            @if ($product->category->jenis_id == 1)
+                                <label class="mt-3"><i class="fas fa-ruler-horizontal"></i> Panjang</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="length"
+                                        value="{{ old('length', $product->panjang) }}" placeholder="Panjang" step="0.01"
+                                        min="0">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text text-white">
+                                            <span class="text-dark font-weight-bold">CM</span>
+                                        </span>
+                                    </div>
+                                    @error('length')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+
+                                <label class="mt-3"><i class="fas fa-ruler-vertical"></i> Tinggi</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="height"
+                                        value="{{ old('height', $product->tinggi) }}" placeholder="Tinggi" step="0.01"
+                                        min="0">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text text-white">
+                                            <span class="text-dark font-weight-bold">CM</span>
+                                        </span>
+                                    </div>
+                                    @error('height')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+
+                                <label class="mt-3"><i class="fas fa-arrows-alt-h"></i> Ketebalan</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="density"
+                                        value="{{ old('density', $product->ketebalan) }}" placeholder="Ketebalan"
+                                        step="0.01" min="0">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text text-white">
+                                            <span class="text-dark font-weight-bold">MM</span>
+                                        </span>
+                                    </div>
+                                    @error('density')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            @endif
+
+
+
+
                             <label class="mt-3"><i class="fas fa-image"></i> Ganti Thumbnail</label>
                             <input type="file" class="form-control" id="img" name="image" accept="image/*"
                                 multiple>
