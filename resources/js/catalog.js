@@ -152,7 +152,8 @@ $(document).ready(function () {
                 $('#modalCategory').text('Wallpanel ' + selectedWallpanel.code);
                 $('#modalDownload').data('id', productId);
                 $('#productModal').modal('show');
-                $('#modalContact').data('jenis', selectedWallpanel.jenis);
+                $('#modalContact').data('wallpanel', selectedWallpanel.code);
+                $('#modalContact').data('jenis', jenis);
                 $('#modalContact').data('category', category);
                 $('#modalContact').data('code', code);
             } else {

@@ -1,28 +1,20 @@
 export function bindOrderButton() {
-    let selectedWallpanel = sessionStorage.getItem('selectedWallpanel');
-
-    if (selectedWallpanel) {
-        selectedWallpanel = JSON.parse(selectedWallpanel);
-        console.log('Restore wallpanel dari sessionStorage:', selectedWallpanel);
-    }
-
     $(document).on('click', '.modalContact', function (e) {
         e.preventDefault();
         console.log('Klik tombol order', $(this).data('code'));
         const phone = '62816659688';
         let message = '';
-        if (selectedWallpanel && selectedWallpanel.code) {
+        if ($(this).data('wallpanel')) {
             message =
                 `Halo Admin,\nSaya tertarik dengan produk berikut:\n\n` +
-                `• Wallpanel: *${selectedWallpanel.code}*\n` +
-                `• Motif : *${$(this).data('code')}*\n` +
-                `• Jenis: *${$(this).data('jenis')}*\n` +
+                `• Tipe Wallpanel: *${$(this).data('wallpanel')}*\n` +
+                `• KodeMotif : *${$(this).data('code')}*\n` +
                 `• Kategori: *${$(this).data('category')}*\n\n` +
                 `Apakah produk ini masih tersedia? Terima kasih.`;
         } else {
             message =
                 `Halo Admin,\nSaya tertarik dengan produk berikut:\n\n` +
-                `• Kode : *${$(this).data('code')}*\n` +
+                `• Kode Motif : *${$(this).data('code')}*\n` +
                 `• Jenis : *${$(this).data('jenis')}*\n` +
                 `• Kategori: *${$(this).data('category')}*\n\n` +
                 `Apakah produk ini masih tersedia? Terima kasih.`;
