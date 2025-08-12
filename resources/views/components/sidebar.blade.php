@@ -23,6 +23,7 @@
             'icon' => 'fas fa-box',
             'items' => [
                 ['route' => 'jenis.index', 'label' => 'Jenis', 'icon' => 'fas fa-tags'],
+                ['route' => 'type.index', 'label' => 'Tipe', 'icon' => 'fas fa-tags'],
                 ['route' => 'categories.index', 'label' => 'Kategori', 'icon' => 'fas fa-tags'],
                 ['route' => 'products.index', 'label' => 'Produk', 'icon' => 'fas fa-box'],
             ],
