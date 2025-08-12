@@ -15,6 +15,11 @@ class MJenis extends Model
     protected $guarded = ['id'];
     protected $fillable = ['name'];
 
+    public function types()
+    {
+        return $this->hasMany(MType::class, 'jenis_id', 'id');
+    }
+
     public function categories()
     {
         return $this->hasMany(MCategories::class, 'jenis_id', 'id');
