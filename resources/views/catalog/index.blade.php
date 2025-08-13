@@ -311,7 +311,7 @@
                         </li>
                     </ul>
                     <p class="mt-5 mb-1">&copy; 2025 Osborn. All rights reserved.</p>
-                    <span class="text-muted">Updated: 11 Agustus 2025 | v1.2</span>
+                    <span class="text-muted">Updated: 13 Agustus 2025 | v1.3</span>
 
                 </div>
             </div>
