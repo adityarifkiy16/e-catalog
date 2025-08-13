@@ -112,6 +112,7 @@
             <a href="https://osborn.id/" target="_blank" class="py-2">
                 <img src="{{ asset('dist/img/osborn.png') }}?v={{ time() }}" alt="osborn-logo"
                     style="width: 130px; height: auto;">
+            </a>
         </div>
     </div>
 
