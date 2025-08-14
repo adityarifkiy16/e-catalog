@@ -113,6 +113,16 @@
                 <img src="{{ asset('dist/img/osborn.png') }}?v={{ time() }}" alt="osborn-logo"
                     style="width: 130px; height: auto;">
             </a>
+
+            <!-- Navigation -->
+            <nav>
+                <ul class="d-flex list-unstyled m-0">
+                    <li class="mx-3"><a href="https://osborn.id/" target="_blank"
+                            class="text-decoration-none btn btn-outline-light">Landing Page</a>
+                    </li>
+                </ul>
+            </nav>
+
         </div>
     </div>
 
@@ -314,7 +324,7 @@
                         </li>
                     </ul>
                     <p class="mt-5 mb-1">&copy; 2025 Osborn. All rights reserved.</p>
-                    <span class="text-muted">Updated: 13 Agustus 2025 | v1.3</span>
+                    <span class="text-muted">Updated: 14 Agustus 2025 | v1.4</span>
 
                 </div>
             </div>
