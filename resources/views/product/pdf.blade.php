@@ -69,8 +69,11 @@
                     <h1 style="margin: 10px 0; font-size: 24px;"><strong>{{ $product->code }}</strong></h1>
                     <p style="margin: 2px 0;"><strong>Kategori:</strong>
                         {{ $product->category->name ?? 'Tanpa Kategori' }}</p>
-                    <p style="margin: 2px 0;"><strong>Ukuran:</strong> 3mm</p>
-                    <p style="margin: 2px 0;"><strong>Panjang:</strong> 20x20x20</p>
+                    @if ($product->category->jenis_id == 1)
+                        <p style="margin: 2px 0;"><strong>Panjang:</strong> {{ $product->panjang ?? '-' }} cm</p>
+                        <p style="margin: 2px 0;"><strong>Tinggi:</strong> {{ $product->tinggi ?? '-' }} cm</p>
+                        <p style="margin: 2px 0;"><strong>ketebalan:</strong> {{ $product->ketebalan ?? '-' }} cm</p>
+                    @endif
                 </div>
             </td>
         </tr>
