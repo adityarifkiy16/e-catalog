@@ -115,13 +115,20 @@
             </a>
 
             <!-- Navigation -->
-            <nav>
+            <nav class="d-none d-md-block">
                 <ul class="d-flex list-unstyled m-0">
                     <li class="mx-3"><a href="https://osborn.id/" target="_blank"
-                            class="text-decoration-none btn btn-outline-light">Landing Page</a>
+                            class="text-decoration-none text-white h5">Official Website</a>
                     </li>
                 </ul>
             </nav>
+
+            <!-- Website Button -->
+            <span class="d-block d-md-none"><a href="https://osborn.id/" target="_blank" class="contact-btn">
+                    <i class="fas fa-globe text-white fa-lg"></i></a>
+            </span>
+
+
 
         </div>
     </div>
