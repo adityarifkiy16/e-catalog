@@ -70,9 +70,10 @@
                     <p style="margin: 2px 0;"><strong>Kategori:</strong>
                         {{ $product->category->name ?? 'Tanpa Kategori' }}</p>
                     @if ($product->category->jenis_id == 1)
-                        <p style="margin: 2px 0;"><strong>Panjang:</strong> {{ $product->panjang ?? '-' }} cm</p>
-                        <p style="margin: 2px 0;"><strong>Tinggi:</strong> {{ $product->tinggi ?? '-' }} cm</p>
-                        <p style="margin: 2px 0;"><strong>ketebalan:</strong> {{ $product->ketebalan ?? '-' }} cm</p>
+                        <p style="margin: 2px 0;"><strong>Panjang:</strong> {{ (int) $product->panjang ?? '-' }} cm</p>
+                        <p style="margin: 2px 0;"><strong>Tinggi:</strong> {{ (int) $product->tinggi ?? '-' }} cm</p>
+                        <p style="margin: 2px 0;"><strong>ketebalan:</strong> {{ (int) $product->ketebalan ?? '-' }} mm
+                        </p>
                     @endif
                 </div>
             </td>
