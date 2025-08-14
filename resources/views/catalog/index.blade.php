@@ -280,7 +280,8 @@
             <div class="row justify-content-center align-items-center justify-content-md-between align-items-md-start">
                 <!-- Kiri -->
                 <div class="col-md-6 mb-3 text-center text-md-left">
-                    <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn Logo" height="30" class="mb-4">
+                    <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn Logo" style="width: 130px; height: auto;"
+                        class="mb-4">
                     <p class="mb-2 h5">admin@osborn.id</p>
                     <p class="mb-0 text-muted">Design Beyond Limits</p>
                 </div>
