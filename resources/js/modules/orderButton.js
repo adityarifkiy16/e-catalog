@@ -12,6 +12,14 @@ export function bindOrderButton() {
                 `• Produk : *${$(this).data('jenis')}*\n` +
                 `• Kategori: *${$(this).data('category')}*\n\n` +
                 `Apakah produk ini masih tersedia? Terima kasih.`;
+        } else if ($(this).data('kepadatan')) {
+            message =
+                `Halo Admin,\nSaya tertarik dengan produk berikut:\n\n` +
+                `• Kode Motif : *${$(this).data('code')}*\n` +
+                `• Produk : *${$(this).data('jenis')}*\n` +
+                `• Kategori: *${$(this).data('category')}*\n` +
+                `• Kepadatan: *${$(this).data('kepadatan')}*\n\n` +
+                `Apakah produk ini masih tersedia? Terima kasih.`;
         } else {
             message =
                 `Halo Admin,\nSaya tertarik dengan produk berikut:\n\n` +

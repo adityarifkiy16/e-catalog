@@ -156,10 +156,7 @@ $(document).ready(function () {
                 $('#modalDownload').data('id', productId);
                 $('#productModal').modal('show');
 
-                $('#panjang').hide();
-                $('#tinggi').hide();
-                $('#ketebalan').hide();
-                $('#kepadatan').hide();
+                $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes').hide();
 
                 $('#modalContact').data('wallpanel', selectedWallpanel.code);
                 $('#modalContact').data('jenis', selectedWallpanel.jenis);
@@ -174,10 +171,7 @@ $(document).ready(function () {
                 $('#modalDownload').data('id', productId);
                 $('#productModal').modal('show');
 
-                $('#panjang').hide();
-                $('#tinggi').hide();
-                $('#ketebalan').hide();
-                $('#kepadatan').hide();
+                $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes').hide();
 
                 $('#modalContact').data('jenis', jenis);
                 $('#modalContact').data('category', category);
@@ -199,31 +193,43 @@ $(document).ready(function () {
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
             $('#modalDensity').text(density && !isNaN(density) ? density + ' mm' : '-');
             console.log(code);
-            if (code === '3mm') {
-                $('#modalKepadatan').html(`
-                <span class="badge bg-navy">0,4 mm</span> 
-                <span class="badge bg-navy">0,55 mm</span> 
-                <span class="badge bg-navy">0,7 mm</span> 
+            // if (code === '3mm') {
+            //     $('#modalKepadatan').html(`
+            //     <span class="badge bg-navy">0,4 mm</span>
+            //     <span class="badge bg-navy">0,55 mm</span>
+            //     <span class="badge bg-navy">0,7 mm</span>
+            // `);
+            // } else {
+            //     $('#modalKepadatan').html(`
+            //     <span class="badge bg-navy">0,4 mm</span>
+            //     <span class="badge bg-navy">0,55 mm</span>
+            //     <span class="badge bg-navy">0,7 mm</span>
+            //     <span class="badge bg-navy">1 mm</span>
+            // `);
+            // }
+
+            $('#modalKepadatan').html(`
+                <span class="badge kepadatan" data-value="0,4 mm">0,4 mm</span>
+                <span class="badge kepadatan" data-value="0,55 mm">0,55 mm</span>
+                <span class="badge kepadatan" data-value="0,7 mm">0,7 mm</span>
             `);
-            } else {
-                $('#modalKepadatan').html(`
-                <span class="badge bg-navy">0,4 mm</span> 
-                <span class="badge bg-navy">0,55 mm</span> 
-                <span class="badge bg-navy">0,7 mm</span> 
-                <span class="badge bg-navy">1 mm</span> 
-            `);
-            }
         } else {
-            $('#panjang').hide();
-            $('#tinggi').hide();
-            $('#ketebalan').hide();
-            $('#kepadatan').hide();
+            $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes').hide();
         }
 
         $('#modalContact').data('jenis', jenis);
         $('#modalContact').data('category', category);
         $('#modalContact').data('code', code);
         console.log('Produk biasa:', code);
+    });
+
+    $(document).on('click', '.kepadatan', function () {
+        let kepadatan = $(this).data('value');
+        $('.kepadatan').removeClass('active'); // hapus aktif di semua
+        $(this).addClass('active');
+        $('#notes').hide();
+
+        $('#modalContact').data('kepadatan', kepadatan);
     });
 
     bindFilterButton(selectedJenis);

@@ -288,6 +288,25 @@
     animation-delay: 0s;
 }
 
+.kepadatan {
+    cursor: pointer; /* Biar ada pointer saat dihover */
+    padding: 6px 12px; /* Biar terasa seperti tombol */
+    border-radius: 20px; /* Biar rounded */
+    display: inline-block; /* Biar padding berfungsi */
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.kepadatan:hover {
+    background-color: #001f3f; /* Warna hover lebih gelap */
+    color: white;
+    transform: scale(1.05); /* Sedikit membesar saat hover */
+}
+
+.kepadatan.active {
+    background-color: #001f3f !important; /* Warna aktif (contoh hijau) */
+    color: white;
+}
+
 @keyframes elegant-spin {
     0% {
         transform: rotate(0deg);
