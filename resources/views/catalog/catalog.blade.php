@@ -18,12 +18,18 @@
                     style="width: 130px; height: auto;">
             </a>
 
-            <!-- Tombol filter (khusus mobile) -->
-            <button class="btn btn-outline-light d-md-none d-flex align-items-center" data-toggle="modal"
-                data-target="#filterModal" id="category-button">
-                <i class="fa fa-bars"></i>
-                <span class="ml-2">Filter</span>
-            </button>
+            <!-- Search Button -->
+            <div class="d-flex align-items-center justify-content-between">
+                <span class="d-md-none d-flex align-items-center mr-4" id="btn-search-mobile">
+                    <i class="fa fa-search"></i>
+                </span>
+
+                <!-- Tombol filter (khusus mobile) -->
+                <span class="d-md-none d-flex align-items-center" data-toggle="modal" data-target="#filterModal"
+                    id="category-button">
+                    <i class="fa fa-bars"></i>
+                </span>
+            </div>
         </div>
     </div>
     <div class="container-fluid py-4 px-4 text-white bg-black-secondary">
@@ -35,8 +41,9 @@
                         <div class="bg-black-secondary rounded shadow-sm p-3 mb-4">
                             <div
                                 class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center justify-content-between">
+
                                 <!-- Input Search -->
-                                <div class="mb-md-0 flex-grow-1 mr-2 order-3">
+                                <div class="mb-md-0 mb-2 flex-grow-1 mr-2 order-1 order-md-3" id="search-form">
                                     <div class="input-group">
                                         <input type="text" id="search-input" class="form-control"
                                             placeholder="Search product..." value="{{ request()->query('search') }}"
@@ -50,14 +57,14 @@
                                 </div>
 
                                 <!-- Tombol Home -->
-                                <div class="mb-2 mb-md-0 text-center text-md-left mr-2 order-1">
+                                <div class="mb-2 mb-md-0 text-center text-md-left mr-2 order-2 order-md-1">
                                     <a href="{{ route('catalog.index') }}" class="btn btn-outline-light w-100 w-md-auto">
                                         <i class="fa fa-home mr-1"></i> Home
                                     </a>
                                 </div>
 
                                 <!-- Tombol Download -->
-                                <div class="mb-2 mb-md-0  text-center text-md-right mr-2 order-2">
+                                <div class="mb-2 mb-md-0  text-center text-md-right mr-2 order-3 order-md-2">
                                     <a href="#" class="btn btn-light w-100 w-md-auto" id="btn-download">
                                         <i class="fa fa-arrow-down mr-1"></i> Download
                                     </a>
@@ -285,3 +292,18 @@
         reserved.
     </footer>
 @endsection
+
+@push('scripts')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Scroll to top button
+            if ($(window).width() < 768) {
+                $('#search-form').addClass('d-none');
+            }
+            $('#btn-search-mobile').on('click', function() {
+                $('#search-form').toggleClass('d-none');
+                $('#search-input').focus();
+            });
+        });
+    </script>
+@endpush
