@@ -19,6 +19,7 @@ export function loadMoreData(selectedWallpanel = null) {
     if (selectedWallpanel !== null) {
         selectedWallpanelGlobal = selectedWallpanel;
     }
+    isLoading = true;
     return new Promise((resolve, reject) => {
         if (!category || category === 'null' || category === '') {
             $('#btn-download').addClass('d-none');

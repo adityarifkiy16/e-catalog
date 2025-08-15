@@ -8,6 +8,7 @@ $(document).ready(function () {
     let selectedJenis = new URLSearchParams(window.location.search).get('jenis');
     let category = new URLSearchParams(window.location.search).get('category');
     let delayTimer;
+    let scrollTimer;
 
     if (selectedJenis == 5 || selectedJenis == 2) {
         sessionStorage.removeItem('selectedWallpanel');
@@ -40,12 +41,15 @@ $(document).ready(function () {
     });
 
     $(window).on('scroll', function () {
-        const scrollTop = $(window).scrollTop();
-        const windowHeight = $(window).height();
-        const documentHeight = $(document).height();
-        if (scrollTop + windowHeight >= documentHeight - 150) {
-            loadMoreData();
-        }
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+            const scrollTop = $(window).scrollTop();
+            const windowHeight = $(window).height();
+            const documentHeight = $(document).height();
+            if (scrollTop + windowHeight >= documentHeight - 150) {
+                loadMoreData();
+            }
+        }, 200);
     });
 
     function renderCarouselProduct(images, wallpanelImages = null) {
