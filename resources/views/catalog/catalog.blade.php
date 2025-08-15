@@ -47,10 +47,12 @@
                                     <div class="input-group">
                                         <input type="text" id="search-input" class="form-control"
                                             placeholder="Search product..." value="{{ request()->query('search') }}"
-                                            style="background-color: #171717; color: #FFF; border: 1px solid #444; padding: 10px;">
+                                            style="background-color: #171717; color: #FFF; border: 1px solid #444; border-right: none; padding: 10px;">
+
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text bg-black-secondary text-white">
-                                                <i class="fas fa-search text-muted"></i>
+                                            <span class="input-group-text rounded-right"
+                                                style="background-color: #171717; border: 1px solid #444; border-left: none; color: #aaa;">
+                                                <i class="fas fa-search"></i>
                                             </span>
                                         </div>
                                     </div>
