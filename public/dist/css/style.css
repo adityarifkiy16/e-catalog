@@ -290,9 +290,6 @@
 
 .kepadatan {
     cursor: pointer; /* Biar ada pointer saat dihover */
-    padding: 6px 12px; /* Biar terasa seperti tombol */
-    border-radius: 20px; /* Biar rounded */
-    display: inline-block; /* Biar padding berfungsi */
     transition: background-color 0.2s ease, transform 0.1s ease;
 }
 

@@ -213,9 +213,9 @@ $(document).ready(function () {
             // }
 
             $('#modalKepadatan').html(`
-                <span class="badge kepadatan" data-value="0,4 mm">0,4 mm</span>
-                <span class="badge kepadatan" data-value="0,55 mm">0,55 mm</span>
-                <span class="badge kepadatan" data-value="0,7 mm">0,7 mm</span>
+                <span class="badge badge-primary kepadatan" data-value="0,4 mm">0,4 mm</span>
+                <span class="badge badge-primary kepadatan" data-value="0,55 mm">0,55 mm</span>
+                <span class="badge badge-primary kepadatan" data-value="0,7 mm">0,7 mm</span>
             `);
         } else {
             $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes').hide();

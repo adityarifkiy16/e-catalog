@@ -165,25 +165,25 @@
                                             <div class="mb-3 order-2">
                                                 <span id="modalCategory" class="text-muted text-uppercase"></span>
                                             </div>
-                                            <div class="mb-3 order-2 d-flex flex-column text-dark">
+                                            <div class="mb-3 order-2 d-flex flex-column text-dark flex-wrap">
                                                 <div class="row mb-1" id="panjang">
                                                     <div class="col-3"><strong>Length</strong></div>
-                                                    <div class="col-auto">:</div>
+                                                    <div class="col-auto ml-2">:</div>
                                                     <div class="col" id="modalLength"></div>
                                                 </div>
                                                 <div class="row mb-1" id="tinggi">
                                                     <div class="col-3"><strong>Height</strong></div>
-                                                    <div class="col-auto">:</div>
+                                                    <div class="col-auto ml-2">:</div>
                                                     <div class="col" id="modalHeight"></div>
                                                 </div>
                                                 <div class="row mb-1" id="ketebalan">
                                                     <div class="col-3"><strong>Thickness</strong></div>
-                                                    <div class="col-auto">:</div>
+                                                    <div class="col-auto ml-2">:</div>
                                                     <div class="col" id="modalDensity"></div>
                                                 </div>
-                                                <div class="row mb-2" id="kepadatan">
+                                                <div class="row mb-1" id="kepadatan">
                                                     <div class="col-3"><strong>Density</strong></div>
-                                                    <div class="col-auto">:</div>
+                                                    <div class="col-auto ml-2">:</div>
                                                     <div class="col" id="modalKepadatan"></div>
                                                 </div>
                                                 <div class="row mb-1" id="notes">
