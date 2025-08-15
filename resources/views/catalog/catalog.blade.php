@@ -56,18 +56,21 @@
                                     </div>
                                 </div>
 
-                                <!-- Tombol Home -->
-                                <div class="mb-2 mb-md-0 text-center text-md-left mr-2 order-2 order-md-1">
-                                    <a href="{{ route('catalog.index') }}" class="btn btn-outline-light w-100 w-md-auto">
-                                        <i class="fa fa-home mr-1"></i> Home
-                                    </a>
-                                </div>
+                                <div class="d-flex flex-row align-items-center justify-content-center">
+                                    <!-- Tombol Home -->
+                                    <div class="mb-2 mb-md-0 text-center text-md-left mr-2 order-1">
+                                        <a href="{{ route('catalog.index') }}"
+                                            class="btn btn-outline-light w-100 w-md-auto">
+                                            <i class="fa fa-home mr-1"></i> Home
+                                        </a>
+                                    </div>
 
-                                <!-- Tombol Download -->
-                                <div class="mb-2 mb-md-0  text-center text-md-right mr-2 order-3 order-md-2">
-                                    <a href="#" class="btn btn-light w-100 w-md-auto" id="btn-download">
-                                        <i class="fa fa-arrow-down mr-1"></i> Download
-                                    </a>
+                                    <!-- Tombol Download -->
+                                    <div class="mb-2 mb-md-0  text-center text-md-right mr-2 order-2">
+                                        <a href="#" class="btn btn-light w-100 w-md-auto" id="btn-download">
+                                            <i class="fa fa-arrow-down mr-1"></i> Download
+                                        </a>
+                                    </div>
                                 </div>
 
                             </div>
