@@ -177,12 +177,12 @@
                                                     <div class="col" id="modalHeight"></div>
                                                 </div>
                                                 <div class="row mb-1" id="ketebalan">
-                                                    <div class="col-3"><strong>Density</strong></div>
+                                                    <div class="col-3"><strong>Thickness</strong></div>
                                                     <div class="col-auto">:</div>
                                                     <div class="col" id="modalDensity"></div>
                                                 </div>
                                                 <div class="row mb-2" id="kepadatan">
-                                                    <div class="col-3"><strong>Thickness</strong></div>
+                                                    <div class="col-3"><strong>Density</strong></div>
                                                     <div class="col-auto">:</div>
                                                     <div class="col" id="modalKepadatan"></div>
                                                 </div>
