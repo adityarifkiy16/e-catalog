@@ -232,7 +232,8 @@ $(document).ready(function () {
         // kalau ada kepadatan tersimpan → pastikan badge sesuai aktif
         if (modalkepadatan) {
             $('.kepadatan').removeClass('active');
-            $('.kepadatan[data-value="' + modalkepadatan + '"]').addClass('active');
+            $('#modalContact').data('kepadatan', null);
+            $('#notes').show();
         }
     });
 
