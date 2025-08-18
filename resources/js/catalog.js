@@ -225,14 +225,31 @@ $(document).ready(function () {
         $('#modalContact').data('category', category);
         $('#modalContact').data('code', code);
         console.log('Produk biasa:', code);
+
+        // ambil data lagi untuk debug
+        let modalkepadatan = $('#modalContact').data('kepadatan');
+
+        // kalau ada kepadatan tersimpan → pastikan badge sesuai aktif
+        if (modalkepadatan) {
+            $('.kepadatan').removeClass('active');
+            $('.kepadatan[data-value="' + modalkepadatan + '"]').addClass('active');
+        }
     });
 
     $(document).on('click', '.kepadatan', function () {
         let kepadatan = $(this).data('value');
-        $('.kepadatan').removeClass('active'); // hapus aktif di semua
+
+        // cari modal terdekat biar tidak global
+        const $modal = $(this).closest('#productModal');
+
+        // reset active di modal ini
+        $modal.find('.kepadatan').removeClass('active');
         $(this).addClass('active');
+
+        // sembunyikan notes
         $('#notes').hide();
 
+        // simpan data kepadatan
         $('#modalContact').data('kepadatan', kepadatan);
     });
 

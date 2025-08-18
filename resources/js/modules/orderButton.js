@@ -16,7 +16,7 @@ export function bindOrderButton() {
             message =
                 `Halo Admin,\nSaya tertarik dengan produk berikut:\n\n` +
                 `• Produk : *${$(this).data('jenis')}*\n` +
-                `• Ukuran : *${$(this).data('code')}*\n` +
+                `• Ketebalan : *${$(this).data('code')}*\n` +
                 `• Kepadatan: *${$(this).data('kepadatan')}*\n\n` +
                 `Apakah produk ini masih tersedia? Terima kasih.`;
         } else {
