@@ -8,7 +8,6 @@
         .slider-container {
             overflow: hidden;
             width: 100%;
-            background: #FFFFFF;
             padding: 10px 0;
         }
 
@@ -186,11 +185,11 @@
         <div class="text-center mb-5">
             <h1 class="display-5 display-md-4 display-lg-3 font-weight-bold mb-3 text-capitalize">Discover Our Collections
             </h1>
-            <h4 class="font-weight-bold text-dark mb-2">
+            <h4 class="font-weight-bold text-white mb-2">
                 To help you visualize the image pack,<br>
                 we have separated it into five different products
             </h4>
-            <p class="text-muted lead">
+            <p class="text-white lead">
                 Tap on the boxes below to explore<br>
                 all the models within the categories
             </p>
@@ -240,7 +239,7 @@
         </div>
 
         <!-- Contact -->
-        <section class="py-5" style="background: #fdfcf9;">
+        <section class="py-5">
             <div class="container">
                 <div class="row align-items-center justify-content-center">
                     <div class="col-md-5 mb-4 mb-md-0">
@@ -251,14 +250,14 @@
                             <li class="mb-3">
                                 <i class="fa fa-envelope mr-2 text-brown"></i>
                                 <strong>Email:</strong>
-                                <a href="mailto:{{ config('mail.from.address') }}" class="text-dark">
+                                <a href="mailto:{{ config('mail.from.address') }}" class="text-white">
                                     {{ config('mail.from.address') }}
                                 </a>
                             </li>
                             <li class="mb-3">
                                 <i class="fa fa-phone mr-2 text-brown"></i>
                                 <strong>Call:</strong>
-                                <a href="tel:0816659688" class="text-dark">+62816659688</a>
+                                <a href="tel:0816659688" class="text-white">+62816659688</a>
                             </li>
                             <li>
                                 <i class="fa fa-map-marker mr-2 text-brown"></i>
@@ -267,13 +266,13 @@
                         </ul>
 
                         <div class="d-flex">
-                            <a href="https://instagram.com/osborn.pvcboard" class="text-dark mr-3" target="__blank"><i
+                            <a href="https://instagram.com/osborn.pvcboard" class="text-white mr-3" target="__blank"><i
                                     class="fab fa-instagram fa-lg"></i></a>
-                            <a href="https://www.youtube.com/@osborn.pvcboard" class="text-dark mr-3" target="__blank"><i
+                            <a href="https://www.youtube.com/@osborn.pvcboard" class="text-white mr-3" target="__blank"><i
                                     class="fab fa-youtube fa-lg"></i></a>
-                            <a href="https://facebook.com/profile.php?id=61560927238237" class="text-dark mr-3"
+                            <a href="https://facebook.com/profile.php?id=61560927238237" class="text-white mr-3"
                                 target="__blank"><i class="fab fa-facebook fa-lg"></i></a>
-                            <a href="https://tiktok.com/@osborn.pvcboard?_t=8nISbYs42Fc&_r=1" class="text-dark"
+                            <a href="https://tiktok.com/@osborn.pvcboard?_t=8nISbYs42Fc&_r=1" class="text-white"
                                 target="__blank"><i class="fab fa-tiktok fa-lg"></i></a>
                         </div>
                     </div>
@@ -291,8 +290,7 @@
     </div>
 @endsection
 @section('footer')
-    <footer class="text-white py-4 border-top animate__animated animate__faster animate__fadeInUp"
-        style="background-color: #242424">
+    <footer class="text-white py-4 bg-black animate__animated animate__faster animate__fadeInUp">
         <div class="container">
             <div class="row justify-content-center align-items-center justify-content-md-between align-items-md-start">
                 <!-- Kiri -->
@@ -331,7 +329,7 @@
                         </li>
                     </ul>
                     <p class="mt-5 mb-1">&copy; 2025 Osborn. All rights reserved.</p>
-                    <span class="text-muted">Updated: 14 Agustus 2025 | v1.4</span>
+                    <span class="text-muted">Updated: 18 Agustus 2025 | v1.5</span>
 
                 </div>
             </div>
