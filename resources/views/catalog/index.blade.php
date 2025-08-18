@@ -215,61 +215,77 @@
             @endforeach
         </div>
 
-        <!-- About -->
-        <div class="container mt-5">
-            <div class="row align-items-center justify-content-center">
-                <!-- Gambar -->
-                <div class="col-md-5 mb-3 mb-md-0 animate__animated animate__faster animate__fadeInLeft">
-                    <div class="square-wrapper">
-                        <img src="{{ asset('dist/img/slider/1.webp') }}" alt="about" class="img-fluid w-100">
+        <div class="bg-black-secondary p-md-5 p-3" style="border-radius: 10px">
+            <!-- About -->
+            <div class="container">
+                <div class="row align-items-center justify-content-center justify-content-md-between">
+                    <!-- Gambar -->
+                    <div class="col-md-5 mb-3 mb-md-0 animate__animated animate__faster animate__fadeInLeft">
+                        <div class="square-wrapper">
+                            <img src="{{ asset('dist/img/slider/1.webp') }}" alt="about" class="img-fluid w-100">
+                        </div>
+                    </div>
+
+                    <!-- Teks -->
+                    <div class="col-md-6 offset-md-1 animate__animated animate__faster animate__fadeInRight">
+                        <span class="text-muted text-uppercase">Crafted for Your Space</span>
+                        <h1 class="font-weight-bold mb-3">Unleash Your Design Vision with Over 70 Premium Motifs</h1>
+                        <ul class="list-styled">
+                            <li>70+ elegant and exclusive motifs</li>
+                            <li>Durable, lightweight, and easy-to-install material</li>
+                            <li>Perfect for any interior style</li>
+                        </ul>
                     </div>
                 </div>
-
-                <!-- Teks -->
-                <div class="col-md-6 offset-md-1 animate__animated animate__faster animate__fadeInRight">
-                    <span class="text-muted text-uppercase">Crafted for Your Space</span>
-                    <h1 class="font-weight-bold mb-3">Unleash Your Design Vision with Over 70 Premium Motifs</h1>
-                    <ul class="list-styled">
-                        <li>70+ elegant and exclusive motifs</li>
-                        <li>Durable, lightweight, and easy-to-install material</li>
-                        <li>Perfect for any interior style</li>
-                    </ul>
-                </div>
             </div>
-        </div>
 
-        <!-- Contact -->
-        <section class="py-5">
-            <div class="container">
-                <div class="row align-items-center justify-content-center">
-                    <div class="col-md-5 mb-4 mb-md-0">
+            <!-- Contact -->
+            <div class="container mt-4">
+                <div class="row align-items-center justify-content-center justify-content-md-between">
+                    <div class="col-md-5 mb-4 mb-md-0 order-2 order-md-1">
                         <span class="text-muted text-uppercase small d-block mb-2">Ready to Get Started?</span>
-                        <h2 class="font-weight-bold mb-3">Contact Us</h2>
+                        <h2 class="font-weight-bold mb-3">Contact Us !</h2>
 
                         <ul class="list-unstyled mb-4">
-                            <li class="mb-3">
-                                <i class="fa fa-envelope mr-2 text-brown"></i>
-                                <strong>Email:</strong>
-                                <a href="mailto:{{ config('mail.from.address') }}" class="text-white">
-                                    {{ config('mail.from.address') }}
-                                </a>
+                            <li class="mb-3 d-flex">
+                                <i class="fa fa-envelope mr-2 mt-1"></i>
+                                <div class="d-flex">
+                                    <span class="font-weight-bold" style="min-width: 80px;">Email</span>
+                                    <span class="mr-1">:</span>
+                                    <a href="mailto:{{ config('mail.from.address') }}"
+                                        class="text-muted font-weight-lighter">
+                                        {{ config('mail.from.address') }}
+                                    </a>
+                                </div>
                             </li>
-                            <li class="mb-3">
-                                <i class="fa fa-phone mr-2 text-brown"></i>
-                                <strong>Call:</strong>
-                                <a href="tel:0816659688" class="text-white">+62816659688</a>
+
+                            <li class="mb-3 d-flex">
+                                <i class="fa fa-phone mr-2 mt-1"></i>
+                                <div class="d-flex">
+                                    <span class="font-weight-bold" style="min-width: 80px;">Call</span>
+                                    <span class="mr-1">:</span>
+                                    <a href="tel:0816659688" class="text-muted font-weight-lighter">+62816659688</a>
+                                </div>
                             </li>
-                            <li>
-                                <i class="fa fa-map-marker mr-2 text-brown"></i>
-                                <strong>Address:</strong> Jl. Kamajaya No. 8A Wonosari, Ngaliyan, <br> Kota Semarang
+
+                            <li class="d-flex">
+                                <i class="fa fa-map-marker mr-2 mt-1"></i>
+                                <div class="d-flex">
+                                    <span class="font-weight-bold" style="min-width: 80px;">Address</span>
+                                    <span class="mr-1">:</span>
+                                    <span class="text-muted font-weight-lighter">
+                                        Jl. Kamajaya No. 8A Wonosari, Ngaliyan, <br>Kota Semarang
+                                    </span>
+                                </div>
                             </li>
                         </ul>
+
 
                         <div class="d-flex">
                             <a href="https://instagram.com/osborn.pvcboard" class="text-white mr-3" target="__blank"><i
                                     class="fab fa-instagram fa-lg"></i></a>
-                            <a href="https://www.youtube.com/@osborn.pvcboard" class="text-white mr-3" target="__blank"><i
-                                    class="fab fa-youtube fa-lg"></i></a>
+                            <a href="https://www.youtube.com/@osborn.pvcboard" class="text-white mr-3"
+                                target="__blank"><i class="fab fa-youtube fa-lg"></i></a>
                             <a href="https://facebook.com/profile.php?id=61560927238237" class="text-white mr-3"
                                 target="__blank"><i class="fab fa-facebook fa-lg"></i></a>
                             <a href="https://tiktok.com/@osborn.pvcboard?_t=8nISbYs42Fc&_r=1" class="text-white"
@@ -278,15 +294,14 @@
                     </div>
 
                     <!-- Gambar -->
-                    <div class="col-md-5 mb-3 mb-md-0 animate__animated animate__faster animate__fadeInLeft">
+                    <div class="col-md-5 mb-3 mb-md-0 animate__animated animate__faster animate__fadeInLeft order-1">
                         <div class="square-wrapper">
                             <img src="{{ asset('dist/img/slider/2.webp') }}" alt="about" class="img-fluid w-100">
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-
+        </div>
     </div>
 @endsection
 @section('footer')
