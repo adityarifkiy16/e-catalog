@@ -261,7 +261,7 @@
                             </li>
                             <li>
                                 <i class="fa fa-map-marker mr-2 text-brown"></i>
-                                <strong>Address:</strong> Jl. Kamajaya No. 8A Wonosari, Ngaliyan, Semarang
+                                <strong>Address:</strong> Jl. Kamajaya No. 8A Wonosari, Ngaliyan, <br> Kota Semarang
                             </li>
                         </ul>
 
@@ -290,7 +290,12 @@
     </div>
 @endsection
 @section('footer')
+    <div class="container">
+        <div class="mx-auto mb-4 text-muted" style="border-top: 1px solid rgba(255, 255, 255, 0.1);"></div>
+    </div>
+
     <footer class="text-white py-4 bg-black animate__animated animate__faster animate__fadeInUp">
+        <!-- Garis -->
         <div class="container">
             <div class="row justify-content-center align-items-center justify-content-md-between align-items-md-start">
                 <!-- Kiri -->

@@ -60,7 +60,7 @@
     @stack('styles')
 </head>
 
-<body class="bg-black-secondary">
+<body class="bg-black">
     <div class="d-flex flex-column min-vh-100">
         <div class="wraper">
             <!-- Main content -->
