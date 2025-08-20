@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MType;
 use App\Models\MJenis;
-use App\Models\MCategories;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
-class MCategoriesController extends Controller
+class MTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +17,7 @@ class MCategoriesController extends Controller
     {
         $arr['jenises'] = MJenis::all();
         if ($request->ajax()) {
-            $query = MCategories::with('jenis')->orderBy('id', 'desc');
+            $query = MType::with('jenis')->orderBy('id', 'desc');
             if ($request->has('filter')) {
                 $query = $query->where('jenis_id', $request->filter);
             }
@@ -32,13 +32,10 @@ class MCategoriesController extends Controller
                 ->addColumn('jenis', function ($row) {
                     return $row->jenis ? $row->jenis->name : '-';
                 })
-                ->addColumn('product_count', function ($row) {
-                    return $row->products()->count();
-                })
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        return view('categories.index', $arr);
+        return view('type.index', $arr);
     }
 
     /**
@@ -47,7 +44,7 @@ class MCategoriesController extends Controller
     public function create()
     {
         $arr['jenis'] = MJenis::all();
-        return view('categories.create', $arr);
+        return view('type.create', $arr);
     }
 
     /**
@@ -60,7 +57,6 @@ class MCategoriesController extends Controller
             'image' => 'nullable',
             'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'jenis_id' => 'required|exists:m_jenis,id',
-            'display_style' => 'nullable|string|max:255|in:square,rectangle',
         ]);
 
         if ($request->hasFile('image')) {
@@ -84,29 +80,27 @@ class MCategoriesController extends Controller
                 ->encode('webp', 100)
                 ->save($fullPath);
 
-            MCategories::create([
+            MType::create([
                 'name' => $request->name,
                 'jenis_id' => $request->jenis_id,
-                'path' => $path,
-                'display_style' => $request->display_style
+                'thumbnail' => $path,
             ]);
         } else {
-            MCategories::create([
+            MType::create([
                 'name' => $request->name,
                 'jenis_id' => $request->jenis_id,
-                'display_style' => $request->display_style
             ]);
         }
         return response()->json([
             'status' => 'success',
-            'message' => 'category created successfully.',
+            'message' => 'Type created successfully.',
         ], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(MCategories $mCategories)
+    public function show(MType $type)
     {
         //
     }
@@ -114,33 +108,27 @@ class MCategoriesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(MCategories $categories)
+    public function edit(MType $type)
     {
-        $arr['categories'] = $categories;
+        $arr['type'] = $type;
         $arr['jenis'] = MJenis::all();
-        $arr['types'] = \App\Models\MType::with('jenis')->get();
-        return view('categories.edit', $arr);
+        return view('type.edit', $arr);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, MCategories $categories)
+    public function update(Request $request, MType $type)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'jenis_id' => 'required|exists:m_jenis,id',
-            'type_id' => 'nullable|exists:m_types,id',
             'image' => 'nullable',
             'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
-            'display_style' => 'nullable|string|max:255|in:square,rectangle',
-            'order' => 'nullable|numeric',
-            'image-mockup' => 'nullable',
-            'image-mockup.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $folder = 'images/3Dcategories/' . now()->format('Y/m/d');
+            $folder = 'images/type/thumbnail/' . now()->format('Y/m/d');
             $filename = time() . '_' . uniqid() . '.webp';
             $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
             $path = $folder . '/' . $filename;
@@ -151,8 +139,8 @@ class MCategoriesController extends Controller
             }
 
             // Hapus gambar lama jika ada
-            if ($categories->path) {
-                $oldPath = storage_path('app/public/' . $categories->path);
+            if ($type->thumbnail) {
+                $oldPath = storage_path('app/public/' . $type->thumbnail);
                 if (file_exists($oldPath)) {
                     unlink($oldPath);
                 }
@@ -167,95 +155,54 @@ class MCategoriesController extends Controller
                 ->encode('webp', 100)
                 ->save($fullPath);
 
-            $categories->update([
+            $type->update([
                 'name' => $request->name,
                 'jenis_id' => $request->jenis_id,
-                'path' => $path,
-                'display_style' => $request->display_style,
-                'order' => $request->order,
-                'type_id' => $request->type_id
+                'thumbnail' => $path,
             ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Type updated successfully.',
+            ], 200);
         } else {
-            $categories->update([
+            $type->update([
                 'name' => $request->name,
                 'jenis_id' => $request->jenis_id,
-                'display_style' => $request->display_style,
-                'order' => $request->order,
-                'type_id' => $request->type_id
             ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'type updated successfully.',
+            ], 200);
         }
-
-        if ($request->hasFile('image-mockup')) {
-            $files = $request->file('image-mockup');
-            $folder = 'images/mockupcategories/' . now()->format('Y/m/d');
-
-            foreach ($files as $file) {
-                $filename = time() . '_' . uniqid() . '.webp';
-                $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
-                $path = $folder . '/' . $filename;
-
-                $directory = dirname($fullPath);
-                if (!file_exists($directory)) {
-                    mkdir($directory, 0755, true);
-                }
-
-                // Hapus gambar lama jika ada
-                foreach ($categories->images as $oldImage) {
-                    $oldPath = storage_path('app/public/' . $oldImage->path);
-                    if (file_exists($oldPath)) {
-                        unlink($oldPath);
-                    }
-                    $oldImage->delete();
-                }
-
-                // Proses gambar
-                Image::make($file)
-                    ->resize(1200, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    })
-                    ->encode('webp', 100)
-                    ->save($fullPath);
-
-                // Simpan ke relasi images (One to Many)
-                $categories->images()->create([
-                    'path' => $path,
-                ]);
-            }
-
-            // Update data kategori
-            $categories->update([
-                'name' => $request->name,
-                'jenis_id' => $request->jenis_id,
-                'display_style' => $request->display_style,
-                'order' => $request->order,
-                'type_id' => $request->type_id
-            ]);
-        }
-
         return response()->json([
-            'status' => 'success',
-            'message' => 'Category updated successfully.',
+            'status' => 'error',
+            'message' => 'type updated failed.',
         ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MCategories $categories)
+    public function destroy(MType $type)
     {
-
-        if ($categories->products()->count() > 0) {
+        if ($type->categories()->count() > 0) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Category cannot be deleted because it has associated products.',
+                'message' => 'type cannot be deleted because it has associated category.',
             ], 200);
         }
 
-        $categories->delete();
+        $type->delete();
         return response()->json([
             'status' => 'success',
             'message' => 'Category deleted successfully.',
         ], 200);
+    }
+    public function getByJenis($jenisId)
+    {
+        $types = \App\Models\MType::where('jenis_id', $jenisId)->get();
+        return response()->json($types);
     }
 }

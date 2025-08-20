@@ -3,10 +3,12 @@ import { bindOrderButton } from './modules/orderButton';
 import { initScrollTopButton } from './modules/scroll';
 import { resetState, setCatalogConfig, loadMoreData } from './modules/catalogLoader';
 import { bindFilterButton } from './modules/filter';
+import { renderProducts } from './modules/renderProduct';
 
 $(document).ready(function () {
     let selectedJenis = new URLSearchParams(window.location.search).get('jenis');
     let category = new URLSearchParams(window.location.search).get('category');
+    let firstLoad = true;
     let delayTimer;
     let scrollTimer;
 
@@ -101,46 +103,29 @@ $(document).ready(function () {
         });
     }
 
-    let selectedWallpanel = null;
-    const storedWallpanel = sessionStorage.getItem('selectedWallpanel');
-
-    if (storedWallpanel) {
-        selectedWallpanel = JSON.parse(storedWallpanel);
-        console.log('Restore wallpanel dari sessionStorage:', selectedWallpanel);
-    }
-
     $(document).on('click', '.product-card', function () {
         const code = $(this).data('code');
         const category = $(this).data('category');
-        const images = JSON.parse(
-            $(this)
-                .attr('data-images')
-                .replace(/&quot;/g, '"')
-        );
+        const imagesStr = $(this).attr('data-images');
+        let images = null;
+
+        if (imagesStr) {
+            images = JSON.parse(imagesStr.replace(/&quot;/g, '"'));
+        }
+
         const jenis = $(this).data('jenis');
         const length = parseInt($(this).data('length'), 10);
         const height = parseInt($(this).data('height'), 10);
         const density = parseInt($(this).data('density'), 10);
         const productId = $(this).data('id');
 
-        // Klik produk wallpanel → ganti data wallpanel dan load UV Board / Wallboard
-        if (jenis.toLowerCase() === 'wallpanel') {
-            $('#filter-container').removeClass('d-none');
-            $('#catalog-col').addClass('col-md-10').removeClass('col-md-12');
-
-            selectedWallpanel = { code, images, productId, jenis };
-            // set selectedWallpanel ke sessionStorage
-            sessionStorage.setItem('selectedWallpanel', JSON.stringify(selectedWallpanel));
-
+        // Click card tipe wallpanel load product category terkait
+        if (jenis === 'tipe-wallpanel') {
             resetState();
-            setCatalogConfig({ selectedJenis: [2, 5] });
-            loadMoreData(selectedWallpanel);
-            bindFilterButton([2, 5]);
-            if ($(window).width() < 768) {
-                $('#filter-container').addClass('d-none');
-            }
-
-            console.log('Pilih wallpanel:', selectedWallpanel);
+            setCatalogConfig({ selectedJenis: 3, category: 66 });
+            loadMoreData(false);
+            $('#filter-container').toggleClass('d-none');
+            $('#catalog-col').toggleClass('col-md-10 col-md-12');
             return;
         }
 
@@ -191,7 +176,6 @@ $(document).ready(function () {
         $('#modalCategory').text(jenis + ' / ' + category);
         $('#modalDownload').data('id', productId);
         $('#productModal').modal('show');
-        console.log('jenis' + jenis);
         if (jenis === 'PVC Board') {
             $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');

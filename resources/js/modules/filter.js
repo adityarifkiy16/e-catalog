@@ -19,7 +19,7 @@ export function bindFilterButton(selectedJenis) {
             $('#filterModal').modal('hide');
             resetState();
 
-            await loadMoreData();
+            await loadMoreData(false);
         } catch (err) {
             console.error('Gagal memuat data:', err);
         } finally {

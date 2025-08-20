@@ -32,15 +32,22 @@
                             @enderror
                         </div>
                         <label class="mt-3"><i class="fas fa-user-tag"></i> Jenis</label>
-                        <select class="form-control" name="jenis_id" id="jenis">
-                            <option value="">Pilih Jenis</option>
-                            @foreach ($jenis as $item)
-                                <option value="{{ $item->id }}"
-                                    {{ old('jenis_id', $categories->jenis_id) == $item->id ? 'selected' : '' }}>
-                                    {{ $item->name }}
+                        <select id="jenis_id" name="jenis_id" class="form-control">
+                            @foreach ($jenis as $j)
+                                <option value="{{ $j->id }}" {{ $categories->jenis_id == $j->id ? 'selected' : '' }}>
+                                    {{ $j->name }}
                                 </option>
                             @endforeach
                         </select>
+                        <label class="mt-3"><i class="fas fa-user-tag"></i> Type</label>
+                        <select id="type_id" name="type_id" class="form-control">
+                            @foreach ($types as $t)
+                                <option value="{{ $t->id }}" {{ $categories->type_id == $t->id ? 'selected' : '' }}>
+                                    {{ $t->name }}
+                                </option>
+                            @endforeach
+                        </select>
+
                         <label class="mt-3"><i class="fas fa-image"></i> tampilan</label>
                         <select class="form-control" name="display_style" id="display_style">
                             <option value="">Pilih tampilan</option>
@@ -90,6 +97,53 @@
                     toast.onmouseleave = Swal.resumeTimer;
                 },
             });
+            $('#jenis_id').on('change', function() {
+                var jenisId = $(this).val();
+
+                $('#type_id').html('<option value="">Pilih Type</option>'); // reset type
+
+                if (jenisId) {
+                    $.ajax({
+                        url: "{{ url('types/by-jenis') }}/" + jenisId,
+                        type: 'GET',
+                        success: function(data) {
+                            if (data.length > 0) {
+                                $.each(data, function(key, item) {
+                                    $('#type_id').append('<option value="' + item.id +
+                                        '">' + item.name + '</option>');
+                                });
+                            } else {
+                                $('#type_id').append(
+                                    '<option value="">Tidak ada type tersedia</option>');
+                            }
+                        }
+                    });
+                }
+            });
+
+            // Trigger saat halaman edit dibuka
+            let selectedJenis = $('#jenis_id').val();
+            let selectedType = '{{ old('type_id', $categories->type_id) }}';
+            $('#type_id').html('<option value="">Pilih Type</option>'); // reset type
+
+            if (selectedJenis) {
+                $.ajax({
+                    url: "{{ url('types/by-jenis') }}/" + selectedJenis,
+                    type: 'GET',
+                    success: function(data) {
+                        if (data.length > 0) {
+                            $.each(data, function(key, item) {
+                                let selected = (item.id == selectedType) ? 'selected' : '';
+                                $('#type_id').append('<option value="' + item.id + '" ' +
+                                    selected + '>' + item.name + '</option>');
+                            });
+                        } else {
+                            $('#type_id').append('<option value="">Tidak ada type tersedia</option>');
+                        }
+                    }
+                });
+            }
+
 
             const dz = new Dropzone("#image-dropzone", {
                 url: "{{ route('categories.update', $categories) }}",
@@ -108,7 +162,8 @@
                     this.on("sendingmultiple", function(file, xhr, formData) {
                         formData.append("name", $('#name').val());
                         formData.append('_method', 'PUT');
-                        formData.append("jenis_id", $('#jenis').val());
+                        formData.append("jenis_id", $('#jenis_id').val());
+                        formData.append("type_id", $('#type_id').val());
                         formData.append("display_style", $('#display_style').val());
                         formData.append("order", $('#order').val());
 
@@ -150,7 +205,8 @@
                     formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
                     formData.append('_method', 'PUT');
                     formData.append("name", $('#name').val());
-                    formData.append("jenis_id", $('#jenis').val());
+                    formData.append("jenis_id", $('#jenis_id').val());
+                    formData.append("type_id", $('#type_id').val());
                     formData.append("display_style", $('#display_style').val());
                     formData.append("order", $('#order').val());
 

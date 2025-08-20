@@ -77,4 +77,14 @@ Route::middleware("auth")->group(function () {
     Route::post("/products/bulk-upload", [App\Http\Controllers\TProductController::class, "storeBulkUpload"])->name("products.bulk.store");
     Route::delete("/products/reset-mockup/{product}", [App\Http\Controllers\TProductController::class, "resetMockup"])->name("products.reset-mockup");
     Route::delete("/products/reset-motif/{product}", [App\Http\Controllers\TProductController::class, "resetMotif"])->name("products.reset-motif");
+
+    // Type
+    Route::get("/type", [App\Http\Controllers\MTypeController::class, "index"])->name("type.index");
+    Route::get("/type/create", [App\Http\Controllers\MTypeController::class, "create"])->name("type.create");
+    Route::post("/type", [App\Http\Controllers\MTypeController::class, "store"])->name("type.store");
+    Route::get("/type/{type}/edit", [App\Http\Controllers\MTypeController::class, "edit"])->name("type.edit");
+    Route::put("/type/{type}", [App\Http\Controllers\MTypeController::class, "update"])->name("type.update");
+    Route::delete("/type/{type}", [App\Http\Controllers\MTypeController::class, "destroy"])->name("type.destroy");
+    Route::get('/types/by-jenis/{jenisId}', [\App\Http\Controllers\MTypeController::class, 'getByJenis'])
+        ->name('types.byJenis');
 });

@@ -82,19 +82,16 @@ class CatalogController extends Controller
                 $response['category'] = $category;
             }
 
-            if (is_array($jenisId)) {
-                $jenisCollection = MJenis::with('categories.products')->whereIn('id', $jenisId)->get();
-                // Jika perlu, kamu bisa menggabungkan semua categories dari collection ini jadi 1 object:
-                $categories = $jenisCollection->flatMap->categories->unique('id')->values();
-                $response['jenis'] = [
-                    'name' => 'Multiple',
-                    'categories' => $categories,
-                ];
-            } else if ($jenisId) {
+            if ($jenisId) {
                 $jenis = MJenis::with('categories.products')->find($jenisId);
-                $response['jenis'] = $jenis;
-            }
+                if ($jenis) {
+                    $response['jenis'] = $jenis;
 
+                    if ((int)$jenisId === 3) {
+                        $response['types'] = $jenis->types;
+                    }
+                }
+            }
 
             return response()->json($response);
         }
@@ -105,6 +102,7 @@ class CatalogController extends Controller
             'data' => $query->get(),
             'jenis' => MJenis::with('categories.products.images')->get(),
             'categories' => MCategories::all(),
+            'types' => \App\Models\MType::with('jenis')->get()
         ]);
     }
 }
