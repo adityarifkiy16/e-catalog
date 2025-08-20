@@ -35,6 +35,11 @@
                                 @endforeach
                             </select>
 
+                            <label class="mt-3 type"><i class="fas fa-tags"></i> Type</label>
+                            <select class="custom-select type" name="type_id" id="type_id">
+                                <option value="">Pilih type</option>
+                            </select>
+
 
                             <label class="mt-3"><i class="fas fa-tags"></i> Kategori</label>
                             <select class="custom-select" name="category_id" id="category_id">
@@ -81,34 +86,98 @@
                 }
             });
 
-            $("#jenis").on('change', function() {
-                let jenisId = $(this).val();
-                if (jenisId) {
+            $('#jenis').on('change', function() {
+                console.log("change jenis");
+                var jenisId = $(this).val();
+                let type = $('.type');
+
+                $.ajax({
+                    url: "{{ url('types/by-jenis') }}/" + jenisId,
+                    type: 'GET',
+                    data: {
+                        jenis_id: jenisId
+                    },
+                    success: function(data) {
+                        if (data.length > 0) {
+                            type.show();
+                            $('#type_id').prop('disabled', false);
+                            $('#type_id').html('<option value="">Pilih Type</option>');
+                            $.each(data, function(key, item) {
+                                $('#type_id').append('<option value="' + item.id +
+                                    '">' + item.name + '</option>');
+                            });
+
+                            // kosongkan kategori saat jenis berubah
+                            $('#category_id').prop('disabled', true).html(
+                                '<option value="">Pilih Kategori</option>');
+                        } else {
+                            type.hide();
+                            $('#type_id').prop('disabled', true).html(
+                                '<option value="">Tidak ada type</option>');
+
+                            // langsung ambil kategori berdasarkan jenis
+                            loadCategoryByJenis(jenisId);
+                        }
+                    }
+                });
+            });
+
+            $('#type_id').on('change', function() {
+                console.log("change type");
+                var typeId = $(this).val();
+                var jenisId = $('#jenis').val();
+
+                if (typeId) {
+                    // ambil kategori berdasarkan type
                     $.ajax({
-                        url: "{{ route('products.getCategories') }}",
+                        url: "{{ url('categories/by-type') }}/" + typeId,
                         type: 'GET',
                         data: {
-                            jenis_id: jenisId
+                            type_id: typeId
                         },
-                        success: function(response) {
-                            let categorySelect = $('select[name="category_id"]');
-                            categorySelect.empty();
-                            categorySelect.append('<option value="">Pilih Kategori</option>');
-                            $.each(response, function(index, category) {
-                                categorySelect.append(
-                                    `<option value="${category.id}">${category.name}</option>`
-                                );
-                            });
-                        },
-                        error: function(xhr) {
-                            console.error(xhr);
+                        success: function(data) {
+                            if (data.length > 0) {
+                                $('#category_id').prop('disabled', false).html(
+                                    '<option value="">Pilih Kategori</option>');
+                                $.each(data, function(key, item) {
+                                    $('#category_id').append('<option value="' + item
+                                        .id + '">' + item.name + '</option>');
+                                });
+                            } else {
+                                $('#category_id').prop('disabled', true).html(
+                                    '<option value="">Tidak ada kategori tersedia</option>');
+                            }
                         }
                     });
                 } else {
-                    $('select[name="category_id"]').empty().append(
-                        '<option value="">Pilih Kategori</option>');
+                    // kalau type tidak dipilih → ambil kategori berdasarkan jenis
+                    loadCategoryByJenis(jenisId);
                 }
             });
+
+            // fungsi bantu untuk ambil kategori by jenis
+            function loadCategoryByJenis(jenisId) {
+                $.ajax({
+                    url: "{{ url('categories/by-jenis') }}/" + jenisId,
+                    type: 'GET',
+                    data: {
+                        jenis_id: jenisId
+                    },
+                    success: function(data) {
+                        if (data.length > 0) {
+                            $('#category_id').prop('disabled', false).html(
+                                '<option value="">Pilih Kategori</option>');
+                            $.each(data, function(key, item) {
+                                $('#category_id').append('<option value="' + item.id + '">' +
+                                    item.name + '</option>');
+                            });
+                        } else {
+                            $('#category_id').prop('disabled', true).html(
+                                '<option value="">Tidak ada kategori tersedia</option>');
+                        }
+                    }
+                });
+            }
 
 
             new Dropzone("#image-dropzone", {

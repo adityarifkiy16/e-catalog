@@ -107,7 +107,9 @@ $(document).ready(function () {
         const code = $(this).data('code');
         const category = $(this).data('category');
         const imagesStr = $(this).attr('data-images');
+        const type = $(this).data('type');
         let images = null;
+        // console.log(type);
 
         if (imagesStr) {
             images = JSON.parse(imagesStr.replace(/&quot;/g, '"'));
@@ -122,7 +124,7 @@ $(document).ready(function () {
         // Click card tipe wallpanel load product category terkait
         if (jenis === 'tipe-wallpanel') {
             resetState();
-            setCatalogConfig({ selectedJenis: 3, category: 66 });
+            setCatalogConfig({ selectedJenis: 3, type: type });
             loadMoreData(false);
             $('#filter-container').toggleClass('d-none');
             $('#catalog-col').toggleClass('col-md-10 col-md-12');
@@ -131,71 +133,24 @@ $(document).ready(function () {
 
         // Klik UV Board / Wallboard
         if (jenis.toLowerCase() === 'uv board' || jenis.toLowerCase() === 'wallboard') {
-            if (selectedWallpanel) {
-                console.log('Klik UV Board / Wallboard saat ada wallpanel terpilih');
-                console.log('Wallpanel saat ini:', selectedWallpanel);
-
-                // Render gambar UV Board yang diklik
-                renderCarouselProduct(images, selectedWallpanel.images);
-
-                // Tampilkan info wallpanel di modal
-                $('#modalCode').text(code);
-                $('#productModalLabel').text(code);
-                $('#modalCategory').html('Wallpanel <strong>' + selectedWallpanel.code + '</strong>');
-                $('#modalDownload').data('id', productId);
-                $('#productModal').modal('show');
-
-                $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes').hide();
-
-                $('#modalContact').data('wallpanel', selectedWallpanel.code);
-                $('#modalContact').data('jenis', selectedWallpanel.jenis);
-                $('#modalContact').data('category', category);
-                $('#modalContact').data('code', code);
-            } else {
-                console.log('Belum pilih wallpanel, tampilkan UV Board sebagai produk biasa');
-                renderCarouselProduct(images);
-                $('#modalCode').text(code);
-                $('#productModalLabel').text(code);
-                $('#modalCategory').text(jenis + ' / ' + category);
-                $('#modalDownload').data('id', productId);
-                $('#productModal').modal('show');
-
-                $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes').hide();
-
-                $('#modalContact').data('jenis', jenis);
-                $('#modalContact').data('category', category);
-                $('#modalContact').data('code', code);
-            }
+            console.log('Belum pilih wallpanel, tampilkan UV Board sebagai produk biasa');
+            renderCarouselProduct(images);
+            $('#modalCode').text(code);
+            $('#productModalLabel').text(code);
+            $('#modalCategory').text(jenis + ' / ' + category);
+            $('#modalDownload').data('id', productId);
+            $('#productModal').modal('show');
+            $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes').hide();
+            $('#modalContact').data('jenis', jenis);
+            $('#modalContact').data('category', category);
+            $('#modalContact').data('code', code);
             return;
         }
 
-        // Klik produk biasa
-        renderCarouselProduct(images);
-        $('#modalCode').text(code);
-        $('#productModalLabel').text(code);
-        $('#modalCategory').text(jenis + ' / ' + category);
-        $('#modalDownload').data('id', productId);
-        $('#productModal').modal('show');
         if (jenis === 'PVC Board') {
             $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
             $('#modalDensity').text(density && !isNaN(density) ? density + ' mm' : '-');
-            console.log(code);
-            // if (code === '3mm') {
-            //     $('#modalKepadatan').html(`
-            //     <span class="badge bg-navy">0,4 mm</span>
-            //     <span class="badge bg-navy">0,55 mm</span>
-            //     <span class="badge bg-navy">0,7 mm</span>
-            // `);
-            // } else {
-            //     $('#modalKepadatan').html(`
-            //     <span class="badge bg-navy">0,4 mm</span>
-            //     <span class="badge bg-navy">0,55 mm</span>
-            //     <span class="badge bg-navy">0,7 mm</span>
-            //     <span class="badge bg-navy">1 mm</span>
-            // `);
-            // }
-
             $('#modalKepadatan').html(`
                 <span class="badge badge-primary kepadatan" data-value="0,4 mm">0,4 mm</span>
                 <span class="badge badge-primary kepadatan" data-value="0,55 mm">0,55 mm</span>
@@ -205,10 +160,18 @@ $(document).ready(function () {
             $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes').hide();
         }
 
+        if (jenis === 'Wallpanel') {
+            $('#modalContact').data('type', type);
+        }
+        renderCarouselProduct(images);
+        $('#modalCode').text(code);
+        $('#productModalLabel').text(code);
+        $('#modalCategory').text(category + ' / ' + type);
+        $('#modalDownload').data('id', productId);
+        $('#productModal').modal('show');
         $('#modalContact').data('jenis', jenis);
         $('#modalContact').data('category', category);
         $('#modalContact').data('code', code);
-        console.log('Produk biasa:', code);
 
         // ambil data lagi untuk debug
         let modalkepadatan = $('#modalContact').data('kepadatan');

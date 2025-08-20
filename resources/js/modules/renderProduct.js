@@ -44,6 +44,7 @@ export function renderProducts(products, selectedJenis) {
                     data-density="${product.ketebalan}"
                     data-images="${imagesJson}"
                     data-image="${image}"
+                    data-type="${product.category?.types?.name ?? ''}"
                     >
                        <img 
                             src="${image}" 

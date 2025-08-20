@@ -374,13 +374,6 @@ class TProductController extends Controller
         return view('product.index', $arr);
     }
 
-    public function getCategoriesByJenis(Request $request)
-    {
-        $jenisId = $request->input('jenis_id');
-        $categories = MCategories::where('jenis_id', $jenisId)->get();
-        return response()->json($categories);
-    }
-
     public function downloadPdf(Request $request)
     {
 

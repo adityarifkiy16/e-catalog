@@ -4,10 +4,10 @@ export function bindOrderButton() {
         console.log('Klik tombol order', $(this).data('code'));
         const phone = '62816659688';
         let message = '';
-        if ($(this).data('wallpanel')) {
+        if ($(this).data('jenis') == 'Wallpanel') {
             message =
                 `Halo Admin,\nSaya tertarik dengan produk berikut:\n\n` +
-                `• Tipe Wallpanel: *${$(this).data('wallpanel')}*\n` +
+                `• Tipe Wallpanel: *${$(this).data('type')}*\n` +
                 `• Kode Motif : *${$(this).data('code')}*\n` +
                 `• Produk : *${$(this).data('jenis')}*\n` +
                 `• Kategori: *${$(this).data('category')}*\n\n` +

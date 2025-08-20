@@ -6,6 +6,7 @@ import { showLoading, hideLoading, setCategory } from './utils';
 // Global variables
 let selectedJenis = null;
 let category = null;
+let type = null;
 let currentPage = 1;
 let isLoading = false;
 let lastPage = false;
@@ -14,9 +15,14 @@ const uniquePaths = new Set();
 export function setCatalogConfig(config) {
     selectedJenis = config.selectedJenis;
     category = config.category ?? null;
+    type = config.type ?? null;
 }
 export function loadMoreData(firstLoad = true) {
     return new Promise((resolve, reject) => {
+        if ($(window).width() < 768) {
+            $('#filter-container').addClass('d-none');
+        }
+
         if (!category || category === 'null' || category === '') {
             $('#btn-download').addClass('d-none');
         } else {
@@ -35,7 +41,8 @@ export function loadMoreData(firstLoad = true) {
                 page: currentPage,
                 search,
                 jenis: selectedJenis,
-                category
+                category,
+                type
             },
             success: function (response) {
                 console.log('Data berhasil dimuat.');
@@ -43,14 +50,15 @@ export function loadMoreData(firstLoad = true) {
                 const products = response.data.data ?? [];
                 const types = response.types ?? [];
                 if (selectedJenis == 3 && firstLoad) {
-                    console.log(firstLoad);
+                    console.log('isFirstLoad:' + firstLoad);
                     if (types.length > 0) {
                         renderTypes(types, selectedJenis);
                         currentPage++;
                         if (currentPage > response.data.last_page) lastPage = true;
                     }
+                    updateCategoryMenu(response, true);
                 } else {
-                    console.log(firstLoad);
+                    console.log('isFirstLoad:' + firstLoad);
                     if (products.length > 0) {
                         renderProducts(products, selectedJenis);
                         currentPage++;
@@ -65,9 +73,9 @@ export function loadMoreData(firstLoad = true) {
                         }
                         lastPage = true;
                     }
+                    updateCategoryMenu(response, false);
                 }
-
-                updateCategoryMenu(response);
+                updateCategoryMenu(response, false);
                 resolve();
             },
             error: function () {
@@ -82,22 +90,21 @@ export function loadMoreData(firstLoad = true) {
     });
 }
 
-function updateCategoryMenu(response) {
-    const categories = response.jenis?.categories ?? [];
+function updateCategoryMenu(response, firstLoad = true) {
+    const categories = response?.category ?? [];
+    console.log(categories);
     const name = response.jenis?.name;
     const data = response;
+    const images = data.category[0].images;
 
     if (categories.length === 0) {
         $('#category-container').addClass('d-none');
     } else {
         $('#category-container').removeClass('d-none');
-    }
-
-    if (category) {
-        if (data.category.images.length === 0) {
+        if (images.length === 0) {
             $('#mockup').addClass('d-none');
         }
-        renderMockup(data.category.images, selectedJenis, uniquePaths);
+        renderMockup(images, selectedJenis, uniquePaths);
     }
 
     switch (name) {
@@ -118,9 +125,8 @@ function updateCategoryMenu(response) {
     }
 
     let dropdown = `<li class="nav-item font-poppins">`;
-    let filteredCategories = categories;
 
-    filteredCategories.forEach((cat) => {
+    categories.forEach((cat) => {
         dropdown += `
             <a class="nav-link text-white category-filter d-flex align-items-center justify-content-start" 
                 href="#" data-jenis-id="${cat.jenis_id}" data-id="${cat.id}">
@@ -140,7 +146,7 @@ function updateCategoryMenu(response) {
         category = categories[0].id;
         setCategory(category);
         resetState();
-        loadMoreData();
+        loadMoreData(firstLoad);
     } else if (category) {
         $(`.category-filter[data-id="${category}"]`).addClass('active');
     }

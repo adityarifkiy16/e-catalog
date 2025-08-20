@@ -264,4 +264,20 @@ class MCategoriesController extends Controller
             'message' => 'Category deleted successfully.',
         ], 200);
     }
+
+    public function getByType(Request $request)
+    {
+        if ($request->ajax()) {
+            $categories = MCategories::where('type_id', $request->type_id)->get();
+            return response()->json($categories);
+        }
+    }
+
+    public function getByJenis(Request $request)
+    {
+        if ($request->ajax()) {
+            $categories = MCategories::where('jenis_id', $request->jenis_id)->get();
+            return response()->json($categories);
+        }
+    }
 }

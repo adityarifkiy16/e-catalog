@@ -10,9 +10,6 @@ export function renderTypes(types, selectedJenis) {
 
         console.log(selectedJenis);
 
-        // Simpan array ini sebagai string JSON yang aman untuk HTML
-        // const imagesJson = JSON.stringify(allImages).replace(/"/g, '&quot;');
-
         const categoryName = selectedJenis == 3 ? 'wallpanel' : 'tanpa kategori';
 
         html += `
@@ -24,6 +21,7 @@ export function renderTypes(types, selectedJenis) {
                     data-id="${type.id}"
                     data-jenis="tipe-wallpanel"
                     data-category="${categoryName}"
+                    data-type="${type.id}"
                     >
                        <img 
                             src="${image}" 

@@ -61,6 +61,9 @@ Route::middleware("auth")->group(function () {
     Route::get("/categories/{categories}/edit", [App\Http\Controllers\MCategoriesController::class, "edit"])->name("categories.edit");
     Route::put("/categories/{categories}", [App\Http\Controllers\MCategoriesController::class, "update"])->name("categories.update");
     Route::delete("/categories/{categories}", [App\Http\Controllers\MCategoriesController::class, "destroy"])->name("categories.destroy");
+    Route::get('/categories/by-type/{typeId}', [\App\Http\Controllers\MCategoriesController::class, 'getByType'])
+        ->name('categories.byType');
+    Route::get('/categories/by-jenis/{jenisId}', [\App\Http\Controllers\MCategoriesController::class, 'getByJenis'])->name('categories.byJenis');
 
     // Product management routes
     Route::get("/products", [App\Http\Controllers\TProductController::class, "index"])->name("products.index");
@@ -70,7 +73,6 @@ Route::middleware("auth")->group(function () {
     Route::put("/products/{product}", [App\Http\Controllers\TProductController::class, "update"])->name("products.update");
     Route::delete("/products/{product}", [App\Http\Controllers\TProductController::class, "destroy"])->name("products.destroy");
     Route::get("/products/search", [App\Http\Controllers\TProductController::class, "search"])->name("products.search");
-    Route::get("/products/categories", [App\Http\Controllers\TProductController::class, "getCategoriesByJenis"])->name("products.getCategories");
     Route::get("/products/delete-image", [App\Http\Controllers\TProductController::class, "deleteImage"])->name("products.delete-image");
     Route::get("/products/delete-by-category", [App\Http\Controllers\TProductController::class, "destroyByCategory"])->name("products.destroy-by-category");
     Route::get("/products/bulk-upload/create", [App\Http\Controllers\TProductController::class, "bulkUpload"])->name("products.bulk.create");
