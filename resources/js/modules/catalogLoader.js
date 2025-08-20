@@ -129,7 +129,7 @@ function updateCategoryMenu(response, firstLoad = true) {
         categories.forEach((cat) => {
             dropdown += `
             <a class="nav-link text-white category-filter d-flex align-items-center justify-content-start" 
-                href="#" data-jenis-id="${cat.jenis_id}" data-id="${cat.id}">
+                href="#" data-jenis-id="${cat.jenis_id}" data-id="${cat.id}" data-type="${cat.type_id}">
                 <img src="${cat.path ? 'storage/' + cat.path : 'dist/img/product/1.webp'}" alt="${cat.name}" 
                 class="mr-2 img-thumbnail" style="width: 50px; height: 50px; object-fit: contain;">
                 <span class="text-capitalize">${cat.name}</span>
