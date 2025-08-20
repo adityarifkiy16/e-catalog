@@ -94,7 +94,7 @@ function updateCategoryMenu(response, firstLoad = true) {
     const categories = response.category;
     const name = response.jenis?.name;
     const data = response;
-    const images = data.category[0]?.images ?? [];
+    const images = data.data.data[0]?.category?.images ?? [];
 
     if (categories.length === 0) {
         $('#category-container').addClass('d-none');

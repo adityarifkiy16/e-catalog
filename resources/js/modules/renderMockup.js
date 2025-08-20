@@ -16,6 +16,8 @@ export function renderMockup(categories, selectedJenis, uniquePaths) {
     if (selectedJenis == null) {
         return;
     }
+    console.log('rendering mockup/landing page...');
+    console.log(categories);
     categories.forEach((image) => {
         if (image.path) {
             uniquePaths.add(image.path);
