@@ -48,6 +48,7 @@
                                 <th style="width: 0.5rem;">No</th>
                                 <th>Nama Kategori</th>
                                 <th>Jenis</th>
+                                <th>Tipe</th>
                                 <th>Jumlah Produk</th>
                                 <th>Foto</th>
                                 <th style="text-align: end; width: 2rem;">Action</th>
@@ -163,6 +164,10 @@
                     },
                     {
                         data: 'jenis',
+                        orderable: false,
+                    },
+                    {
+                        data: 'type',
                         orderable: false,
                     },
                     {

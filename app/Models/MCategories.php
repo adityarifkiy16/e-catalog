@@ -30,4 +30,9 @@ class MCategories extends Model
     {
         return $this->hasMany(TImage::class, "category_id", "id");
     }
+
+    public function types()
+    {
+        return $this->belongsTo(MType::class, 'type_id', 'id');
+    }
 }

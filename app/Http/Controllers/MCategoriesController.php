@@ -29,6 +29,9 @@ class MCategoriesController extends Controller
             }
             return DataTables::of($query)
                 ->addIndexColumn()
+                ->addColumn('type', function ($row) {
+                    return $row->types ? $row->types->name : '-';
+                })
                 ->addColumn('jenis', function ($row) {
                     return $row->jenis ? $row->jenis->name : '-';
                 })
@@ -60,6 +63,7 @@ class MCategoriesController extends Controller
             'image' => 'nullable',
             'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'jenis_id' => 'required|exists:m_jenis,id',
+            'type_id' => 'nullable|exists:m_types,id',
             'display_style' => 'nullable|string|max:255|in:square,rectangle',
         ]);
 
@@ -87,6 +91,7 @@ class MCategoriesController extends Controller
             MCategories::create([
                 'name' => $request->name,
                 'jenis_id' => $request->jenis_id,
+                'type_id' => $request->type_id,
                 'path' => $path,
                 'display_style' => $request->display_style
             ]);
@@ -94,6 +99,7 @@ class MCategoriesController extends Controller
             MCategories::create([
                 'name' => $request->name,
                 'jenis_id' => $request->jenis_id,
+                'type_id' => $request->type_id,
                 'display_style' => $request->display_style
             ]);
         }
