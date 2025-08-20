@@ -89,7 +89,7 @@ class CatalogController extends Controller
 
             // Jika categoryId spesifik
             if ($typeId) {
-                $response['category'] = MCategories::with(['jenis', 'images'])
+                $categories = MCategories::with(['jenis', 'images'])
                     ->whereHas('types', function ($q) use ($typeId) {
                         if (is_array($typeId)) {
                             $q->whereIn('id', $typeId);
@@ -98,6 +98,12 @@ class CatalogController extends Controller
                         }
                     })
                     ->get();
+                if ($categories->isEmpty()) {
+                    $response['category'] = [];
+                    $response['message'] = 'Kategori dengan type tersebut tidak ditemukan';
+                } else {
+                    $response['category'] = $categories;
+                }
             } elseif ($jenisId) {
                 $response['category'] = MCategories::with(['jenis', 'images'])
                     ->where('jenis_id', $jenisId)

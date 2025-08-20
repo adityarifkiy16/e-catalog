@@ -91,11 +91,10 @@ export function loadMoreData(firstLoad = true) {
 }
 
 function updateCategoryMenu(response, firstLoad = true) {
-    const categories = response?.category ?? [];
-    console.log(categories);
+    const categories = response.category;
     const name = response.jenis?.name;
     const data = response;
-    const images = data.category[0].images;
+    const images = data.category[0]?.images ?? [];
 
     if (categories.length === 0) {
         $('#category-container').addClass('d-none');
@@ -126,17 +125,19 @@ function updateCategoryMenu(response, firstLoad = true) {
 
     let dropdown = `<li class="nav-item font-poppins">`;
 
-    categories.forEach((cat) => {
-        dropdown += `
+    if (Array.isArray(categories) && categories.length > 0) {
+        categories.forEach((cat) => {
+            dropdown += `
             <a class="nav-link text-white category-filter d-flex align-items-center justify-content-start" 
                 href="#" data-jenis-id="${cat.jenis_id}" data-id="${cat.id}">
                 <img src="${cat.path ? 'storage/' + cat.path : 'dist/img/product/1.webp'}" alt="${cat.name}" 
                 class="mr-2 img-thumbnail" style="width: 50px; height: 50px; object-fit: contain;">
-                <span class="text-capitalize">${cat.name} ${
-            cat.products_count > 0 ? `(${cat.products_count})` : ''
-        }</span>
+                <span class="text-capitalize">${cat.name}</span>
             </a>`;
-    });
+        });
+    } else {
+        dropdown += `<a class="nav-link text-white category-filter" href="#">Tanpa Kategori</a>`;
+    }
 
     dropdown += `</li>`;
     $('#category-menu-item, #category-menu-item-modal').html(dropdown);
