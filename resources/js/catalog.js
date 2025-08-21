@@ -85,9 +85,19 @@ $(document).ready(function () {
 
             $('#thumbnailGallery').append(`
                     <div class="col-4 mb-2 d-flex justify-content-center">
-                        <img src="${img}" 
-                        class="img-thumbnail thumbnail-image p-0 m-0" 
-                        style="width: 5rem; height: 5rem; object-fit: cover; cursor: pointer;" data-index="${i}">
+                        <div class="h-100">
+                           <img src="${img}" 
+                            class="img-thumbnail thumbnail-image p-0 w-100 h-100" 
+                            style="
+                                width: 5rem;
+                                height: auto;
+                                aspect-ratio: 1 / 1;
+                                border: 1px solid #ccc;
+                                border-radius: 8px;
+                                object-fit: cover;
+                                cursor: pointer;"
+                            data-index="${i}">
+                        </div>
                     </div>
                     `);
         });

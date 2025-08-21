@@ -135,7 +135,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="container-fluid">
-                                <div class="row d-flex flex-row justify-content-center align-items-center">
+                                <div class="row d-flex flex-row justify-content-center align-items-center pt-3">
                                     <div
                                         class="col-md-6 col-12 mb-3 mb-md-0 d-flex align-items-center justify-content-center">
 
@@ -206,8 +206,8 @@
                                             {{-- <div class="d-flex flex-row order-2">
                                             </div> --}}
                                             <!-- Tambahan thumbnail gambar -->
-                                            <div class="my-4 order-1 order-md-1">
-                                                <div id="thumbnailGallery"class="row no-gutters">
+                                            <div class="p-md-3 p-2 order-1 order-md-1">
+                                                <div id="thumbnailGallery"class="row">
                                                     <!-- Foto kecil akan di-inject lewat JS -->
                                                 </div>
                                             </div>
