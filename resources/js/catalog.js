@@ -54,13 +54,15 @@ $(document).ready(function () {
         }, 200);
     });
 
-    function renderCarouselProduct(images, wallpanelImages = null) {
+    function renderCarouselProduct(images, wallpanelImages = null, jenis = null) {
         $('#carousel-product-image').empty();
         $('#thumbnailGallery').empty();
         let newimages = [...images];
 
-        if (wallpanelImages) {
-            newimages = [...wallpanelImages, ...images];
+        if (jenis.toLowerCase() == 'uv board') {
+            newimages = [...images, ...wallpanelImages];
+        } else {
+            newimages = [...images];
         }
 
         newimages.forEach((img, i) => {
@@ -110,6 +112,12 @@ $(document).ready(function () {
         const type = $(this).data('type');
         let images = null;
         // console.log(type);
+        let staticImages = [
+            { path: '/dist/img/paket/1.png' },
+            { path: '/dist/img/paket/2.png' },
+            { path: '/dist/img/paket/3.png' }
+        ];
+        staticImages = staticImages.map((img) => img.path);
 
         if (imagesStr) {
             images = JSON.parse(imagesStr.replace(/&quot;/g, '"'));
@@ -134,15 +142,20 @@ $(document).ready(function () {
         }
 
         if (jenis.toLowerCase() === 'uv board') {
-            $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes').hide();
+            $('#panjang, #tinggi, #ketebalan, #kepadatan').hide();
             $('#modalCategory').text(category);
+            $('#modalPaket').html(`
+                <span class="badge badge-primary kepadatan" data-value="paket 1">001</span>
+                <span class="badge badge-primary kepadatan" data-value="paket 2">002</span>
+                <span class="badge badge-primary kepadatan" data-value="paket 3">003</span>
+            `);
         }
 
         if (jenis.toLowerCase() === 'wallboard') {
             $('#modalCategory').text(category);
             $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
-            $('#ketebalan, #kepadatan, #notes').hide();
+            $('#ketebalan, #kepadatan, #notes, .paket').hide();
         }
 
         if (jenis === 'PVC Board') {
@@ -155,23 +168,23 @@ $(document).ready(function () {
                 <span class="badge badge-primary kepadatan" data-value="0,55 mm">0,55 mm</span>
                 <span class="badge badge-primary kepadatan" data-value="0,7 mm">0,7 mm</span>
             `);
+            $('.paket').hide();
         }
 
         if (jenis === 'Wallpanel') {
             $('#modalContact').data('type', type);
             $('#modalCategory').text(category + ' / ' + type);
-            $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes').hide();
+            $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes, .paket').hide();
         }
 
         if (jenis.toLowerCase() === 'aksesoris') {
-            $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes').hide();
+            $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes, .paket').hide();
             $('#modalCategory').text(category);
         }
 
-        renderCarouselProduct(images);
+        renderCarouselProduct(images, staticImages, jenis);
         $('#modalCode').text(code);
         $('#productModalLabel').text(code);
-
         $('#modalDownload').data('id', productId);
         $('#productModal').modal('show');
         $('#modalContact').data('jenis', jenis);
@@ -180,9 +193,16 @@ $(document).ready(function () {
 
         // ambil data lagi untuk debug
         let modalkepadatan = $('#modalContact').data('kepadatan');
+        let modalPaket = $('#modalContact').data('paket');
 
         // kalau ada kepadatan tersimpan → pastikan badge sesuai aktif
         if (modalkepadatan) {
+            $('.kepadatan').removeClass('active');
+            $('#modalContact').data('kepadatan', null);
+            $('#notes').show();
+        }
+
+        if (modalPaket) {
             $('.kepadatan').removeClass('active');
             $('#modalContact').data('kepadatan', null);
             $('#notes').show();

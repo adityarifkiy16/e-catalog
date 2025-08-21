@@ -186,14 +186,18 @@
                                                     <div class="col-auto ml-3">:</div>
                                                     <div class="col" id="modalKepadatan"></div>
                                                 </div>
+                                                <div class="row paket">
+                                                    <div class="col-3"><strong>Paket</strong></div>
+                                                    <div class="col-auto ml-1">:</div>
+                                                    <div class="col" id="modalPaket"></div>
+                                                </div>
                                                 <div class="row mb-1" id="notes">
                                                     <div class="col">
                                                         <small class="text-muted">
-                                                            *Please choose a density option before order.
+                                                            *Please choose an option above order.
                                                         </small>
                                                     </div>
                                                 </div>
-
                                             </div>
 
                                             {{-- <div class="specifications order-2">
