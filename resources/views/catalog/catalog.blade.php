@@ -165,7 +165,7 @@
                                             <div class="mb-3 order-2">
                                                 <span id="modalCategory" class="text-muted text-uppercase"></span>
                                             </div>
-                                            <div class="mb-3 order-2 d-flex flex-column text-dark flex-wrap">
+                                            <div class="mb-3 order-2 d-flex flex-column text-dark w-100 px-2">
                                                 <div class="row mb-1" id="panjang">
                                                     <div class="col-3"><strong>Length</strong></div>
                                                     <div class="col-auto ml-3">:</div>
@@ -188,23 +188,26 @@
                                                 </div>
                                                 <div class="row paket">
                                                     <div class="col-3"><strong>Paket</strong></div>
-                                                    <div class="col-auto ml-1">:</div>
+                                                    <div class="col-auto ml-3">:</div>
                                                     <div class="col" id="modalPaket"></div>
                                                 </div>
-                                                <div class="row mb-1" id="notes">
-                                                    <div class="col">
-                                                        <small class="text-muted">
-                                                            *Please choose an option above before order.
-                                                        </small>
+                                                <div class="row my-2" id="notes">
+                                                    <div class="col-12">
+                                                        <div class="py-1 mb-0 d-flex align-items-center" role="alert"
+                                                            style="border-radius: .5rem;">
+                                                            <i class="fa fa-info-circle mr-2"></i>
+                                                            <span class="font-italic">
+                                                                Please choose an option above before order.
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="d-flex flex-row order-2">
-                                            </div>
+                                            {{-- <div class="d-flex flex-row order-2">
+                                            </div> --}}
                                             <!-- Tambahan thumbnail gambar -->
                                             <div class="my-4 order-1 order-md-1">
-                                                <div id="thumbnailGallery"
-                                                    class="d-flex flex-wrap gap-2 align-items-center justify-content-center justify-content-md-start">
+                                                <div id="thumbnailGallery"class="row no-gutters">
                                                     <!-- Foto kecil akan di-inject lewat JS -->
                                                 </div>
                                             </div>

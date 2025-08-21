@@ -84,8 +84,12 @@ $(document).ready(function () {
                 `);
 
             $('#thumbnailGallery').append(`
-                    <img src="${img}" class="img-thumbnail m-1 thumbnail-image" style="width: 5rem; height: 5rem; object-fit: cover; cursor: pointer;" data-index="${i}">
-                `);
+                    <div class="col-4 mb-2 d-flex justify-content-center">
+                        <img src="${img}" 
+                        class="img-thumbnail thumbnail-image p-0 m-0" 
+                        style="width: 5rem; height: 5rem; object-fit: cover; cursor: pointer;" data-index="${i}">
+                    </div>
+                    `);
         });
 
         // Sembunyikan kontrol jika hanya 1 gambar
@@ -144,9 +148,9 @@ $(document).ready(function () {
             $('#panjang, #tinggi, #ketebalan, #kepadatan').hide();
             $('#modalCategory').text(category);
             $('#modalPaket').html(`
-                <span class="badge badge-primary kepadatan" data-value="paket 1">1</span>
-                <span class="badge badge-primary kepadatan" data-value="paket 2">2</span>
-                <span class="badge badge-primary kepadatan" data-value="paket 3">3</span>
+                <span class="badge badge-pill badge-outline-primary px-2 py-1 kepadatan" data-value="1">1</span>
+                <span class="badge badge-pill badge-outline-primary px-2 py-1 ml-1 kepadatan" data-value="2">2</span>
+                <span class="badge badge-pill badge-outline-primary px-2 py-1 ml-1 kepadatan" data-value="3">3</span>
             `);
         }
 

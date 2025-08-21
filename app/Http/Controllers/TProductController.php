@@ -445,7 +445,7 @@ class TProductController extends Controller
 
     public function deleteUnusedImages()
     {
-        $unusedImages = TImage::doesntHave('product')->get();
+        $unusedImages = TImage::doesntHave(['product', 'categories'])->get();
         foreach ($unusedImages as $image) {
             $filePath = 'public/' . $image->path;
             if (Storage::exists($filePath)) {

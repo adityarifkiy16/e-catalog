@@ -19,7 +19,7 @@ export function bindOrderButton() {
                 `Halo Admin,\nSaya tertarik dengan produk berikut:\n\n` +
                 `• Produk : *${$(this).data('jenis')}*\n` +
                 `• Ketebalan : *${$(this).data('code')}*\n` +
-                `• Kepadatan: *${$(this).data('kepadatan')}*\n\n` +
+                `• Kepadatan: *${$(this).data('kepadatan') ?? '-'}*\n\n` +
                 `Apakah produk ini masih tersedia? Terima kasih.`;
         } else if (jenis.toLowerCase() == 'uv board') {
             message =
@@ -27,7 +27,7 @@ export function bindOrderButton() {
                 `• Kode Motif : *${$(this).data('code')}*\n` +
                 `• Produk : *${$(this).data('jenis')}*\n` +
                 `• Kategori: *${$(this).data('category')}*\n\n` +
-                `• Paket: *${$(this).data('kepadatan')}*\n\n` +
+                `• Paket: *${$(this).data('kepadatan') ?? '-'}*\n\n` +
                 `Apakah produk ini masih tersedia? Terima kasih.`;
         } else {
             message =
