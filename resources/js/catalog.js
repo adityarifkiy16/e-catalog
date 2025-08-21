@@ -145,9 +145,9 @@ $(document).ready(function () {
             $('#panjang, #tinggi, #ketebalan, #kepadatan').hide();
             $('#modalCategory').text(category);
             $('#modalPaket').html(`
-                <span class="badge badge-primary kepadatan" data-value="paket 1">001</span>
-                <span class="badge badge-primary kepadatan" data-value="paket 2">002</span>
-                <span class="badge badge-primary kepadatan" data-value="paket 3">003</span>
+                <span class="badge badge-primary kepadatan" data-value="paket 1">1</span>
+                <span class="badge badge-primary kepadatan" data-value="paket 2">2</span>
+                <span class="badge badge-primary kepadatan" data-value="paket 3">3</span>
             `);
         }
 
