@@ -128,9 +128,9 @@ $(document).ready(function () {
 
         // gambar statik paket
         let staticImages = [
-            { path: '/dist/img/paket/1.png' },
-            { path: '/dist/img/paket/2.png' },
-            { path: '/dist/img/paket/3.png' }
+            { path: `/dist/img/paket/1.png?v=${Date.now()}` },
+            { path: `/dist/img/paket/2.png?v=${Date.now()}` },
+            { path: `/dist/img/paket/3.png?v=${Date.now()}` }
         ];
         staticImages = staticImages.map((img) => img.path);
 
