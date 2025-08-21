@@ -121,6 +121,8 @@ $(document).ready(function () {
         const density = parseInt($(this).data('density'), 10);
         const productId = $(this).data('id');
 
+        // console.log('jenis:' + jenis);
+
         // Click card tipe wallpanel load product category terkait
         if (jenis === 'tipe-wallpanel') {
             resetState();
@@ -131,23 +133,20 @@ $(document).ready(function () {
             return;
         }
 
-        // Klik UV Board / Wallboard
-        if (jenis.toLowerCase() === 'uv board' || jenis.toLowerCase() === 'wallboard') {
-            console.log('Belum pilih wallpanel, tampilkan UV Board sebagai produk biasa');
-            renderCarouselProduct(images);
-            $('#modalCode').text(code);
-            $('#productModalLabel').text(code);
-            $('#modalCategory').text(jenis + ' / ' + category);
-            $('#modalDownload').data('id', productId);
-            $('#productModal').modal('show');
+        if (jenis.toLowerCase() === 'uv board') {
             $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes').hide();
-            $('#modalContact').data('jenis', jenis);
-            $('#modalContact').data('category', category);
-            $('#modalContact').data('code', code);
-            return;
+            $('#modalCategory').text(category);
+        }
+
+        if (jenis.toLowerCase() === 'wallboard') {
+            $('#modalCategory').text(category);
+            $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
+            $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
+            $('#ketebalan, #kepadatan, #notes').hide();
         }
 
         if (jenis === 'PVC Board') {
+            $('#modalCategory').text(jenis);
             $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
             $('#modalDensity').text(density && !isNaN(density) ? density + ' mm' : '-');
@@ -156,17 +155,23 @@ $(document).ready(function () {
                 <span class="badge badge-primary kepadatan" data-value="0,55 mm">0,55 mm</span>
                 <span class="badge badge-primary kepadatan" data-value="0,7 mm">0,7 mm</span>
             `);
-        } else {
-            $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes').hide();
         }
 
         if (jenis === 'Wallpanel') {
             $('#modalContact').data('type', type);
+            $('#modalCategory').text(category + ' / ' + type);
+            $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes').hide();
         }
+
+        if (jenis.toLowerCase() === 'aksesoris') {
+            $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes').hide();
+            $('#modalCategory').text(category);
+        }
+
         renderCarouselProduct(images);
         $('#modalCode').text(code);
         $('#productModalLabel').text(code);
-        $('#modalCategory').text(category + ' / ' + type);
+
         $('#modalDownload').data('id', productId);
         $('#productModal').modal('show');
         $('#modalContact').data('jenis', jenis);
