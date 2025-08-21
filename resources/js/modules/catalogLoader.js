@@ -106,6 +106,7 @@ function updateCategoryMenu(response, firstLoad = true) {
         renderMockup(images, selectedJenis, uniquePaths);
     }
 
+    // Ganti header kategori sesuai jenis
     switch (name) {
         case 'PVC Board':
             $('#category-container, #category-modal-container').addClass('d-none');
@@ -142,7 +143,7 @@ function updateCategoryMenu(response, firstLoad = true) {
     dropdown += `</li>`;
     $('#category-menu-item, #category-menu-item-modal').html(dropdown);
 
-    // Auto select category if not yet set
+    // otomatis pilih kategori jika tidak ada
     if (!category && categories.length > 0) {
         category = categories[0].id;
         setCategory(category);

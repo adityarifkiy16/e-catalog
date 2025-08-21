@@ -194,25 +194,12 @@
                                                 <div class="row mb-1" id="notes">
                                                     <div class="col">
                                                         <small class="text-muted">
-                                                            *Please choose an option above order.
+                                                            *Please choose an option above before order.
                                                         </small>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            {{-- <div class="specifications order-2">
-                                                <div class="spec-item d-flex align-items-center mb-2">
-                                                    Tipe
-                                                    <span id="modalTipe" class="text-dark"> </span>
-                                                </div>
-                                                <div class="spec-item d-flex align-items-center mb-2">
-                                                    Ukuran
-                                                    <span id="modalPanjang" class="text-dark"></span>
-                                                </div>
-                                            </div> --}}
-
                                             <div class="d-flex flex-row order-2">
-
                                             </div>
                                             <!-- Tambahan thumbnail gambar -->
                                             <div class="my-4 order-1 order-md-1">
@@ -261,7 +248,6 @@
                         <div class="modal-body">
                             <div class="category-modal-container">
                                 <h5 id="category-modal-item-label" class="font-cocogoose">Category</h5>
-                                <!-- Daftar kategori -->
                                 <ul class="nav flex-column" id="category-menu-item-modal">
                                     <!-- Akan diisi oleh JS -->
                                 </ul>

@@ -97,7 +97,7 @@ $(document).ready(function () {
             $('#carouselProduct .carousel-control-prev').removeClass('d-none');
         }
 
-        // Thumbnail click event
+        // Handling klik thumbnail di dalam modal
         $('#thumbnailGallery').on('click', '.thumbnail-image', function () {
             const index = $(this).data('index');
             $('#carouselProduct .carousel-item').removeClass('active');
@@ -111,7 +111,8 @@ $(document).ready(function () {
         const imagesStr = $(this).attr('data-images');
         const type = $(this).data('type');
         let images = null;
-        // console.log(type);
+
+        // gambar statik paket
         let staticImages = [
             { path: '/dist/img/paket/1.png' },
             { path: '/dist/img/paket/2.png' },
@@ -128,8 +129,6 @@ $(document).ready(function () {
         const height = parseInt($(this).data('height'), 10);
         const density = parseInt($(this).data('density'), 10);
         const productId = $(this).data('id');
-
-        // console.log('jenis:' + jenis);
 
         // Click card tipe wallpanel load product category terkait
         if (jenis === 'tipe-wallpanel') {

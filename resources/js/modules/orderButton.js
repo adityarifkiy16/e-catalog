@@ -4,9 +4,9 @@ export function bindOrderButton() {
         console.log('Klik tombol order', $(this).data('code'));
         const phone = '62816659688';
         const jenis = $(this).data('jenis');
-        console.log(jenis);
+        console.log(jenis.toLowerCase());
         let message = '';
-        if (jenis.toLowerCase() == 'Wallpanel') {
+        if (jenis.toLowerCase() == 'wallpanel') {
             message =
                 `Halo Admin,\nSaya tertarik dengan produk berikut:\n\n` +
                 `• Tipe Wallpanel: *${$(this).data('type')}*\n` +
@@ -14,7 +14,7 @@ export function bindOrderButton() {
                 `• Produk : *${$(this).data('jenis')}*\n` +
                 `• Kategori: *${$(this).data('category')}*\n\n` +
                 `Apakah produk ini masih tersedia? Terima kasih.`;
-        } else if (jenis.toLowerCase() == 'PVC Board') {
+        } else if (jenis.toLowerCase() == 'pvc board') {
             message =
                 `Halo Admin,\nSaya tertarik dengan produk berikut:\n\n` +
                 `• Produk : *${$(this).data('jenis')}*\n` +
