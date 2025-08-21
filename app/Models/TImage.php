@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TImage extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $table = 't_images';
     protected $guarded = ['id'];
