@@ -159,9 +159,9 @@ $(document).ready(function () {
             $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
             $('#modalPaket').html(`
-                <span class="badge badge-pill badge-outline-primary px-2 py-1 kepadatan" data-value="1">1</span>
-                <span class="badge badge-pill badge-outline-primary px-2 py-1 ml-1 kepadatan" data-value="2">2</span>
-                <span class="badge badge-pill badge-outline-primary px-2 py-1 ml-1 kepadatan" data-value="3">3</span>
+                <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="1">Bundle 1</span>
+                <span class="badge badge-outline-primary px-2 py-1 ml-1 kepadatan" data-value="2">Bundle 2</span>
+                <span class="badge badge-outline-primary px-2 py-1 ml-1 kepadatan" data-value="3">Bundle 3</span>
             `);
         }
 
@@ -178,9 +178,9 @@ $(document).ready(function () {
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
             $('#modalDensity').text(density && !isNaN(density) ? density + ' mm' : '-');
             $('#modalKepadatan').html(`
-                <span class="badge badge-primary kepadatan" data-value="0,4 mm">0,4 mm</span>
-                <span class="badge badge-primary kepadatan" data-value="0,55 mm">0,55 mm</span>
-                <span class="badge badge-primary kepadatan" data-value="0,7 mm">0,7 mm</span>
+                <span class="badge badge-outline-primary kepadatan" data-value="0,4 mm">0,4 mm</span>
+                <span class="badge badge-outline-primary kepadatan" data-value="0,55 mm">0,55 mm</span>
+                <span class="badge badge-outline-primary kepadatan" data-value="0,7 mm">0,7 mm</span>
             `);
             $('.paket').hide();
         }
