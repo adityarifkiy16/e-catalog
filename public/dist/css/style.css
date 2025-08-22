@@ -310,6 +310,17 @@
     background-color: transparent;
 }
 
+.thumbnail-image {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.thumbnail-image.active-thumbnail {
+    border-radius: 8px;
+    border: #000;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+}
+
 @keyframes elegant-spin {
     0% {
         transform: rotate(0deg);

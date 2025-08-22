@@ -110,12 +110,41 @@ $(document).ready(function () {
             $('#carouselProduct .carousel-control-prev').removeClass('d-none');
         }
 
-        // Handling klik thumbnail di dalam modal
-        $('#thumbnailGallery').on('click', '.thumbnail-image', function () {
-            const index = $(this).data('index');
-            $('#carouselProduct .carousel-item').removeClass('active');
-            $('#carouselProduct .carousel-item').eq(index).addClass('active');
+        // Aktifkan carousel dengan auto-slide
+        $('#carouselProduct').carousel({
+            interval: 3000, // auto slide setiap 3 detik
+            pause: false
         });
+
+        // Handling klik thumbnail di dalam modal
+        let carouselTimeout; // simpan di luar event handler
+
+        $('#thumbnailGallery')
+            .off('click')
+            .on('click', '.thumbnail-image', function () {
+                const index = $(this).data('index');
+
+                // Loncat ke slide sesuai thumbnail
+                $('#carouselProduct').carousel(index);
+
+                // Tambahkan efek warna biru ke thumbnail aktif
+                $('.thumbnail-image').removeClass('active-thumbnail');
+                $(this).addClass('active-thumbnail');
+                setTimeout(() => {
+                    $(this).removeClass('active-thumbnail');
+                }, 500);
+
+                // Pause carousel
+                $('#carouselProduct').carousel('pause');
+
+                // Clear timeout sebelumnya kalau ada
+                clearTimeout(carouselTimeout);
+
+                // Buat timeout baru
+                carouselTimeout = setTimeout(() => {
+                    $('#carouselProduct').carousel('cycle');
+                }, 5000); // jeda 5 detik
+            });
     }
 
     $(document).on('click', '.product-card', function () {
