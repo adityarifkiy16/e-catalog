@@ -84,12 +84,11 @@ $(document).ready(function () {
                 `);
 
             $('#thumbnailGallery').append(`
-                    <div class="col-4 mb-2 d-flex justify-content-center">
-                        <div class="h-100">
+                    <div class="col-2 mb-0 d-flex justify-content-center">
+                        <div style="height: 90%">
                            <img src="${img}" 
                             class="img-thumbnail thumbnail-image p-0 w-100 h-100" 
                             style="
-                                width: 5rem;
                                 height: auto;
                                 aspect-ratio: 1 / 1;
                                 border: 1px solid #ccc;
@@ -155,8 +154,10 @@ $(document).ready(function () {
         }
 
         if (jenis.toLowerCase() === 'uv board') {
-            $('#panjang, #tinggi, #ketebalan, #kepadatan').hide();
+            $('#ketebalan, #kepadatan').hide();
             $('#modalCategory').text(category);
+            $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
+            $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
             $('#modalPaket').html(`
                 <span class="badge badge-pill badge-outline-primary px-2 py-1 kepadatan" data-value="1">1</span>
                 <span class="badge badge-pill badge-outline-primary px-2 py-1 ml-1 kepadatan" data-value="2">2</span>
