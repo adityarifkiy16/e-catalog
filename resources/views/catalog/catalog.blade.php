@@ -59,8 +59,17 @@
                                 </div>
 
                                 <div class="d-flex flex-row align-items-center justify-content-center">
+
+                                    <!-- Tombol Back -->
+                                    <div class="mb-2 mb-md-0 text-center text-md-left mr-2 order-1 d-none" id="backButton">
+                                        <a href="javascript:void(0)" class="btn btn-outline-light w-100 w-md-auto"
+                                            onclick="window.location.reload()">
+                                            <i class="fa fa-arrow-left mr-1"></i> Back
+                                        </a>
+                                    </div>
+
                                     <!-- Tombol Home -->
-                                    <div class="mb-2 mb-md-0 text-center text-md-left mr-2 order-1">
+                                    <div class="mb-2 mb-md-0 text-center text-md-left mr-2 order-1" id="homeButton">
                                         <a href="{{ route('catalog.index') }}"
                                             class="btn btn-outline-light w-100 w-md-auto">
                                             <i class="fa fa-home mr-1"></i> Home
@@ -207,7 +216,7 @@
                                             </div> --}}
                                             <!-- Tambahan thumbnail gambar -->
                                             <div class="p-md-3 p-2 order-1 order-md-1">
-                                                <div id="thumbnailGallery"class="row">
+                                                <div id="thumbnailGallery"class="row d-flex justify-content-center">
                                                     <!-- Foto kecil akan di-inject lewat JS -->
                                                 </div>
                                             </div>

@@ -49,6 +49,13 @@ export function loadMoreData(firstLoad = true) {
                 console.log(response);
                 const products = response.data.data ?? [];
                 const types = response.types ?? [];
+
+                // show button back
+                if (type) {
+                    $('#backButton').removeClass('d-none');
+                    $('#homeButton').addClass('d-none');
+                    console.log('remove class');
+                }
                 if (selectedJenis == 3 && firstLoad) {
                     console.log('isFirstLoad:' + firstLoad);
                     if (types.length > 0) {
