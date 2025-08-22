@@ -189,8 +189,8 @@ $(document).ready(function () {
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
             $('#modalPaket').html(`
                 <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="1">Bundle 1</span>
-                <span class="badge badge-outline-primary px-2 py-1 ml-1 kepadatan" data-value="2">Bundle 2</span>
-                <span class="badge badge-outline-primary px-2 py-1 ml-1 kepadatan" data-value="3">Bundle 3</span>
+                <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="2">Bundle 2</span>
+                <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="3">Bundle 3</span>
             `);
         }
 
