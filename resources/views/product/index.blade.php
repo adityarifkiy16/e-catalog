@@ -42,10 +42,10 @@
                             </form>
                             @if ($isAuthenticated && $user->hasPermission('create_products'))
                                 <a href="{{ route('products.create') }}" class="btn btn-success ml-2">
-                                    <i class="fa fa-plus"></i> Tambah
+                                    <i class="fa fa-plus"></i> produk
                                 </a>
                                 <a href="{{ route('products.bulk.create') }}" class="btn btn-primary ml-2">
-                                    <i class="fa fa-plus"></i> Upload
+                                    <i class="fa fa-plus"></i> mockup/motif
                                 </a>
                             @endif
                         </div>
@@ -288,25 +288,25 @@
                         render: function(data) {
                             return `
                         <div class="d-flex flex-row justify-content-end align-items-end">
-                                <a href="/products/${data.id}/edit"><button type="button" class="btn btn-primary mx-2"><i class="fas fa-pencil-alt" title="Edit"></i></button></a>
+                                <a href="/products/${data.id}/edit" title="Edit"><button type="button" class="btn btn-primary mx-2"><i class="fas fa-pencil-alt"></i></button></a>
                                 <form action="/products/${data.id}" style="display: inline;" class="delete-product">
                                             <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="btn btn-danger delete-task-button" data-user-id="${data.id}">
+                                            <button type="submit" class="btn btn-danger delete-task-button" data-user-id="${data.id}" title="Hapus Produk">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                 </form>
                                 <form action="/products/reset-mockup/${data.id}" style="display: inline;" class="reset-mockup mx-2">
                                             <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="btn btn-success" data-user-id="${data.id}">
+                                            <button type="submit" class="btn btn-success" data-user-id="${data.id}" title="Reset Mockup">
                                                 <i class="fas fa-undo"></i>
                                             </button>
                                 </form>
                                 <form action="/products/reset-motif/${data.id}" style="display: inline;" class="reset-motif">
                                             <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="btn btn-warning" data-user-id="${data.id}">
+                                            <button type="submit" class="btn btn-warning" data-user-id="${data.id}" title="Reset Motif">
                                                 <i class="fas fa-undo"></i>
                                             </button>
                                 </form>

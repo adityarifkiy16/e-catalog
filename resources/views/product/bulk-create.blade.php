@@ -38,9 +38,9 @@
                         @csrf
                         @method('POST')
                         <div class="form-group">
-                            <label for="type"> <i class="fas fa-tag"></i> Tipe</label>
+                            <label for="type"> <i class="fas fa-tag"></i> Motif / Mockup?</label>
                             <select class="form-control" name="type" id="type">
-                                <option value="">Pilih Tipe</option>
+                                <option value="">Klik untuk memilih</option>
                                 <option value="motif">Motif</option>
                                 <option value="mockup">Mockup</option>
                             </select>
@@ -67,6 +67,15 @@
                                     @endforeach
                                 @endforeach
                             @endif
+
+                            <div class="py-1 mb-0 d-flex align-items-center" role="alert" style="border-radius: .5rem;">
+                                <i class="fa fa-info-circle mr-2"></i>
+                                <span class="font-italic">
+                                    Anda dapat mengunggah lebih dari satu gambar motif/mockup. Sistem akan otomatis
+                                    menyesuaikan gambar dengan produk berdasarkan kode yang diambil dari nama file yang anda
+                                    unggah.
+                                </span>
+                            </div>
                         </div>
                         <button class="btn btn-primary mt-3" type="submit" id="btn-tambah">Kirim</button>
                         <a href="{{ route('products.index') }}" class="btn btn-secondary mt-3">Kembali</a>

@@ -22,10 +22,10 @@
             'title' => 'Manajemen Produk',
             'icon' => 'fas fa-box',
             'items' => [
-                ['route' => 'jenis.index', 'label' => 'Jenis', 'icon' => 'fas fa-tags'],
-                ['route' => 'type.index', 'label' => 'Tipe', 'icon' => 'fas fa-tags'],
-                ['route' => 'categories.index', 'label' => 'Kategori', 'icon' => 'fas fa-tags'],
-                ['route' => 'products.index', 'label' => 'Produk', 'icon' => 'fas fa-box'],
+                ['route' => 'jenis.index', 'label' => 'Jenis', 'icon' => 'fas fa-layer-group'],
+                ['route' => 'type.index', 'label' => 'Tipe', 'icon' => 'fas fa-shapes'],
+                ['route' => 'categories.index', 'label' => 'Kategori', 'icon' => 'fas fa-folder'],
+                ['route' => 'products.index', 'label' => 'Produk/Motif', 'icon' => 'fas fa-box'],
             ],
         ])
 

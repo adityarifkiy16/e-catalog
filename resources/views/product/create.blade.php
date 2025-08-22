@@ -47,7 +47,15 @@
                             </select>
 
                             <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar</label>
-                            <div class="dropzone" id="image-dropzone"></div>
+                            <div class="dropzone" id="image-dropzone">
+                                <div class="dz-message" id="dz-message">
+                                    <div style="font-size: 3rem; color: #bbb;">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <p class="font-weight-bold">choose a file or drag and drop it here</p>
+                                    <p class="text-muted">jpeg, webp, jpg up to 2 MB.</p>
+                                </div>
+                            </div>
 
                             @error('image')
                                 <span class="text-danger">{{ $message }}</span>
@@ -60,6 +68,14 @@
                                     @endforeach
                                 @endforeach
                             @endif
+
+                            <div class="py-1 mb-0 d-flex align-items-center" role="alert" style="border-radius: .5rem;">
+                                <i class="fa fa-info-circle mr-2"></i>
+                                <span class="font-italic">
+                                    Anda dapat mengunggah lebih dari satu gambar motif/produk. Kode motif/produk akan
+                                    otomatis diambil dari nama file gambar yang diunggah.
+                                </span>
+                            </div>
                         </div>
                         <button class="btn btn-primary mt-3" type="submit" id="btn-tambah">Kirim</button>
                     </form>
