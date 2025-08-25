@@ -89,4 +89,12 @@ Route::middleware("auth")->group(function () {
     Route::delete("/type/{type}", [App\Http\Controllers\MTypeController::class, "destroy"])->name("type.destroy");
     Route::get('/types/by-jenis/{jenisId}', [\App\Http\Controllers\MTypeController::class, 'getByJenis'])
         ->name('types.byJenis');
+
+    //Package
+    Route::get("/package", [App\Http\Controllers\TPackageController::class, "index"])->name("package.index");
+    Route::get("/package/create", [App\Http\Controllers\TPackageController::class, "create"])->name("package.create");
+    Route::post("/package", [App\Http\Controllers\TPackageController::class, "store"])->name("package.store");
+    Route::get("/package/{package}/edit", [App\Http\Controllers\TPackageController::class, "edit"])->name("package.edit");
+    Route::put("/package/{package}", [App\Http\Controllers\TPackageController::class, "update"])->name("package.update");
+    Route::delete("/package/{package}", [App\Http\Controllers\TPackageController::class, "destroy"])->name("package.destroy");
 });
