@@ -25,7 +25,7 @@
                 ['route' => 'jenis.index', 'label' => 'Jenis', 'icon' => 'fas fa-layer-group'],
                 ['route' => 'type.index', 'label' => 'Tipe', 'icon' => 'fas fa-shapes'],
                 ['route' => 'categories.index', 'label' => 'Kategori', 'icon' => 'fas fa-folder'],
-                ['route' => 'products.index', 'label' => 'Produk/Motif', 'icon' => 'fas fa-box'],
+                ['route' => 'products.index', 'label' => 'Produk/Motif', 'icon' => 'fas fa-cubes'],
                 ['route' => 'package.index', 'label' => 'Paket', 'icon' => 'fas fa-box'],
             ],
         ])
