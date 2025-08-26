@@ -49,7 +49,7 @@ $(document).ready(function () {
             const windowHeight = $(window).height();
             const documentHeight = $(document).height();
             if (scrollTop + windowHeight >= documentHeight - 150) {
-                loadMoreData();
+                loadMoreData(false);
             }
         }, 200);
     });
