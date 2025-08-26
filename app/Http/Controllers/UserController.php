@@ -9,6 +9,11 @@ use Intervention\Image\Facades\Image;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index(Request $request)
     {
         $arr['users'] = \App\Models\User::with('role')->get();
