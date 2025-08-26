@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\MJenis;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class MType extends Model
 {
@@ -15,7 +16,7 @@ class MType extends Model
 
     public function jenis()
     {
-        return $this->belongsTo(MJenis::class, 'type_id', 'id');
+        return $this->belongsTo(MJenis::class, 'jenis_id', 'id');
     }
 
     public function categories()
