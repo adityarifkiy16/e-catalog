@@ -25,7 +25,7 @@
                         <div class="d-flex justify-content-end align-items-center">
                             <form action="{{ route('products.index') }}" method="GET">
                                 <div class="d-flex justify-content-between align-items-center ml-2">
-                                    <select id="category-filter" class="custom-select mr-2" name="filter">
+                                    <select id="category-filter" class="form-control select2" name="filter">
                                         <option value="">All Categories</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}"
@@ -34,7 +34,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <button class="btn btn-secondary" type="submit" id="btn-filter-category"
+                                    <button class="btn btn-secondary ml-2" type="submit" id="btn-filter-category"
                                         style="width: 100px;">
                                         Filter
                                     </button>
@@ -78,6 +78,11 @@
 
 @push('scripts')
     <script type="text/javascript">
+        $(function() {
+            //Initialize Select2 Elements
+            $('.select2').select2()
+        })
+
         $(document).on('submit', '.delete-product', function(e) {
             e.preventDefault();
             const form = $(this);
