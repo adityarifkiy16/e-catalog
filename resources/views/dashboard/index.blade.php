@@ -26,9 +26,15 @@
                             @endif
                             <span class="font-weight-bold">{{ Auth::user()->name }}</span>
                         </h2>
-                        <h6 class="font-weight-bold">
-                            {{ now()->setTimezone('Asia/Jakarta')->format('d M Y, H:i') . ' WIB' }}
-                        </h6>
+                        <div class="d-flex align-items-center text-muted flex-column">
+                            <div class="small" style="letter-spacing: 0.5px;">
+                                {{ now()->setTimezone('Asia/Jakarta')->format('d F Y') }}
+                            </div>
+                            <div class="h6 mb-0" style="font-weight: 600; font-size: 1rem;">
+                                {{ now()->setTimezone('Asia/Jakarta')->format('H:i') }}
+                                <span class="text-uppercase" style="font-size: 0.75rem;">WIB</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
