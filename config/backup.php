@@ -236,7 +236,7 @@ return [
         ],
 
         'discord' => [
-            'webhook_url' => '',
+            'webhook_url' => env('DISCORD_WEBHOOK_URL', ''),
 
             /*
              * If this is an empty string, the name field on the webhook will be used.
