@@ -237,13 +237,8 @@
                                     <div class="col-12">
                                         <div class="d-flex justify-content-center align-items-center">
                                             <div class="embed-responsive embed-responsive-16by9"
-                                                style="width:100%; height:50vh;">
-                                                <iframe class="embed-responsive-item"
-                                                    src="https://www.youtube.com/embed/0mctlz5WkIc?rel=0&controls=0"
-                                                    title="YouTube video player" frameborder="0"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share;"
-                                                    referrerpolicy="strict-origin-when-cross-origin"
-                                                    allowfullscreen></iframe>
+                                                style="width:100%; height:50vh;" id="modalVideoPlayer">
+
                                             </div>
                                         </div>
                                     </div>

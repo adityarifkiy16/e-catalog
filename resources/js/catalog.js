@@ -171,6 +171,7 @@ $(document).ready(function () {
         const height = parseInt($(this).data('height'), 10);
         const density = parseInt($(this).data('density'), 10);
         const productId = $(this).data('id');
+        const urlVideo = $(this).data('url');
 
         // Click card tipe wallpanel load product category terkait
         if (jenis === 'tipe-wallpanel') {
@@ -223,6 +224,19 @@ $(document).ready(function () {
         if (jenis.toLowerCase() === 'aksesoris') {
             $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes, .paket').hide();
             $('#modalCategory').text(category);
+            $('#modalVideoPlayer').empty();
+            $('#modalVideo').hide();
+            if (urlVideo) {
+                $('#modalVideoPlayer').append(`
+                    <iframe class="embed-responsive-item"
+                    src="${urlVideo}"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share;"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen></iframe>
+                `);
+                $('#modalVideo').show();
+            }
         }
 
         renderCarouselProduct(images, staticImages, jenis);

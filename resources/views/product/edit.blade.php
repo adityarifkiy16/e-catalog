@@ -104,6 +104,10 @@
                                     </option>
                                 @endforeach
                             </select>
+
+                            <label class="mt-3"><i class="fas fa-video"></i> url video</label>
+                            <input type="text" class="form-control" name="url_video" placeholder="Masukan url video"
+                                value="{{ old('video', $product->url_video) }}">
                         </div>
                         <button class="btn btn-primary mt-3" id="btn-submit" type="submit">Kirim</button>
                     </form>

@@ -54,6 +54,7 @@ export function renderProducts(products, selectedJenis) {
                     data-images="${imagesJson}"
                     data-image="${image}"
                     data-type="${product.category?.types?.name ?? ''}"
+                    data-url="${product.url_video}"
                     >
                        <img 
                             src="${image}" 

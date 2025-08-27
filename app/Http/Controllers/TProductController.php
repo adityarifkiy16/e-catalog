@@ -188,6 +188,7 @@ class TProductController extends Controller
             'image-mockup' => 'nullable|array|max:5',
             'image-mockup.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:5024',
             'category_id' => 'required|exists:m_categories,id',
+            'url_video' => 'nullable|url',
         ]);
 
         DB::beginTransaction();
@@ -199,7 +200,8 @@ class TProductController extends Controller
                 'category_id' => $request->category_id,
                 'panjang' => $request->length,
                 'tinggi' => $request->height,
-                'ketebalan' => $request->density
+                'ketebalan' => $request->density,
+                'url_video' => $request->url_video
             ];
 
             if ($request->hasFile('image-mockup')) {
