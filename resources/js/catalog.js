@@ -183,7 +183,7 @@ $(document).ready(function () {
         }
 
         if (jenis.toLowerCase() === 'uv board') {
-            $('#ketebalan, #kepadatan').hide();
+            $('#ketebalan, #kepadatan,  #modalVideo').hide();
             $('#modalCategory').text(category);
             $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
@@ -198,7 +198,7 @@ $(document).ready(function () {
             $('#modalCategory').text(category);
             $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
-            $('#ketebalan, #kepadatan, #notes, .paket').hide();
+            $('#ketebalan, #kepadatan, #notes, .paket,  #modalVideo').hide();
         }
 
         if (jenis === 'PVC Board') {
@@ -211,13 +211,13 @@ $(document).ready(function () {
                 <span class="badge badge-outline-primary kepadatan" data-value="0,55 mm">0,55 mm</span>
                 <span class="badge badge-outline-primary kepadatan" data-value="0,7 mm">0,7 mm</span>
             `);
-            $('.paket').hide();
+            $('.paket,  #modalVideo').hide();
         }
 
         if (jenis === 'Wallpanel') {
             $('#modalContact').data('type', type);
             $('#modalCategory').text(category + ' / ' + type);
-            $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes, .paket').hide();
+            $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes, .paket, #modalVideo').hide();
         }
 
         if (jenis.toLowerCase() === 'aksesoris') {

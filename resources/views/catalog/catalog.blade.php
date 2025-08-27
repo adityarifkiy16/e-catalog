@@ -142,7 +142,7 @@
                             <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
                                 <span aria-hidden="true">&times;</span></button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body" style="max-height:50vh; overflow-y:auto;">
                             <div class="container-fluid">
                                 <div class="row d-flex flex-row justify-content-center align-items-center my-auto">
                                     <div
@@ -172,7 +172,8 @@
 
                                             <!-- Kode Produk -->
                                             <h3 id="modalCode"
-                                                class="font-weight-bold mb-2 text-dark text-left text-md-left"></h3>
+                                                class="font-weight-bold mb-2 text-dark text-left text-md-left">
+                                            </h3>
 
                                             <!-- Kategori -->
                                             <div class="mb-3">
@@ -229,7 +230,23 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                </div>
+                            </div>
+                            <div class="container-fluid" id="modalVideo">
+                                <div class="row mt-5">
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <div class="embed-responsive embed-responsive-16by9"
+                                                style="width:100%; height:50vh;">
+                                                <iframe class="embed-responsive-item"
+                                                    src="https://www.youtube.com/embed/0mctlz5WkIc?rel=0&controls=0"
+                                                    title="YouTube video player" frameborder="0"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share;"
+                                                    referrerpolicy="strict-origin-when-cross-origin"
+                                                    allowfullscreen></iframe>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
