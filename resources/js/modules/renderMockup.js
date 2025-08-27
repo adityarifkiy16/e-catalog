@@ -8,7 +8,7 @@
  * are adjusted based on the number of images.
  *
  * @param {Array} categories - The list of categories to render images from.
- * @param {string|null} selectedJenis - The selected type identifier for filtering cats.
+ * @param {int|null} selectedJenis - The selected type identifier for filtering cats.
  * @param {Set} uniquePaths - A set to store unique image paths.
  */
 
@@ -16,8 +16,7 @@ export function renderMockup(categories, selectedJenis, uniquePaths) {
     if (selectedJenis == null) {
         return;
     }
-    console.log('rendering mockup/landing page...');
-    console.log(categories);
+
     categories.forEach((image) => {
         if (image.path) {
             uniquePaths.add(image.path);
@@ -27,8 +26,41 @@ export function renderMockup(categories, selectedJenis, uniquePaths) {
     const paths = Array.from(uniquePaths);
     const $carouselInner = $('#mockup-carousel-inner');
     const $carouselIndicators = $('#mockup-carousel-indicators');
+    const videos = [
+        'https://www.youtube.com/embed/x55DLsMH-lA?autoplay=1&mute=1&rel=0&controls=0&amp;loop=1&playlist=x55DLsMH-lA'
+    ];
+
     $carouselInner.empty();
     $carouselIndicators.empty();
+
+    if (selectedJenis == 4) {
+        $('#carouselExampleControls').carousel({ interval: false });
+        $('#mockup .carousel-control-next').addClass('d-none');
+        $('#mockup .carousel-control-prev').addClass('d-none');
+
+        videos.forEach((video, i) => {
+            $carouselInner.append(`
+                <div class="carousel-item ${i === 0 ? 'active' : ''}">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="embed-responsive embed-responsive-16by9" style="width:100%; height:70vh;">
+                            <iframe
+                                class="embed-responsive-item"
+                                src="${video}"
+                                title="YouTube video player"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share;"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen 
+                            ></iframe>
+                        </div>
+                    </div>
+                </div>
+            `);
+        });
+
+        $('#mockup').removeClass('d-none');
+        return;
+    }
 
     if (paths.length > 0) {
         if (paths.length === 1) {
