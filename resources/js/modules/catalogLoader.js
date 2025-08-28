@@ -57,12 +57,13 @@ export function loadMoreData() {
             success: function (response) {
                 const products = response.data.data ?? [];
                 const types = response.types ?? [];
+                $('#btn-download').addClass('d-none');
 
                 // === handle back button ===
                 if (type) {
+                    $('#btn-download').removeClass('d-none');
                     $('#backButton').removeClass('d-none');
                     $('#homeButton').addClass('d-none');
-                    console.log('remove class');
                 }
 
                 // === handle first load ===
@@ -74,6 +75,7 @@ export function loadMoreData() {
                     }
                     updateCategoryMenu(response, true);
                 } else {
+                    $('#btn-download').removeClass('d-none');
                     if (products.length > 0) {
                         renderProducts(products, selectedJenis);
                         currentPage++;
@@ -168,7 +170,6 @@ function updateCategoryMenu(response, firstLoad = true) {
     if (firstLoad) {
         $('#category-menu-item-label, #category-modal-item-label').html('');
         $('#category-menu-item,#category-menu-item-modal').html('tidak ada kategori');
-        $('#btn-download').addClass('d-none');
     } else {
         $('#category-menu-item, #category-menu-item-modal').html(dropdown);
     }
