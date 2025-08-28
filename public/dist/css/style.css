@@ -322,6 +322,16 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
 }
 
+.modalContact:disabled {
+    background-color: #ccc;
+    color: #666;
+    border-color: #aaa;
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: scale(1);
+    pointer-events: none;
+}
+
 @keyframes elegant-spin {
     0% {
         transform: rotate(0deg);
