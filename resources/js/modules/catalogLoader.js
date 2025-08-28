@@ -3,7 +3,7 @@ import { renderTypes } from './renderTypes';
 import { renderMockup } from './renderMockup';
 import { showLoading, hideLoading, setCategory } from './utils';
 
-// Global variables
+// Global State
 let selectedJenis = null;
 let category = null;
 let type = null;
@@ -11,13 +11,20 @@ let currentPage = 1;
 let isLoading = false;
 let lastPage = false;
 const uniquePaths = new Set();
+let firstLoadFlag = true;
 
+// ===== State Setter =====
+export function setFirstLoad(value) {
+    firstLoadFlag = value;
+}
 export function setCatalogConfig(config) {
     selectedJenis = config.selectedJenis;
     category = config.category ?? null;
     type = config.type ?? null;
 }
-export function loadMoreData(firstLoad = true) {
+
+// ===== Main Loader =====
+export function loadMoreData() {
     return new Promise((resolve, reject) => {
         if ($(window).width() < 768) {
             $('#filter-container').addClass('d-none');
@@ -29,7 +36,7 @@ export function loadMoreData(firstLoad = true) {
             $('#btn-download').removeClass('d-none');
         }
 
-        if (isLoading || lastPage) return resolve(); // tetap resolve untuk menghindari deadlock
+        if (isLoading || lastPage) return resolve(); //  menghindari deadlock
         isLoading = true;
         showLoading();
 
@@ -45,19 +52,18 @@ export function loadMoreData(firstLoad = true) {
                 type
             },
             success: function (response) {
-                console.log('Data berhasil dimuat.');
-                console.log(response);
                 const products = response.data.data ?? [];
                 const types = response.types ?? [];
 
-                // show button back
+                // === handle back button ===
                 if (type) {
                     $('#backButton').removeClass('d-none');
                     $('#homeButton').addClass('d-none');
                     console.log('remove class');
                 }
-                if (selectedJenis == 3 && firstLoad) {
-                    console.log('isFirstLoad:' + firstLoad);
+
+                // === handle first load ===
+                if (selectedJenis == 3 && firstLoadFlag) {
                     if (types.length > 0) {
                         renderTypes(types, selectedJenis);
                         currentPage++;
@@ -65,7 +71,6 @@ export function loadMoreData(firstLoad = true) {
                     }
                     updateCategoryMenu(response, true);
                 } else {
-                    console.log('isFirstLoad:' + firstLoad);
                     if (products.length > 0) {
                         renderProducts(products, selectedJenis);
                         currentPage++;
@@ -82,13 +87,14 @@ export function loadMoreData(firstLoad = true) {
                     }
                     updateCategoryMenu(response, false);
                 }
-                updateCategoryMenu(response, false);
                 resolve();
             },
+
             error: function () {
                 console.log('Gagal memuat data.');
                 reject();
             },
+
             complete: function () {
                 isLoading = false;
                 hideLoading();
@@ -103,6 +109,7 @@ function updateCategoryMenu(response, firstLoad = true) {
     const data = response;
     const images = data.data.data[0]?.category?.images ?? [];
 
+    // ===== Handle Category =====
     if (categories.length === 0) {
         $('#category-container').addClass('d-none');
     } else {
@@ -113,19 +120,24 @@ function updateCategoryMenu(response, firstLoad = true) {
         renderMockup(images, selectedJenis, uniquePaths);
     }
 
-    // Ganti header kategori sesuai jenis
+    // ===== Handle Header Category =====
     switch (name) {
         case 'PVC Board':
-            $('#category-container, #category-modal-container').addClass('d-none');
+            $('#category-container').addClass('d-none');
+            $('.category-modal-container').text('Tidak ada kategori');
             break;
         case 'Wallboard':
+            $('#category-menu-item-label, #category-modal-item-label').html('Motif');
+            break;
         case 'UV Board':
             $('#category-menu-item-label, #category-modal-item-label').html('Motif');
             break;
         case 'Wallpanel':
+            $('#category-menu-item-label, #category-modal-item-label').html('Motif');
             break;
         case 'Aksesoris':
-            $('#category-container, #category-modal-container').addClass('d-none');
+            $('#category-container').addClass('d-none');
+            $('.category-modal-container').text('Tidak ada kategori');
             break;
         default:
             $('#category-menu-item-label, #category-modal-item-label').html('Kategori');
@@ -148,19 +160,28 @@ function updateCategoryMenu(response, firstLoad = true) {
     }
 
     dropdown += `</li>`;
-    $('#category-menu-item, #category-menu-item-modal').html(dropdown);
 
-    // otomatis pilih kategori jika tidak ada
+    // ===== Handle Category =====
+    if (firstLoad) {
+        $('#category-menu-item-label, #category-modal-item-label').html('');
+        $('#category-menu-item,#category-menu-item-modal').html('tidak ada kategori');
+    } else {
+        $('#category-menu-item, #category-menu-item-modal').html(dropdown);
+    }
+
+    // ===== auto choose category =====
     if (!category && categories.length > 0) {
+        console.log('auto choose category');
         category = categories[0].id;
         setCategory(category);
         resetState();
-        loadMoreData(firstLoad);
+        loadMoreData(true);
     } else if (category) {
         $(`.category-filter[data-id="${category}"]`).addClass('active');
     }
 }
 
+// ===== Reset =====
 export function resetState() {
     currentPage = 1;
     isLoading = false;
