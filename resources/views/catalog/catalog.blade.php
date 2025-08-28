@@ -255,10 +255,9 @@
                             </div>
 
                             <div class="mt-2 d-flex flex-wrap ml-2">
-                                <a class="btn btn-md btn-outline-secondary modalContact" id="modalContact" href="#"
-                                    target="_blank">
+                                <button class="btn btn-md btn-secondary modalContact" id="modalContact">
                                     <i class="fas fa-cart-plus mr-2"></i>Order
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>

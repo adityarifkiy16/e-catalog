@@ -1,14 +1,13 @@
 import { bindDownloadButtons } from './modules/download';
 import { bindOrderButton } from './modules/orderButton';
 import { initScrollTopButton } from './modules/scroll';
-import { resetState, setCatalogConfig, loadMoreData } from './modules/catalogLoader';
+import { resetState, setCatalogConfig, loadMoreData, setFirstLoad } from './modules/catalogLoader';
 import { bindFilterButton } from './modules/filter';
 import { renderProducts } from './modules/renderProduct';
 
 $(document).ready(function () {
     let selectedJenis = new URLSearchParams(window.location.search).get('jenis');
     let category = new URLSearchParams(window.location.search).get('category');
-    let firstLoad = true;
     let delayTimer;
     let scrollTimer;
 
@@ -160,6 +159,7 @@ $(document).ready(function () {
             { path: `/dist/img/paket/2.png?v=${Date.now()}` },
             { path: `/dist/img/paket/3.png?v=${Date.now()}` }
         ];
+
         staticImages = staticImages.map((img) => img.path);
 
         if (imagesStr) {
@@ -177,7 +177,8 @@ $(document).ready(function () {
         if (jenis === 'tipe-wallpanel') {
             resetState();
             setCatalogConfig({ selectedJenis: 3, type: type });
-            loadMoreData(false);
+            setFirstLoad(false);
+            loadMoreData();
             $('#filter-container').toggleClass('d-none');
             $('#catalog-col').toggleClass('col-md-10 col-md-12');
             return;
@@ -264,9 +265,19 @@ $(document).ready(function () {
             $('#modalContact').data('kepadatan', null);
             $('#notes').show();
         }
+
+        let elKepadatan = $('.kepadatan');
+
+        console.log(elKepadatan.length);
+
+        if (elKepadatan.length > 0) {
+            $('.modalContact').prop('disabled', true);
+        }
     });
 
     $(document).on('click', '.kepadatan', function () {
+        $('.modalContact').prop('disabled', false);
+
         let kepadatan = $(this).data('value');
 
         // cari modal terdekat biar tidak global
