@@ -33,12 +33,6 @@ export function loadMoreData() {
             $('#filter-container').addClass('d-none');
         }
 
-        if (!category || category === 'null' || category === '') {
-            $('#btn-download').addClass('d-none');
-        } else {
-            $('#btn-download').removeClass('d-none');
-        }
-
         if (isLoading || lastPage) return resolve(); //  menghindari deadlock
         isLoading = true;
         showLoading();
@@ -57,11 +51,9 @@ export function loadMoreData() {
             success: function (response) {
                 const products = response.data.data ?? [];
                 const types = response.types ?? [];
-                $('#btn-download').addClass('d-none');
 
                 // === handle back button ===
                 if (type) {
-                    $('#btn-download').removeClass('d-none');
                     $('#backButton').removeClass('d-none');
                     $('#homeButton').addClass('d-none');
                 }
@@ -75,7 +67,6 @@ export function loadMoreData() {
                     }
                     updateCategoryMenu(response, true);
                 } else {
-                    $('#btn-download').removeClass('d-none');
                     if (products.length > 0) {
                         renderProducts(products, selectedJenis);
                         currentPage++;

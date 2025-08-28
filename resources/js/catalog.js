@@ -42,6 +42,7 @@ $(document).ready(function () {
     });
 
     $(window).on('scroll', function () {
+        console.log('scrolling...');
         clearTimeout(scrollTimer);
         scrollTimer = setTimeout(() => {
             const scrollTop = $(window).scrollTop();

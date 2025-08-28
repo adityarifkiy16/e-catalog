@@ -1,6 +1,7 @@
 import { prepareImageOrder } from './utils';
 
 export function renderProducts(products, selectedJenis) {
+    $('#btn-download').removeClass('d-none');
     let html = '';
     products.forEach((product) => {
         const image = product.photo ? `/storage/${product.photo}` : 'https://via.placeholder.com/300x200?text=No+Image';

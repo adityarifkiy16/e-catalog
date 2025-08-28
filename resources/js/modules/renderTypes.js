@@ -1,4 +1,6 @@
 export function renderTypes(types, selectedJenis) {
+    $('#btn-download').addClass('d-none');
+
     let html = '';
     types.forEach((type) => {
         const image = type.thumbnail
