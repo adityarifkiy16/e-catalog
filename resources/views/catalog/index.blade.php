@@ -224,7 +224,7 @@
 
                     <!-- Teks -->
                     <div class="col-md-6 offset-md-1 animate__animated animate__faster animate__fadeInRight">
-                        <span class="text-muted text-uppercase">Crafted for Your Space</span>
+                        <span class="text-uppercase" style="color: #bbb">Crafted for Your Space</span>
                         <h1 class="font-weight-bold mb-3">Unleash Your Design Vision with Over 70 Premium Motifs</h1>
                         <ul class="list-styled">
                             <li>70+ elegant and exclusive motifs</li>
@@ -239,7 +239,7 @@
             <div class="container mt-4">
                 <div class="row align-items-center justify-content-center justify-content-md-between">
                     <div class="col-md-5 mb-4 mb-md-0 order-2 order-md-1">
-                        <span class="text-muted text-uppercase small d-block mb-2">Ready to Get Started?</span>
+                        <span class="text-uppercase small d-block mb-2" style="color: #bbb">Ready to Get Started?</span>
                         <h2 class="font-weight-bold mb-3">Contact Us !</h2>
 
                         <ul class="list-unstyled mb-4">
@@ -249,7 +249,7 @@
                                     <span class="font-weight-bold" style="min-width: 80px;">Email</span>
                                     <span class="mr-1">:</span>
                                     <a href="mailto:{{ config('mail.from.address') }}"
-                                        class="text-muted font-weight-lighter">
+                                        class="text-white font-weight-lighter">
                                         {{ config('mail.from.address') }}
                                     </a>
                                 </div>
@@ -260,7 +260,7 @@
                                 <div class="d-flex">
                                     <span class="font-weight-bold" style="min-width: 80px;">Call</span>
                                     <span class="mr-1">:</span>
-                                    <a href="tel:0816659688" class="text-muted font-weight-lighter">+62816659688</a>
+                                    <a href="tel:0816659688" class="text-white font-weight-lighter">+62816659688</a>
                                 </div>
                             </li>
 
@@ -269,7 +269,7 @@
                                 <div class="d-flex">
                                     <span class="font-weight-bold" style="min-width: 80px;">Address</span>
                                     <span class="mr-1">:</span>
-                                    <span class="text-muted font-weight-lighter">
+                                    <span class="text-white font-weight-lighter">
                                         Jl. Kamajaya No. 8A Wonosari, Ngaliyan, <br>Kota Semarang
                                     </span>
                                 </div>
@@ -345,7 +345,7 @@
                         </li>
                     </ul>
                     <p class="mt-5 mb-1">&copy; 2025 Osborn. All rights reserved.</p>
-                    <span class="text-muted">Updated: 18 Agustus 2025 | v1.5</span>
+                    <span class="text-muted">Updated: 28 Agustus 2025 | v1.6</span>
 
                 </div>
             </div>
