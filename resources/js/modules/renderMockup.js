@@ -42,7 +42,7 @@ export function renderMockup(categories, selectedJenis, uniquePaths) {
             $carouselInner.append(`
                 <div class="carousel-item ${i === 0 ? 'active' : ''}">
                     <div class="d-flex justify-content-center align-items-center">
-                        <div class="embed-responsive embed-responsive-16by9" style="width:100%; height:70vh;">
+                        <div class="embed-responsive embed-responsive-16by9 rounded-lg" style="width:100%;">
                             <iframe
                                 class="embed-responsive-item"
                                 src="${video}"
@@ -76,17 +76,7 @@ export function renderMockup(categories, selectedJenis, uniquePaths) {
                         <div class="carousel-item ${i === 0 ? 'active' : ''}">
                             <img src="/storage/${path}" id="mockup-image" alt="mockup" 
                                 class="img-fluid w-100 rounded-lg d-block mx-auto"
-                                style="
-                                    width: 100%;  
-                                    height: 70vh;                
-                                    aspect-ratio: 16 / 9;      
-                                    object-fit: cover;        
-                                    object-position: center 75%;   
-                                    display: block;
-                                    margin: 0 auto;          
-                                    border-radius: 8px;        
-                                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
-                                ">
+                            >
                         </div>
                     `);
             $carouselIndicators.append(`
