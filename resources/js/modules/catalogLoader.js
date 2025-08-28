@@ -17,6 +17,9 @@ let firstLoadFlag = true;
 export function setFirstLoad(value) {
     firstLoadFlag = value;
 }
+export function getFirstLoad() {
+    return firstLoadFlag;
+}
 export function setCatalogConfig(config) {
     selectedJenis = config.selectedJenis;
     category = config.category ?? null;
@@ -165,6 +168,7 @@ function updateCategoryMenu(response, firstLoad = true) {
     if (firstLoad) {
         $('#category-menu-item-label, #category-modal-item-label').html('');
         $('#category-menu-item,#category-menu-item-modal').html('tidak ada kategori');
+        $('#btn-download').addClass('d-none');
     } else {
         $('#category-menu-item, #category-menu-item-modal').html(dropdown);
     }
@@ -175,7 +179,7 @@ function updateCategoryMenu(response, firstLoad = true) {
         category = categories[0].id;
         setCategory(category);
         resetState();
-        loadMoreData(true);
+        loadMoreData();
     } else if (category) {
         $(`.category-filter[data-id="${category}"]`).addClass('active');
     }
