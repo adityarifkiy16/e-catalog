@@ -94,17 +94,15 @@
                 <div id="mockup" class="d-none">
                     <div class="row mb-3">
                         <div class="col-12">
-                            <div id="carouselExampleControls" class="carousel slide carousel-fade" data-ride="carousel">
+                            <div id="mockup-carousel" class="carousel slide carousel-fade">
                                 <div class="carousel-inner" id="mockup-carousel-inner">
                                     <!-- Slide gambar akan di-inject lewat JS -->
                                 </div>
-                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
-                                    data-slide="prev">
+                                <a class="carousel-control-prev" href="#mockup-carousel" role="button" data-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="sr-only">Previous</span>
                                 </a>
-                                <a class="carousel-control-next" href="#carouselExampleControls" role="button"
-                                    data-slide="next">
+                                <a class="carousel-control-next" href="#mockup-carousel" role="button" data-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="sr-only">Next</span>
                                 </a>
