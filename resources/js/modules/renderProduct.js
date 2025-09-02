@@ -13,6 +13,7 @@ export function renderProducts(products, selectedJenis) {
 
         // Simpan array ini sebagai string JSON yang aman untuk HTML
         const imagesJson = JSON.stringify(allImages).replace(/"/g, '&quot;');
+        const packagesJson = JSON.stringify(product.packages).replace(/"/g, '&quot;');
 
         const categoryName = product.category?.name ?? 'Tanpa Kategori';
 
@@ -56,6 +57,7 @@ export function renderProducts(products, selectedJenis) {
                     data-image="${image}"
                     data-type="${product.category?.types?.name ?? ''}"
                     data-url="${product.url_video}"
+                    data-paket="${packagesJson}"
                     >
                        <img 
                             src="${image}" 

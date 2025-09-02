@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\TImage;
+use App\Models\TPackage;
 use App\Models\MCategories;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -23,5 +24,10 @@ class TProduct extends Model
     public function images()
     {
         return $this->belongsToMany(TImage::class, 'image_product', 'product_id', 'image_id')->withPivot('motif');
+    }
+
+    public function packages()
+    {
+        return $this->hasMany(TPackage::class, 'product_id', 'id');
     }
 }

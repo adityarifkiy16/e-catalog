@@ -153,16 +153,13 @@ $(document).ready(function () {
         const category = $(this).data('category');
         const imagesStr = $(this).attr('data-images');
         const type = $(this).data('type');
+        const packages = JSON.parse($(this).attr('data-paket'));
         let images = null;
+        let packagesImgs = null;
 
-        // gambar statik paket
-        let staticImages = [
-            { path: `/dist/img/paket/1.png?v=${Date.now()}` },
-            { path: `/dist/img/paket/2.png?v=${Date.now()}` },
-            { path: `/dist/img/paket/3.png?v=${Date.now()}` }
-        ];
-
-        staticImages = staticImages.map((img) => img.path);
+        if (Array.isArray(packages)) {
+            packagesImgs = packages.map((p) => `/storage/${p.image}`);
+        }
 
         if (imagesStr) {
             images = JSON.parse(imagesStr.replace(/&quot;/g, '"'));
@@ -174,6 +171,8 @@ $(document).ready(function () {
         const density = parseInt($(this).data('density'), 10);
         const productId = $(this).data('id');
         const urlVideo = $(this).data('url');
+
+        $('#modalPaket').empty();
 
         // Click card tipe wallpanel load product category terkait
         if (jenis === 'tipe-wallpanel') {
@@ -191,11 +190,11 @@ $(document).ready(function () {
             $('#modalCategory').text(category);
             $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
-            $('#modalPaket').html(`
-                <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="1">Bundle 1</span>
-                <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="2">Bundle 2</span>
-                <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="3">Bundle 3</span>
-            `);
+            packages.map((p) => {
+                $('#modalPaket').append(`
+                    <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="${p.name}">${p.name}</span>
+                `);
+            });
         }
 
         if (jenis.toLowerCase() === 'wallboard') {
@@ -242,7 +241,7 @@ $(document).ready(function () {
             }
         }
 
-        renderCarouselProduct(images, staticImages, jenis);
+        renderCarouselProduct(images, packagesImgs, jenis);
         $('#modalCode').text(code);
         $('#productModalLabel').text(code);
         $('#modalDownload').data('id', productId);
