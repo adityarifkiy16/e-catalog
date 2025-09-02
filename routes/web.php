@@ -92,6 +92,7 @@ Route::middleware("auth")->group(function () {
 
     //Package
     Route::get("/package", [App\Http\Controllers\TPackageController::class, "index"])->name("package.index");
+    route::get("/package/bulk-upload/create", [App\Http\Controllers\TPackageController::class, "bulkUpload"])->name("package.bulk.create");
     Route::get("/package/create", [App\Http\Controllers\TPackageController::class, "create"])->name("package.create");
     Route::post("/package", [App\Http\Controllers\TPackageController::class, "store"])->name("package.store");
     Route::get("/package/{package}/edit", [App\Http\Controllers\TPackageController::class, "edit"])->name("package.edit");

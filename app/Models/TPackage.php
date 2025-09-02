@@ -13,7 +13,7 @@ class TPackage extends Model
     protected $table = 't_packages';
     protected $guarded = ['id'];
 
-    public function products()
+    public function product()
     {
         return $this->belongsTo(TProduct::class, 'product_id', 'id');
     }

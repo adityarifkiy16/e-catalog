@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TPackage;
 use App\Models\TProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -21,7 +22,7 @@ class TPackageController extends Controller
                 $search = $request->search['value'];
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', '%' . $search . '%')
-                        ->orWhereHas('products', function ($q2) use ($search) {
+                        ->orWhereHas('product', function ($q2) use ($search) {
                             $q2->where('code', 'like', '%' . $search . '%')
                                 ->orWhere('name', 'like', '%' . $search . '%');
                         });
@@ -30,7 +31,7 @@ class TPackageController extends Controller
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('product', function ($row) {
-                    return $row->products ? $row->products->code : '-';
+                    return $row->product ? $row->product->code : '-';
                 })
                 ->rawColumns(['action'])
                 ->toJson();
@@ -47,6 +48,11 @@ class TPackageController extends Controller
         return view('paket.create', $arr);
     }
 
+    public function bulkUpload()
+    {
+        return view('paket.bulk-create');
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -54,42 +60,83 @@ class TPackageController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'product_id' => 'required|exists:t_products,id',
+            'product_id' => 'nullable|exists:t_products,id',
             'image' => 'required',
             'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
+        // dd($request->all());
 
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $folder = 'images/packages/' . now()->format('Y/m/d');
-            $filename = time() . '_' . uniqid() . '.webp';
-            $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
-            $path = $folder . '/' . $filename;
+        DB::beginTransaction();
 
-            $directory = dirname($fullPath);
-            if (!file_exists($directory)) {
-                mkdir($directory, 0755, true);
+        try {
+            if ($request->hasFile('image')) {
+                foreach ($request->file('image') as $file) {
+                    $folder = 'images/packages/' . now()->format('Y/m/d');
+                    $filename = time() . '_' . uniqid() . '.webp';
+                    $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
+                    $path = $folder . '/' . $filename;
+
+                    $directory = dirname($fullPath);
+                    if (!file_exists($directory)) {
+                        mkdir($directory, 0755, true);
+                    }
+
+                    $product = null;
+                    $productFound = false;
+
+
+                    // Prioritas 1: Cek product_id dari request
+                    if ($request->product_id) {
+                        $product = TProduct::find($request->product_id);
+                        $productFound = true;
+                    }
+                    // Prioritas 2: Cek berdasarkan nama file jika product_id tidak ada
+                    else {
+                        $fileCode = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                        $product = TProduct::where('code', $fileCode)->first();
+
+                        if ($product) {
+                            $productFound = true;
+                        } else {
+                            $warnings[] = "Product dengan kode '{$fileCode}' tidak ditemukan";
+                            continue;
+                        }
+                    }
+
+                    // Jika produk ditemukan, proses gambar dan buat package
+                    if ($productFound && $product) {
+                        // Resize dan convert ke webp
+                        Image::make($file)
+                            ->resize(800, null, function ($constraint) {
+                                $constraint->aspectRatio();
+                                $constraint->upsize();
+                            })
+                            ->encode('webp', 100)
+                            ->save($fullPath);
+
+                        // Buat package baru
+                        TPackage::create([
+                            'name' => $request->name,
+                            'product_id' => $product->id,
+                            'image' => $path,
+                        ]);
+                    }
+                }
             }
 
-            // Proses gambar
-            Image::make($file)
-                ->resize(800, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })
-                ->save($fullPath);
-
-            TPackage::create([
-                'name' => $request->name,
-                'product_id' => $request->product_id,
-                'image' => $path,
+            DB::commit();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Packages created successfully.',
+                'warning' => isset($arr['warning']) ? $arr['warning'] : null
             ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
         }
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Paket berhasil ditambahkan.',
-        ], 200);
     }
 
     /**
@@ -119,9 +166,14 @@ class TPackageController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'product_id' => 'required|exists:t_products,id',
-            'image' => 'required',
+            'image' => 'nullable',
             'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
+
+        $data = [
+            'name' => $request->name,
+            'product_id' => $request->product_id,
+        ];
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
@@ -148,13 +200,10 @@ class TPackageController extends Controller
                     unlink(storage_path('app/public/' . $package->image));
                 }
             }
-
-            $package->update([
-                'name' => $request->name,
-                'product_id' => $request->product_id,
-                'image' => $path,
-            ]);
+            $data['image'] = $path;
         }
+
+        $package->update($data);
 
         return response()->json([
             'status' => 'success',

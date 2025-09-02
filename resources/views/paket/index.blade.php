@@ -24,6 +24,9 @@
                         <a href="{{ route('package.create') }}" class="btn btn-success ml-2">
                             <i class="fa fa-plus"></i> Tambah Paket
                         </a>
+                        <a href="{{ route('package.bulk.create') }}" class="btn btn-success ml-2">
+                            <i class="fa fa-plus"></i> Upload Bulk
+                        </a>
                     </div>
                     <table id="type-table" class="table table-bordered">
                         <thead>
