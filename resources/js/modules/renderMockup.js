@@ -21,7 +21,7 @@ export function renderMockup(categories, selectedJenis, uniquePaths) {
     // ];
 
     const videos = [
-        'https://www.youtube.com/embed/x55DLsMH-lA?autoplay=1&mute=1&rel=0&controls=0&amp;loop=1&playlist=x55DLsMH-lA'
+        'https://www.youtube.com/embed/BiiUrYAbL9s?autoplay=1&mute=1&rel=0&controls=0&amp;loop=1&playlist=BiiUrYAbL9s'
     ];
 
     $carouselInner.empty();
