@@ -196,12 +196,12 @@
                                                     <div class="col" id="modalDensity"></div>
                                                 </div>
                                                 <div class="row mb-1" id="kepadatan">
-                                                    <div class="col-4 col-sm-3 font-weight-bold">Kepadatan</div>
+                                                    <div class="col-4 col-sm-3 font-weight-bold">Density</div>
                                                     <div class="col-auto">:</div>
                                                     <div class="col" id="modalKepadatan"></div>
                                                 </div>
                                                 <div class="row mb-1 paket">
-                                                    <div class="col-4 col-sm-3 font-weight-bold">Bundle</div>
+                                                    <div class="col-4 col-sm-3 font-weight-bold">Paket</div>
                                                     <div class="col-auto">:</div>
                                                     <div class="col" id="modalPaket"></div>
                                                 </div>
