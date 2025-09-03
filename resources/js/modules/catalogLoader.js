@@ -132,8 +132,9 @@ function updateCategoryMenu(response, firstLoad = true) {
             $('#category-menu-item-label, #category-modal-item-label').html('Motif');
             break;
         case 'Aksesoris':
-            $('#category-container').addClass('d-none');
-            $('.category-modal-container').text('Tidak ada kategori');
+            // $('#category-container').addClass('d-none');
+            // $('.category-modal-container').text('Tidak ada kategori');
+            $('#category-menu-item-label, #category-modal-item-label').html('Ukuran');
             break;
         default:
             $('#category-menu-item-label, #category-modal-item-label').html('Kategori');

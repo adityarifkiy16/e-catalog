@@ -27,7 +27,7 @@ $(document).ready(function () {
         $('#filter-container').addClass('d-none');
     }
 
-    if (selectedJenis == 1 || selectedJenis == 3 || selectedJenis == 4) {
+    if (selectedJenis == 1 || selectedJenis == 3) {
         $('#filter-container').addClass('d-none');
         $('#catalog-col').removeClass('col-md-10');
         $('#catalog-col').addClass('col-md-12');
