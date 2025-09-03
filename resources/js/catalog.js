@@ -194,11 +194,16 @@ $(document).ready(function () {
             $('#modalKepadatan').html(`
                 <span class="">0.9 mm</span>
             `);
-            packages.map((p) => {
-                $('#modalPaket').append(`
-                    <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="${p.name}">${p.name}</span>
-                `);
-            });
+            if (packages.length > 0) {
+                packages.map((p) => {
+                    $('#modalPaket').append(`
+                        <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="${p.name}">${p.name}</span>
+                    `);
+                });
+            } else {
+                $('#modalPaket').append('<span class="text-muted">Tidak ada paket</span>');
+                $('#notes').hide();
+            }
         }
 
         if (jenis.toLowerCase() === 'wallboard') {
@@ -277,6 +282,8 @@ $(document).ready(function () {
 
         if (elKepadatan.length > 0) {
             $('.modalContact').prop('disabled', true);
+        } else {
+            $('.modalContact').prop('disabled', false);
         }
     });
 
