@@ -31,7 +31,7 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
 
-                            @if ($product->category->jenis_id == 1)
+                            @if ($product->category->jenis_id == 1 || $product->category->jenis_id == 5)
                                 <label class="mt-3"><i class="fas fa-ruler-horizontal"></i> Panjang</label>
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="length"
@@ -79,9 +79,6 @@
                                     @enderror
                                 </div>
                             @endif
-
-
-
 
                             <label class="mt-3"><i class="fas fa-image"></i> Ganti Thumbnail</label>
                             <input type="file" class="form-control" id="img" name="image" accept="image/*"

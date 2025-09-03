@@ -181,22 +181,22 @@
                                             <!-- Detail Produk -->
                                             <div class="mb-2 text-dark w-100 px-2">
                                                 <div class="row mb-1" id="panjang">
-                                                    <div class="col-4 col-sm-3 font-weight-bold">Width</div>
+                                                    <div class="col-4 col-sm-3 font-weight-bold">Panjang</div>
                                                     <div class="col-auto">:</div>
                                                     <div class="col" id="modalLength"></div>
                                                 </div>
                                                 <div class="row mb-1" id="tinggi">
-                                                    <div class="col-4 col-sm-3 font-weight-bold">Height</div>
+                                                    <div class="col-4 col-sm-3 font-weight-bold">Tinggi</div>
                                                     <div class="col-auto">:</div>
                                                     <div class="col" id="modalHeight"></div>
                                                 </div>
                                                 <div class="row mb-1" id="ketebalan">
-                                                    <div class="col-4 col-sm-3 font-weight-bold">Thickness</div>
+                                                    <div class="col-4 col-sm-3 font-weight-bold">Ketebalan</div>
                                                     <div class="col-auto">:</div>
                                                     <div class="col" id="modalDensity"></div>
                                                 </div>
                                                 <div class="row mb-1" id="kepadatan">
-                                                    <div class="col-4 col-sm-3 font-weight-bold">Density</div>
+                                                    <div class="col-4 col-sm-3 font-weight-bold">Kepadatan</div>
                                                     <div class="col-auto">:</div>
                                                     <div class="col" id="modalKepadatan"></div>
                                                 </div>

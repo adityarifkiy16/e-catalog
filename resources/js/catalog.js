@@ -168,7 +168,7 @@ $(document).ready(function () {
         const jenis = $(this).data('jenis');
         const length = parseInt($(this).data('length'), 10);
         const height = parseInt($(this).data('height'), 10);
-        const density = parseInt($(this).data('density'), 10);
+        const density = parseFloat($(this).data('density')).toFixed(1);
         const productId = $(this).data('id');
         const urlVideo = $(this).data('url');
 
@@ -186,10 +186,14 @@ $(document).ready(function () {
         }
 
         if (jenis.toLowerCase() === 'uv board') {
-            $('#ketebalan, #kepadatan,  #modalVideo').hide();
+            $('#modalVideo').hide();
             $('#modalCategory').text(category);
             $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
+            $('#modalDensity').text(density && !isNaN(density) ? density + ' mm' : '-');
+            $('#modalKepadatan').html(`
+                <span class="">0.9mm</span>
+            `);
             packages.map((p) => {
                 $('#modalPaket').append(`
                     <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="${p.name}">${p.name}</span>
