@@ -192,7 +192,7 @@ $(document).ready(function () {
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
             $('#modalDensity').text(density && !isNaN(density) ? density + ' mm' : '-');
             $('#modalKepadatan').html(`
-                <span class="">0.9mm</span>
+                <span class="">0.9 mm</span>
             `);
             packages.map((p) => {
                 $('#modalPaket').append(`
