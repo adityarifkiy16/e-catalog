@@ -153,7 +153,7 @@ $(document).ready(function () {
         const category = $(this).data('category');
         const imagesStr = $(this).attr('data-images');
         const type = $(this).data('type');
-        const packages = JSON.parse($(this).attr('data-paket'));
+        const packages = JSON.parse($(this).attr('data-paket') || '[]');
         let images = null;
         let packagesImgs = null;
 
