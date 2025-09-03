@@ -118,32 +118,47 @@
                     this.on("successmultiple", function(files, response) {
                         // Handle success response
                         if (response.warning && response.warning.length > 0) {
-                            console.log(response.warning);
-                            Toast.fire({
+                            const warningList = `<ul style="text-align:left;">
+                                                    ${response.warning.map(warning => `<li>${warning}</li>`).join('')}
+                                                </ul>`;
+
+                            Swal.fire({
                                 icon: 'warning',
-                                title: response.warning,
+                                title: "Warning",
+                                html: warningList, // pakai html biar list bisa ditampilkan
+                                timer: 3000,
                                 showConfirmButton: false,
-                                timer: 1500
-                            })
+                            });
                         }
 
+
                         if (response.status == "success") {
-                            Toast.fire({
-                                icon: 'success',
-                                title: response.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                            setTimeout(function() {
-                                window.location.href = "{{ route('package.index') }}";
-                            }, 1500);
+                            // Delay success message sedikit jika ada warning
+                            const delay = response.warning && response.warning.length > 0 ?
+                                2000 : 0;
+
+                            setTimeout(() => {
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: response.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+
+                                setTimeout(function() {
+                                    window.location.href =
+                                        "{{ route('package.index') }}";
+                                }, 1500);
+                            }, delay);
+
                         } else {
                             Toast.fire({
                                 icon: 'error',
-                                title: response.responseJSON.message,
+                                title: response.responseJSON ? response.responseJSON
+                                    .message : 'Terjadi kesalahan',
                                 showConfirmButton: false,
                                 timer: 1500
-                            })
+                            });
                         }
                         this.removeAllFiles(true);
                     });
@@ -155,7 +170,6 @@
                             showConfirmButton: false,
                             timer: 1500
                         })
-                        // Remove all failed files
                         files.forEach(file => {
                             this.removeFile(file);
                         });

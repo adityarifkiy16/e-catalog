@@ -64,7 +64,6 @@ class TPackageController extends Controller
             'image' => 'required',
             'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
-        // dd($request->all());
 
         DB::beginTransaction();
 
@@ -98,7 +97,7 @@ class TPackageController extends Controller
                         if ($product) {
                             $productFound = true;
                         } else {
-                            $warnings[] = "Product dengan kode '{$fileCode}' tidak ditemukan";
+                            $arr['warning'][] = "Product dengan kode '{$fileCode}' tidak ditemukan";
                             continue;
                         }
                     }
@@ -114,12 +113,19 @@ class TPackageController extends Controller
                             ->encode('webp', 100)
                             ->save($fullPath);
 
-                        // Buat package baru
-                        TPackage::create([
-                            'name' => $request->name,
-                            'product_id' => $product->id,
-                            'image' => $path,
-                        ]);
+                        $exists = $product->packages()->where('name', $request->name)->exists();
+
+                        if ($exists) {
+                            $arr['warning'][] = "paket '{$request->name}' sudah ada untuk produk '{$product->code}'";
+                            continue;
+                        } else {
+                            // Buat package baru
+                            TPackage::create([
+                                'name' => $request->name,
+                                'product_id' => $product->id,
+                                'image' => $path,
+                            ]);
+                        }
                     }
                 }
             }
