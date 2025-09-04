@@ -42,7 +42,6 @@ $(document).ready(function () {
     });
 
     $(window).on('scroll', function () {
-        console.log('scrolling...');
         clearTimeout(scrollTimer);
         scrollTimer = setTimeout(() => {
             const scrollTop = $(window).scrollTop();
@@ -148,6 +147,7 @@ $(document).ready(function () {
             });
     }
 
+    // Handling klik thumbnail di dalam modal
     $(document).on('click', '.product-card', function () {
         const code = $(this).data('code');
         const category = $(this).data('category');
@@ -158,7 +158,7 @@ $(document).ready(function () {
         let packagesImgs = null;
 
         if (Array.isArray(packages)) {
-            packagesImgs = packages.map((p) => `/storage/${p.image}`);
+            packagesImgs = packages.sort((a, b) => a.order - b.order).map((p) => `/storage/${p.image}`);
         }
 
         if (imagesStr) {
@@ -195,11 +195,13 @@ $(document).ready(function () {
                 <span class="">0.9 mm</span>
             `);
             if (packages.length > 0) {
-                packages.map((p) => {
-                    $('#modalPaket').append(`
+                packages
+                    .sort((a, b) => a.order - b.order)
+                    .map((p) => {
+                        $('#modalPaket').append(`
                         <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="${p.name}">${p.name}</span>
                     `);
-                });
+                    });
             } else {
                 $('#modalPaket').append('<span class="text-muted">Tidak ada paket</span>');
                 $('#notes').hide();
