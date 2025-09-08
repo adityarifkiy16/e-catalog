@@ -115,7 +115,7 @@
                 pageLength: 5,
                 lengthMenu: [5, 10, 25, 50, 100],
                 language: {
-                    searchPlaceholder: 'Cari Category',
+                    searchPlaceholder: 'Cari Paket',
                     'search': '',
                     paginate: {
                         next: '<i class="fas fa-arrow-right"></i>',
@@ -149,6 +149,7 @@
                     {
                         data: 'product',
                         orderable: false,
+                        searchable: true
                     },
                     {
                         data: null,

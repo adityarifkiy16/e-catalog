@@ -17,21 +17,26 @@ class TPackageController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = TPackage::orderBy('id', 'desc');
-            if ($request->has('search') && $request->search['value'] !== null) {
-                $search = $request->search['value'];
-                $query->where(function ($q) use ($search) {
-                    $q->where('name', 'like', '%' . $search . '%')
-                        ->orWhereHas('product', function ($q2) use ($search) {
-                            $q2->where('code', 'like', '%' . $search . '%')
-                                ->orWhere('name', 'like', '%' . $search . '%');
-                        });
-                });
-            }
+            $query = TPackage::with([
+                'product' => fn($q) => $q->select('id', 'name', 'code'),
+            ])->orderBy('name', 'asc');
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('product', function ($row) {
                     return $row->product ? $row->product->code : '-';
+                })
+                ->filter(function ($query) use ($request) {
+                    if ($request->has('search') && !empty($request->search['value'])) {
+                        $search = trim($request->search['value']);
+
+                        $query->where(function ($q) use ($search) {
+                            $q->where('t_packages.name', 'like', '%' . $search . '%')
+                                ->orWhereHas('product', function ($q2) use ($search) {
+                                    $q2->where('code', 'like', '%' . $search . '%')
+                                        ->orWhere('name', 'like', '%' . $search . '%');
+                                });
+                        });
+                    }
                 })
                 ->rawColumns(['action'])
                 ->toJson();
