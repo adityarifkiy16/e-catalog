@@ -112,22 +112,20 @@ class TPackageController extends Controller
 
                     // Jika produk ditemukan, proses gambar dan buat package
                     if ($productFound && $product) {
-                        // Resize dan convert ke webp
-                        Image::make($file)
-                            ->resize(800, null, function ($constraint) {
-                                $constraint->aspectRatio();
-                                $constraint->upsize();
-                            })
-                            ->encode('webp', 100)
-                            ->save($fullPath);
-
                         $exists = $product->packages()->where('name', $request->name)->exists();
 
                         if ($exists) {
                             $arr['warning'][] = "paket '{$request->name}' sudah ada untuk produk '{$product->code}'";
                             continue;
                         } else {
-                            // Buat package baru
+                            // simpan gambar ke storage dan db
+                            Image::make($file)
+                                ->resize(800, null, function ($constraint) {
+                                    $constraint->aspectRatio();
+                                    $constraint->upsize();
+                                })
+                                ->encode('webp', 100)
+                                ->save($fullPath);
                             TPackage::create([
                                 'name' => $request->name,
                                 'product_id' => $product->id,
