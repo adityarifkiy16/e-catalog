@@ -28,6 +28,14 @@
                             <input type="text" class="form-control" name="name" placeholder="Masukkan Nama"
                                 id="name">
 
+                            <label for="order"><i class="fas fa-user-tag"></i> Urutan</label>
+                            <select class="form-control select2" name="order" id="order">
+                                <option value="">Pilih Urutan</option>
+                                @for ($i = 1; $i <= 3; $i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                            </select>
+
                             <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar</label>
                             <div class="dropzone" id="image-dropzone">
                                 <div class="dz-message" id="dz-message">
@@ -113,6 +121,7 @@
                     // Send all required data with the file
                     this.on("sendingmultiple", function(file, xhr, formData) {
                         formData.append("name", $('#name').val());
+                        formData.append("order", $('#order').val());
                     });
 
                     this.on("successmultiple", function(files, response) {
