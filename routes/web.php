@@ -19,6 +19,8 @@ Route::get("/", [App\Http\Controllers\CatalogController::class, "index"])->name(
 // Delete unused images
 Route::get("/delete-unused-image", [App\Http\Controllers\TProductController::class, "deleteUnusedImages"])->name("delete-unused-image");
 
+Route::get("/clear-cache", [App\Http\Controllers\TImageController::class, "clear"])->name("clear-cache");
+
 
 // DOWNLOAD PDF
 Route::get("/catalog/pdf", [App\Http\Controllers\TProductController::class, "downloadPdf"])->name("catalog.pdf");

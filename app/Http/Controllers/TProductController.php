@@ -452,7 +452,10 @@ class TProductController extends Controller
 
     public function deleteUnusedImages()
     {
-        $unusedImages = TImage::doesntHave(['product', 'categories'])->get();
+        $unusedImages = TImage::whereDoesntHave('product')
+            ->whereDoesntHave('categories')
+            ->get();
+
         foreach ($unusedImages as $image) {
             $filePath = 'public/' . $image->path;
             if (Storage::exists($filePath)) {
@@ -460,11 +463,18 @@ class TProductController extends Controller
             }
 
             $image->delete();
-            return response()->json(['message' => 'Image deleted successfully', 'data' => $image], 200);
+        }
+
+        if ($unusedImages->count() > 0) {
+            return response()->json([
+                'message' => 'Unused images deleted successfully',
+                'data' => $unusedImages
+            ], 200);
         }
 
         return response()->json(['message' => 'No unused images found'], 404);
     }
+
 
     public function downloadPdfProduct(Request $request)
     {
