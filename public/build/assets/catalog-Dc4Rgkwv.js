@@ -1,0 +1,194 @@
+let V=null;function H(t){V=t}function _(){return V}function E(){$("#loading").removeClass("d-none")}function O(){$("#loading").addClass("d-none")}function R(t){return t.slice().sort((o,e)=>o.pivot.motif&&!e.pivot.motif?-1:!o.pivot.motif&&e.pivot.motif?1:0).map(o=>"/storage/"+o.path)}function W(){$(document).on("click",".modalDownload",function(t){t.preventDefault();const o=$(this).data("id"),e="catalog/pdf/product?id="+encodeURIComponent(o);K(this,e)}),$("#btn-download").on("click",function(t){t.preventDefault(),K(this,"catalog/pdf?category="+encodeURIComponent(_()))})}function K(t,o){const e=$(t);e.prop("disabled",!0).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengunduh...'),window.open(o,"_blank"),setTimeout(()=>{e.prop("disabled",!1).html('<i class="fa fa-file-download"></i> Download')},5e3)}function J(){$(document).on("click",".modalContact",function(t){t.preventDefault(),console.log("Klik tombol order",$(this).data("code"));const o="62816659688",e=$(this).data("jenis");console.log(e.toLowerCase());let a="";e.toLowerCase()=="wallpanel"?a=`Halo Admin,
+Saya tertarik dengan produk berikut:
+
+• Tipe Wallpanel: *${$(this).data("type")}*
+• Kode Motif : *${$(this).data("code")}*
+• Produk : *${$(this).data("jenis")}*
+• Kategori: *${$(this).data("category")}*
+
+Apakah produk ini masih tersedia? Terima kasih.`:e.toLowerCase()=="pvc board"?a=`Halo Admin,
+Saya tertarik dengan produk berikut:
+
+• Produk : *${$(this).data("jenis")}*
+• Ketebalan : *${$(this).data("code")}*
+• Kepadatan: *${$(this).data("kepadatan")??"-"}*
+
+Apakah produk ini masih tersedia? Terima kasih.`:e.toLowerCase()=="uv board"?a=`Halo Admin,
+Saya tertarik dengan produk berikut:
+
+• Kode Motif : *${$(this).data("code")}*
+• Produk : *${$(this).data("jenis")}*
+• Kategori: *${$(this).data("category")}*
+
+• Paket: *${$(this).data("kepadatan")??"-"}*
+
+Apakah produk ini masih tersedia? Terima kasih.`:e.toLowerCase()=="aksesoris"?a=`Halo Admin,
+Saya tertarik dengan produk berikut:
+
+• Kode : *${$(this).data("code")}*
+• Produk : *${$(this).data("jenis")}*
+• Ukuran : *${$(this).data("category")}*
+
+• Warna : *${$(this).data("kepadatan")}*
+
+Apakah produk ini masih tersedia? Terima kasih.`:a=`Halo Admin,
+Saya tertarik dengan produk berikut:
+
+• Kode Motif : *${$(this).data("code")}*
+• Produk : *${$(this).data("jenis")}*
+• Kategori: *${$(this).data("category")}*
+
+Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${o}?text=${encodeURIComponent(a)}`,"_blank")})}function F(){$(window).scroll(function(){$(this).scrollTop()>100?$("#btn-scroll-top").fadeIn():$("#btn-scroll-top").fadeOut()}),$("#btn-scroll-top").click(function(){return $("html, body").animate({scrollTop:0},500),!1})}function q(t,o){$("#btn-download").removeClass("d-none");let e="";t.forEach(a=>{var h,c,p,u,g,x,w,j,P;const r=a.photo?`/storage/${a.photo}`:"https://via.placeholder.com/300x200?text=No+Image",l=R(a.images),i=[r,...l],d=JSON.stringify(i).replace(/"/g,"&quot;"),s=JSON.stringify(a.packages).replace(/"/g,"&quot;"),m=((h=a.category)==null?void 0:h.name)??"Tanpa Kategori";let n=a.code;o==3?n=a.code.split(" ").slice(4).join(" ").trim():o==5?n=a.code.split(" ").slice(1).join(" "):n=a.code,((c=a.category)==null?void 0:c.display_style)==="square"||o===null?e+=`
+                    <div class="col-md-2 col-6 mb-4">
+                        <div class="h-100 product-card"
+                    `:((p=a.category)==null?void 0:p.display_style)==="rectangle"?e+=`
+                    <div class="col-md-4 col-6 mb-4">
+                        <div class="h-100 product-card"
+                    `:e+=`
+                    <div class="col-md-2 col-6 mb-4">
+                        <div class="h-100 product-card d-flex flex-column justify-content-center align-items-center"
+                    `,e+=`
+                    data-id="${a.id}"
+                    data-code="${n}"
+                    data-category="${m}"
+                    data-jenis="${((g=(u=a.category)==null?void 0:u.jenis)==null?void 0:g.name)??""}"
+                    data-length="${a.panjang}"
+                    data-height="${a.tinggi}"
+                    data-density="${a.ketebalan}"
+                    data-images="${d}"
+                    data-image="${r}"
+                    data-type="${((w=(x=a.category)==null?void 0:x.types)==null?void 0:w.name)??""}"
+                    data-url="${a.url_video}"
+                    data-paket="${s}"
+                    >
+                       <img 
+                            src="${r}" 
+                            class="card-img-top" 
+                            alt="${a.name}" 
+                            style="
+                                border : 1px solid #2c2c2c;
+                                min-height: 10rem;
+                                aspect-ratio: 1/1;
+                                height: auto; 
+                                border-radius: 8px;
+                                width: 100%; 
+                                object-fit: cover; 
+                                object-position: ${((P=(j=a.category)==null?void 0:j.jenis)==null?void 0:P.name)==="PVC Board"?"bottom center":"center center"};
+                            "
+                        >
+                        <div class="card-body d-flex flex-column text-center">
+                            <h4 class="card-title font-weight-bold text-uppercase mb-2">
+                                ${n}
+                            </h4>
+                            <h6 class="card-text text-muted mb-1">${m}</h6>
+                        </div>
+                    </div>
+                </div>`}),$("#product-list .row").append(e)}function Y(t,o){$("#btn-download").addClass("d-none");let e="";t.forEach(a=>{const r=a.thumbnail?`/storage/${a.thumbnail}`:"https://via.placeholder.com/300x200?text=No+Image";console.log(o);const l=o==3?"wallpanel":"tanpa kategori";e+=`
+                    <div class="col-md-2 col-6 mb-4">
+                        <div class="h-100 product-card d-flex flex-column justify-content-center align-items-center"
+                    `,e+=`
+                    data-id="${a.id}"
+                    data-jenis="tipe-wallpanel"
+                    data-category="${l}"
+                    data-type="${a.id}"
+                    >
+                       <img 
+                            src="${r}" 
+                            class="card-img-top" 
+                            alt="${a.name}" 
+                            style="
+                                border : 1px solid #2c2c2c;
+                                min-height: 10rem;
+                                aspect-ratio: 1/1;
+                                height: auto; 
+                                border-radius: 8px;
+                                width: 100%; 
+                                object-fit: cover; 
+                            "
+                        >
+                        <div class="card-body d-flex flex-column text-center">
+                            <h4 class="card-title font-weight-bold text-uppercase mb-2">
+                                ${a.name}
+                            </h4>
+                            <h6 class="card-text text-muted mb-1">${l}</h6>
+                        </div>
+                    </div>
+                </div>`}),$("#product-list .row").append(e)}function z(t,o,e){if(o==null)return;t.forEach(d=>{d.path&&e.add(d.path)});const a=Array.from(e),r=$("#mockup-carousel-inner"),l=$("#mockup-carousel-indicators"),i=["https://www.youtube.com/embed/BiiUrYAbL9s?autoplay=1&mute=1&rel=0&controls=0&amp;loop=1&playlist=BiiUrYAbL9s"];if(r.empty(),l.empty(),o==4){$("#mockup-carousel").carousel({interval:!1}),$("#mockup .carousel-control-next").addClass("d-none"),$("#mockup .carousel-control-prev").addClass("d-none"),i.forEach((d,s)=>{r.append(`
+            <div class="carousel-item ${s===0?"active":""}">
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="embed-responsive embed-responsive-16by9 rounded-lg" style="width:100%;">
+                        <iframe
+                            class="embed-responsive-item"
+                            src="${d}"
+                            title="YouTube video player"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share"
+                            allowfullscreen
+                        ></iframe>
+                    </div>
+                </div>
+            </div>
+        `)}),$("#mockup").removeClass("d-none");return}a.length>0?(a.length===1?($("#mockup .carousel-control-next").addClass("d-none"),$("#mockup .carousel-control-prev").addClass("d-none")):($("#mockup .carousel-control-next").removeClass("d-none"),$("#mockup .carousel-control-prev").removeClass("d-none")),a.slice(0,5).forEach((d,s)=>{r.append(`
+                <div class="carousel-item ${s===0?"active":""}">
+                    <img src="/storage/${d}" id="mockup-image" alt="mockup" 
+                        class="img-fluid w-100 rounded-lg d-block mx-auto"
+                    >
+                </div>
+            `),l.append(`
+                <li data-target="#mockup-carousel" data-slide-to="${s}" ${s===0?'class="active"':""}></li>
+            `)}),$("#mockup").removeClass("d-none")):$("#mockup").addClass("d-none")}let b=null,k=null,I=null,y=1,T=!1,C=!1;const G=new Set;let U=!0;function D(t){U=t}function S(t){b=t.selectedJenis,k=t.category??null,I=t.type??null}function v(){return new Promise((t,o)=>{if($(window).width()<768&&$("#filter-container").addClass("d-none"),T||C)return t();T=!0,E();const e=$("#search-input").val();$.ajax({url:"/catalog",type:"GET",data:{page:y,search:e,jenis:b,category:k,type:I},success:function(a){const r=a.data.data??[],l=a.types??[];I&&($("#backButton").removeClass("d-none"),$("#homeButton").addClass("d-none")),b==3&&U?(l.length>0&&(Y(l,b),y++,y>a.data.last_page&&(C=!0)),M(a,!0)):(r.length>0?(q(r,b),y++,y>a.data.last_page&&(C=!0)):(y===1&&($("#mockup").addClass("d-none"),$("#product-list .row").append(`<div class="col-12"><img src="dist/img/no-data.png" alt="no-data"
+                                class="img-fluid mx-auto d-block" style="max-width: 100%; height: auto; margin-top: 100px; margin-bottom: 100px;"></div>`)),C=!0),M(a,!1)),t()},error:function(){console.log("Gagal memuat data."),o()},complete:function(){T=!1,O()}})})}function M(t,o=!0){var d,s,m;const e=t.category,a=(d=t.jenis)==null?void 0:d.name,l=((m=(s=t.data.data[0])==null?void 0:s.category)==null?void 0:m.images)??[];switch(e.length===0?$("#category-container").addClass("d-none"):($("#category-container").removeClass("d-none"),l.length===0&&$("#mockup").addClass("d-none"),z(l,b,G)),a){case"PVC Board":$("#category-container").addClass("d-none"),$(".category-modal-container").text("Tidak ada kategori");break;case"Wallboard":$("#category-menu-item-label, #category-modal-item-label").html("Motif");break;case"UV Board":$("#category-menu-item-label, #category-modal-item-label").html("Motif");break;case"Wallpanel":$("#category-menu-item-label, #category-modal-item-label").html("Motif");break;case"Aksesoris":$("#category-menu-item-label, #category-modal-item-label").html("Ukuran");break;default:$("#category-menu-item-label, #category-modal-item-label").html("Kategori")}let i='<li class="nav-item font-poppins">';Array.isArray(e)&&e.length>0?e.forEach(n=>{i+=`
+            <a class="nav-link text-white category-filter d-flex align-items-center justify-content-start" 
+                href="#" data-jenis-id="${n.jenis_id}" data-id="${n.id}" data-type="${n.type_id}">
+                <img src="${n.path?"storage/"+n.path:"dist/img/product/1.webp"}" alt="${n.name}" 
+                class="mr-2 img-thumbnail" style="width: 50px; height: 50px; object-fit: contain;">
+                <span class="text-capitalize">${n.name}</span>
+            </a>`}):i+='<a class="nav-link text-white category-filter" href="#">Tanpa Kategori</a>',i+="</li>",o?($("#category-menu-item-label, #category-modal-item-label").html(""),$("#category-menu-item,#category-menu-item-modal").html("tidak ada kategori")):$("#category-menu-item, #category-menu-item-modal").html(i),!k&&e.length>0?(console.log("auto choose category"),k=e[0].id,H(k),L(),v()):k&&$(`.category-filter[data-id="${k}"]`).addClass("active")}function L(){y=1,T=!1,C=!1,G.clear(),$("#product-list .row").html("")}let A=!1;function Q(t){$(document).off("click",".category-filter"),$(document).on("click",".category-filter",async function(o){if(o.preventDefault(),A)return;A=!0;const e=$(this).data("id"),a=$(this).data("type");console.log(a);try{S({selectedJenis:t,category:e,type:a}),H(e),$("#filterModal").modal("hide"),L(),await v(!1)}catch(r){console.error("Gagal memuat data:",r)}finally{A=!1}})}$(document).ready(function(){let t=new URLSearchParams(window.location.search).get("jenis"),o=new URLSearchParams(window.location.search).get("category"),e,a;(t==5||t==2)&&sessionStorage.removeItem("selectedWallpanel"),S({selectedJenis:t,category:o}),v(),t&&($("#category-container").removeClass("d-md-none"),$("#catalog-col").removeClass("center-content")),$(window).width()<768&&$("#filter-container").addClass("d-none"),(t==1||t==3)&&($("#filter-container").addClass("d-none"),$("#catalog-col").removeClass("col-md-10"),$("#catalog-col").addClass("col-md-12")),$("#search-input").on("input",function(){clearTimeout(e),e=setTimeout(()=>{L(),v()},500)}),$(window).on("scroll",function(){clearTimeout(a),a=setTimeout(()=>{const l=$(window).scrollTop(),i=$(window).height(),d=$(document).height();l+i>=d-150&&(D(!1),v())},200)});function r(l,i=null,d=null){$("#carousel-product-image").empty(),$("#thumbnailGallery").empty();let s=[...l];d.toLowerCase()=="uv board"?s=[...l,...i]:s=[...l],s.forEach((n,h)=>{const c=h===0?"active":"";$("#carousel-product-image").append(`
+                    <div class="carousel-item ${c}">
+                        <img src="${n}" class="img-fluid d-block mx-auto"
+                            style="
+                                width: 100%;
+                                max-width: 400px;
+                                aspect-ratio: 1 / 1;
+                                object-fit: cover;
+                                border-radius: 8px;
+                                border: 1px solid #ccc;
+                            ">
+                    </div>
+                `),$("#thumbnailGallery").append(`
+                    <div class="col-2 mb-0 d-flex justify-content-center">
+                        <div style="height: 90%">
+                           <img src="${n}" 
+                            class="img-thumbnail thumbnail-image p-0 w-100 h-100" 
+                            style="
+                                height: auto;
+                                aspect-ratio: 1 / 1;
+                                border: 1px solid #ccc;
+                                border-radius: 8px;
+                                object-fit: cover;
+                                cursor: pointer;"
+                            data-index="${h}">
+                        </div>
+                    </div>
+                    `)}),l.length<=1?($("#carouselProduct .carousel-control-next").addClass("d-none"),$("#carouselProduct .carousel-control-prev").addClass("d-none")):($("#carouselProduct .carousel-control-next").removeClass("d-none"),$("#carouselProduct .carousel-control-prev").removeClass("d-none")),$("#carouselProduct").carousel({interval:3e3,pause:!1});let m;$("#thumbnailGallery").off("click").on("click",".thumbnail-image",function(){const n=$(this).data("index");$("#carouselProduct").carousel(n),$(".thumbnail-image").removeClass("active-thumbnail"),$(this).addClass("active-thumbnail"),setTimeout(()=>{$(this).removeClass("active-thumbnail")},500),$("#carouselProduct").carousel("pause"),clearTimeout(m),m=setTimeout(()=>{$("#carouselProduct").carousel("cycle")},5e3)})}$(document).on("click",".product-card",function(){const l=$(this).data("code"),i=$(this).data("category"),d=$(this).attr("data-images"),s=$(this).data("type"),m=JSON.parse($(this).attr("data-paket")||"[]");let n=null,h=null;Array.isArray(m)&&(h=m.sort((f,N)=>f.order-N.order).map(f=>`/storage/${f.image}`)),d&&(n=JSON.parse(d.replace(/&quot;/g,'"')));const c=$(this).data("jenis"),p=parseInt($(this).data("length"),10),u=parseInt($(this).data("height"),10),g=parseFloat($(this).data("density")).toFixed(1),x=$(this).data("id"),w=$(this).data("url");if($("#modalPaket").empty(),c==="tipe-wallpanel"){L(),S({selectedJenis:3,type:s}),D(!1),v(),$("#filter-container").toggleClass("d-none"),$("#catalog-col").toggleClass("col-md-10 col-md-12");return}c.toLowerCase()==="uv board"&&($("#modalVideo").hide(),$("#modalCategory").text(i),$("#modalLength").text(p&&!isNaN(p)?p+" cm":"-"),$("#modalHeight").text(u&&!isNaN(u)?u+" cm":"-"),$("#modalDensity").text(g&&!isNaN(g)?g+" mm":"-"),$("#modalKepadatan").html(`
+                <span class="">0.9 mm</span>
+            `),m.length>0?m.sort((f,N)=>f.order-N.order).map(f=>{$("#modalPaket").append(`
+                        <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="${f.name}">${f.name}</span>
+                    `)}):($("#modalPaket").append('<span class="text-muted">Tidak ada paket</span>'),$("#notes").hide())),c.toLowerCase()==="wallboard"&&($("#modalCategory").text(i),$("#modalLength").text(p&&!isNaN(p)?p+" cm":"-"),$("#modalHeight").text(u&&!isNaN(u)?u+" cm":"-"),$("#ketebalan, #kepadatan, #notes, .paket,  #modalVideo").hide()),c==="PVC Board"&&($("#modalCategory").text(c),$("#modalLength").text(p&&!isNaN(p)?p+" cm":"-"),$("#modalHeight").text(u&&!isNaN(u)?u+" cm":"-"),$("#modalDensity").text(g&&!isNaN(g)?g+" mm":"-"),$("#modalKepadatan").html(`
+                <span class="badge badge-outline-primary kepadatan" data-value="0,4 mm">0,4mm (Lite)</span>
+                <span class="badge badge-outline-primary kepadatan" data-value="0,55 mm">0,55mm (Standar)</span>
+                <span class="badge badge-outline-primary kepadatan" data-value="0,7 mm">0,7mm (Heavy-duty)</span>
+            `),$(".paket,  #modalVideo").hide()),c==="Wallpanel"&&($("#modalContact").data("type",s),$("#modalCategory").text(i+" / "+s),$("#panjang, #tinggi, #ketebalan, #kepadatan, #notes, .paket, #modalVideo").hide()),c.toLowerCase()==="aksesoris"&&($("#tinggi, #ketebalan, #kepadatan").hide(),$("#paket").text("Warna"),$("#modalCategory").text(i),$("#modalPaket").append(`
+                <span class="badge badge-pill badge-outline-primary kepadatan" data-value="Black">Black</span>
+                <span class="badge badge-pill badge-outline-primary kepadatan" data-value="Bronze">Bronze</span>
+                <span class="badge badge-pill badge-outline-primary kepadatan" data-value="Rose Gold">Rose Gold</span>
+                <span class="badge badge-pill badge-outline-primary kepadatan" data-value="Dark Gray">Dark Gray</span>
+
+            `),$("#modalLength").text("3 m"),$("#modalVideoPlayer").empty(),$("#modalVideo").hide(),w&&($("#modalVideoPlayer").append(`
+                    <iframe class="embed-responsive-item"
+                    src="${w}"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share;"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen></iframe>
+                `),$("#modalVideo").show())),r(n,h,c),$("#modalCode").text(l),$("#productModalLabel").text(l),$("#modalDownload").data("id",x),$("#productModal").modal("show"),$("#modalContact").data("jenis",c),$("#modalContact").data("category",i),$("#modalContact").data("code",l);let j=$("#modalContact").data("kepadatan"),P=$("#modalContact").data("paket");j&&($(".kepadatan").removeClass("active"),$("#modalContact").data("kepadatan",null),$("#notes").show()),P&&($(".kepadatan").removeClass("active"),$("#modalContact").data("kepadatan",null),$("#notes").show());let B=$(".kepadatan");console.log(B.length),B.length>0?$(".modalContact").prop("disabled",!0):$(".modalContact").prop("disabled",!1)}),$(document).on("click",".kepadatan",function(){$(".modalContact").prop("disabled",!1);let l=$(this).data("value");$(this).closest("#productModal").find(".kepadatan").removeClass("active"),$(this).addClass("active"),$("#notes").hide(),$("#modalContact").data("kepadatan",l)}),Q(t),W(),J(),F()});

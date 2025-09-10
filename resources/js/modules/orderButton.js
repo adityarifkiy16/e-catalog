@@ -29,6 +29,14 @@ export function bindOrderButton() {
                 `• Kategori: *${$(this).data('category')}*\n\n` +
                 `• Paket: *${$(this).data('kepadatan') ?? '-'}*\n\n` +
                 `Apakah produk ini masih tersedia? Terima kasih.`;
+        } else if (jenis.toLowerCase() == 'aksesoris') {
+            message =
+                `Halo Admin,\nSaya tertarik dengan produk berikut:\n\n` +
+                `• Kode : *${$(this).data('code')}*\n` +
+                `• Produk : *${$(this).data('jenis')}*\n` +
+                `• Ukuran : *${$(this).data('category')}*\n\n` +
+                `• Warna : *${$(this).data('kepadatan')}*\n\n` +
+                `Apakah produk ini masih tersedia? Terima kasih.`;
         } else {
             message =
                 `Halo Admin,\nSaya tertarik dengan produk berikut:\n\n` +

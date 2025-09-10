@@ -235,8 +235,18 @@ $(document).ready(function () {
         }
 
         if (jenis.toLowerCase() === 'aksesoris') {
-            $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes, .paket').hide();
+            $('#tinggi, #ketebalan, #kepadatan').hide();
+            $('#paket').text('Warna');
             $('#modalCategory').text(category);
+            $('#modalPaket').append(`
+                <span class="badge badge-pill badge-outline-primary kepadatan" data-value="Black">Black</span>
+                <span class="badge badge-pill badge-outline-primary kepadatan" data-value="Bronze">Bronze</span>
+                <span class="badge badge-pill badge-outline-primary kepadatan" data-value="Rose Gold">Rose Gold</span>
+                <span class="badge badge-pill badge-outline-primary kepadatan" data-value="Dark Gray">Dark Gray</span>
+
+            `);
+            $('#modalLength').text('3 m');
+
             $('#modalVideoPlayer').empty();
             $('#modalVideo').hide();
             if (urlVideo) {

@@ -306,8 +306,16 @@
 }
 
 .badge-outline-primary {
+    font-size: 0.65rem;
     color: #001f3f;
     border: 1px solid #001f3f;
+    background-color: transparent;
+}
+
+.badge-outline-dark {
+    font-size: 0.1rem;
+    color: #000;
+    border: 1px solid #000;
     background-color: transparent;
 }
 
