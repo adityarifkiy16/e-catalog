@@ -68,7 +68,7 @@ class TPackageController extends Controller
             'product_id' => 'nullable|exists:t_products,id',
             'image' => 'required',
             'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
-            'order' => 'nullable|numeric',
+            'order' => 'required|numeric',
         ]);
 
         // dd($request->all());
