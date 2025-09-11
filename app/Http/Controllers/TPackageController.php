@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TPackage;
 use App\Models\TProduct;
+use App\Services\ImageServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
@@ -11,6 +12,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class TPackageController extends Controller
 {
+    protected ImageServices $imageServices;
+
+    public function __construct(ImageServices $imageServices)
+    {
+        $this->imageServices = $imageServices;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -78,19 +86,10 @@ class TPackageController extends Controller
         try {
             if ($request->hasFile('image')) {
                 foreach ($request->file('image') as $file) {
-                    $folder = 'images/packages/' . now()->format('Y/m/d');
-                    $filename = time() . '_' . uniqid() . '.webp';
-                    $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
-                    $path = $folder . '/' . $filename;
-
-                    $directory = dirname($fullPath);
-                    if (!file_exists($directory)) {
-                        mkdir($directory, 0755, true);
-                    }
+                    $folder = 'packages';
 
                     $product = null;
                     $productFound = false;
-
 
                     // Prioritas 1: Cek product_id dari request
                     if ($request->product_id) {
@@ -113,19 +112,11 @@ class TPackageController extends Controller
                     // Jika produk ditemukan, proses gambar dan buat package
                     if ($productFound && $product) {
                         $exists = $product->packages()->where('name', $request->name)->exists();
-
                         if ($exists) {
                             $arr['warning'][] = "paket '{$request->name}' sudah ada untuk produk '{$product->code}'";
                             continue;
                         } else {
-                            // simpan gambar ke storage dan db
-                            Image::make($file)
-                                ->resize(800, null, function ($constraint) {
-                                    $constraint->aspectRatio();
-                                    $constraint->upsize();
-                                })
-                                ->encode('webp', 100)
-                                ->save($fullPath);
+                            $path = $this->imageServices->store($file, $folder, 800);
                             TPackage::create([
                                 'name' => $request->name,
                                 'product_id' => $product->id,
@@ -190,29 +181,13 @@ class TPackageController extends Controller
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $folder = 'images/packages/' . now()->format('Y/m/d');
-            $filename = time() . '_' . uniqid() . '.webp';
-            $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
-            $path = $folder . '/' . $filename;
-
-            $directory = dirname($fullPath);
-            if (!file_exists($directory)) {
-                mkdir($directory, 0755, true);
-            }
-
-            // Proses gambar
-            Image::make($file)
-                ->resize(800, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })
-                ->save($fullPath);
-
+            $folder = 'packages';
             if ($package->image) {
                 if (file_exists(storage_path('app/public/' . $package->image))) {
-                    unlink(storage_path('app/public/' . $package->image));
+                    @unlink(storage_path('app/public/' . $package->image));
                 }
             }
+            $path = $this->imageServices->store($file, $folder, 800);
             $data['image'] = $path;
         }
 
