@@ -247,16 +247,26 @@
                     this.on("successmultiple", function(files, response) {
                         // Handle success response
                         if (response.warning && response.warning.length > 0) {
-                            console.log(response.warning);
+                            let warningMessage = '';
+                            if (Array.isArray(response.warning)) {
+                                warningMessage =
+                                    '<ul style="text-align: left; margin-left: 20px;">';
+                                response.warning.forEach(function(item) {
+                                    warningMessage += '<li>' + item + '</li>';
+                                });
+                                warningMessage += '</ul>';
+                            }
                             Toast.fire({
                                 icon: 'warning',
-                                title: response.warning,
+                                title: "Warning",
+                                html: warningMessage,
+                                timer: 3000,
                                 showConfirmButton: false,
-                                timer: 1500
-                            })
-                        }
-
-                        if (response.status == "success") {
+                            });
+                            setTimeout(function() {
+                                window.location.href = "{{ route('products.index') }}";
+                            }, 3000);
+                        } else if (response.status == "success") {
                             Toast.fire({
                                 icon: 'success',
                                 title: response.message,
@@ -284,7 +294,6 @@
                             showConfirmButton: false,
                             timer: 1500
                         })
-                        // Remove all failed files
                         files.forEach(file => {
                             this.removeFile(file);
                         });

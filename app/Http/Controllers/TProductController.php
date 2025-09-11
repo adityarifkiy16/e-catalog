@@ -6,6 +6,7 @@ use App\Models\MJenis;
 use App\Models\TImage;
 use App\Models\TProduct;
 use App\Models\MCategories;
+use App\Services\ImageServices;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -18,9 +19,12 @@ use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 class TProductController extends Controller
 {
-    public function __construct()
+    protected ImageServices $imageServices;
+
+    public function __construct(ImageServices $imageServices)
     {
         $this->middleware('auth')->except(['downloadPdf', 'downloadPdfProduct']);
+        $this->imageServices = $imageServices;
     }
 
     /**
@@ -95,39 +99,14 @@ class TProductController extends Controller
         try {
             if ($request->hasFile('image')) {
                 foreach ($request->file('image') as $file) {
-                    $filename = time() . '_' . uniqid() . '.webp';
-                    $folder = 'images/products/' . now()->format('Y/m/d');
-                    $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
-                    $path =  $folder . '/' . $filename;
-
-                    $directory = dirname($fullPath);
-                    if (!file_exists($directory)) {
-                        mkdir($directory, 0755, true);
-                    }
-
-                    // // Buat watermark dan resize (misal lebar 100px)
-                    // $watermark = Image::make(public_path('dist/img/osborn.png'))
-                    //     ->resize(200, null, function ($constraint) {
-                    //         $constraint->aspectRatio();
-                    //         $constraint->upsize();
-                    //     });
-
                     if (!TProduct::where('code', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))->exists()) {
+                        $path = $this->imageServices->store($file, 'products', 800);
 
-                        $product = TProduct::create([
+                        TProduct::create([
                             'code' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
                             'photo' => $path,
                             'category_id' => $request->input('category_id'),
                         ]);
-
-                        // Proses gambar
-                        Image::make($file)
-                            ->resize(800, null, function ($constraint) {
-                                $constraint->aspectRatio();
-                                $constraint->upsize();
-                            })
-                            ->encode('webp', 100)
-                            ->save($fullPath);
                     } else {
                         $arr['warning'][] =  pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                     }
@@ -205,42 +184,25 @@ class TProductController extends Controller
             ];
 
             if ($request->hasFile('image-mockup')) {
-                // Hapus semua gambar sebelumnya dari relasi dan storage
-                foreach ($product->images as $existingImage) {
-                    $oldPath = storage_path('app/public/' . $existingImage->path);
+                $mockupImages = $product->images()->wherePivot('motif', false)->get();
+                $imageIdsToDelete = [];
 
-                    // Hapus file dari storage jika ada
+                foreach ($mockupImages as $img) {
+                    $oldPath = storage_path('app/public/' . $img->path);
                     if (file_exists($oldPath)) {
                         @unlink($oldPath);
                     }
+                    $imageIdsToDelete[] = $img->id;
+                    $img->delete();
+                }
 
-                    // Hapus record dari tabel pivot (detach)
-                    $product->images()->detach($existingImage->id);
-
-                    // Hapus record dari tabel images (optional, jika tidak dipakai di tempat lain)
-                    $existingImage->delete();
+                if (!empty($imageIdsToDelete)) {
+                    $product->images()->detach($imageIdsToDelete);
                 }
 
                 // Simpan gambar baru
                 foreach ($request->file('image-mockup') as $file) {
-                    $filename = time() . '_' . uniqid() . '.webp';
-                    $folder = 'images/mockup/' . now()->format('Y/m/d');
-                    $path = $folder . '/' . $filename;
-                    $fullPath = storage_path('app/public/' . $path);
-
-                    // Buat folder jika belum ada
-                    if (!file_exists(dirname($fullPath))) {
-                        mkdir(dirname($fullPath), 0755, true);
-                    }
-
-                    // Simpan file gambar baru
-                    Image::make($file)
-                        ->resize(1200, null, function ($constraint) {
-                            $constraint->aspectRatio();
-                            $constraint->upsize();
-                        })
-                        ->encode('webp', 100)
-                        ->save($fullPath);
+                    $path = $this->imageServices->store($file, 'mockup', 800);
 
                     // Simpan gambar ke database images
                     $image = TImage::create([
@@ -254,10 +216,7 @@ class TProductController extends Controller
 
             if ($request->hasFile('image')) {
                 $file = $request->file('image');
-                $filename = time() . '_' . uniqid() . '.webp';
-                $folder = 'images/products/' . now()->format('Y/m/d');
-                $path = $folder . '/' . $filename;
-                $fullPath = storage_path('app/public/' . $path);
+                $path = $this->imageServices->store($file, 'products', 800);
 
                 // Hapus photo thumbnail lama
                 if ($product->photo) {
@@ -266,16 +225,6 @@ class TProductController extends Controller
                         @unlink($imagePath);
                     }
                 }
-
-                // Simpan file gambar baru
-                Image::make($file)
-                    ->resize(800, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    })
-                    ->encode('webp', 100)
-                    ->save($fullPath);
-
                 $data = [
                     'photo' => $path
                 ];
@@ -283,16 +232,8 @@ class TProductController extends Controller
 
             if ($request->hasFile('image-motif')) {
                 $file = $request->file('image-motif');
-                $filename = time() . '_' . uniqid() . '.webp';
-                $folder = 'images/motif/' . now()->format('Y/m/d');
-                $path = $folder . '/' . $filename;
-                $fullPath = storage_path('app/public/' . $path);
-                $motifImage = $product->images->where('motif', true)->first();
-
-                // Buat folder jika belum ada
-                if (!file_exists(dirname($fullPath))) {
-                    mkdir(dirname($fullPath), 0755, true);
-                }
+                $path = $this->imageServices->store($file, 'motif', 800);
+                $motifImage = $product->images()->wherePivot('motif', true)->first();
 
                 // Hapus photo motif lama
                 if ($motifImage) {
@@ -300,22 +241,10 @@ class TProductController extends Controller
                     if (file_exists($imagePath)) {
                         @unlink($imagePath);
                     }
-
-                    // Hapus relasi dan gambar lama dari DB (opsional)
                     $product->images()->detach($motifImage->id);
                     $motifImage->delete();
                 }
 
-                // Simpan file gambar baru
-                Image::make($file)
-                    ->resize(800, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    })
-                    ->encode('webp', 100)
-                    ->save($fullPath);
-
-                // Simpan gambar ke database images
                 $image = TImage::create([
                     'path' => $path,
                 ]);
@@ -581,16 +510,9 @@ class TProductController extends Controller
 
         DB::beginTransaction();
         try {
-            $folder = $request->type == 'mockup' ? 'images/mockup/' . now()->format('Y/m/d') : 'images/motif/' . now()->format('Y/m/d');
-            $fullPath = storage_path('app/public/' . $folder);
-
-            if (!file_exists($fullPath)) {
-                mkdir($fullPath, 0755, true);
-            }
-
+            $folder = $request->type == 'mockup' ? 'mockup'  : 'motif';
             foreach ($request->file('image') as $file) {
-                $newName = time() . '_' . uniqid() . '.webp';
-                $path =  $folder . '/' . $newName;
+                $path = $this->imageServices->store($file, $folder);
 
                 $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $part = explode(' ', $filename);
@@ -607,16 +529,21 @@ class TProductController extends Controller
                 }
 
                 if ($request->type == 'mockup') {
-                    foreach ($product->images as $img) {
+                    $mockupImages = $product->images()->wherePivot('motif', false)->get();
+                    $imageIdsToDelete = [];
+                    foreach ($mockupImages as $img) {
                         $oldPath = storage_path('app/public/' . $img->path);
                         if (file_exists($oldPath)) {
                             @unlink($oldPath);
                         }
-                        $product->images()->detach($img->id);
+                        $imageIdsToDelete[] = $img->id;
                         $img->delete();
                     }
+                    if (!empty($imageIdsToDelete)) {
+                        $product->images()->detach($imageIdsToDelete);
+                    }
                 } elseif ($request->type == 'motif') {
-                    $motifImage = $product->images->where('motif', true)->first();
+                    $motifImage = $product->images()->wherePivot('motif', true)->first();
                     if ($motifImage) {
                         $oldPath = storage_path('app/public/' . $motifImage->path);
                         if (file_exists($oldPath)) {
@@ -627,13 +554,6 @@ class TProductController extends Controller
                     }
                     $processedMotifProducts[] = $product->id;
                 }
-
-
-
-                Image::make($file)
-                    ->encode('webp', 100)
-                    ->save($fullPath . '/' . $newName);
-
 
                 $image = TImage::create([
                     'path' => $path,
