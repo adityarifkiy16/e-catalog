@@ -4,12 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\MType;
 use App\Models\MJenis;
+use App\Services\ImageServices;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
 class MTypeController extends Controller
 {
+
+    protected ImageServices $imageServices;
+
+    public function __construct(ImageServices $imageServices)
+    {
+        $this->imageServices = $imageServices;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -61,24 +70,8 @@ class MTypeController extends Controller
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $folder = 'images/categories/' . now()->format('Y/m/d');
-            $filename = time() . '_' . uniqid() . '.webp';
-            $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
-            $path = $folder . '/' . $filename;
-
-            $directory = dirname($fullPath);
-            if (!file_exists($directory)) {
-                mkdir($directory, 0755, true);
-            }
-
-            // Proses gambar
-            Image::make($file)
-                ->resize(800, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })
-                ->encode('webp', 100)
-                ->save($fullPath);
+            $folder = 'types';
+            $path = $this->imageServices->store($file, $folder, 800);
 
             MType::create([
                 'name' => $request->name,
@@ -128,15 +121,7 @@ class MTypeController extends Controller
         ]);
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $folder = 'images/type/thumbnail/' . now()->format('Y/m/d');
-            $filename = time() . '_' . uniqid() . '.webp';
-            $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
-            $path = $folder . '/' . $filename;
-
-            $directory = dirname($fullPath);
-            if (!file_exists($directory)) {
-                mkdir($directory, 0755, true);
-            }
+            $folder = 'thumbnail';
 
             // Hapus gambar lama jika ada
             if ($type->thumbnail) {
@@ -146,14 +131,7 @@ class MTypeController extends Controller
                 }
             }
 
-            // Proses gambar
-            Image::make($file)
-                ->resize(800, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })
-                ->encode('webp', 100)
-                ->save($fullPath);
+            $path = $this->imageServices->store($file, $folder, 800);
 
             $type->update([
                 'name' => $request->name,

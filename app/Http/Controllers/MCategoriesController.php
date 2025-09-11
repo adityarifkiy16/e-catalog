@@ -4,12 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\MJenis;
 use App\Models\MCategories;
+use App\Services\ImageServices;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
 class MCategoriesController extends Controller
 {
+    protected ImageServices $imageServices;
+
+    public function __construct(ImageServices $imageServices)
+    {
+        $this->imageServices = $imageServices;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -69,24 +77,8 @@ class MCategoriesController extends Controller
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $folder = 'images/categories/' . now()->format('Y/m/d');
-            $filename = time() . '_' . uniqid() . '.webp';
-            $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
-            $path = $folder . '/' . $filename;
-
-            $directory = dirname($fullPath);
-            if (!file_exists($directory)) {
-                mkdir($directory, 0755, true);
-            }
-
-            // Proses gambar
-            Image::make($file)
-                ->resize(800, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })
-                ->encode('webp', 100)
-                ->save($fullPath);
+            $folder = 'categories';
+            $path = $this->imageServices->store($file, $folder, 800);
 
             MCategories::create([
                 'name' => $request->name,
@@ -146,15 +138,7 @@ class MCategoriesController extends Controller
         ]);
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $folder = 'images/3Dcategories/' . now()->format('Y/m/d');
-            $filename = time() . '_' . uniqid() . '.webp';
-            $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
-            $path = $folder . '/' . $filename;
-
-            $directory = dirname($fullPath);
-            if (!file_exists($directory)) {
-                mkdir($directory, 0755, true);
-            }
+            $folder = 'categories';
 
             // Hapus gambar lama jika ada
             if ($categories->path) {
@@ -164,14 +148,7 @@ class MCategoriesController extends Controller
                 }
             }
 
-            // Proses gambar
-            Image::make($file)
-                ->resize(800, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })
-                ->encode('webp', 100)
-                ->save($fullPath);
+            $path = $this->imageServices->store($file, $folder, 800);
 
             $categories->update([
                 'name' => $request->name,
@@ -193,18 +170,9 @@ class MCategoriesController extends Controller
 
         if ($request->hasFile('image-mockup')) {
             $files = $request->file('image-mockup');
-            $folder = 'images/mockupcategories/' . now()->format('Y/m/d');
+            $folder = 'mockupcategories';
 
             foreach ($files as $file) {
-                $filename = time() . '_' . uniqid() . '.webp';
-                $fullPath = storage_path('app/public/' . $folder . '/' . $filename);
-                $path = $folder . '/' . $filename;
-
-                $directory = dirname($fullPath);
-                if (!file_exists($directory)) {
-                    mkdir($directory, 0755, true);
-                }
-
                 // Hapus gambar lama jika ada
                 foreach ($categories->images as $oldImage) {
                     $oldPath = storage_path('app/public/' . $oldImage->path);
@@ -214,15 +182,7 @@ class MCategoriesController extends Controller
                     $oldImage->delete();
                 }
 
-                // Proses gambar
-                Image::make($file)
-                    ->resize(1200, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    })
-                    ->encode('webp', 100)
-                    ->save($fullPath);
-
+                $path = $this->imageServices->store($file, $folder, 800);
                 // Simpan ke relasi images (One to Many)
                 $categories->images()->create([
                     'path' => $path,
