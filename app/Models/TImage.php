@@ -16,7 +16,7 @@ class TImage extends Model
 
     public function product()
     {
-        return $this->belongsToMany(TProduct::class, 'image_product', 'image_id', 'product_id');
+        return $this->belongsTo(TProduct::class, 'product_id', 'id');
     }
 
     public function categories()

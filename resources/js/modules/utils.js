@@ -19,14 +19,6 @@ export function hideLoading() {
 export function prepareImageOrder(images) {
     return images
         .slice()
-        .sort((a, b) => {
-            if (a.pivot.motif && !b.pivot.motif) {
-                return -1;
-            } else if (!a.pivot.motif && b.pivot.motif) {
-                return 1;
-            } else {
-                return 0;
-            }
-        })
+        .sort((a, b) => (b.type === 'motif') - (a.type === 'motif'))
         .map((image) => '/storage/' + image.path);
 }
