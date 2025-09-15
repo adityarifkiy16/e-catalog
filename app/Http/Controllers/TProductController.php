@@ -184,20 +184,13 @@ class TProductController extends Controller
             ];
 
             if ($request->hasFile('image-mockup')) {
-                $mockupImages = $product->images()->wherePivot('motif', false)->get();
-                $imageIdsToDelete = [];
-
-                foreach ($mockupImages as $img) {
-                    $oldPath = storage_path('app/public/' . $img->path);
+                // Hapus semua gambar sebelumnya dari relasi dan storage
+                foreach ($product->images->where('type', 'mockup')->get() as $existingImage) {
+                    $oldPath = storage_path('app/public/' . $existingImage->path);
                     if (file_exists($oldPath)) {
                         @unlink($oldPath);
                     }
-                    $imageIdsToDelete[] = $img->id;
-                    $img->delete();
-                }
-
-                if (!empty($imageIdsToDelete)) {
-                    $product->images()->detach($imageIdsToDelete);
+                    $existingImage->delete();
                 }
 
                 // Simpan gambar baru
@@ -205,12 +198,11 @@ class TProductController extends Controller
                     $path = $this->imageServices->store($file, 'mockup', 800);
 
                     // Simpan gambar ke database images
-                    $image = TImage::create([
+                    TImage::create([
                         'path' => $path,
+                        'type' => 'mockup',
+                        'product_id' => $product->id
                     ]);
-
-                    // Tambahkan relasi produk dengan gambar
-                    $product->images()->attach($image->id);
                 }
             }
 
@@ -233,25 +225,21 @@ class TProductController extends Controller
             if ($request->hasFile('image-motif')) {
                 $file = $request->file('image-motif');
                 $path = $this->imageServices->store($file, 'motif', 800);
-                $motifImage = $product->images()->wherePivot('motif', true)->first();
+                $motifImage = $product->images->where('type', 'motif')->first();
 
                 // Hapus photo motif lama
                 if ($motifImage) {
-                    $imagePath = storage_path('app/public/' . $motifImage->path); // Ganti 'path' dengan nama kolom file di tabel images
+                    $imagePath = storage_path('app/public/' . $motifImage->path);
                     if (file_exists($imagePath)) {
                         @unlink($imagePath);
                     }
-                    $product->images()->detach($motifImage->id);
                     $motifImage->delete();
                 }
 
-                $image = TImage::create([
+                TImage::create([
                     'path' => $path,
-                ]);
-
-                // Tambahkan relasi produk dengan gambar
-                $product->images()->attach($image->id, [
-                    'motif' => true
+                    'type' => 'motif',
+                    'product_id' => $product->id
                 ]);
             }
 
@@ -366,13 +354,10 @@ class TProductController extends Controller
         $files = File::glob($folderPath . '/*.webp');
 
         foreach ($files as $file) {
-            // Ubah path absolut jadi relatif ke public storage
-            $relativePath = str_replace(storage_path('app/public/'), '', $file); // misal: images/products/2025/07/02/xxx.webp
-
-            // Hapus file jika tidak ditemukan di DB
+            $relativePath = str_replace(storage_path('app/public/'), '', $file);
             if (!TProduct::where('photo', $relativePath)->exists()) {
                 if (file_exists($file)) {
-                    unlink($file);
+                    @unlink($file);
                 }
             }
         }
@@ -529,40 +514,34 @@ class TProductController extends Controller
                 }
 
                 if ($request->type == 'mockup') {
-                    $mockupImages = $product->images()->wherePivot('motif', false)->get();
-                    $imageIdsToDelete = [];
-                    foreach ($mockupImages as $img) {
+                    foreach ($product->images->where('type', 'mockup')->get() as $img) {
                         $oldPath = storage_path('app/public/' . $img->path);
                         if (file_exists($oldPath)) {
                             @unlink($oldPath);
                         }
-                        $imageIdsToDelete[] = $img->id;
                         $img->delete();
                     }
-                    if (!empty($imageIdsToDelete)) {
-                        $product->images()->detach($imageIdsToDelete);
-                    }
+
+                    TImage::create([
+                        'path' => $path,
+                        'product_id' => $product->id,
+                        'type' => 'mockup'
+                    ]);
                 } elseif ($request->type == 'motif') {
-                    $motifImage = $product->images()->wherePivot('motif', true)->first();
+                    $motifImage = $product->images->where('type', 'motif')->first();
                     if ($motifImage) {
                         $oldPath = storage_path('app/public/' . $motifImage->path);
                         if (file_exists($oldPath)) {
                             @unlink($oldPath);
                         }
-                        $product->images()->detach($motifImage->id);
                         $motifImage->delete();
                     }
-                    $processedMotifProducts[] = $product->id;
-                }
 
-                $image = TImage::create([
-                    'path' => $path,
-                ]);
-
-                if ($request->type == 'mockup') {
-                    $product->images()->attach($image->id);
-                } elseif ($request->type == 'motif') {
-                    $product->images()->attach($image->id, ['motif' => true]);
+                    TImage::create([
+                        'path' => $path,
+                        'product_id' => $product->id,
+                        'type' => 'motif'
+                    ]);
                 }
             }
             DB::commit();
@@ -581,7 +560,7 @@ class TProductController extends Controller
     public function resetMockup(TProduct $product)
     {
         $mockupImages = $product->images()
-            ->where('motif', false)
+            ->where('type', 'mockup')
             ->get();
 
         if ($mockupImages->isEmpty()) {
@@ -590,7 +569,6 @@ class TProductController extends Controller
                 'message' => 'Produk ini tidak memiliki gambar mockup.'
             ], 404);
         }
-        $product->images()->detach($mockupImages->pluck('id'));
 
         // Hapus file dan record
         foreach ($mockupImages as $image) {
@@ -608,7 +586,7 @@ class TProductController extends Controller
     public function resetMotif(TProduct $product)
     {
         $mockupImages = $product->images()
-            ->where('motif', true)
+            ->where('type', 'motif')
             ->get();
 
         if ($mockupImages->isEmpty()) {
@@ -617,8 +595,6 @@ class TProductController extends Controller
                 'message' => 'Produk ini tidak memiliki gambar motif.'
             ], 404);
         }
-
-        $product->images()->detach($mockupImages->pluck('id'));
 
         // Hapus file dan record
         foreach ($mockupImages as $image) {
