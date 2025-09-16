@@ -40,14 +40,11 @@
             </div>
         </div>
         @foreach ($count as $item => $value)
-            <div class="col-md-3 mb-4">
+            <div class="col mb-4">
                 <div class="card shadow-sm rounded-lg border-0 h-100">
                     <div class="card-body d-flex flex-column justify-content-center align-items-center text-center p-4"
                         style="background-color: white;">
                         <div class="mb-2">
-                            @if ($item == 'desain')
-                                <i class="fas fa-box fa-2x" style="color: #bbaa91"></i>
-                            @endif
                             @if ($item == 'produk')
                                 <i class="fas fa-tags fa-2x" style="color: #bbaa91"></i>
                             @endif
