@@ -149,6 +149,7 @@ $(document).ready(function () {
 
     // Handling klik thumbnail di dalam modal
     $(document).on('click', '.product-card', function () {
+        const productId = $(this).data('id');
         const code = $(this).data('code');
         const category = $(this).data('category');
         const imagesStr = $(this).attr('data-images');
@@ -169,7 +170,6 @@ $(document).ready(function () {
         const length = parseInt($(this).data('length'), 10);
         const height = parseInt($(this).data('height'), 10);
         const density = parseFloat($(this).data('density')).toFixed(1);
-        const productId = $(this).data('id');
         const urlVideo = $(this).data('url');
 
         $('#modalPaket').empty();
@@ -186,6 +186,7 @@ $(document).ready(function () {
         }
 
         if (jenis.toLowerCase() === 'uv board') {
+            viewProduct(productId);
             $('#modalVideo').hide();
             $('#modalCategory').text(category);
             $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
@@ -209,6 +210,7 @@ $(document).ready(function () {
         }
 
         if (jenis.toLowerCase() === 'wallboard') {
+            viewProduct(productId);
             $('#modalCategory').text(category);
             $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
@@ -216,6 +218,7 @@ $(document).ready(function () {
         }
 
         if (jenis === 'PVC Board') {
+            viewProduct(productId);
             $('#modalCategory').text(jenis);
             $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
@@ -229,12 +232,14 @@ $(document).ready(function () {
         }
 
         if (jenis === 'Wallpanel') {
+            viewProduct(productId);
             $('#modalContact').data('type', type);
             $('#modalCategory').text(category + ' / ' + type);
             $('#panjang, #tinggi, #ketebalan, #kepadatan, #notes, .paket, #modalVideo').hide();
         }
 
         if (jenis.toLowerCase() === 'aksesoris') {
+            viewProduct(productId);
             $('#tinggi, #ketebalan, #kepadatan').hide();
             $('#paket').text('Warna');
             $('#modalCategory').text(category);
@@ -322,4 +327,21 @@ $(document).ready(function () {
     bindDownloadButtons();
     bindOrderButton();
     initScrollTopButton();
+
+    function viewProduct(productId) {
+        // handling klik product
+        $.ajax({
+            url: `/products/${productId}/viewed`,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (res) {
+                console.log('View recorded:', res);
+            },
+            error: function (err) {
+                console.error(err);
+            }
+        });
+    }
 });

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\TImage;
 use App\Models\TPackage;
 use App\Models\MCategories;
+use App\Models\ProductView;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,5 +30,10 @@ class TProduct extends Model
     public function packages()
     {
         return $this->hasMany(TPackage::class, 'product_id', 'id');
+    }
+
+    public function views()
+    {
+        return $this->hasMany(ProductView::class, 'product_id', 'id');
     }
 }

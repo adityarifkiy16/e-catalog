@@ -6,12 +6,14 @@ use App\Models\MJenis;
 use App\Models\TImage;
 use App\Models\TProduct;
 use App\Models\MCategories;
-use App\Services\ImageServices;
+use App\Models\ProductView;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Services\ImageServices;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use App\Services\ProductViewServices;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -20,11 +22,13 @@ use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 class TProductController extends Controller
 {
     protected ImageServices $imageServices;
+    protected ProductViewServices $viewServices;
 
-    public function __construct(ImageServices $imageServices)
+    public function __construct(ImageServices $imageServices, ProductViewServices $viewServices)
     {
         $this->middleware('auth')->except(['downloadPdf', 'downloadPdfProduct']);
         $this->imageServices = $imageServices;
+        $this->viewServices = $viewServices;
     }
 
     /**
@@ -131,9 +135,9 @@ class TProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TProduct $tProduct)
+    public function show(TProduct $product, Request $request)
     {
-        //
+        $this->viewServices->store($product, $request);
     }
 
     /**

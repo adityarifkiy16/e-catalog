@@ -82,6 +82,11 @@ Route::middleware("auth")->group(function () {
     Route::delete("/products/reset-mockup/{product}", [App\Http\Controllers\TProductController::class, "resetMockup"])->name("products.reset-mockup");
     Route::delete("/products/reset-motif/{product}", [App\Http\Controllers\TProductController::class, "resetMotif"])->name("products.reset-motif");
 
+    // Product viewed
+    Route::get("/products/viewed", [App\Http\Controllers\ProductViewController::class, "index"])->name("products.viewed");
+    Route::post("/products/{product}/viewed", [App\Http\Controllers\TProductController::class, "show"])->name("products.viewed.stored");
+
+
     // Type
     Route::get("/type", [App\Http\Controllers\MTypeController::class, "index"])->name("type.index");
     Route::get("/type/create", [App\Http\Controllers\MTypeController::class, "create"])->name("type.create");
