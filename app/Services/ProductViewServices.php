@@ -26,7 +26,7 @@ class ProductViewServices
             'viewed_at' => now(),
         ]);
 
-        Cache::put($cacheKey, true, now()->addMinutes(1));
+        Cache::put($cacheKey, true, now()->addDay());
 
         return true;
     }
