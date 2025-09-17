@@ -13,16 +13,12 @@ export function renderMockup(categories, selectedJenis, uniquePaths) {
     const paths = Array.from(uniquePaths);
     const $carouselInner = $('#mockup-carousel-inner');
     const $carouselIndicators = $('#mockup-carousel-indicators');
-    // const videos = [
-    //     'https://www.youtube.com/embed/YWcZ_vkBfBc?autoplay=0&mute=1&rel=0&controls=0',
-    //     'https://www.youtube.com/embed/bQMXGcg_wX4?autoplay=0&mute=1&rel=0&controls=0',
-    //     'https://www.youtube.com/embed/0JM9rrRTZwU?autoplay=0&mute=1&rel=0&controls=0',
-    //     'https://www.youtube.com/embed/0mctlz5WkIc?autoplay=0&mute=1&rel=0&controls=0'
-    // ];
 
     const videos = [
         'https://www.youtube.com/embed/BiiUrYAbL9s?autoplay=1&mute=1&rel=0&controls=0&amp;loop=1&playlist=BiiUrYAbL9s'
     ];
+
+    const imagesWpc = ['/dist/img/wpc/1.webp', '/dist/img/wpc/2.webp', '/dist/img/wpc/3.jpg', '/dist/img/wpc/4.webp'];
 
     $carouselInner.empty();
     $carouselIndicators.empty();
@@ -56,6 +52,29 @@ export function renderMockup(categories, selectedJenis, uniquePaths) {
 
         // load API lalu init player
         // loadYoutubeAPI();
+        $('#mockup').removeClass('d-none');
+        return;
+    } else if (selectedJenis == 3) {
+        $('#mockup-carousel').carousel({
+            interval: 3000
+        });
+        $('#mockup .carousel-control-next').removeClass('d-none');
+        $('#mockup .carousel-control-prev').removeClass('d-none');
+        imagesWpc.forEach((path, i) => {
+            $carouselInner.append(`
+                <div class="carousel-item ${i === 0 ? 'active' : ''}">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <img src="${path}" id="mockup-image" alt="mockup" 
+                            class="img-fluid w-100 rounded-lg d-block mx-auto"
+                        >
+                    </div>
+                </div>
+            `);
+            $carouselIndicators.append(`
+                <li data-target="#mockup-carousel" data-slide-to="${i}" ${i === 0 ? 'class="active"' : ''}></li>
+            `);
+        });
+
         $('#mockup').removeClass('d-none');
         return;
     }
