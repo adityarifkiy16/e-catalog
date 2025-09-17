@@ -15,6 +15,6 @@ class MPermissions extends Model
 
     public function roles()
     {
-        return $this->belongsToMany(MRole::class);
+        return $this->belongsToMany(MRole::class, 'm_permissions_m_role', 'm_permissions_id', 'm_role_id');
     }
 }

@@ -15,13 +15,13 @@ class MRole extends Model
     protected $table = 'm_roles';
     protected $guarded = ["id"];
 
-    public function user()
+    public function users()
     {
-        return $this->hasOne(User::class);
+        return $this->hasMany(User::class, 'role_id', 'id');
     }
 
     public function permissions()
     {
-        return $this->belongsToMany(MPermissions::class);
+        return $this->belongsToMany(MPermissions::class, 'm_permissions_m_role', 'm_role_id', 'm_permissions_id');
     }
 }

@@ -48,6 +48,14 @@ Route::middleware("auth")->group(function () {
     Route::delete("/users/{user}", [App\Http\Controllers\UserController::class, "destroy"])->name("users.destroy");
     Route::get("/users/search", [App\Http\Controllers\UserController::class, "search"])->name("users.search");
 
+    // Role management routes
+    Route::get("/roles", [App\Http\Controllers\MRoleController::class, "index"])->name("role.index");
+    Route::get("/role/create", [App\Http\Controllers\MRoleController::class, "create"])->name("role.create");
+    Route::post("/role", [App\Http\Controllers\MRoleController::class, "store"])->name("role.store");
+    Route::get("/role/{role}/edit", [App\Http\Controllers\MRoleController::class, "edit"])->name("role.edit");
+    Route::put("/role/{role}", [App\Http\Controllers\MRoleController::class, "update"])->name("role.update");
+    Route::delete("/role/{role}", [App\Http\Controllers\MRoleController::class, "destroy"])->name("role.destroy");
+
     // Jenis management routes
     Route::get("/jenis", [App\Http\Controllers\MJenisController::class, "index"])->name("jenis.index");
     Route::get("/jenis/create", [App\Http\Controllers\MJenisController::class, "create"])->name("jenis.create");

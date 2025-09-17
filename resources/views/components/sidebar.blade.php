@@ -16,6 +16,11 @@
                 'icon' => 'fas fa-users',
                 'label' => 'User',
             ])
+            @include('partials.sidebar._nav_item', [
+                'route' => 'role.index',
+                'icon' => 'fas fa-user',
+                'label' => 'Role',
+            ])
         @endif
 
         @include('partials.sidebar._nav_tree', [
@@ -29,22 +34,5 @@
                 ['route' => 'package.index', 'label' => 'Paket', 'icon' => 'fas fa-box'],
             ],
         ])
-
-
-        {{-- @if (auth()->check() && auth()->user()->hasPermission('view_role'))
-            @include('partials.sidebar._nav_item', [
-                'route' => 'role.index',
-                'icon' => 'fas fa-user',
-                'label' => 'Role',
-            ])
-        @endif --}}
-
-        {{-- 
-                @include('partials.sidebar._nav_item', [
-                    'route' => 'permission.index',
-                    'icon' => 'fas fa-user',
-                    'label' => 'Permission',
-                ]) --}}
-
     </ul>
 </nav>
