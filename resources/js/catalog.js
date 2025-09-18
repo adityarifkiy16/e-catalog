@@ -49,16 +49,25 @@ $(document).ready(function () {
         }, 500);
     });
 
+    let scrollLock = false;
+
     $(window).on("scroll", function () {
         clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(() => {
+        scrollTimer = setTimeout(async () => {
+            if (scrollLock || getIsLoading()) return;
+
             const scrollTop = $(window).scrollTop();
             const windowHeight = $(window).height();
             const documentHeight = $(document).height();
+
             if (scrollTop + windowHeight >= documentHeight - 150) {
-                if (getIsLoading() === true) return;
-                setFirstLoad(false);
-                loadMoreData();
+                scrollLock = true;
+                try {
+                    setFirstLoad(false);
+                    await loadMoreData();
+                } finally {
+                    scrollLock = false;
+                }
             }
         }, 200);
     });
