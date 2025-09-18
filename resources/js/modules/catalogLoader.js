@@ -61,6 +61,7 @@ export function loadMoreData() {
                 // === handle first load ===
                 if (selectedJenis == 3 && firstLoadFlag) {
                     if (types.length > 0) {
+                        $('#search-form').addClass('d-none');
                         renderTypes(types, selectedJenis);
                         currentPage++;
                         if (currentPage > response.data.last_page) lastPage = true;
