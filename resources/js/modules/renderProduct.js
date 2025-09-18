@@ -52,6 +52,7 @@ export function renderProducts(products, selectedJenis) {
                     data-jenis="${product.category?.jenis?.name ?? ''}"
                     data-length="${product.panjang}"
                     data-height="${product.tinggi}"
+                    data-width="${product.lebar}"
                     data-density="${product.ketebalan}"
                     data-images="${imagesJson}"
                     data-image="${image}"

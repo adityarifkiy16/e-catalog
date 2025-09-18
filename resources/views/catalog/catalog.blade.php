@@ -206,6 +206,12 @@
                                                     <div class="col-auto">:</div>
                                                     <div class="col" id="modalPaket"></div>
                                                 </div>
+                                                <div class="row mb-1 lebar">
+                                                    <div class="col-4 col-sm-3 font-weight-bold" id="lebar">lebar
+                                                    </div>
+                                                    <div class="col-auto">:</div>
+                                                    <div class="col" id="modalLebar"></div>
+                                                </div>
                                             </div>
 
                                             <!-- Notes -->
