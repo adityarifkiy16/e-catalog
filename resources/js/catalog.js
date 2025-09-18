@@ -177,7 +177,7 @@ $(document).ready(function () {
 
         const jenis = $(this).data('jenis');
         const length = parseInt($(this).data('length'), 10);
-        const height = parseInt($(this).data('height'), 10);
+        let height = $(this).data('height');
         const width = parseFloat($(this).data('width')).toFixed(1);
         const density = parseFloat($(this).data('density')).toFixed(1);
         const urlVideo = $(this).data('url');
@@ -197,6 +197,7 @@ $(document).ready(function () {
 
         if (jenis.toLowerCase() === 'uv board') {
             viewProduct(productId);
+            height = parseInt(height, 10);
             $('#modalVideo').hide();
             $('#modalCategory').text(category);
             $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
@@ -221,6 +222,7 @@ $(document).ready(function () {
 
         if (jenis.toLowerCase() === 'wallboard') {
             viewProduct(productId);
+            height = parseInt(height, 10);
             $('#modalCategory').text(category);
             $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
@@ -229,6 +231,7 @@ $(document).ready(function () {
 
         if (jenis === 'PVC Board') {
             viewProduct(productId);
+            height = parseInt(height, 10);
             $('#modalCategory').text(jenis);
             $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
@@ -243,6 +246,7 @@ $(document).ready(function () {
 
         if (jenis === 'Wallpanel') {
             viewProduct(productId);
+            height = parseFloat(height).toFixed(1);
             $('#modalContact').data('type', type);
             $('#modalCategory').text(category + ' / ' + type);
             $('#ketebalan, #kepadatan, .paket, #modalVideo').hide();
