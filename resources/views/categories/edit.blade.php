@@ -154,7 +154,7 @@
                 autoProcessQueue: false,
                 parallelUploads: 5,
                 uploadMultiple: true,
-                maxFiles: 5,
+                maxFiles: 10,
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
