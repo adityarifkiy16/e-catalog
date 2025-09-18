@@ -182,7 +182,7 @@ class MCategoriesController extends Controller
                     $oldImage->delete();
                 }
 
-                $path = $this->imageServices->store($file, $folder, 800);
+                $path = $this->imageServices->store($file, $folder, 1200);
                 // Simpan ke relasi images (One to Many)
                 $categories->images()->create([
                     'path' => $path,
