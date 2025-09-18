@@ -58,21 +58,24 @@ export function renderMockup(categories, selectedJenis, uniquePaths) {
         $('#mockup-carousel').carousel({
             interval: 3000
         });
+
         $('#mockup .carousel-control-next').removeClass('d-none');
         $('#mockup .carousel-control-prev').removeClass('d-none');
+
         imagesWpc.forEach((path, i) => {
             $carouselInner.append(`
-                <div class="carousel-item ${i === 0 ? 'active' : ''}">
-                    <div class="d-flex justify-content-center align-items-center">
-                        <img src="${path}" id="mockup-image" alt="mockup" 
-                            class="img-fluid w-100 rounded-lg d-block mx-auto"
-                        >
-                    </div>
+            <div class="carousel-item ${i === 0 ? 'active' : ''}">
+                <div class="d-flex justify-content-center align-items-center">
+                    <img src="${path}" 
+                        alt="mockup" 
+                        class="img-fluid w-100 rounded-3 d-block mx-auto mockup-image"
+                    >
                 </div>
-            `);
+            </div>
+        `);
             $carouselIndicators.append(`
-                <li data-target="#mockup-carousel" data-slide-to="${i}" ${i === 0 ? 'class="active"' : ''}></li>
-            `);
+            <li data-bs-target="#mockup-carousel" data-bs-slide-to="${i}" ${i === 0 ? 'class="active"' : ''}></li>
+        `);
         });
 
         $('#mockup').removeClass('d-none');

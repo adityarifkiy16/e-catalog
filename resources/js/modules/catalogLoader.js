@@ -187,3 +187,11 @@ export function resetState() {
     uniquePaths.clear();
     $('#product-list .row').html('');
 }
+
+export function setIsLoading(value) {
+    isLoading = value;
+}
+
+export function getIsLoading() {
+    return isLoading;
+}

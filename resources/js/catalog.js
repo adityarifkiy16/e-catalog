@@ -1,7 +1,14 @@
 import { bindDownloadButtons } from './modules/download';
 import { bindOrderButton } from './modules/orderButton';
 import { initScrollTopButton } from './modules/scroll';
-import { resetState, setCatalogConfig, loadMoreData, setFirstLoad } from './modules/catalogLoader';
+import {
+    resetState,
+    setCatalogConfig,
+    loadMoreData,
+    setFirstLoad,
+    setIsLoading,
+    getIsLoading
+} from './modules/catalogLoader';
 import { bindFilterButton } from './modules/filter';
 import { renderProducts } from './modules/renderProduct';
 
@@ -48,8 +55,11 @@ $(document).ready(function () {
             const windowHeight = $(window).height();
             const documentHeight = $(document).height();
             if (scrollTop + windowHeight >= documentHeight - 150) {
+                if (getIsLoading() === true) return;
                 setFirstLoad(false);
-                loadMoreData();
+                loadMoreData().finally(() => {
+                    setIsLoading(false);
+                });
             }
         }, 200);
     });
