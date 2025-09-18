@@ -193,7 +193,7 @@ $(document).ready(function () {
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
             $('#modalDensity').text(density && !isNaN(density) ? density + ' mm' : '-');
             $('#modalKepadatan').html(`
-                <span class="">0.9 mm</span>
+                <span class="">0.9</span>
             `);
             if (packages.length > 0) {
                 packages
@@ -224,9 +224,9 @@ $(document).ready(function () {
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
             $('#modalDensity').text(density && !isNaN(density) ? density + ' mm' : '-');
             $('#modalKepadatan').html(`
-                <span class="badge badge-outline-primary kepadatan" data-value="0,4 mm">0,4mm (Lite)</span>
-                <span class="badge badge-outline-primary kepadatan" data-value="0,55 mm">0,55mm (Standar)</span>
-                <span class="badge badge-outline-primary kepadatan" data-value="0,7 mm">0,7mm (Heavy-duty)</span>
+                <span class="badge badge-outline-primary kepadatan" data-value="0,4">0,4 (Lite)</span>
+                <span class="badge badge-outline-primary kepadatan" data-value="0,55">0,55 (Standar)</span>
+                <span class="badge badge-outline-primary kepadatan" data-value="0,7">0,7 (Heavy-duty)</span>
             `);
             $('.paket,  #modalVideo').hide();
         }
