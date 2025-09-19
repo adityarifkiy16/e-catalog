@@ -66,24 +66,30 @@ class MTypeController extends Controller
             'image' => 'nullable',
             'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'jenis_id' => 'required|exists:m_jenis,id',
+            'thumbnail' => 'nullable',
+            'thumbnail.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
+
+        $data = [
+            'name' => $request->name,
+            'jenis_id' => $request->jenis_id,
+        ];
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $folder = 'types';
             $path = $this->imageServices->store($file, $folder, 800);
-
-            MType::create([
-                'name' => $request->name,
-                'jenis_id' => $request->jenis_id,
-                'thumbnail' => $path,
-            ]);
-        } else {
-            MType::create([
-                'name' => $request->name,
-                'jenis_id' => $request->jenis_id,
-            ]);
+            $data['image'] = $path;
         }
+
+        if ($request->hasFile('thumbnail')) {
+            $file = $request->file('thumbnail');
+            $folder = 'types';
+            $path = $this->imageServices->store($file, $folder, 800);
+            $data['thumbnail'] = $path;
+        }
+
+        MType::create($data);
         return response()->json([
             'status' => 'success',
             'message' => 'Type created successfully.',
@@ -118,45 +124,45 @@ class MTypeController extends Controller
             'jenis_id' => 'required|exists:m_jenis,id',
             'image' => 'nullable',
             'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'thumbnail' => 'nullable',
+            'thumbnail.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $folder = 'thumbnail';
 
-            // Hapus gambar lama jika ada
+        $data = [
+            'name' => $request->name,
+            'jenis_id' => $request->jenis_id,
+        ];
+
+        if ($request->hasFile('thumbnail')) {
+            $file = $request->file('thumbnail');
+            $folder = 'types';
             if ($type->thumbnail) {
                 $oldPath = storage_path('app/public/' . $type->thumbnail);
                 if (file_exists($oldPath)) {
-                    unlink($oldPath);
+                    @unlink($oldPath);
                 }
             }
-
             $path = $this->imageServices->store($file, $folder, 800);
-
-            $type->update([
-                'name' => $request->name,
-                'jenis_id' => $request->jenis_id,
-                'thumbnail' => $path,
-            ]);
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Type updated successfully.',
-            ], 200);
-        } else {
-            $type->update([
-                'name' => $request->name,
-                'jenis_id' => $request->jenis_id,
-            ]);
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'type updated successfully.',
-            ], 200);
+            $data['thumbnail'] = $path;
         }
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $folder = 'types';
+            if ($type->image) {
+                $oldPath = storage_path('app/public/' . $type->image);
+                if (file_exists($oldPath)) {
+                    @unlink($oldPath);
+                }
+            }
+            $path = $this->imageServices->store($file, $folder, 800);
+            $data['image'] = $path;
+        }
+
+        $type->update($data);
         return response()->json([
-            'status' => 'error',
-            'message' => 'type updated failed.',
+            'status' => 'success',
+            'message' => 'Type updated successfully.',
         ], 200);
     }
 

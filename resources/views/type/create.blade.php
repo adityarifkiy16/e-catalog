@@ -41,6 +41,8 @@
                             @endforeach
                         </select>
                         <label class="mt-3"><i class="fas fa-image"></i> Upload Thumbnail</label>
+                        <input type="file" class="form-control" id="img" name="thumbnail" accept="image/*">
+                        <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar</label>
                         <input type="file" class="form-control" id="img" name="image" accept="image/*">
                         <button class="btn btn-primary mt-3" type="submit" id="btn-submit">Kirim</button>
                     </form>
