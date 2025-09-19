@@ -129,7 +129,10 @@ function handleResponse(response) {
 
 // ===== Category Menu =====
 function updateCategoryMenu(response, firstLoad = true) {
+    // console.log('updateCategoryMenu', firstLoad);
+
     const categories = response.category ?? [];
+    const types = response.data.data[0]?.category?.types?.images ?? [];
     const name = response.jenis?.name;
     const images = response.data.data[0]?.category?.images ?? [];
 
@@ -138,8 +141,15 @@ function updateCategoryMenu(response, firstLoad = true) {
         $('#category-container').addClass('d-none');
     } else {
         $('#category-container').removeClass('d-none');
-        if (images.length === 0) $('#mockup').addClass('d-none');
-        renderMockup(images, state.selectedJenis, state.uniquePaths);
+        if (types.length > 0) {
+            renderMockup(types, state.selectedJenis, state.uniquePaths, firstLoad);
+        } else if (images.length > 0) {
+            renderMockup(images, state.selectedJenis, state.uniquePaths, firstLoad);
+        } else if (state.selectedJenis == 3) {
+            renderMockup([], state.selectedJenis, state.uniquePaths, firstLoad);
+        } else {
+            $('#mockup').addClass('d-none');
+        }
     }
 
     // Header label

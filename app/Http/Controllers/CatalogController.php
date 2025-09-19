@@ -42,7 +42,7 @@ class CatalogController extends Controller
         $jenisId = $request->query('jenis');
         $typeId = $request->query('type');
 
-        $query = TProduct::with(['category', 'category.jenis', 'images', "category.images", 'category.types', 'packages']);
+        $query = TProduct::with(['category', 'category.jenis', 'images', "category.images", 'category.types.images', 'packages']);
 
         // Filter kategori
         if ($categoryId) {
@@ -89,7 +89,7 @@ class CatalogController extends Controller
 
             // Jika categoryId spesifik
             if ($typeId) {
-                $categories = MCategories::with(['jenis', 'images'])
+                $categories = MCategories::with(['jenis', 'images', 'types.images'])
                     ->whereHas('types', function ($q) use ($typeId) {
                         if (is_array($typeId)) {
                             $q->whereIn('id', $typeId);

@@ -126,12 +126,31 @@ class MTypeController extends Controller
             'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'thumbnail' => 'nullable',
             'thumbnail.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'mockups' => 'nullable',
+            'mockups.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         $data = [
             'name' => $request->name,
             'jenis_id' => $request->jenis_id,
         ];
+
+        if ($request->hasFile('mockups')) {
+            foreach ($request->file('mockups') as $file) {
+                foreach ($type->images as $oldImage) {
+                    $oldPath = storage_path('app/public/' . $oldImage->path);
+                    if (file_exists($oldPath)) {
+                        unlink($oldPath);
+                    }
+                    $oldImage->delete();
+                }
+                $folder = 'types';
+                $path = $this->imageServices->store($file, $folder, 1200);
+                $type->images()->create([
+                    'path' => $path
+                ]);
+            }
+        }
 
         if ($request->hasFile('thumbnail')) {
             $file = $request->file('thumbnail');

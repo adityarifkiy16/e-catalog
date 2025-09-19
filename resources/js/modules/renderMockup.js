@@ -3,11 +3,20 @@
 /**
  * Render mockup carousel
  */
-export function renderMockup(categories, selectedJenis, uniquePaths) {
+export function renderMockup(categories, selectedJenis, uniquePaths, firstLoad = false) {
     if (selectedJenis == null) return;
 
-    categories.forEach((image) => {
-        if (image.path) uniquePaths.add(image.path);
+    categories.forEach((item) => {
+        if (item.images) {
+            item.images.forEach((img) => {
+                if (img.path) uniquePaths.add(img.path);
+            });
+        }
+
+        // kalau langsung array of image object
+        if (item.path) {
+            uniquePaths.add(item.path);
+        }
     });
 
     const paths = Array.from(uniquePaths);
@@ -49,21 +58,19 @@ export function renderMockup(categories, selectedJenis, uniquePaths) {
             </div>
         `);
         });
-
-        // load API lalu init player
-        // loadYoutubeAPI();
         $('#mockup').removeClass('d-none');
         return;
     } else if (selectedJenis == 3) {
-        $('#mockup-carousel').carousel({
-            interval: 3000
-        });
+        if (firstLoad) {
+            $('#mockup-carousel').carousel({
+                interval: 3000
+            });
 
-        $('#mockup .carousel-control-next').removeClass('d-none');
-        $('#mockup .carousel-control-prev').removeClass('d-none');
+            $('#mockup .carousel-control-next').removeClass('d-none');
+            $('#mockup .carousel-control-prev').removeClass('d-none');
 
-        imagesWpc.forEach((path, i) => {
-            $carouselInner.append(`
+            imagesWpc.forEach((path, i) => {
+                $carouselInner.append(`
             <div class="carousel-item ${i === 0 ? 'active' : ''}">
                 <div class="d-flex justify-content-center align-items-center">
                     <img src="${path}" 
@@ -73,13 +80,14 @@ export function renderMockup(categories, selectedJenis, uniquePaths) {
                 </div>
             </div>
         `);
-            $carouselIndicators.append(`
+                $carouselIndicators.append(`
             <li data-bs-target="#mockup-carousel" data-bs-slide-to="${i}" ${i === 0 ? 'class="active"' : ''}></li>
         `);
-        });
+            });
 
-        $('#mockup').removeClass('d-none');
-        return;
+            $('#mockup').removeClass('d-none');
+            return;
+        }
     }
 
     // Mode gambar
