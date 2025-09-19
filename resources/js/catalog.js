@@ -279,7 +279,6 @@ $(document).ready(function () {
         // reset kepadatan/notes
         $('.kepadatan').removeClass('active');
         $('#modalContact').data({ kepadatan: null, paket: null });
-        $('#notes').show();
         $('.modalContact').prop('disabled', $('.kepadatan').length > 0);
     });
 
