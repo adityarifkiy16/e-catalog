@@ -147,6 +147,8 @@ function updateCategoryMenu(response, firstLoad = true) {
             renderMockup(images, state.selectedJenis, state.uniquePaths, firstLoad);
         } else if (state.selectedJenis == 3) {
             renderMockup([], state.selectedJenis, state.uniquePaths, firstLoad);
+        } else if (state.selectedJenis == 4) {
+            renderMockup([], state.selectedJenis, state.uniquePaths, firstLoad);
         } else {
             $('#mockup').addClass('d-none');
         }
