@@ -145,6 +145,7 @@ $(document).ready(function () {
         let height = $(this).data('height');
         const density = parseFloat($(this).data('density')).toFixed(1);
         const urlVideo = $(this).data('url');
+        let imageType = $(this).data('type-image');
 
         let images = [];
         let packagesImgs = [];
@@ -230,7 +231,9 @@ $(document).ready(function () {
             height = parseFloat(height).toFixed(1);
             $('#modalContact').data('type', type);
             $('#modalCategory').text(category + ' / ' + type);
-            $('#ketebalan, #kepadatan, .paket, #modalVideo').hide();
+            $('#ketebalan, #kepadatan, .paket, #modalVideo, #notes').hide();
+            $('#modalGrafis').attr('src', `/storage/${imageType}`);
+            $('.grafis').removeClass('d-none');
             $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
             $('#modalLebar').text(width && !isNaN(width) ? width + ' cm' : '-');

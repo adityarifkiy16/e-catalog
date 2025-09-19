@@ -212,6 +212,13 @@
                                                     <div class="col-auto">:</div>
                                                     <div class="col" id="modalLebar"></div>
                                                 </div>
+
+                                                <div class="row mb-1 grafis d-none">
+                                                    <div class="col">
+                                                        <img src="" alt="" id="modalGrafis"
+                                                            class="w-100 img-fluid">
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <!-- Notes -->
