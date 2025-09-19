@@ -29,7 +29,7 @@ export function renderMockup(categories, selectedJenis, uniquePaths, firstLoad =
 
     const imagesWpc = [];
     for (let i = 1; i <= 6; i++) {
-        imagesWpc.push(`/dist/img/wpc/${i}.webp`);
+        imagesWpc.push(`/dist/img/wpc/${i}.webp?v=${Date.now()}`);
     }
 
     $carouselInner.empty();
