@@ -10,7 +10,10 @@ export function bindOrderButton() {
             message =
                 `Halo Admin,\nSaya tertarik dengan produk berikut:\n\n` +
                 `• Tipe Wallpanel: *${$(this).data('type')}*\n` +
-                `• Kode Motif : *${$(this).data('code')}*\n` +
+                `• Kode : *${$(this).data('code')}*\n` +
+                `• panjang : *${$(this).data('length')} cm*\n` +
+                `• tinggi : *${$(this).data('height')} cm*\n` +
+                `• lebar : *${$(this).data('width')} cm*\n` +
                 `• Produk : *${$(this).data('jenis')}*\n` +
                 `• Kategori: *${$(this).data('category')}*\n\n` +
                 `Apakah produk ini masih tersedia? Terima kasih.`;

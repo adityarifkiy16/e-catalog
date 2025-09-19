@@ -180,7 +180,7 @@ $(document).ready(function () {
         if (jenis.toLowerCase() === 'uv board') {
             viewProduct(productId);
             height = parseInt(height, 10);
-            $('#modalVideo').hide();
+            $('#modalVideo, .lebar').hide();
             $('#modalCategory').text(category);
             $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
             $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
@@ -198,7 +198,7 @@ $(document).ready(function () {
                     });
             } else {
                 $('#modalPaket').append('<span class="text-muted">Tidak ada paket</span>');
-                $('#notes, .lebar').hide();
+                $('#notes').hide();
             }
         }
 
@@ -274,7 +274,7 @@ $(document).ready(function () {
         $('#productModalLabel').text(code);
         $('#modalDownload').data('id', productId);
         $('#productModal').modal('show');
-        $('#modalContact').data({ jenis, category, code });
+        $('#modalContact').data({ jenis, category, code, length, width, height, density, type });
 
         // reset kepadatan/notes
         $('.kepadatan').removeClass('active');
