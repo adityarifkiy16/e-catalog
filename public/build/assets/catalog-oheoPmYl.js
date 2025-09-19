@@ -142,8 +142,8 @@ Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${n}
             <li data-bs-target="#mockup-carousel" data-bs-slide-to="${l}" ${l===0?'class="active"':""}></li>
         `)}),$("#mockup").removeClass("d-none");return}e.length>0?(e.length===1?($("#mockup .carousel-control-next").addClass("d-none"),$("#mockup .carousel-control-prev").addClass("d-none")):($("#mockup .carousel-control-next").removeClass("d-none"),$("#mockup .carousel-control-prev").removeClass("d-none")),e.slice(0,5).forEach((s,l)=>{r.append(`
                 <div class="carousel-item ${l===0?"active":""}">
-                    <img src="/storage/${s}" id="mockup-image" alt="mockup" 
-                        class="img-fluid w-100 rounded-lg d-block mx-auto"
+                    <img src="/storage/${s}" alt="mockup" 
+                        class="img-fluid w-100 rounded-lg d-block mx-auto mockup-image"
                     >
                 </div>
             `),m.append(`

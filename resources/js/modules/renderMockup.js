@@ -95,8 +95,8 @@ export function renderMockup(categories, selectedJenis, uniquePaths) {
         paths.slice(0, 5).forEach((path, i) => {
             $carouselInner.append(`
                 <div class="carousel-item ${i === 0 ? 'active' : ''}">
-                    <img src="/storage/${path}" id="mockup-image" alt="mockup" 
-                        class="img-fluid w-100 rounded-lg d-block mx-auto"
+                    <img src="/storage/${path}" alt="mockup" 
+                        class="img-fluid w-100 rounded-lg d-block mx-auto mockup-image"
                     >
                 </div>
             `);
