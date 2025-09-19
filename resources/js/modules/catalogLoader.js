@@ -1,223 +1,200 @@
-import { renderProducts } from "./renderProduct";
-import { renderTypes } from "./renderTypes";
-import { renderMockup } from "./renderMockup";
-import { showLoading, hideLoading, setCategory } from "./utils";
+import { renderProducts } from './renderProduct';
+import { renderTypes } from './renderTypes';
+import { renderMockup } from './renderMockup';
+import { showLoading, hideLoading, setCategory } from './utils';
 
-// Global State
-let selectedJenis = null;
-let category = null;
-let type = null;
-let currentPage = 1;
-let isLoading = false;
-let lastPage = false;
-const uniquePaths = new Set();
-let firstLoadFlag = true;
-let currentRequest = null;
+// ===== Global State =====
+let state = {
+    selectedJenis: null,
+    category: null,
+    type: null,
+    currentPage: 1,
+    isLoading: false,
+    lastPage: false,
+    firstLoad: true,
+    currentRequest: null,
+    uniquePaths: new Set()
+};
 
-// ===== State Setter =====
+// ===== State Helpers =====
 export function setFirstLoad(value) {
-    firstLoadFlag = value;
+    state.firstLoad = value;
 }
 export function getFirstLoad() {
-    return firstLoadFlag;
+    return state.firstLoad;
 }
 export function setCatalogConfig(config) {
-    selectedJenis = config.selectedJenis;
-    category = config.category ?? null;
-    type = config.type ?? null;
+    state.selectedJenis = config.selectedJenis;
+    state.category = config.category ?? null;
+    state.type = config.type ?? null;
 }
-
-// ===== Main Loader =====
-export function loadMoreData() {
-    return new Promise((resolve, reject) => {
-        if ($(window).width() < 768) {
-            $("#filter-container").addClass("d-none");
-        }
-
-        if (isLoading || lastPage) return resolve(); //  menghindari deadlock
-
-        if (currentRequest) {
-            currentRequest.abort();
-        }
-
-        isLoading = true;
-        showLoading();
-
-        const search = $("#search-input").val();
-        $.ajax({
-            url: `/catalog`,
-            type: "GET",
-            data: {
-                page: currentPage,
-                search,
-                jenis: selectedJenis,
-                category,
-                type,
-            },
-            success: function (response) {
-                const products = response.data.data ?? [];
-                const types = response.types ?? [];
-
-                // === handle back button ===
-                if (type) {
-                    $("#backButton").removeClass("d-none");
-                    $("#homeButton").addClass("d-none");
-                }
-
-                // === handle first load ===
-                if (selectedJenis == 3 && firstLoadFlag) {
-                    if (types.length > 0) {
-                        $("#search-form").addClass("d-none");
-                        renderTypes(types, selectedJenis);
-                        currentPage++;
-                        if (currentPage > response.data.last_page)
-                            lastPage = true;
-                    }
-                    updateCategoryMenu(response, true);
-                } else {
-                    if (products.length > 0) {
-                        renderProducts(products, selectedJenis);
-                        currentPage++;
-                        if (currentPage > response.data.last_page)
-                            lastPage = true;
-                    } else {
-                        if (currentPage === 1) {
-                            $("#mockup").addClass("d-none");
-                            $("#product-list .row").append(
-                                `<div class="col-12"><img src="dist/img/no-data.png" alt="no-data"
-                                class="img-fluid mx-auto d-block" style="max-width: 100%; height: auto; margin-top: 100px; margin-bottom: 100px;"></div>`
-                            );
-                        }
-                        lastPage = true;
-                    }
-                    updateCategoryMenu(response, false);
-                }
-                currentRequest = null;
-                resolve();
-            },
-
-            error: function () {
-                console.log("Gagal memuat data.");
-                currentRequest = null;
-                reject();
-            },
-
-            complete: function () {
-                isLoading = false;
-                hideLoading();
-            },
-        });
-    });
+export function setIsLoading(value) {
+    state.isLoading = value;
 }
-
-function updateCategoryMenu(response, firstLoad = true) {
-    const categories = response.category;
-    const name = response.jenis?.name;
-    const data = response;
-    const images = data.data.data[0]?.category?.images ?? [];
-
-    // ===== Handle Category =====
-    if (categories.length === 0) {
-        $("#category-container").addClass("d-none");
-    } else {
-        $("#category-container").removeClass("d-none");
-        if (images.length === 0) {
-            $("#mockup").addClass("d-none");
-        }
-        renderMockup(images, selectedJenis, uniquePaths);
-    }
-
-    // ===== Handle Header Category =====
-    switch (name) {
-        case "PVC Board":
-            $("#category-container").addClass("d-none");
-            $(".category-modal-container").text("Tidak ada kategori");
-            break;
-        case "Wallboard":
-            $("#category-menu-item-label, #category-modal-item-label").html(
-                "Motif"
-            );
-            break;
-        case "UV Board":
-            $("#category-menu-item-label, #category-modal-item-label").html(
-                "Motif"
-            );
-            break;
-        case "Wallpanel":
-            $("#category-menu-item-label, #category-modal-item-label").html(
-                "Motif"
-            );
-            break;
-        case "Aksesoris":
-            // $('#category-container').addClass('d-none');
-            // $('.category-modal-container').text('Tidak ada kategori');
-            $("#category-menu-item-label, #category-modal-item-label").html(
-                "Ukuran"
-            );
-            break;
-        default:
-            $("#category-menu-item-label, #category-modal-item-label").html(
-                "Kategori"
-            );
-    }
-
-    let dropdown = `<li class="nav-item font-poppins">`;
-
-    if (Array.isArray(categories) && categories.length > 0) {
-        categories.forEach((cat) => {
-            dropdown += `
-            <a class="nav-link text-white category-filter d-flex align-items-center justify-content-start" 
-                href="#" data-jenis-id="${cat.jenis_id}" data-id="${
-                cat.id
-            }" data-type="${cat.type_id}">
-                <img src="${
-                    cat.path ? "storage/" + cat.path : "dist/img/product/1.webp"
-                }" alt="${cat.name}" 
-                class="mr-2 img-thumbnail" style="width: 50px; height: 50px; object-fit: contain;">
-                <span class="text-capitalize">${cat.name}</span>
-            </a>`;
-        });
-    } else {
-        dropdown += `<a class="nav-link text-white category-filter" href="#">Tanpa Kategori</a>`;
-    }
-
-    dropdown += `</li>`;
-
-    // ===== Handle Category =====
-    if (firstLoad) {
-        $("#category-menu-item-label, #category-modal-item-label").html("");
-        $("#category-menu-item,#category-menu-item-modal").html(
-            "tidak ada kategori"
-        );
-    } else {
-        $("#category-menu-item, #category-menu-item-modal").html(dropdown);
-    }
-
-    // ===== auto choose category =====
-    if (!category && categories.length > 0) {
-        console.log("auto choose category");
-        category = categories[0].id;
-        setCategory(category);
-        resetState();
-        loadMoreData();
-    } else if (category) {
-        $(`.category-filter[data-id="${category}"]`).addClass("active");
-    }
+export function getIsLoading() {
+    return state.isLoading;
 }
 
 // ===== Reset =====
 export function resetState() {
-    currentPage = 1;
-    isLoading = false;
-    lastPage = false;
-    uniquePaths.clear();
-    $("#product-list .row").html("");
+    state.currentPage = 1;
+    state.isLoading = false;
+    state.lastPage = false;
+    state.uniquePaths.clear();
+    $('#product-list .row').html('');
 }
 
-export function setIsLoading(value) {
-    isLoading = value;
+// ===== Main Loader =====
+export function loadMoreData() {
+    if (state.isLoading || state.lastPage) return Promise.resolve();
+
+    console.log('loadMoreData');
+    state.isLoading = true;
+    showLoading();
+
+    const search = $('#search-input').val();
+
+    // abort request lama
+    if (state.currentRequest && state.currentRequest.readyState !== 4) {
+        state.currentRequest.abort();
+    }
+
+    state.currentRequest = $.ajax({
+        url: `/catalog`,
+        type: 'GET',
+        data: {
+            page: state.currentPage,
+            search,
+            jenis: state.selectedJenis,
+            category: state.category,
+            type: state.type
+        }
+    });
+
+    return new Promise((resolve, reject) => {
+        state.currentRequest
+            .done((response) => handleResponse(response))
+            .fail((xhr, status) => {
+                if (status !== 'abort') {
+                    console.error('Gagal memuat data.');
+                    reject();
+                }
+            })
+            .always(() => {
+                state.isLoading = false;
+                hideLoading();
+                state.currentRequest = null;
+            })
+            .then(resolve);
+    });
 }
 
-export function getIsLoading() {
-    return isLoading;
+// ===== Response Handler =====
+function handleResponse(response) {
+    const products = response.data.data ?? [];
+    const types = response.types ?? [];
+
+    // Handle back button
+    if (state.type) {
+        $('#backButton').removeClass('d-none');
+        $('#homeButton').addClass('d-none');
+    }
+
+    if (state.selectedJenis == 3 && state.firstLoad) {
+        if (types.length > 0) {
+            $('#search-form').addClass('d-none');
+            renderTypes(types, state.selectedJenis);
+            state.currentPage++;
+            if (state.currentPage > response.data.last_page) state.lastPage = true;
+        }
+        updateCategoryMenu(response, true);
+    } else {
+        if (products.length > 0) {
+            renderProducts(products, state.selectedJenis);
+            state.currentPage++;
+            if (state.currentPage > response.data.last_page) state.lastPage = true;
+        } else {
+            if (state.currentPage === 1) {
+                $('#mockup').addClass('d-none');
+                $('#product-list .row').append(
+                    `<div class="col-12"><img src="dist/img/no-data.png" alt="no-data"
+                     class="img-fluid mx-auto d-block" style="max-width:100%;height:auto;margin:100px 0;"></div>`
+                );
+            }
+            state.lastPage = true;
+        }
+        updateCategoryMenu(response, false);
+    }
+}
+
+// ===== Category Menu =====
+function updateCategoryMenu(response, firstLoad = true) {
+    const categories = response.category ?? [];
+    const name = response.jenis?.name;
+    const images = response.data.data[0]?.category?.images ?? [];
+
+    // Toggle category container
+    if (categories.length === 0) {
+        $('#category-container').addClass('d-none');
+    } else {
+        $('#category-container').removeClass('d-none');
+        if (images.length === 0) $('#mockup').addClass('d-none');
+        renderMockup(images, state.selectedJenis, state.uniquePaths);
+    }
+
+    // Header label
+    const labelMap = {
+        'PVC Board': () => {
+            $('#category-container').addClass('d-none');
+            $('.category-modal-container').text('Tidak ada kategori');
+        },
+        Wallboard: () => setCategoryLabel('Motif'),
+        'UV Board': () => setCategoryLabel('Motif'),
+        Wallpanel: () => setCategoryLabel('Motif'),
+        Aksesoris: () => setCategoryLabel('Ukuran'),
+        default: () => setCategoryLabel('Kategori')
+    };
+    (labelMap[name] || labelMap.default)();
+
+    // Build dropdown
+    let dropdown = `<li class="nav-item font-poppins">`;
+    if (categories.length > 0) {
+        categories.forEach((cat) => {
+            dropdown += `
+                <a class="nav-link text-white category-filter d-flex align-items-center justify-content-start" 
+                   href="#" data-jenis-id="${cat.jenis_id}" data-id="${cat.id}" data-type="${cat.type_id}">
+                    <img src="${cat.path ? 'storage/' + cat.path : 'dist/img/product/1.webp'}" alt="${cat.name}" 
+                         class="mr-2 img-thumbnail" style="width:50px;height:50px;object-fit:contain;">
+                    <span class="text-capitalize">${cat.name}</span>
+                </a>`;
+        });
+    } else {
+        dropdown += `<a class="nav-link text-white category-filter" href="#">Tanpa Kategori</a>`;
+    }
+    dropdown += `</li>`;
+
+    // Inject to DOM
+    if (firstLoad) {
+        $('#category-menu-item, #category-menu-item-modal').html('tidak ada kategori');
+    } else {
+        $('#category-menu-item, #category-menu-item-modal').html(dropdown);
+    }
+
+    // Auto choose first category if none selected
+    if (!state.category && categories.length > 0) {
+        console.log('auto choose category');
+        state.category = categories[0].id;
+        setCategory(state.category);
+        resetState();
+
+        setTimeout(() => {
+            loadMoreData();
+        }, 200);
+    } else if (state.category) {
+        $(`.category-filter[data-id="${state.category}"]`).addClass('active');
+    }
+}
+
+function setCategoryLabel(label) {
+    $('#category-menu-item-label, #category-modal-item-label').html(label);
 }

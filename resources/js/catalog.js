@@ -1,47 +1,51 @@
-import { bindDownloadButtons } from "./modules/download";
-import { bindOrderButton } from "./modules/orderButton";
-import { initScrollTopButton } from "./modules/scroll";
-import {
-    resetState,
-    setCatalogConfig,
-    loadMoreData,
-    setFirstLoad,
-    setIsLoading,
-    getIsLoading,
-} from "./modules/catalogLoader";
-import { bindFilterButton } from "./modules/filter";
+import { bindDownloadButtons } from './modules/download';
+import { bindOrderButton } from './modules/orderButton';
+import { initScrollTopButton } from './modules/scroll';
+import { resetState, setCatalogConfig, loadMoreData, setFirstLoad, getIsLoading } from './modules/catalogLoader';
+import { bindFilterButton } from './modules/filter';
+
+// ===== Responsive Handling =====
+function handleFilterContainer(selectedJenis = null) {
+    if ($(window).width() < 768) {
+        $('#filter-container').addClass('d-none');
+    } else {
+        $('#filter-container').removeClass('d-none');
+    }
+
+    // khusus jenis tertentu → selalu hidden & full width
+    if (selectedJenis == 1 || selectedJenis == 3) {
+        $('#filter-container').addClass('d-none');
+        $('#catalog-col').removeClass('col-md-10').addClass('col-md-12');
+    }
+}
 
 $(document).ready(function () {
-    let selectedJenis = new URLSearchParams(window.location.search).get(
-        "jenis"
-    );
-    let category = new URLSearchParams(window.location.search).get("category");
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedJenis = urlParams.get('jenis');
+    const category = urlParams.get('category');
+
     let delayTimer;
     let scrollTimer;
+    let scrollLock = false;
 
     if (selectedJenis == 5 || selectedJenis == 2) {
-        sessionStorage.removeItem("selectedWallpanel");
+        sessionStorage.removeItem('selectedWallpanel');
     }
 
     setCatalogConfig({ selectedJenis, category });
     loadMoreData();
 
     if (selectedJenis) {
-        $("#category-container").removeClass("d-md-none");
-        $("#catalog-col").removeClass("center-content");
+        $('#category-container').removeClass('d-md-none');
+        $('#catalog-col').removeClass('center-content');
     }
 
-    if ($(window).width() < 768) {
-        $("#filter-container").addClass("d-none");
-    }
+    // panggil pertama kali + on resize
+    handleFilterContainer(selectedJenis);
+    $(window).on('resize', () => handleFilterContainer(selectedJenis));
 
-    if (selectedJenis == 1 || selectedJenis == 3) {
-        $("#filter-container").addClass("d-none");
-        $("#catalog-col").removeClass("col-md-10");
-        $("#catalog-col").addClass("col-md-12");
-    }
-
-    $("#search-input").on("input", function () {
+    // ===== Search debounce =====
+    $('#search-input').on('input', function () {
         clearTimeout(delayTimer);
         delayTimer = setTimeout(() => {
             resetState();
@@ -49,9 +53,8 @@ $(document).ready(function () {
         }, 500);
     });
 
-    let scrollLock = false;
-
-    $(window).on("scroll", function () {
+    // ===== Infinite Scroll =====
+    $(window).on('scroll', function () {
         clearTimeout(scrollTimer);
         scrollTimer = setTimeout(async () => {
             if (scrollLock || getIsLoading()) return;
@@ -72,243 +75,184 @@ $(document).ready(function () {
         }, 200);
     });
 
-    function renderCarouselProduct(
-        images,
-        wallpanelImages = null,
-        jenis = null
-    ) {
-        $("#carousel-product-image").empty();
-        $("#thumbnailGallery").empty();
-        let newimages = [...images];
+    // ===== Modal Product Handling =====
+    function renderCarouselProduct(images, wallpanelImages = [], jenis = '') {
+        $('#carousel-product-image').empty();
+        $('#thumbnailGallery').empty();
 
-        if (jenis.toLowerCase() == "uv board") {
-            newimages = [...images, ...wallpanelImages];
-        } else {
-            newimages = [...images];
+        let newImages = images || [];
+        if (jenis?.toLowerCase() === 'uv board' && wallpanelImages.length) {
+            newImages = [...images, ...wallpanelImages];
         }
 
-        newimages.forEach((img, i) => {
-            const activeClass = i === 0 ? "active" : "";
+        newImages.forEach((img, i) => {
+            const activeClass = i === 0 ? 'active' : '';
+            $('#carousel-product-image').append(`
+                <div class="carousel-item ${activeClass}">
+                    <img src="${img}" class="img-fluid d-block mx-auto"
+                        style="width:100%;max-width:400px;aspect-ratio:1/1;object-fit:cover;border-radius:8px;border:1px solid #ccc;">
+                </div>
+            `);
 
-            // Carousel utama
-            $("#carousel-product-image").append(`
-                    <div class="carousel-item ${activeClass}">
-                        <img src="${img}" class="img-fluid d-block mx-auto"
-                            style="
-                                width: 100%;
-                                max-width: 400px;
-                                aspect-ratio: 1 / 1;
-                                object-fit: cover;
-                                border-radius: 8px;
-                                border: 1px solid #ccc;
-                            ">
-                    </div>
-                `);
-
-            $("#thumbnailGallery").append(`
-                    <div class="col-2 mb-0 d-flex justify-content-center">
-                        <div style="height: 90%">
-                           <img src="${img}" 
-                            class="img-thumbnail thumbnail-image p-0 w-100 h-100" 
-                            style="
-                                height: auto;
-                                aspect-ratio: 1 / 1;
-                                border: 1px solid #ccc;
-                                border-radius: 8px;
-                                object-fit: cover;
-                                cursor: pointer;"
+            $('#thumbnailGallery').append(`
+                <div class="col-2 mb-0 d-flex justify-content-center">
+                    <div style="height:90%">
+                        <img src="${img}" 
+                            class="img-thumbnail thumbnail-image p-0 w-100 h-100"
+                            style="aspect-ratio:1/1;border:1px solid #ccc;border-radius:8px;object-fit:cover;cursor:pointer;"
                             data-index="${i}">
-                        </div>
                     </div>
-                    `);
+                </div>
+            `);
         });
 
-        // Sembunyikan kontrol jika hanya 1 gambar
-        if (images.length <= 1) {
-            $("#carouselProduct .carousel-control-next").addClass("d-none");
-            $("#carouselProduct .carousel-control-prev").addClass("d-none");
+        if (newImages.length <= 1) {
+            $('#carouselProduct .carousel-control-next, #carouselProduct .carousel-control-prev').addClass('d-none');
         } else {
-            $("#carouselProduct .carousel-control-next").removeClass("d-none");
-            $("#carouselProduct .carousel-control-prev").removeClass("d-none");
+            $('#carouselProduct .carousel-control-next, #carouselProduct .carousel-control-prev').removeClass('d-none');
         }
 
-        // Aktifkan carousel dengan auto-slide
-        $("#carouselProduct").carousel({
-            interval: 3000,
-            pause: false,
-        });
+        $('#carouselProduct').carousel({ interval: 3000, pause: false });
 
-        // Handling klik thumbnail di dalam modal
+        // klik thumbnail
         let carouselTimeout;
-        $("#thumbnailGallery")
-            .off("click")
-            .on("click", ".thumbnail-image", function () {
-                const index = $(this).data("index");
+        $('#thumbnailGallery')
+            .off('click')
+            .on('click', '.thumbnail-image', function () {
+                const index = $(this).data('index');
+                $('#carouselProduct').carousel(index);
 
-                // Loncat ke slide sesuai thumbnail
-                $("#carouselProduct").carousel(index);
+                $('.thumbnail-image').removeClass('active-thumbnail');
+                $(this).addClass('active-thumbnail');
+                setTimeout(() => $(this).removeClass('active-thumbnail'), 500);
 
-                // Tambahkan efek warna biru ke thumbnail aktif
-                $(".thumbnail-image").removeClass("active-thumbnail");
-                $(this).addClass("active-thumbnail");
-                setTimeout(() => {
-                    $(this).removeClass("active-thumbnail");
-                }, 500);
-
-                // Pause carousel
-                $("#carouselProduct").carousel("pause");
-
-                // Hapus timeout sebelumnya
+                $('#carouselProduct').carousel('pause');
                 clearTimeout(carouselTimeout);
                 carouselTimeout = setTimeout(() => {
-                    $("#carouselProduct").carousel("cycle");
+                    $('#carouselProduct').carousel('cycle');
                 }, 5000);
             });
     }
 
-    // Handling klik thumbnail di dalam modal
-    $(document).on("click", ".product-card", function () {
-        const productId = $(this).data("id");
-        const code = $(this).data("code");
-        const category = $(this).data("category");
-        const imagesStr = $(this).attr("data-images");
-        const type = $(this).data("type");
-        const packages = JSON.parse($(this).attr("data-paket") || "[]");
-        let images = null;
-        let packagesImgs = null;
+    $(document).on('click', '.product-card', function () {
+        const productId = $(this).data('id');
+        const code = $(this).data('code');
+        const category = $(this).data('category');
+        const type = $(this).data('type');
+        const jenis = $(this).data('jenis');
+        const length = parseInt($(this).data('length'), 10);
+        const width = parseFloat($(this).data('width')).toFixed(1);
+        let height = $(this).data('height');
+        const density = parseFloat($(this).data('density')).toFixed(1);
+        const urlVideo = $(this).data('url');
 
-        if (Array.isArray(packages)) {
-            packagesImgs = packages
-                .sort((a, b) => a.order - b.order)
-                .map((p) => `/storage/${p.image}`);
-        }
+        let images = [];
+        let packagesImgs = [];
 
+        const imagesStr = $(this).attr('data-images');
         if (imagesStr) {
-            images = JSON.parse(imagesStr.replace(/&quot;/g, '"'));
+            try {
+                images = JSON.parse(imagesStr.replace(/&quot;/g, '"'));
+            } catch (e) {
+                images = [];
+            }
         }
 
-        const jenis = $(this).data("jenis");
-        const length = parseInt($(this).data("length"), 10);
-        let height = $(this).data("height");
-        const width = parseFloat($(this).data("width")).toFixed(1);
-        const density = parseFloat($(this).data("density")).toFixed(1);
-        const urlVideo = $(this).data("url");
+        const packages = JSON.parse($(this).attr('data-paket') || '[]');
+        if (Array.isArray(packages)) {
+            packagesImgs = packages.sort((a, b) => a.order - b.order).map((p) => `/storage/${p.image}`);
+        }
 
-        $("#modalPaket").empty();
+        $('#modalPaket').empty();
 
-        // Click card tipe wallpanel load product category terkait
-        if (jenis === "tipe-wallpanel") {
+        // contoh case wallpanel
+        if (jenis === 'tipe-wallpanel') {
             resetState();
-            setCatalogConfig({ selectedJenis: 3, type: type });
+            setCatalogConfig({ selectedJenis: 3, type });
             setFirstLoad(false);
             loadMoreData();
-            $("#filter-container").toggleClass("d-none");
-            $("#catalog-col").toggleClass("col-md-10 col-md-12");
+            $('#catalog-col').toggleClass('col-md-10 col-md-12');
             return;
         }
 
-        if (jenis.toLowerCase() === "uv board") {
+        if (jenis.toLowerCase() === 'uv board') {
             viewProduct(productId);
             height = parseInt(height, 10);
-            $("#modalVideo").hide();
-            $("#modalCategory").text(category);
-            $("#modalLength").text(
-                length && !isNaN(length) ? length + " cm" : "-"
-            );
-            $("#modalHeight").text(
-                height && !isNaN(height) ? height + " cm" : "-"
-            );
-            $("#modalDensity").text(
-                density && !isNaN(density) ? density + " mm" : "-"
-            );
-            $("#modalKepadatan").html(`
+            $('#modalVideo').hide();
+            $('#modalCategory').text(category);
+            $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
+            $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
+            $('#modalDensity').text(density && !isNaN(density) ? density + ' mm' : '-');
+            $('#modalKepadatan').html(`
                 <span class="">0.9</span>
             `);
             if (packages.length > 0) {
                 packages
                     .sort((a, b) => a.order - b.order)
                     .map((p) => {
-                        $("#modalPaket").append(`
+                        $('#modalPaket').append(`
                         <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="${p.name}">${p.name}</span>
                     `);
                     });
             } else {
-                $("#modalPaket").append(
-                    '<span class="text-muted">Tidak ada paket</span>'
-                );
-                $("#notes, .lebar").hide();
+                $('#modalPaket').append('<span class="text-muted">Tidak ada paket</span>');
+                $('#notes, .lebar').hide();
             }
         }
 
-        if (jenis.toLowerCase() === "wallboard") {
+        if (jenis.toLowerCase() === 'wallboard') {
             viewProduct(productId);
             height = parseInt(height, 10);
-            $("#modalCategory").text(category);
-            $("#modalLength").text(
-                length && !isNaN(length) ? length + " cm" : "-"
-            );
-            $("#modalHeight").text(
-                height && !isNaN(height) ? height + " cm" : "-"
-            );
-            $(
-                "#ketebalan, #kepadatan, #notes, .paket,  #modalVideo, .lebar"
-            ).hide();
+            $('#modalCategory').text(category);
+            $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
+            $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
+            $('#ketebalan, #kepadatan, #notes, .paket,  #modalVideo, .lebar').hide();
         }
 
-        if (jenis === "PVC Board") {
+        if (jenis === 'PVC Board') {
             viewProduct(productId);
             height = parseInt(height, 10);
-            $("#modalCategory").text(jenis);
-            $("#modalLength").text(
-                length && !isNaN(length) ? length + " cm" : "-"
-            );
-            $("#modalHeight").text(
-                height && !isNaN(height) ? height + " cm" : "-"
-            );
-            $("#modalDensity").text(
-                density && !isNaN(density) ? density + " mm" : "-"
-            );
-            $("#modalKepadatan").html(`
+            $('#modalCategory').text(jenis);
+            $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
+            $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
+            $('#modalDensity').text(density && !isNaN(density) ? density + ' mm' : '-');
+            $('#modalKepadatan').html(`
                 <span class="badge badge-outline-primary kepadatan" data-value="0,4">0,4 (Lite)</span>
                 <span class="badge badge-outline-primary kepadatan" data-value="0,55">0,55 (Standar)</span>
                 <span class="badge badge-outline-primary kepadatan" data-value="0,7">0,7 (Heavy-duty)</span>
             `);
-            $(".paket,  #modalVideo, .lebar").hide();
+            $('.paket,  #modalVideo, .lebar').hide();
         }
 
-        if (jenis === "Wallpanel") {
+        if (jenis === 'Wallpanel') {
             viewProduct(productId);
             height = parseFloat(height).toFixed(1);
-            $("#modalContact").data("type", type);
-            $("#modalCategory").text(category + " / " + type);
-            $("#ketebalan, #kepadatan, .paket, #modalVideo").hide();
-            $("#modalLength").text(
-                length && !isNaN(length) ? length + " cm" : "-"
-            );
-            $("#modalHeight").text(
-                height && !isNaN(height) ? height + " cm" : "-"
-            );
-            $("#modalLebar").text(width && !isNaN(width) ? width + " cm" : "-");
+            $('#modalContact').data('type', type);
+            $('#modalCategory').text(category + ' / ' + type);
+            $('#ketebalan, #kepadatan, .paket, #modalVideo').hide();
+            $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
+            $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
+            $('#modalLebar').text(width && !isNaN(width) ? width + ' cm' : '-');
         }
 
-        if (jenis.toLowerCase() === "aksesoris") {
+        if (jenis.toLowerCase() === 'aksesoris') {
             viewProduct(productId);
-            $("#tinggi, #ketebalan, #kepadatan, .lebar").hide();
-            $("#paket").text("Warna");
-            $("#modalCategory").text(category);
-            $("#modalPaket").append(`
+            $('#tinggi, #ketebalan, #kepadatan, .lebar').hide();
+            $('#paket').text('Warna');
+            $('#modalCategory').text(category);
+            $('#modalPaket').append(`
                 <span class="badge badge-pill badge-outline-primary kepadatan" data-value="Black">Black</span>
                 <span class="badge badge-pill badge-outline-primary kepadatan" data-value="Bronze">Bronze</span>
                 <span class="badge badge-pill badge-outline-primary kepadatan" data-value="Rose Gold">Rose Gold</span>
                 <span class="badge badge-pill badge-outline-primary kepadatan" data-value="Dark Gray">Dark Gray</span>
 
             `);
-            $("#modalLength").text("3 m");
+            $('#modalLength').text('3 m');
 
-            $("#modalVideoPlayer").empty();
-            $("#modalVideo").hide();
+            $('#modalVideoPlayer').empty();
+            $('#modalVideo').hide();
             if (urlVideo) {
-                $("#modalVideoPlayer").append(`
+                $('#modalVideoPlayer').append(`
                     <iframe class="embed-responsive-item"
                     src="${urlVideo}"
                     title="YouTube video player" frameborder="0"
@@ -316,82 +260,52 @@ $(document).ready(function () {
                     referrerpolicy="strict-origin-when-cross-origin"
                     allowfullscreen></iframe>
                 `);
-                $("#modalVideo").show();
+                $('#modalVideo').show();
             }
         }
 
         renderCarouselProduct(images, packagesImgs, jenis);
-        $("#modalCode").text(code);
-        $("#productModalLabel").text(code);
-        $("#modalDownload").data("id", productId);
-        $("#productModal").modal("show");
-        $("#modalContact").data("jenis", jenis);
-        $("#modalContact").data("category", category);
-        $("#modalContact").data("code", code);
 
-        // ambil data lagi untuk debug
-        let modalkepadatan = $("#modalContact").data("kepadatan");
-        let modalPaket = $("#modalContact").data("paket");
+        $('#modalCode').text(code);
+        $('#productModalLabel').text(code);
+        $('#modalDownload').data('id', productId);
+        $('#productModal').modal('show');
+        $('#modalContact').data({ jenis, category, code });
 
-        // kalau ada kepadatan tersimpan → pastikan badge sesuai aktif
-        if (modalkepadatan) {
-            $(".kepadatan").removeClass("active");
-            $("#modalContact").data("kepadatan", null);
-            $("#notes").show();
-        }
-
-        if (modalPaket) {
-            $(".kepadatan").removeClass("active");
-            $("#modalContact").data("kepadatan", null);
-            $("#notes").show();
-        }
-
-        let elKepadatan = $(".kepadatan");
-        if (elKepadatan.length > 0) {
-            $(".modalContact").prop("disabled", true);
-        } else {
-            $(".modalContact").prop("disabled", false);
-        }
+        // reset kepadatan/notes
+        $('.kepadatan').removeClass('active');
+        $('#modalContact').data({ kepadatan: null, paket: null });
+        $('#notes').show();
+        $('.modalContact').prop('disabled', $('.kepadatan').length > 0);
     });
 
-    $(document).on("click", ".kepadatan", function () {
-        $(".modalContact").prop("disabled", false);
+    $(document).on('click', '.kepadatan', function () {
+        $('.modalContact').prop('disabled', false);
 
-        let kepadatan = $(this).data("value");
+        const kepadatan = $(this).data('value');
+        const $modal = $(this).closest('#productModal');
 
-        // cari modal terdekat biar tidak global
-        const $modal = $(this).closest("#productModal");
+        $modal.find('.kepadatan').removeClass('active');
+        $(this).addClass('active');
 
-        // reset active di modal ini
-        $modal.find(".kepadatan").removeClass("active");
-        $(this).addClass("active");
-
-        // sembunyikan notes
-        $("#notes").hide();
-
-        // simpan data kepadatan
-        $("#modalContact").data("kepadatan", kepadatan);
+        $('#notes').hide();
+        $('#modalContact').data('kepadatan', kepadatan);
     });
 
+    // ===== Init Other Modules =====
     bindFilterButton(selectedJenis);
     bindDownloadButtons();
     bindOrderButton();
     initScrollTopButton();
 
+    // ===== View Product Tracker =====
     function viewProduct(productId) {
-        // handling klik product
         $.ajax({
             url: `/products/${productId}/viewed`,
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-            },
-            success: function (res) {
-                console.log("View recorded:", res);
-            },
-            error: function (err) {
-                console.error(err);
-            },
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            success: (res) => console.log('View recorded:', res),
+            error: (err) => console.error(err)
         });
     }
 });
