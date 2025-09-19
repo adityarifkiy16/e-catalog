@@ -27,7 +27,10 @@ export function renderMockup(categories, selectedJenis, uniquePaths, firstLoad =
         'https://www.youtube.com/embed/BiiUrYAbL9s?autoplay=1&mute=1&rel=0&controls=0&amp;loop=1&playlist=BiiUrYAbL9s'
     ];
 
-    const imagesWpc = ['/dist/img/wpc/1.webp', '/dist/img/wpc/2.webp', '/dist/img/wpc/3.jpg', '/dist/img/wpc/4.webp'];
+    const imagesWpc = [];
+    for (let i = 1; i <= 6; i++) {
+        imagesWpc.push(`/dist/img/wpc/${i}.webp`);
+    }
 
     $carouselInner.empty();
     $carouselIndicators.empty();
