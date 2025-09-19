@@ -171,6 +171,7 @@ $(document).ready(function () {
             setCatalogConfig({ selectedJenis: 3, type });
             setFirstLoad(false);
             loadMoreData();
+            handleFilterContainer();
             $('#catalog-col').toggleClass('col-md-10 col-md-12');
             return;
         }
