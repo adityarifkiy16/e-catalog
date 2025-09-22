@@ -98,6 +98,7 @@ export function renderMockup(categories, selectedJenis, uniquePaths, firstLoad =
         if (paths.length === 1) {
             $('#mockup .carousel-control-next').addClass('d-none');
             $('#mockup .carousel-control-prev').addClass('d-none');
+            $carouselIndicators.addClass('d-none');
         } else {
             $('#mockup .carousel-control-next').removeClass('d-none');
             $('#mockup .carousel-control-prev').removeClass('d-none');
