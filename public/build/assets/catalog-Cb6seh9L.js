@@ -1,4 +1,4 @@
-let K=null;function M(t){K=t}function R(){return K}function V(){$("#loading").removeClass("d-none")}function H(){$("#loading").addClass("d-none")}function E(t){return t.slice().sort((n,o)=>(o.type==="motif")-(n.type==="motif")).map(n=>"/storage/"+n.path)}function G(){$(document).on("click",".modalDownload",function(t){t.preventDefault();const n=$(this).data("id"),o="catalog/pdf/product?id="+encodeURIComponent(n);D(this,o)}),$("#btn-download").on("click",function(t){t.preventDefault(),D(this,"catalog/pdf?category="+encodeURIComponent(R()))})}function D(t,n){const o=$(t);o.prop("disabled",!0).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengunduh...'),window.open(n,"_blank"),setTimeout(()=>{o.prop("disabled",!1).html('<i class="fa fa-file-download"></i> Download')},5e3)}function F(){$(document).on("click",".modalContact",function(t){t.preventDefault(),console.log("Klik tombol order",$(this).data("code"));const n="62816659688",o=$(this).data("jenis");console.log(o.toLowerCase());let a="";o.toLowerCase()=="wallpanel"?a=`Halo Admin,
+let M=null;function R(t){M=t}function J(){return M}function V(){$("#loading").removeClass("d-none")}function H(){$("#loading").addClass("d-none")}function E(t){return t.slice().sort((o,n)=>(n.type==="motif")-(o.type==="motif")).map(o=>"/storage/"+o.path)}function G(){$(document).on("click",".modalDownload",function(t){t.preventDefault();const o=$(this).data("id"),n="catalog/pdf/product?id="+encodeURIComponent(o);D(this,n)}),$("#btn-download").on("click",function(t){t.preventDefault(),D(this,"catalog/pdf?category="+encodeURIComponent(J()))})}function D(t,o){const n=$(t);n.prop("disabled",!0).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengunduh...'),window.open(o,"_blank"),setTimeout(()=>{n.prop("disabled",!1).html('<i class="fa fa-file-download"></i> Download')},5e3)}function F(){$(document).on("click",".modalContact",function(t){t.preventDefault(),console.log("Klik tombol order",$(this).data("code"));const o="62816659688",n=$(this).data("jenis");console.log(n.toLowerCase());let e="";n.toLowerCase()=="wallpanel"?e=`Halo Admin,
 Saya tertarik dengan produk berikut:
 
 • Tipe Wallpanel: *${$(this).data("type")}*
@@ -9,14 +9,14 @@ Saya tertarik dengan produk berikut:
 • Produk : *${$(this).data("jenis")}*
 • Kategori: *${$(this).data("category")}*
 
-Apakah produk ini masih tersedia? Terima kasih.`:o.toLowerCase()=="pvc board"?a=`Halo Admin,
+Apakah produk ini masih tersedia? Terima kasih.`:n.toLowerCase()=="pvc board"?e=`Halo Admin,
 Saya tertarik dengan produk berikut:
 
 • Produk : *${$(this).data("jenis")}*
 • Ketebalan : *${$(this).data("code")}*
 • density: *${$(this).data("kepadatan")??"-"}*
 
-Apakah produk ini masih tersedia? Terima kasih.`:o.toLowerCase()=="uv board"?a=`Halo Admin,
+Apakah produk ini masih tersedia? Terima kasih.`:n.toLowerCase()=="uv board"?e=`Halo Admin,
 Saya tertarik dengan produk berikut:
 
 • Kode Motif : *${$(this).data("code")}*
@@ -25,7 +25,7 @@ Saya tertarik dengan produk berikut:
 
 • Paket: *${$(this).data("kepadatan")??"-"}*
 
-Apakah produk ini masih tersedia? Terima kasih.`:o.toLowerCase()=="aksesoris"?a=`Halo Admin,
+Apakah produk ini masih tersedia? Terima kasih.`:n.toLowerCase()=="aksesoris"?e=`Halo Admin,
 Saya tertarik dengan produk berikut:
 
 • Kode : *${$(this).data("code")}*
@@ -34,42 +34,42 @@ Saya tertarik dengan produk berikut:
 
 • Warna : *${$(this).data("kepadatan")}*
 
-Apakah produk ini masih tersedia? Terima kasih.`:a=`Halo Admin,
+Apakah produk ini masih tersedia? Terima kasih.`:e=`Halo Admin,
 Saya tertarik dengan produk berikut:
 
 • Kode Motif : *${$(this).data("code")}*
 • Produk : *${$(this).data("jenis")}*
 • Kategori: *${$(this).data("category")}*
 
-Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${n}?text=${encodeURIComponent(a)}`,"_blank")})}function O(){$(window).scroll(function(){$(this).scrollTop()>100?$("#btn-scroll-top").fadeIn():$("#btn-scroll-top").fadeOut()}),$("#btn-scroll-top").click(function(){return $("html, body").animate({scrollTop:0},500),!1})}function U(t,n){$("#btn-download").removeClass("d-none");let o="";t.forEach(a=>{var h,m,d,u,i,y,w,T,b,x,C;const c=a.photo?`/storage/${a.photo}`:"https://via.placeholder.com/300x200?text=No+Image",p=E(a.images),f=[c,...p],g=JSON.stringify(f).replace(/"/g,"&quot;"),r=JSON.stringify(a.packages).replace(/"/g,"&quot;"),s=((h=a.category)==null?void 0:h.name)??"Tanpa Kategori";let l=a.code;n==3?l=a.code.split(" ").slice(4).join(" ").trim():n==5?l=a.code.split(" ").slice(1).join(" "):l=a.code,((m=a.category)==null?void 0:m.display_style)==="square"||n===null?o+=`
+Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${o}?text=${encodeURIComponent(e)}`,"_blank")})}function O(){$(window).scroll(function(){$(this).scrollTop()>100?$("#btn-scroll-top").fadeIn():$("#btn-scroll-top").fadeOut()}),$("#btn-scroll-top").click(function(){return $("html, body").animate({scrollTop:0},500),!1})}function U(t,o){$("#btn-download").removeClass("d-none");let n="";t.forEach(e=>{var h,m,d,u,i,y,w,T,b,x,C;const c=e.photo?`/storage/${e.photo}`:"https://via.placeholder.com/300x200?text=No+Image",p=E(e.images),f=[c,...p],g=JSON.stringify(f).replace(/"/g,"&quot;"),r=JSON.stringify(e.packages).replace(/"/g,"&quot;"),s=((h=e.category)==null?void 0:h.name)??"Tanpa Kategori";let l=e.code;o==3?l=e.code.split(" ").slice(4).join(" ").trim():o==4||o==5?l=e.code.split(" ").slice(1).join(" "):l=e.code,((m=e.category)==null?void 0:m.display_style)==="square"||o===null?n+=`
                     <div class="col-md-2 col-6 mb-4">
                         <div class="h-100 product-card"
-                    `:((d=a.category)==null?void 0:d.display_style)==="rectangle"?o+=`
+                    `:((d=e.category)==null?void 0:d.display_style)==="rectangle"?n+=`
                     <div class="col-md-4 col-6 mb-4">
                         <div class="h-100 product-card"
-                    `:o+=`
+                    `:n+=`
                     <div class="col-md-2 col-6 mb-4">
                         <div class="h-100 product-card d-flex flex-column justify-content-center align-items-center"
-                    `,o+=`
-                    data-id="${a.id}"
+                    `,n+=`
+                    data-id="${e.id}"
                     data-code="${l}"
                     data-category="${s}"
-                    data-jenis="${((i=(u=a.category)==null?void 0:u.jenis)==null?void 0:i.name)??""}"
-                    data-length="${a.panjang}"
-                    data-height="${a.tinggi}"
-                    data-width="${a.lebar}"
-                    data-density="${a.ketebalan}"
+                    data-jenis="${((i=(u=e.category)==null?void 0:u.jenis)==null?void 0:i.name)??""}"
+                    data-length="${e.panjang}"
+                    data-height="${e.tinggi}"
+                    data-width="${e.lebar}"
+                    data-density="${e.ketebalan}"
                     data-images="${g}"
                     data-image="${c}"
-                    data-type="${((w=(y=a.category)==null?void 0:y.types)==null?void 0:w.name)??""}"
-                    data-type-image="${((b=(T=a.category)==null?void 0:T.types)==null?void 0:b.image)??""}"
-                    data-url="${a.url_video}"
+                    data-type="${((w=(y=e.category)==null?void 0:y.types)==null?void 0:w.name)??""}"
+                    data-type-image="${((b=(T=e.category)==null?void 0:T.types)==null?void 0:b.image)??""}"
+                    data-url="${e.url_video}"
                     data-paket="${r}"
                     >
                        <img 
                             src="${c}" 
                             class="card-img-top" 
-                            alt="${a.name}" 
+                            alt="${e.name}" 
                             style="
                                 border : 1px solid #2c2c2c;
                                 min-height: 10rem;
@@ -78,7 +78,7 @@ Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${n}
                                 border-radius: 8px;
                                 width: 100%; 
                                 object-fit: cover; 
-                                object-position: ${((C=(x=a.category)==null?void 0:x.jenis)==null?void 0:C.name)==="PVC Board"?"bottom center":"center center"};
+                                object-position: ${((C=(x=e.category)==null?void 0:x.jenis)==null?void 0:C.name)==="PVC Board"?"bottom center":"center center"};
                             "
                         >
                         <div class="card-body d-flex flex-column text-center">
@@ -88,19 +88,19 @@ Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${n}
                             <h6 class="card-text text-muted mb-1">${s}</h6>
                         </div>
                     </div>
-                </div>`}),$("#product-list .row").append(o)}function _(t,n){$("#btn-download").addClass("d-none");let o="";t.forEach(a=>{const c=a.thumbnail?`/storage/${a.thumbnail}`:"https://via.placeholder.com/300x200?text=No+Image";console.log(n);const p=n==3?"wallpanel":"tanpa kategori";o+=`
+                </div>`}),$("#product-list .row").append(n)}function _(t,o){$("#btn-download").addClass("d-none");let n="";t.forEach(e=>{const c=e.thumbnail?`/storage/${e.thumbnail}`:"https://via.placeholder.com/300x200?text=No+Image";console.log(o);const p=o==3?"wallpanel":"tanpa kategori";n+=`
                     <div class="col-md-2 col-6 mb-4">
                         <div class="h-100 product-card d-flex flex-column justify-content-center align-items-center"
-                    `,o+=`
-                    data-id="${a.id}"
+                    `,n+=`
+                    data-id="${e.id}"
                     data-jenis="tipe-wallpanel"
                     data-category="${p}"
-                    data-type="${a.id}"
+                    data-type="${e.id}"
                     >
                        <img 
                             src="${c}" 
                             class="card-img-top" 
-                            alt="${a.name}" 
+                            alt="${e.name}" 
                             style="
                                 border : 1px solid #2c2c2c;
                                 min-height: 10rem;
@@ -113,12 +113,12 @@ Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${n}
                         >
                         <div class="card-body d-flex flex-column text-center">
                             <h4 class="card-title font-weight-bold text-uppercase mb-2">
-                                ${a.name}
+                                ${e.name}
                             </h4>
                             <h6 class="card-text text-muted mb-1">${p}</h6>
                         </div>
                     </div>
-                </div>`}),$("#product-list .row").append(o)}function L(t,n,o,a=!1){if(n==null)return;t.forEach(s=>{s.images&&s.images.forEach(l=>{l.path&&o.add(l.path)}),s.path&&o.add(s.path)});const c=Array.from(o),p=$("#mockup-carousel-inner"),f=$("#mockup-carousel-indicators"),g=["https://www.youtube.com/embed/BiiUrYAbL9s?autoplay=1&mute=1&rel=0&controls=0&amp;loop=1&playlist=BiiUrYAbL9s"],r=[];for(let s=1;s<=6;s++)r.push(`/dist/img/wpc/${s}.webp?v=${Date.now()}`);if(p.empty(),f.empty(),n==4){$("#mockup-carousel").carousel({interval:!1}),$("#mockup .carousel-control-next").addClass("d-none"),$("#mockup .carousel-control-prev").addClass("d-none"),g.forEach((s,l)=>{p.append(`
+                </div>`}),$("#product-list .row").append(n)}function L(t,o,n,e=!1){if(o==null)return;t.forEach(s=>{s.images&&s.images.forEach(l=>{l.path&&n.add(l.path)}),s.path&&n.add(s.path)});const c=Array.from(n),p=$("#mockup-carousel-inner"),f=$("#mockup-carousel-indicators"),g=["https://www.youtube.com/embed/BiiUrYAbL9s?autoplay=1&mute=1&rel=0&controls=0&amp;loop=1&playlist=BiiUrYAbL9s"],r=[];for(let s=1;s<=6;s++)r.push(`/dist/img/wpc/${s}.webp?v=${Date.now()}`);if(p.empty(),f.empty(),o==4){$("#mockup-carousel").carousel({interval:!1}),$("#mockup .carousel-control-next").addClass("d-none"),$("#mockup .carousel-control-prev").addClass("d-none"),g.forEach((s,l)=>{p.append(`
             <div class="carousel-item ${l===0?"active":""}">
                 <div class="d-flex justify-content-center align-items-center">
                     <div class="embed-responsive embed-responsive-16by9 rounded-lg" style="width:100%;">
@@ -133,7 +133,7 @@ Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${n}
                     </div>
                 </div>
             </div>
-        `)}),$("#mockup").removeClass("d-none");return}else if(n==3&&a){$("#mockup-carousel").carousel({interval:3e3}),$("#mockup .carousel-control-next").removeClass("d-none"),$("#mockup .carousel-control-prev").removeClass("d-none"),r.forEach((s,l)=>{p.append(`
+        `)}),$("#mockup").removeClass("d-none");return}else if(o==3&&e){$("#mockup-carousel").carousel({interval:3e3}),$("#mockup .carousel-control-next").removeClass("d-none"),$("#mockup .carousel-control-prev").removeClass("d-none"),r.forEach((s,l)=>{p.append(`
             <div class="carousel-item ${l===0?"active":""}">
                 <div class="d-flex justify-content-center align-items-center">
                     <img src="${s}" 
@@ -152,14 +152,14 @@ Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${n}
                 </div>
             `),f.append(`
                 <li data-target="#mockup-carousel" data-slide-to="${l}" ${l===0?'class="active"':""}></li>
-            `)}),$("#mockup").removeClass("d-none")):$("#mockup").addClass("d-none")}let e={selectedJenis:null,category:null,type:null,currentPage:1,isLoading:!1,lastPage:!1,firstLoad:!0,currentRequest:null,uniquePaths:new Set};function q(t){e.firstLoad=t}function B(t){e.selectedJenis=t.selectedJenis,e.category=t.category??null,e.type=t.type??null}function W(){return e.isLoading}function N(){e.currentPage=1,e.isLoading=!1,e.lastPage=!1,e.uniquePaths.clear(),$("#product-list .row").html("")}function v(){if(e.isLoading||e.lastPage)return Promise.resolve();console.log("loadMoreData"),e.isLoading=!0,V();const t=$("#search-input").val();return e.currentRequest&&e.currentRequest.readyState!==4&&e.currentRequest.abort(),e.currentRequest=$.ajax({url:"/catalog",type:"GET",data:{page:e.currentPage,search:t,jenis:e.selectedJenis,category:e.category,type:e.type}}),new Promise((n,o)=>{e.currentRequest.done(a=>z(a)).fail((a,c)=>{c!=="abort"&&(console.error("Gagal memuat data."),o())}).always(()=>{e.isLoading=!1,H(),e.currentRequest=null}).then(n)})}function z(t){const n=t.data.data??[],o=t.types??[];e.type&&($("#backButton").removeClass("d-none"),$("#homeButton").addClass("d-none")),e.selectedJenis==3&&e.firstLoad?(o.length>0&&($("#search-form").addClass("d-none"),_(o,e.selectedJenis),e.currentPage++,e.currentPage>t.data.last_page&&(e.lastPage=!0)),J(t,!0)):(n.length>0?(U(n,e.selectedJenis),e.currentPage++,e.currentPage>t.data.last_page&&(e.lastPage=!0)):(e.currentPage===1&&($("#mockup").addClass("d-none"),$("#product-list .row").append(`<div class="col-12"><img src="dist/img/no-data.png" alt="no-data"
-                     class="img-fluid mx-auto d-block" style="max-width:100%;height:auto;margin:100px 0;"></div>`)),e.lastPage=!0),J(t,!1))}function J(t,n=!0){var r,s,l,h,m,d;const o=t.category??[],a=((l=(s=(r=t.data.data[0])==null?void 0:r.category)==null?void 0:s.types)==null?void 0:l.images)??[],c=(h=t.jenis)==null?void 0:h.name,p=((d=(m=t.data.data[0])==null?void 0:m.category)==null?void 0:d.images)??[];o.length===0?$("#category-container").addClass("d-none"):($("#category-container").removeClass("d-none"),a.length>0?L(a,e.selectedJenis,e.uniquePaths,n):p.length>0?L(p,e.selectedJenis,e.uniquePaths,n):e.selectedJenis==3?L([],e.selectedJenis,e.uniquePaths,n):e.selectedJenis==4?L([],e.selectedJenis,e.uniquePaths,n):$("#mockup").addClass("d-none"));const f={"PVC Board":()=>{$("#category-container").addClass("d-none"),$(".category-modal-container").text("Tidak ada kategori")},Wallboard:()=>P("Motif"),"UV Board":()=>P("Motif"),Wallpanel:()=>P("Motif"),Aksesoris:()=>P("Ukuran"),default:()=>P("Kategori")};(f[c]||f.default)();let g='<li class="nav-item font-poppins">';o.length>0?o.forEach(u=>{g+=`
+            `)}),$("#mockup").removeClass("d-none")):$("#mockup").addClass("d-none")}let a={selectedJenis:null,category:null,type:null,currentPage:1,isLoading:!1,lastPage:!1,firstLoad:!0,currentRequest:null,uniquePaths:new Set};function q(t){a.firstLoad=t}function B(t){a.selectedJenis=t.selectedJenis,a.category=t.category??null,a.type=t.type??null}function W(){return a.isLoading}function N(){a.currentPage=1,a.isLoading=!1,a.lastPage=!1,a.uniquePaths.clear(),$("#product-list .row").html("")}function v(){if(a.isLoading||a.lastPage)return Promise.resolve();console.log("loadMoreData"),a.isLoading=!0,V();const t=$("#search-input").val();return a.currentRequest&&a.currentRequest.readyState!==4&&a.currentRequest.abort(),a.currentRequest=$.ajax({url:"/catalog",type:"GET",data:{page:a.currentPage,search:t,jenis:a.selectedJenis,category:a.category,type:a.type}}),new Promise((o,n)=>{a.currentRequest.done(e=>z(e)).fail((e,c)=>{c!=="abort"&&(console.error("Gagal memuat data."),n())}).always(()=>{a.isLoading=!1,H(),a.currentRequest=null}).then(o)})}function z(t){const o=t.data.data??[],n=t.types??[];a.type&&($("#backButton").removeClass("d-none"),$("#homeButton").addClass("d-none")),a.selectedJenis==3&&a.firstLoad?(n.length>0&&($("#search-form").addClass("d-none"),_(n,a.selectedJenis),a.currentPage++,a.currentPage>t.data.last_page&&(a.lastPage=!0)),K(t,!0)):(o.length>0?(U(o,a.selectedJenis),a.currentPage++,a.currentPage>t.data.last_page&&(a.lastPage=!0)):(a.currentPage===1&&($("#mockup").addClass("d-none"),$("#product-list .row").append(`<div class="col-12"><img src="dist/img/no-data.png" alt="no-data"
+                     class="img-fluid mx-auto d-block" style="max-width:100%;height:auto;margin:100px 0;"></div>`)),a.lastPage=!0),K(t,!1))}function K(t,o=!0){var r,s,l,h,m,d;const n=t.category??[],e=((l=(s=(r=t.data.data[0])==null?void 0:r.category)==null?void 0:s.types)==null?void 0:l.images)??[],c=(h=t.jenis)==null?void 0:h.name,p=((d=(m=t.data.data[0])==null?void 0:m.category)==null?void 0:d.images)??[];n.length===0?$("#category-container").addClass("d-none"):($("#category-container").removeClass("d-none"),e.length>0?L(e,a.selectedJenis,a.uniquePaths,o):p.length>0?L(p,a.selectedJenis,a.uniquePaths,o):a.selectedJenis==3?L([],a.selectedJenis,a.uniquePaths,o):a.selectedJenis==4?L([],a.selectedJenis,a.uniquePaths,o):$("#mockup").addClass("d-none"));const f={"PVC Board":()=>{$("#category-container").addClass("d-none"),$(".category-modal-container").text("Tidak ada kategori")},Wallboard:()=>P("Motif"),"UV Board":()=>P("Motif"),Wallpanel:()=>P("Motif"),Aksesoris:()=>P("Ukuran"),default:()=>P("Kategori")};(f[c]||f.default)();let g='<li class="nav-item font-poppins">';n.length>0?n.forEach(u=>{g+=`
                 <a class="nav-link text-white category-filter d-flex align-items-center justify-content-start" 
                    href="#" data-jenis-id="${u.jenis_id}" data-id="${u.id}" data-type="${u.type_id}">
                     <img src="${u.path?"storage/"+u.path:"dist/img/product/1.webp"}" alt="${u.name}" 
                          class="mr-2 img-thumbnail" style="width:50px;height:50px;object-fit:contain;">
                     <span class="text-capitalize">${u.name}</span>
-                </a>`}):g+='<a class="nav-link text-white category-filter" href="#">Tanpa Kategori</a>',g+="</li>",n?$("#category-menu-item, #category-menu-item-modal").html("tidak ada kategori"):$("#category-menu-item, #category-menu-item-modal").html(g),!e.category&&o.length>0?(console.log("auto choose category"),e.category=o[0].id,M(e.category),N(),setTimeout(()=>{v()},200)):e.category&&$(`.category-filter[data-id="${e.category}"]`).addClass("active")}function P(t){$("#category-menu-item-label, #category-modal-item-label").html(t)}let S=!1;function Y(t){$(document).off("click",".category-filter"),$(document).on("click",".category-filter",async function(n){if(n.preventDefault(),S)return;S=!0;const o=$(this).data("id"),a=$(this).data("type");console.log(a);try{B({selectedJenis:t,category:o,type:a}),M(o),$("#filterModal").modal("hide"),N(),await v(!1)}catch(c){console.error("Gagal memuat data:",c)}finally{S=!1}})}function A(t=null){$(window).width()<768?$("#filter-container").addClass("d-none"):$("#filter-container").removeClass("d-none"),(t==1||t==3)&&($("#filter-container").addClass("d-none"),$("#catalog-col").removeClass("col-md-10").addClass("col-md-12"))}$(document).ready(function(){const t=new URLSearchParams(window.location.search),n=t.get("jenis"),o=t.get("category");let a,c,p=!1;(n==5||n==2)&&sessionStorage.removeItem("selectedWallpanel"),B({selectedJenis:n,category:o}),v(),n&&($("#category-container").removeClass("d-md-none"),$("#catalog-col").removeClass("center-content")),A(n),$(window).on("resize",()=>A(n)),$("#search-input").on("input",function(){clearTimeout(a),a=setTimeout(()=>{N(),v()},500)}),$(window).on("scroll",function(){clearTimeout(c),c=setTimeout(async()=>{if(p||W())return;const r=$(window).scrollTop(),s=$(window).height(),l=$(document).height();if(r+s>=l-150){p=!0;try{q(!1),await v()}finally{p=!1}}},200)});function f(r,s=[],l=""){$("#carousel-product-image").empty(),$("#thumbnailGallery").empty();let h=r||[];(l==null?void 0:l.toLowerCase())==="uv board"&&s.length&&(h=[...r,...s]),h.forEach((d,u)=>{const i=u===0?"active":"";$("#carousel-product-image").append(`
+                </a>`}):g+='<a class="nav-link text-white category-filter" href="#">Tanpa Kategori</a>',g+="</li>",o?$("#category-menu-item, #category-menu-item-modal").html("tidak ada kategori"):$("#category-menu-item, #category-menu-item-modal").html(g),!a.category&&n.length>0?(console.log("auto choose category"),a.category=n[0].id,R(a.category),N(),setTimeout(()=>{v()},200)):a.category&&$(`.category-filter[data-id="${a.category}"]`).addClass("active")}function P(t){$("#category-menu-item-label, #category-modal-item-label").html(t)}let S=!1;function Y(t){$(document).off("click",".category-filter"),$(document).on("click",".category-filter",async function(o){if(o.preventDefault(),S)return;S=!0;const n=$(this).data("id"),e=$(this).data("type");console.log(e);try{B({selectedJenis:t,category:n,type:e}),R(n),$("#filterModal").modal("hide"),N(),await v(!1)}catch(c){console.error("Gagal memuat data:",c)}finally{S=!1}})}function A(t=null){$(window).width()<768?$("#filter-container").addClass("d-none"):$("#filter-container").removeClass("d-none"),(t==1||t==3)&&($("#filter-container").addClass("d-none"),$("#catalog-col").removeClass("col-md-10").addClass("col-md-12"))}$(document).ready(function(){const t=new URLSearchParams(window.location.search),o=t.get("jenis"),n=t.get("category");let e,c,p=!1;(o==5||o==2)&&sessionStorage.removeItem("selectedWallpanel"),B({selectedJenis:o,category:n}),v(),o&&($("#category-container").removeClass("d-md-none"),$("#catalog-col").removeClass("center-content")),A(o),$(window).on("resize",()=>A(o)),$("#search-input").on("input",function(){clearTimeout(e),e=setTimeout(()=>{N(),v()},500)}),$(window).on("scroll",function(){clearTimeout(c),c=setTimeout(async()=>{if(p||W())return;const r=$(window).scrollTop(),s=$(window).height(),l=$(document).height();if(r+s>=l-150){p=!0;try{q(!1),await v()}finally{p=!1}}},200)});function f(r,s=[],l=""){$("#carousel-product-image").empty(),$("#thumbnailGallery").empty();let h=r||[];(l==null?void 0:l.toLowerCase())==="uv board"&&s.length&&(h=[...r,...s]),h.forEach((d,u)=>{const i=u===0?"active":"";$("#carousel-product-image").append(`
                 <div class="carousel-item ${i}">
                     <img src="${d}" class="img-fluid d-block mx-auto"
                         style="width:100%;max-width:400px;aspect-ratio:1/1;object-fit:cover;border-radius:8px;border:1px solid #ccc;">
@@ -194,4 +194,4 @@ Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${n}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share;"
                     referrerpolicy="strict-origin-when-cross-origin"
                     allowfullscreen></iframe>
-                `),$("#modalVideo").show())),f(b,x,m),$("#modalCode").text(s),$("#productModalLabel").text(s),$("#modalDownload").data("id",r),$("#productModal").modal("show"),$("#modalContact").data({jenis:m,category:l,code:s,length:d,width:u,height:i,density:y,type:h}),$(".kepadatan").removeClass("active"),$("#modalContact").data({kepadatan:null,paket:null}),$(".modalContact").prop("disabled",$(".kepadatan").length>0)}),$(document).on("click",".kepadatan",function(){$(".modalContact").prop("disabled",!1);const r=$(this).data("value");$(this).closest("#productModal").find(".kepadatan").removeClass("active"),$(this).addClass("active"),$("#notes").hide(),$("#modalContact").data("kepadatan",r)}),Y(n),G(),F(),O();function g(r){$.ajax({url:`/products/${r}/viewed`,method:"POST",headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")},success:s=>console.log("View recorded:",s),error:s=>console.error(s)})}});
+                `),$("#modalVideo").show())),f(b,x,m),$("#modalCode").text(s),$("#productModalLabel").text(s),$("#modalDownload").data("id",r),$("#productModal").modal("show"),$("#modalContact").data({jenis:m,category:l,code:s,length:d,width:u,height:i,density:y,type:h}),$(".kepadatan").removeClass("active"),$("#modalContact").data({kepadatan:null,paket:null}),$(".modalContact").prop("disabled",$(".kepadatan").length>0)}),$(document).on("click",".kepadatan",function(){$(".modalContact").prop("disabled",!1);const r=$(this).data("value");$(this).closest("#productModal").find(".kepadatan").removeClass("active"),$(this).addClass("active"),$("#notes").hide(),$("#modalContact").data("kepadatan",r)}),Y(o),G(),F(),O();function g(r){$.ajax({url:`/products/${r}/viewed`,method:"POST",headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")},success:s=>console.log("View recorded:",s),error:s=>console.error(s)})}});

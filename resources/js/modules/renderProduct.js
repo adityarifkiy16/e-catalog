@@ -21,6 +21,8 @@ export function renderProducts(products, selectedJenis) {
 
         if (selectedJenis == 3) {
             displayCode = product.code.split(' ').slice(4).join(' ').trim();
+        } else if(selectedJenis == 4) {
+          displayCode = product.code.split(' ').slice(1).join(' ');  
         } else if (selectedJenis == 5) {
             displayCode = product.code.split(' ').slice(1).join(' ');
         } else {
