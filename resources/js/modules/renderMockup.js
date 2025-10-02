@@ -29,6 +29,7 @@ export function renderMockup(categories, selectedJenis, uniquePaths, firstLoad =
 
     const imagesWpc = [];
     for (let i = 1; i <= 6; i++) {
+        if (i === 2) continue;
         imagesWpc.push(`/dist/img/wpc/${i}.webp?v=${Date.now()}`);
     }
 
