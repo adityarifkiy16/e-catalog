@@ -184,9 +184,6 @@ $(document).ready(function () {
             renderVariantsToModal(variants);
             $('#modalVideo, .lebar').hide();
             $('#modalCategory').text(category);
-            $('#modalKepadatan').html(`
-                <span class="">0.9</span>
-            `);
             if (packages.length > 0) {
                 packages
                     .sort((a, b) => a.order - b.order)
@@ -205,14 +202,14 @@ $(document).ready(function () {
             viewProduct(productId);
             renderVariantsToModal(variants);
             $('#modalCategory').text(category);
-            $('#ketebalan, #kepadatan, #notes, .paket,  #modalVideo, .lebar').hide();
+            $('#ketebalan, .density, #notes, .paket,  #modalVideo, .lebar').hide();
         }
 
         if (jenis === 'PVC Board') {
             viewProduct(productId);
-            $('#modalCategory').text(jenis);
-            $('#modalVideo, .lebar').hide();
             renderVariantsToModal(variants);
+            $('#modalCategory').text(jenis);
+            $('#modalVideo, .lebar, .paket').hide();
         }
 
         if (jenis === 'Wallpanel') {
@@ -220,15 +217,14 @@ $(document).ready(function () {
             renderVariantsToModal(variants);
             $('#modalContact').data('type', type);
             $('#modalCategory').text(category + ' / ' + type);
-            $('#ketebalan, #kepadatan, .paket, #modalVideo, #notes').hide();
+            $('#ketebalan, #kepadatan, .paket, #modalVideo, #notes, .density').hide();
             $('#modalGrafis').attr('src', `/storage/${imageType}`);
             $('.grafis').removeClass('d-none');
         }
-        console.log('Variants:', variants);
 
         if (jenis.toLowerCase() === 'aksesoris') {
             viewProduct(productId);
-            $('#tinggi, #ketebalan, #kepadatan, .lebar').hide();
+            $('#tinggi, #ketebalan, #kepadatan, .lebar, .density').hide();
             $('#modalCategory').text(category);
             renderVariantsToModal(variants);
 

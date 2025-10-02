@@ -1,6 +1,7 @@
 export function renderVariantsToModal(variants, container = '#modalVariants') {
     $(container).empty();
     $('#modalPaket').empty();
+    $('#modalKepadatan').empty();
 
     if (Array.isArray(variants) && variants.length > 0) {
         let hasWarna = false;
@@ -29,20 +30,22 @@ export function renderVariantsToModal(variants, container = '#modalVariants') {
                 }
             } else if (nameLower === 'density') {
                 hasDensity = true;
-                $('#paket').text('Density'); // ubah label Paket jadi Density
-
                 if (values.length > 0) {
                     values.forEach((val) => {
                         if (v.pivot && val.id === v.pivot.variant_value_id) {
-                            $('#modalPaket').append(`
-                                <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="${val.name}">
-                                    ${val.name}
-                                </span>
-                            `);
+                            if (values.length > 1) {
+                                $('#modalKepadatan').append(`
+                                    <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="${val.name}">
+                                        ${val.name}
+                                    </span>
+                                `);
+                            } else {
+                                $('#modalKepadatan').append(val.name);
+                            }
                         }
                     });
                 } else {
-                    $('#modalPaket').append(`<span class="text-muted">Tidak ada data</span>`);
+                    $('#modalKepadatan').append(`<span class="text-muted">Tidak ada data</span>`);
                 }
             } else {
                 // varian biasa → row dengan unit
@@ -65,8 +68,13 @@ export function renderVariantsToModal(variants, container = '#modalVariants') {
         });
 
         // tampilkan badge jika ada warna atau density
-        if (!hasWarna && !hasDensity) $('.paket').hide();
-        else $('.paket').show();
+        if (!hasWarna && !hasDensity) {
+            $('.paket').hide();
+            $('.density').hide();
+        } else {
+            $('.paket').show();
+            $('.density').show();
+        }
     } else {
         $(container).append(`<div class="text-muted">Tidak ada varian</div>`);
         $('.paket').hide();

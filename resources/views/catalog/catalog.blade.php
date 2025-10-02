@@ -181,12 +181,19 @@
                                             <!-- Detail Produk -->
                                             <div class="mb-2 text-dark w-100 px-2">
                                                 <div id="modalVariants"></div>
+                                                <div class="row mb-1 density">
+                                                    <div class="col-4 col-sm-3 font-weight-bold" id="density">Density
+                                                    </div>
+                                                    <div class="col-auto">:</div>
+                                                    <div class="col" id="modalKepadatan"></div>
+                                                </div>
                                                 <div class="row mb-1 paket">
                                                     <div class="col-4 col-sm-3 font-weight-bold" id="paket">Paket
                                                     </div>
                                                     <div class="col-auto">:</div>
                                                     <div class="col" id="modalPaket"></div>
                                                 </div>
+
 
                                                 <div class="row mb-1 grafis d-none">
                                                     <div class="col">
