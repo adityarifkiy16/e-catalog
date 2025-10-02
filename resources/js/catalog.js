@@ -229,7 +229,7 @@ $(document).ready(function () {
             renderVariantsToModal(variants);
 
             $('#modalVideoPlayer').empty();
-            $('#modalVideo').hide();
+            $('#modalVideo, .density').hide();
             if (urlVideo) {
                 $('#modalVideoPlayer').append(`
                     <iframe class="embed-responsive-item"
