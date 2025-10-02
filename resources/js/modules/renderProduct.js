@@ -2,6 +2,7 @@ import { prepareImageOrder } from './utils';
 
 export function renderProducts(products, selectedJenis) {
     $('#btn-download').removeClass('d-none');
+    console.log(products);
     let html = '';
     products.forEach((product) => {
         const image = product.photo ? `/storage/${product.photo}` : 'https://via.placeholder.com/300x200?text=No+Image';
@@ -21,8 +22,8 @@ export function renderProducts(products, selectedJenis) {
 
         if (selectedJenis == 3) {
             displayCode = product.code.split(' ').slice(4).join(' ').trim();
-        } else if(selectedJenis == 4) {
-          displayCode = product.code.split(' ').slice(1).join(' ');  
+        } else if (selectedJenis == 4) {
+            displayCode = product.code.split(' ').slice(1).join(' ');
         } else if (selectedJenis == 5) {
             displayCode = product.code.split(' ').slice(1).join(' ');
         } else {
@@ -47,21 +48,20 @@ export function renderProducts(products, selectedJenis) {
                     `;
         }
 
+        const variantsJson = JSON.stringify(product.variants).replace(/"/g, '&quot;');
+
         html += `
                     data-id="${product.id}"
                     data-code="${displayCode}"
                     data-category="${categoryName}"
                     data-jenis="${product.category?.jenis?.name ?? ''}"
-                    data-length="${product.panjang}"
-                    data-height="${product.tinggi}"
-                    data-width="${product.lebar}"
-                    data-density="${product.ketebalan}"
                     data-images="${imagesJson}"
                     data-image="${image}"
                     data-type="${product.category?.types?.name ?? ''}"
                     data-type-image="${product.category?.types?.image ?? ''}"
                     data-url="${product.url_video}"
                     data-paket="${packagesJson}"
+                    data-variants = "${variantsJson}"
                     >
                        <img 
                             src="${image}" 

@@ -3,6 +3,7 @@ import { bindOrderButton } from './modules/orderButton';
 import { initScrollTopButton } from './modules/scroll';
 import { resetState, setCatalogConfig, loadMoreData, setFirstLoad, getIsLoading } from './modules/catalogLoader';
 import { bindFilterButton } from './modules/filter';
+import { renderVariantsToModal } from './modules/renderVariant';
 
 // ===== Responsive Handling =====
 function handleFilterContainer(selectedJenis = null) {
@@ -142,15 +143,16 @@ $(document).ready(function () {
         const jenis = $(this).data('jenis');
         const length = parseInt($(this).data('length'), 10);
         const width = parseFloat($(this).data('width')).toFixed(1);
-        let height = $(this).data('height');
         const density = parseFloat($(this).data('density')).toFixed(1);
         const urlVideo = $(this).data('url');
+        const variants = JSON.parse($(this).attr('data-variants') || '[]');
+        const imagesStr = $(this).attr('data-images');
+        const packages = JSON.parse($(this).attr('data-paket') || '[]');
+        let height = $(this).data('height');
         let imageType = $(this).data('type-image');
-
         let images = [];
         let packagesImgs = [];
 
-        const imagesStr = $(this).attr('data-images');
         if (imagesStr) {
             try {
                 images = JSON.parse(imagesStr.replace(/&quot;/g, '"'));
@@ -159,7 +161,7 @@ $(document).ready(function () {
             }
         }
 
-        const packages = JSON.parse($(this).attr('data-paket') || '[]');
+        // Handling urutan paket
         if (Array.isArray(packages)) {
             packagesImgs = packages.sort((a, b) => a.order - b.order).map((p) => `/storage/${p.image}`);
         }
@@ -179,12 +181,9 @@ $(document).ready(function () {
 
         if (jenis.toLowerCase() === 'uv board') {
             viewProduct(productId);
-            height = parseInt(height, 10);
+            renderVariantsToModal(variants);
             $('#modalVideo, .lebar').hide();
             $('#modalCategory').text(category);
-            $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
-            $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
-            $('#modalDensity').text(density && !isNaN(density) ? density + ' mm' : '-');
             $('#modalKepadatan').html(`
                 <span class="">0.9</span>
             `);
@@ -204,54 +203,34 @@ $(document).ready(function () {
 
         if (jenis.toLowerCase() === 'wallboard') {
             viewProduct(productId);
-            height = parseInt(height, 10);
+            renderVariantsToModal(variants);
             $('#modalCategory').text(category);
-            $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
-            $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
             $('#ketebalan, #kepadatan, #notes, .paket,  #modalVideo, .lebar').hide();
         }
 
         if (jenis === 'PVC Board') {
             viewProduct(productId);
-            height = parseInt(height, 10);
             $('#modalCategory').text(jenis);
-            $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
-            $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
-            $('#modalDensity').text(density && !isNaN(density) ? density + ' mm' : '-');
-            $('#modalKepadatan').html(`
-                <span class="badge badge-outline-primary kepadatan" data-value="0,4">0,4 (Lite)</span>
-                <span class="badge badge-outline-primary kepadatan" data-value="0,55">0,55 (Standar)</span>
-                <span class="badge badge-outline-primary kepadatan" data-value="0,7">0,7 (Heavy-duty)</span>
-            `);
-            $('.paket,  #modalVideo, .lebar').hide();
+            $('#modalVideo, .lebar').hide();
+            renderVariantsToModal(variants);
         }
 
         if (jenis === 'Wallpanel') {
             viewProduct(productId);
-            height = parseFloat(height).toFixed(1);
+            renderVariantsToModal(variants);
             $('#modalContact').data('type', type);
             $('#modalCategory').text(category + ' / ' + type);
             $('#ketebalan, #kepadatan, .paket, #modalVideo, #notes').hide();
             $('#modalGrafis').attr('src', `/storage/${imageType}`);
             $('.grafis').removeClass('d-none');
-            $('#modalLength').text(length && !isNaN(length) ? length + ' cm' : '-');
-            $('#modalHeight').text(height && !isNaN(height) ? height + ' cm' : '-');
-            $('#modalLebar').text(width && !isNaN(width) ? width + ' cm' : '-');
         }
+        console.log('Variants:', variants);
 
         if (jenis.toLowerCase() === 'aksesoris') {
             viewProduct(productId);
             $('#tinggi, #ketebalan, #kepadatan, .lebar').hide();
-            $('#paket').text('Warna');
             $('#modalCategory').text(category);
-            $('#modalPaket').append(`
-                <span class="badge badge-pill badge-outline-primary kepadatan" data-value="Black">Black</span>
-                <span class="badge badge-pill badge-outline-primary kepadatan" data-value="Bronze">Bronze</span>
-                <span class="badge badge-pill badge-outline-primary kepadatan" data-value="Rose Gold">Rose Gold</span>
-                <span class="badge badge-pill badge-outline-primary kepadatan" data-value="Dark Gray">Dark Gray</span>
-
-            `);
-            $('#modalLength').text('3 m');
+            renderVariantsToModal(variants);
 
             $('#modalVideoPlayer').empty();
             $('#modalVideo').hide();

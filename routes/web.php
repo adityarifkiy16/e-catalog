@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MVariantController;
+use App\Http\Controllers\TVariantValueController;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,4 +115,7 @@ Route::middleware("auth")->group(function () {
     Route::get("/package/{package}/edit", [App\Http\Controllers\TPackageController::class, "edit"])->name("package.edit");
     Route::put("/package/{package}", [App\Http\Controllers\TPackageController::class, "update"])->name("package.update");
     Route::delete("/package/{package}", [App\Http\Controllers\TPackageController::class, "destroy"])->name("package.destroy");
+
+    Route::resource('variants', MVariantController::class);
+    Route::resource('variant_values', TVariantValueController::class);
 });

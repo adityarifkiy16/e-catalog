@@ -15,7 +15,7 @@
         <div class="col-md-12">
             <div class="card card-maroon">
                 <div class="card-header">
-                    <h2 class="card-title">Edit User</h2>
+                    <h2 class="card-title">Edit Product</h2>
                 </div>
 
                 <div class="card-body">
@@ -24,72 +24,39 @@
                         @csrf
                         @method('PUT')
                         <div class="form-group">
-                            <label class="mt-3"><i class="fas fa-code"></i> Kode</label>
+                            <label class="mt-3"><i class="fas fa-code"></i> Kode Barang</label>
                             <input type="text" class="form-control" name="code"
                                 value="{{ old('name', $product->code) }}" placeholder="Kode Produk">
                             @error('code')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
 
-                            @if ($product->category->jenis_id == 1 || $product->category->jenis_id == 5)
-                                <label class="mt-3"><i class="fas fa-ruler-horizontal"></i> Panjang</label>
-                                <div class="input-group">
-                                    <input type="number" class="form-control" name="length"
-                                        value="{{ old('length', $product->panjang) }}" placeholder="Panjang" step="0.01"
-                                        min="0">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text text-white">
-                                            <span class="text-dark font-weight-bold">CM</span>
-                                        </span>
-                                    </div>
-                                    @error('length')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                            <label class="mt-3"><i class="fas fa-tags"></i> Tambah Varian</label>
+                            <div id="variant-wrapper">
+                                <div class="input-group mb-2 variant-row">
+                                    <input type="text" name="variants[0][name]" class="form-control"
+                                        placeholder="Nama Varian">
+                                    <input type="text" name="variants[0][value]" class="form-control"
+                                        placeholder="Nilai Varian">
+                                    <button type="button" class="btn btn-danger btn-remove">X</button>
                                 </div>
+                            </div>
+                            <button type="button" class="btn btn-success btn-sm w-100" id="add-variant">
+                                <i class="fas fa-plus"></i> Tambah Varian
+                            </button>
 
-
-                                <label class="mt-3"><i class="fas fa-ruler-vertical"></i> Tinggi</label>
-                                <div class="input-group">
-                                    <input type="number" class="form-control" name="height"
-                                        value="{{ old('height', $product->tinggi) }}" placeholder="Tinggi" step="0.01"
-                                        min="0">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text text-white">
-                                            <span class="text-dark font-weight-bold">CM</span>
-                                        </span>
-                                    </div>
-                                    @error('height')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-
-                                <label class="mt-3"><i class="fas fa-arrows-alt-h"></i> Ketebalan</label>
-                                <div class="input-group">
-                                    <input type="number" class="form-control" name="density"
-                                        value="{{ old('density', $product->ketebalan) }}" placeholder="Ketebalan"
-                                        step="0.01" min="0">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text text-white">
-                                            <span class="text-dark font-weight-bold">MM</span>
-                                        </span>
-                                    </div>
-                                    @error('density')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            @endif
-
-                            <label class="mt-3"><i class="fas fa-image"></i> Ganti Thumbnail</label>
+                            <label class="mt-3"><i class="fas fa-image"></i> Upload gambar utama (Thumbnail)</label>
                             <input type="file" class="form-control" id="img" name="image" accept="image/*"
                                 multiple>
 
-                            <label class="mt-3"><i class="fas fa-image"></i> Upload Mockup</label>
+
+                            <label class="mt-3"><i class="fas fa-image"></i> Upload gambar ke 2 (Motif)</label>
+                            <input type="file" class="form-control" id="img-motif" name="image-motif" accept="image/*">
+
+                            <label class="mt-3"><i class="fas fa-image"></i> Upload gambar ke 3 (Mockup)</label>
                             <input type="file" class="form-control" id="img-mockup" name="image-mockup[]"
                                 accept="image/*" multiple>
 
-                            <label class="mt-3"><i class="fas fa-image"></i> Upload Motif</label>
-                            <input type="file" class="form-control" id="img-motif" name="image-motif" accept="image/*">
 
                             <label class="mt-3"><i class="fas fa-tag"></i> Kategori</label>
                             <select class="form-control" name="category_id">
@@ -127,6 +94,26 @@
                     toast.onmouseenter = Swal.stopTimer;
                     toast.onmouseleave = Swal.resumeTimer;
                 }
+            });
+
+            let variantIndex = 1;
+
+            // klik tombol tambah
+            $('#add-variant').on('click', function() {
+                let newRow = `
+                <div class="input-group mb-2 variant-row">
+                    <input type="text" name="variants[${variantIndex}][name]" class="form-control" placeholder="Nama Varian">
+                    <input type="text" name="variants[${variantIndex}][value]" class="form-control" placeholder="Nilai Varian">
+                    <button type="button" class="btn btn-danger btn-remove">X</button>
+                </div>
+            `;
+                $('#variant-wrapper').append(newRow);
+                variantIndex++;
+            });
+
+            // hapus row
+            $(document).on('click', '.btn-remove', function() {
+                $(this).closest('.variant-row').remove();
             });
 
             $("#form-edit").on('submit', function(e) {

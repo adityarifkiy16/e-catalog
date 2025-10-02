@@ -42,7 +42,7 @@
                             </form>
                             @if ($isAuthenticated && $user->hasPermission('create_products'))
                                 <a href="{{ route('products.create') }}" class="btn btn-success ml-2">
-                                    <i class="fa fa-plus"></i> produk
+                                    <i class="fa fa-plus"></i> upload bulk produk
                                 </a>
                                 <a href="{{ route('products.bulk.create') }}" class="btn btn-primary ml-2">
                                     <i class="fa fa-plus"></i> mockup/motif

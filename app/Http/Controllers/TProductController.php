@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\MJenis;
 use App\Models\TImage;
+use App\Models\MVariant;
 use App\Models\TProduct;
 use App\Models\MCategories;
 use App\Models\ProductView;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\TVariantValue;
 use App\Services\ImageServices;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -155,6 +157,7 @@ class TProductController extends Controller
      */
     public function update(Request $request, TProduct $product)
     {
+        // dd($request->all());
         $request->validate([
             'code' => [
                 'required',
@@ -162,9 +165,6 @@ class TProductController extends Controller
                     ->ignore($product->id)
                     ->whereNull('deleted_at')
             ],
-            'length' => 'nullable|decimal:0,2', // maks 2 digit di belakang koma
-            'height' => 'nullable|decimal:0,2',
-            'density' => 'nullable|decimal:0,3',
             'name' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'image-motif' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
@@ -172,6 +172,9 @@ class TProductController extends Controller
             'image-mockup.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:5024',
             'category_id' => 'required|exists:m_categories,id',
             'url_video' => 'nullable|url',
+            'variants' => 'nullable|array',
+            'variants.*.name' => 'nullable|string|max:255',
+            'variants.*.value' => 'nullable|string|max:255',
         ]);
 
         DB::beginTransaction();
@@ -186,6 +189,34 @@ class TProductController extends Controller
                 'ketebalan' => $request->density,
                 'url_video' => $request->url_video
             ];
+
+            $syncData = [];
+
+
+            if (!empty($request->variants)) {
+                $product->variants()->detach();
+                foreach ($request->variants as $variantData) {
+                    // skip kalau kosong semua
+                    if (empty($variantData['name']) || empty($variantData['value'])) {
+                        continue;
+                    }
+
+                    // 1. Cari atau buat variant
+                    $variant = MVariant::firstOrCreate(
+                        ['name' => $variantData['name']], // key unik
+                        ['jenis_id' => $product->category->jenis_id] // default jenis_id
+                    );
+
+                    // 2. Cari atau buat value
+                    $variantValue = TVariantValue::firstOrCreate([
+                        'variant_id' => $variant->id,
+                        'name'       => $variantData['value'],
+                    ]);
+
+                    // 3. Masukkan ke array sync
+                    $syncData[$variant->id] = ['variant_value_id' => $variantValue->id];
+                }
+            }
 
             if ($request->hasFile('image-mockup')) {
                 // Hapus semua gambar sebelumnya dari relasi dan storage
@@ -247,7 +278,13 @@ class TProductController extends Controller
                 ]);
             }
 
+            $product->variants()->sync($syncData);
+
             $product->update($data);
+
+            if ($request->has('varian')) {
+                $product->variants()->sync($request->varian);
+            }
 
             DB::commit();
 

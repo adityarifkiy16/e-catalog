@@ -180,37 +180,12 @@
 
                                             <!-- Detail Produk -->
                                             <div class="mb-2 text-dark w-100 px-2">
-                                                <div class="row mb-1" id="panjang">
-                                                    <div class="col-4 col-sm-3 font-weight-bold">Panjang</div>
-                                                    <div class="col-auto">:</div>
-                                                    <div class="col" id="modalLength"></div>
-                                                </div>
-                                                <div class="row mb-1" id="tinggi">
-                                                    <div class="col-4 col-sm-3 font-weight-bold">Tinggi</div>
-                                                    <div class="col-auto">:</div>
-                                                    <div class="col" id="modalHeight"></div>
-                                                </div>
-                                                <div class="row mb-1" id="ketebalan">
-                                                    <div class="col-4 col-sm-3 font-weight-bold">Ketebalan</div>
-                                                    <div class="col-auto">:</div>
-                                                    <div class="col" id="modalDensity"></div>
-                                                </div>
-                                                <div class="row mb-1" id="kepadatan">
-                                                    <div class="col-4 col-sm-3 font-weight-bold">Density</div>
-                                                    <div class="col-auto">:</div>
-                                                    <div class="col" id="modalKepadatan"></div>
-                                                </div>
+                                                <div id="modalVariants"></div>
                                                 <div class="row mb-1 paket">
                                                     <div class="col-4 col-sm-3 font-weight-bold" id="paket">Paket
                                                     </div>
                                                     <div class="col-auto">:</div>
                                                     <div class="col" id="modalPaket"></div>
-                                                </div>
-                                                <div class="row mb-1 lebar">
-                                                    <div class="col-4 col-sm-3 font-weight-bold" id="lebar">lebar
-                                                    </div>
-                                                    <div class="col-auto">:</div>
-                                                    <div class="col" id="modalLebar"></div>
                                                 </div>
 
                                                 <div class="row mb-1 grafis d-none">

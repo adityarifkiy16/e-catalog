@@ -36,4 +36,9 @@ class TProduct extends Model
     {
         return $this->hasMany(ProductView::class, 'product_id', 'id');
     }
+
+    public function variants()
+    {
+        return $this->belongsToMany(MVariant::class, 't_product_m_variant', 'product_id', 'variant_id')->withPivot('variant_value_id');
+    }
 }

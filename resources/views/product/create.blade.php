@@ -46,7 +46,7 @@
                                 <option value="">Silahkan Pilih Jenis dahulu</option>
                             </select>
 
-                            <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar</label>
+                            <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar Produk</label>
                             <div class="dropzone" id="image-dropzone">
                                 <div class="dz-message" id="dz-message">
                                     <div style="font-size: 3rem; color: #bbb;">
@@ -82,6 +82,43 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-danger">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="alertModalLabel">
+                            <h4 class="fw-bold">
+                                <i class="fas fa-info-circle me-2"></i> Format Penamaan Barang
+                            </h4>
+                        </h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group list-group-flush text-start">
+                            <li class="list-group-item">
+                                <i class="fas fa-circle text-danger me-2" style="font-size:8px;"></i>
+                                [8mm/5mm] <b> JL Black </b> <span class="text-muted">(Aksesoris)</span>
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-circle text-danger me-2" style="font-size:8px;"></i>
+                                Type<b> 644 </b> - motif <b> xxxxx</b> <span class="text-muted">(Wallpanel)</span>
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-circle text-danger me-2" style="font-size:8px;"></i>
+                                <b> WOOD xxxx</b> <span class="text-muted">(UV Board)</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Mengerti</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -90,6 +127,7 @@
         // Initialize Dropzone
         Dropzone.autoDiscover = false;
         $(document).ready(function() {
+            $('#alertModal').modal('show');
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",

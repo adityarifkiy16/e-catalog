@@ -24,4 +24,9 @@ class MJenis extends Model
     {
         return $this->hasMany(MCategories::class, 'jenis_id', 'id');
     }
+
+    public function variants()
+    {
+        return $this->hasMany(MVariant::class, 'jenis_id', 'id');
+    }
 }
