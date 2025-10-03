@@ -9,22 +9,22 @@ use App\Models\MCategories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
 
 class CatalogController extends Controller
 {
     public function index()
     {
+        // Ambil semua file dalam folder
+        $files = File::files(public_path('dist/img/slide-depan'));
+
+        // Ambil nama file tanpa path
+        $products = collect($files)->map(function ($file) {
+            return $file->getFilename(); // misalnya "01.jpg"
+        });
+
         return view('catalog.index', [
-            'products' => TProduct::with(['category', 'category.jenis', 'images'])
-                ->whereIn('category_id', [33, 34, 35, 36, 37, 38, 39, 40, 41, 42])
-                ->get()
-                ->groupBy(function ($product) {
-                    return $product->category->name ?? 'Tanpa Kategori';
-                })
-                ->map(function ($group) {
-                    return $group->random();
-                })
-                ->values(),
+            'products' => $products,
             'jenis' => MJenis::withCount([
                 'categories as products_count' => function ($query) {
                     $query->select(DB::raw('count(t_products.id)'))

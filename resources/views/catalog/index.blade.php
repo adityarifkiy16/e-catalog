@@ -162,14 +162,14 @@
         <div class="slider-track">
             @foreach ($products as $product)
                 <div class="slider-item">
-                    <img src="{{ asset('storage/' . $product->photo) }}?v{{ time() }}" alt="Product" />
+                    <img src="{{ asset('/dist/img/slide-depan/' . $product) }}?v{{ time() }}" alt="Product" />
                 </div>
             @endforeach
 
             {{-- Duplicate untuk looping tak henti --}}
-            @foreach ($products as $product)
+            @foreach ($products as $num)
                 <div class="slider-item">
-                    <img src="{{ asset('storage/' . $product->photo) }}?v{{ time() }}" alt="Product" />
+                    <img src="{{ asset('dist/img/slide-depan/' . $product) }}?v{{ time() }}" alt="Product" />
                 </div>
             @endforeach
         </div>
