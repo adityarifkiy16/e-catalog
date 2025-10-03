@@ -15,7 +15,7 @@
         .slider-track {
             display: flex;
             width: max-content;
-            animation: scrollLeft 10s linear infinite;
+            animation: scrollLeft 60s linear infinite;
         }
 
         .slider-container:hover .slider-track {
