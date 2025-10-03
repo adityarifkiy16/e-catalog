@@ -33,16 +33,35 @@
 
                             <label class="mt-3"><i class="fas fa-tags"></i> Tambah Spesifikasi</label>
                             <div id="variant-wrapper">
-                                <div class="input-group mb-2 variant-row">
-                                    <input type="text" name="specifications[0][name]" class="form-control"
-                                        placeholder="Nama Spesifikasi">
-                                    <input type="text" name="specifications[0][value]" class="form-control"
-                                        placeholder="Nilai Spesifikasi">
-                                    <input type="text" name="specifications[0][unit]" class="form-control"
-                                        placeholder="Satuan Spesifikasi">
-                                    <button type="button" class="btn btn-danger btn-remove">X</button>
-                                </div>
+                                @if ($specifications->count())
+                                    @foreach ($specifications as $index => $spec)
+                                        <div class="input-group mb-2 variant-row">
+                                            <input type="text" name="specifications[{{ $index }}][name]"
+                                                class="form-control" placeholder="Nama Spesifikasi"
+                                                value="{{ old("specifications.$index.name", $spec->specification_name) }}">
+                                            <input type="text" name="specifications[{{ $index }}][value]"
+                                                class="form-control" placeholder="Nilai Spesifikasi"
+                                                value="{{ old("specifications.$index.value", $spec->specification_value) }}">
+                                            <input type="text" name="specifications[{{ $index }}][unit]"
+                                                class="form-control" placeholder="Satuan Spesifikasi"
+                                                value="{{ old("specifications.$index.unit", $spec->specification_unit) }}">
+                                            <button type="button" class="btn btn-danger btn-remove">X</button>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    {{-- default 1 row kosong kalau belum ada data --}}
+                                    <div class="input-group mb-2 variant-row">
+                                        <input type="text" name="specifications[0][name]" class="form-control"
+                                            placeholder="Nama Spesifikasi">
+                                        <input type="text" name="specifications[0][value]" class="form-control"
+                                            placeholder="Nilai Spesifikasi">
+                                        <input type="text" name="specifications[0][unit]" class="form-control"
+                                            placeholder="Satuan Spesifikasi">
+                                        <button type="button" class="btn btn-danger btn-remove">X</button>
+                                    </div>
+                                @endif
                             </div>
+
                             <button type="button" class="btn btn-success btn-sm w-100" id="add-variant">
                                 <i class="fas fa-plus"></i> Tambah Spesifikasi
                             </button>
@@ -98,7 +117,7 @@
                 }
             });
 
-            let specificationIndex = 1;
+            let specificationIndex = $('#variant-wrapper .variant-row').length;
 
             // klik tombol tambah
             $('#add-variant').on('click', function() {

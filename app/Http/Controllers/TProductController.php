@@ -150,14 +150,31 @@ class TProductController extends Controller
     {
         $arr['product'] = $product;
         $arr['categories'] = MCategories::with('jenis')->get();
+
+        // Ambil spesifikasi dari pivot + join ke tabel terkait
+        $arr['specifications'] = DB::table('t_product_m_specification as tps')
+            ->join('m_specifications as ms', 'ms.id', '=', 'tps.specification_id')
+            ->join('t_specification_values as tsv', 'tsv.id', '=', 'tps.specification_value_id')
+            ->select(
+                'ms.id as specification_id',
+                'ms.name as specification_name',
+                'tsv.id as specification_value_id',
+                'tsv.name as specification_value',
+                'tsv.unit as specification_unit'
+            )
+            ->where('tps.product_id', $product->id)
+            ->get();
+
         return view('product.edit', $arr);
     }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, TProduct $product)
     {
+        // dd($request->all());
         $request->validate([
             'code' => [
                 'required',
@@ -195,14 +212,16 @@ class TProductController extends Controller
                 $product->specifications()->detach();
                 foreach ($request->specifications as $specificationData) {
                     // skip kalau kosong semua
-                    if (empty($specificationData['name']) || empty($specificationData['value'] || empty($specificationData['unit']))) {
+                    if (empty($specificationData['name']) || empty($specificationData['value']) || empty($specificationData['unit'])) {
                         continue;
                     }
 
                     // 1. Cari atau buat specification
                     $specification = MSpecification::firstOrCreate(
-                        ['name' => $specificationData['name']], // key unik
-                        ['jenis_id' => $product->category->jenis_id] // default jenis_id
+                        [
+                            'name' => $specificationData['name'],
+                            'jenis_id' => $product->category->jenis_id
+                        ]
                     );
 
                     // 2. Cari atau buat value
