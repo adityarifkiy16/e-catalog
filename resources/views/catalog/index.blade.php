@@ -9,12 +9,17 @@
             overflow: hidden;
             width: 100%;
             padding: 10px 0;
+            position: relative;
         }
 
         .slider-track {
             display: flex;
             width: max-content;
-            animation: scrollLeft 60s linear infinite;
+            animation: scrollLeft 10s linear infinite;
+        }
+
+        .slider-container:hover .slider-track {
+            animation-play-state: paused;
         }
 
         .slider-item {
@@ -27,6 +32,11 @@
             width: auto;
             border-radius: 8px;
             object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .slider-item:hover img {
+            transform: scale(1.05);
         }
 
         .contact-btn {
@@ -165,11 +175,9 @@
                     <img src="{{ asset('/dist/img/slide-depan/' . $product) }}?v{{ time() }}" alt="Product" />
                 </div>
             @endforeach
-
-            {{-- Duplicate untuk looping tak henti --}}
-            @foreach ($products as $num)
+            @foreach ($products as $product)
                 <div class="slider-item">
-                    <img src="{{ asset('dist/img/slide-depan/' . $product) }}?v{{ time() }}" alt="Product" />
+                    <img src="{{ asset('/dist/img/slide-depan/' . $product) }}?v{{ time() }}" alt="Product" />
                 </div>
             @endforeach
         </div>
