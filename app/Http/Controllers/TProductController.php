@@ -149,7 +149,7 @@ class TProductController extends Controller
     public function edit(TProduct $product)
     {
         $arr['product'] = $product;
-        $arr['categories'] = MCategories::all();
+        $arr['categories'] = MCategories::with('jenis')->get();
         return view('product.edit', $arr);
     }
 
@@ -158,7 +158,6 @@ class TProductController extends Controller
      */
     public function update(Request $request, TProduct $product)
     {
-        // dd($request->all());
         $request->validate([
             'code' => [
                 'required',
@@ -176,6 +175,7 @@ class TProductController extends Controller
             'specifications' => 'nullable|array',
             'specifications.*.name' => 'nullable|string|max:255',
             'specifications.*.value' => 'nullable|string|max:255',
+            'specifications.*.unit' => 'nullable|string|max:255',
         ]);
 
         DB::beginTransaction();
@@ -185,9 +185,6 @@ class TProductController extends Controller
                 'code' => $request->code,
                 'name' => $request->name,
                 'category_id' => $request->category_id,
-                'panjang' => $request->length,
-                'tinggi' => $request->height,
-                'ketebalan' => $request->density,
                 'url_video' => $request->url_video
             ];
 
@@ -198,7 +195,7 @@ class TProductController extends Controller
                 $product->specifications()->detach();
                 foreach ($request->specifications as $specificationData) {
                     // skip kalau kosong semua
-                    if (empty($specificationData['name']) || empty($specificationData['value'])) {
+                    if (empty($specificationData['name']) || empty($specificationData['value'] || empty($specificationData['unit']))) {
                         continue;
                     }
 
@@ -209,10 +206,16 @@ class TProductController extends Controller
                     );
 
                     // 2. Cari atau buat value
-                    $specificationValue = TSpecificationValue::firstOrCreate([
-                        'specification_id' => $specification->id,
-                        'name'       => $specificationData['value'],
-                    ]);
+                    $specificationValue = TSpecificationValue::updateOrCreate(
+                        [
+                            'specification_id' => $specification->id,
+                            'name' => $specificationData['value'],
+                        ],
+                        [
+                            'unit' => $specificationData['unit'],
+                        ]
+                    );
+
 
                     // 3. Masukkan ke array sync
                     $syncData[$specification->id] = ['specification_value_id' => $specificationValue->id];

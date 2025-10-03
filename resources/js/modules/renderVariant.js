@@ -51,10 +51,15 @@ export function renderVariantsToModal(specifications, container = '#modalVariant
                 // varian biasa → row dengan unit
                 const value = values.find((val) => v.pivot && val.id === v.pivot.specification_value_id);
                 const displayValue = value ? value.name : '-';
+                let unit = value ? value.unit : '';
 
-                let unit = '';
-                if (['panjang', 'tinggi', 'lebar'].includes(nameLower)) unit = ' cm';
-                else if (nameLower === 'ketebalan') unit = ' mm';
+                if (unit) {
+                    unit = ' ' + unit;
+                } else if (['panjang', 'tinggi', 'lebar'].includes(nameLower)) {
+                    unit = ' cm';
+                } else if (nameLower === 'ketebalan') {
+                    unit = ' mm';
+                }
 
                 const rowHtml = `
                     <div class="row mb-1 variant-row">

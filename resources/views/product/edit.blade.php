@@ -31,18 +31,20 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
 
-                            <label class="mt-3"><i class="fas fa-tags"></i> Tambah Varian</label>
+                            <label class="mt-3"><i class="fas fa-tags"></i> Tambah Spesifikasi</label>
                             <div id="variant-wrapper">
                                 <div class="input-group mb-2 variant-row">
-                                    <input type="text" name="variants[0][name]" class="form-control"
-                                        placeholder="Nama Varian">
-                                    <input type="text" name="variants[0][value]" class="form-control"
-                                        placeholder="Nilai Varian">
+                                    <input type="text" name="specifications[0][name]" class="form-control"
+                                        placeholder="Nama Spesifikasi">
+                                    <input type="text" name="specifications[0][value]" class="form-control"
+                                        placeholder="Nilai Spesifikasi">
+                                    <input type="text" name="specifications[0][unit]" class="form-control"
+                                        placeholder="Satuan Spesifikasi">
                                     <button type="button" class="btn btn-danger btn-remove">X</button>
                                 </div>
                             </div>
                             <button type="button" class="btn btn-success btn-sm w-100" id="add-variant">
-                                <i class="fas fa-plus"></i> Tambah Varian
+                                <i class="fas fa-plus"></i> Tambah Spesifikasi
                             </button>
 
                             <label class="mt-3"><i class="fas fa-image"></i> Upload gambar utama (Thumbnail)</label>
@@ -96,19 +98,20 @@
                 }
             });
 
-            let variantIndex = 1;
+            let specificationIndex = 1;
 
             // klik tombol tambah
             $('#add-variant').on('click', function() {
                 let newRow = `
                 <div class="input-group mb-2 variant-row">
-                    <input type="text" name="variants[${variantIndex}][name]" class="form-control" placeholder="Nama Varian">
-                    <input type="text" name="variants[${variantIndex}][value]" class="form-control" placeholder="Nilai Varian">
+                    <input type="text" name="specifications[${specificationIndex}][name]" class="form-control" placeholder="Nama Spesifikasi">
+                    <input type="text" name="specifications[${specificationIndex}][value]" class="form-control" placeholder="Nilai Spesifikasi">
+                    <input type="text" name="specifications[${specificationIndex}][unit]" class="form-control" placeholder="Satuan Spesifikasi">
                     <button type="button" class="btn btn-danger btn-remove">X</button>
                 </div>
             `;
                 $('#variant-wrapper').append(newRow);
-                variantIndex++;
+                specificationIndex++;
             });
 
             // hapus row

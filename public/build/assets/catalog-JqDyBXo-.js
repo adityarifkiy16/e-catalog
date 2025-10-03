@@ -164,7 +164,7 @@ Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${o}
                                     <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="${d.name}">
                                         ${d.name}
                                     </span>
-                                `):$("#modalKepadatan").append(d.name))}):$("#modalKepadatan").append('<span class="text-muted">Tidak ada data</span>');else{const d=c.find(p=>l.pivot&&p.id===l.pivot.specification_value_id),r=d?d.name:"-";let s="";["panjang","tinggi","lebar"].includes(m)?s=" cm":m==="ketebalan"&&(s=" mm");const i=`
+                                `):$("#modalKepadatan").append(d.name))}):$("#modalKepadatan").append('<span class="text-muted">Tidak ada data</span>');else{const d=c.find(p=>l.pivot&&p.id===l.pivot.specification_value_id),r=d?d.name:"-";let s=d?d.unit:"";s?s=" "+s:["panjang","tinggi","lebar"].includes(m)?s=" cm":m==="ketebalan"&&(s=" mm");const i=`
                     <div class="row mb-1 variant-row">
                         <div class="col-4 col-sm-3 font-weight-bold">${l.name}</div>
                         <div class="col-auto">:</div>
