@@ -48,7 +48,7 @@ export function renderProducts(products, selectedJenis) {
                     `;
         }
 
-        const variantsJson = JSON.stringify(product.variants).replace(/"/g, '&quot;');
+        const specificationsJson = JSON.stringify(product.specifications).replace(/"/g, '&quot;');
 
         html += `
                     data-id="${product.id}"
@@ -61,7 +61,7 @@ export function renderProducts(products, selectedJenis) {
                     data-type-image="${product.category?.types?.image ?? ''}"
                     data-url="${product.url_video}"
                     data-paket="${packagesJson}"
-                    data-variants = "${variantsJson}"
+                    data-specifications = "${specificationsJson}"
                     >
                        <img 
                             src="${image}" 

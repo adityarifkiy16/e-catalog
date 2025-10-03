@@ -137,6 +137,7 @@ $(document).ready(function () {
 
     $(document).on('click', '.product-card', function () {
         const productId = $(this).data('id');
+        console.log('productId', productId);
         const code = $(this).data('code');
         const category = $(this).data('category');
         const type = $(this).data('type');
@@ -145,7 +146,7 @@ $(document).ready(function () {
         const width = parseFloat($(this).data('width')).toFixed(1);
         const density = parseFloat($(this).data('density')).toFixed(1);
         const urlVideo = $(this).data('url');
-        const variants = JSON.parse($(this).attr('data-variants') || '[]');
+        const specifications = JSON.parse($(this).attr('data-specifications') || '[]');
         const imagesStr = $(this).attr('data-images');
         const packages = JSON.parse($(this).attr('data-paket') || '[]');
         let height = $(this).data('height');
@@ -181,7 +182,7 @@ $(document).ready(function () {
 
         if (jenis.toLowerCase() === 'uv board') {
             viewProduct(productId);
-            renderVariantsToModal(variants);
+            renderVariantsToModal(specifications);
             $('#modalVideo, .lebar').hide();
             $('#modalCategory').text(category);
             if (packages.length > 0) {
@@ -200,21 +201,21 @@ $(document).ready(function () {
 
         if (jenis.toLowerCase() === 'wallboard') {
             viewProduct(productId);
-            renderVariantsToModal(variants);
+            renderVariantsToModal(specifications);
             $('#modalCategory').text(category);
             $('#ketebalan, .density, #notes, .paket,  #modalVideo, .lebar').hide();
         }
 
         if (jenis === 'PVC Board') {
             viewProduct(productId);
-            renderVariantsToModal(variants);
+            renderVariantsToModal(specifications);
             $('#modalCategory').text(jenis);
             $('#modalVideo, .lebar, .paket').hide();
         }
 
         if (jenis === 'Wallpanel') {
             viewProduct(productId);
-            renderVariantsToModal(variants);
+            renderVariantsToModal(specifications);
             $('#modalContact').data('type', type);
             $('#modalCategory').text(category + ' / ' + type);
             $('#ketebalan, #kepadatan, .paket, #modalVideo, #notes, .density').hide();
@@ -226,7 +227,7 @@ $(document).ready(function () {
             viewProduct(productId);
             $('#tinggi, #ketebalan, #kepadatan, .lebar, .density').hide();
             $('#modalCategory').text(category);
-            renderVariantsToModal(variants);
+            renderVariantsToModal(specifications);
 
             $('#modalVideoPlayer').empty();
             $('#modalVideo, .density').hide();

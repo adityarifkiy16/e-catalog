@@ -27,6 +27,8 @@ Route::get("/clear-cache", [App\Http\Controllers\TImageController::class, "clear
 // DOWNLOAD PDF
 Route::get("/catalog/pdf", [App\Http\Controllers\TProductController::class, "downloadPdf"])->name("catalog.pdf");
 Route::get("/catalog/pdf/product", [App\Http\Controllers\TProductController::class, "downloadPdfProduct"])->name("catalog.pdf.product");
+Route::post("/products/{product}/viewed", [App\Http\Controllers\TProductController::class, "show"])->name("products.viewed.stored");
+
 
 Route::controller(App\Http\Controllers\AuthController::class)->middleware("guest")->group(function () {
     Route::get("/admin", "index")->name("login");
@@ -94,7 +96,6 @@ Route::middleware("auth")->group(function () {
 
     // Product viewed
     Route::get("/products/viewed", [App\Http\Controllers\ProductViewController::class, "index"])->name("products.viewed");
-    Route::post("/products/{product}/viewed", [App\Http\Controllers\TProductController::class, "show"])->name("products.viewed.stored");
 
 
     // Type
@@ -115,7 +116,4 @@ Route::middleware("auth")->group(function () {
     Route::get("/package/{package}/edit", [App\Http\Controllers\TPackageController::class, "edit"])->name("package.edit");
     Route::put("/package/{package}", [App\Http\Controllers\TPackageController::class, "update"])->name("package.update");
     Route::delete("/package/{package}", [App\Http\Controllers\TPackageController::class, "destroy"])->name("package.destroy");
-
-    Route::resource('variants', MVariantController::class);
-    Route::resource('variant_values', TVariantValueController::class);
 });

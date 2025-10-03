@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\MVariant;
+use App\Models\MSpecification;
 use App\Models\TProduct;
-use App\Models\TVariantValue;
+use App\Models\TSpecificationValue;
 use Illuminate\Database\Seeder;
 
 class VarianWPSeeder extends Seeder
@@ -20,21 +20,21 @@ class VarianWPSeeder extends Seeder
 
         foreach ($types as $typeId => $attributes) {
             foreach ($attributes as $attrName => $attrValue) {
-                $variant = MVariant::firstOrCreate([
+                $specification = MSpecification::firstOrCreate([
                     'name' => $attrName,
                     'jenis_id' => 3,
                 ]);
 
-                $variantValue = TVariantValue::firstOrCreate([
-                    'variant_id' => $variant->id,
+                $specificationValue = TSpecificationValue::firstOrCreate([
+                    'specification_id' => $specification->id,
                     'name' => $attrValue,
                 ]);
 
                 $product = TProduct::whereHas('category.types', fn($q) => $q->where('id', $typeId))->get();
 
                 foreach ($product as $p) {
-                    $p->variants()->syncWithoutDetaching([
-                        $variant->id => ['variant_value_id' => $variantValue->id]
+                    $p->specifications()->syncWithoutDetaching([
+                        $specification->id => ['specification_value_id' => $specificationValue->id]
                     ]);
                 }
             }

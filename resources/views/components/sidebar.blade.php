@@ -34,14 +34,5 @@
                 ['route' => 'package.index', 'label' => 'Paket', 'icon' => 'fas fa-box'],
             ],
         ])
-
-        @include('partials.sidebar._nav_tree', [
-            'title' => 'Varian',
-            'icon' => 'fas fa-box',
-            'items' => [
-                ['route' => 'variants.index', 'label' => 'Varian', 'icon' => 'fas fa-layer-group ml-2'],
-                ['route' => 'variant_values.index', 'label' => 'Tipe', 'icon' => 'fas fa-shapes ml-2'],
-            ],
-        ])
     </ul>
 </nav>

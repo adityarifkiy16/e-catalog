@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\MVariant;
+use App\Models\MSpecification;
 use App\Models\TProduct;
-use App\Models\TVariantValue;
+use App\Models\TSpecificationValue;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class VarianPVCSeeder extends Seeder
 {
@@ -38,27 +37,27 @@ class VarianPVCSeeder extends Seeder
             // Loop untuk setiap atribut (panjang, tinggi, ketebalan)
             foreach ($attributes as $attrName => $attrValue) {
                 // Cari atau buat variant berdasarkan nama atribut
-                $variant = MVariant::firstOrCreate([
+                $specification = MSpecification::firstOrCreate([
                     'name' => $attrName,
                     'jenis_id' => $product->category->jenis_id ?? null, // Sesuaikan dengan jenis produk
                 ]);
 
-                // Cari atau buat variant value
-                $variantValue = TVariantValue::firstOrCreate([
-                    'variant_id' => $variant->id,
+                // Cari atau buat specification value
+                $specificationValue = TSpecificationValue::firstOrCreate([
+                    'specification_id' => $specification->id,
                     'name' => (string)$attrValue, // Konversi nilai ke string
                 ]);
 
                 // Cek apakah relasi sudah ada
-                $exists = $product->variants()
-                    ->wherePivot('variant_id', $variant->id)
-                    ->wherePivot('variant_value_id', $variantValue->id)
+                $exists = $product->specifications()
+                    ->wherePivot('specification_id', $specification->id)
+                    ->wherePivot('specification_value_id', $specificationValue->id)
                     ->exists();
 
                 // Attach jika belum ada
                 if (!$exists) {
-                    $product->variants()->attach($variant->id, [
-                        'variant_value_id' => $variantValue->id
+                    $product->specifications()->attach($specification->id, [
+                        'specification_value_id' => $specificationValue->id
                     ]);
                 }
             }

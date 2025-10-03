@@ -42,7 +42,7 @@ class CatalogController extends Controller
         $jenisId = $request->query('jenis');
         $typeId = $request->query('type');
 
-        $query = TProduct::with(['category', 'category.jenis', 'images', "category.images", 'category.types.images', 'packages', 'variants.variant_values']);
+        $query = TProduct::with(['category', 'category.jenis', 'images', "category.images", 'category.types.images', 'packages', 'specifications.specification_values']);
 
         // Filter kategori
         if ($categoryId) {

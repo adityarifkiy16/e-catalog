@@ -1,14 +1,14 @@
-export function renderVariantsToModal(variants, container = '#modalVariants') {
+export function renderVariantsToModal(specifications, container = '#modalVariants') {
     $(container).empty();
     $('#modalPaket').empty();
     $('#modalKepadatan').empty();
 
-    if (Array.isArray(variants) && variants.length > 0) {
+    if (Array.isArray(specifications) && specifications.length > 0) {
         let hasWarna = false;
         let hasDensity = false;
 
-        variants.forEach((v) => {
-            const values = v.variant_values || [];
+        specifications.forEach((v) => {
+            const values = v.specification_values || [];
             const nameLower = v.name.toLowerCase();
 
             if (nameLower === 'warna') {
@@ -17,7 +17,7 @@ export function renderVariantsToModal(variants, container = '#modalVariants') {
 
                 if (values.length > 0) {
                     values.forEach((val) => {
-                        if (v.pivot && val.id === v.pivot.variant_value_id) {
+                        if (v.pivot && val.id === v.pivot.specification_value_id) {
                             $('#modalPaket').append(`
                                 <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="${val.name}">
                                     ${val.name}
@@ -32,7 +32,7 @@ export function renderVariantsToModal(variants, container = '#modalVariants') {
                 hasDensity = true;
                 if (values.length > 0) {
                     values.forEach((val) => {
-                        if (v.pivot && val.id === v.pivot.variant_value_id) {
+                        if (v.pivot && val.id === v.pivot.specification_value_id) {
                             if (values.length > 1) {
                                 $('#modalKepadatan').append(`
                                     <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="${val.name}">
@@ -49,7 +49,7 @@ export function renderVariantsToModal(variants, container = '#modalVariants') {
                 }
             } else {
                 // varian biasa → row dengan unit
-                const value = values.find((val) => v.pivot && val.id === v.pivot.variant_value_id);
+                const value = values.find((val) => v.pivot && val.id === v.pivot.specification_value_id);
                 const displayValue = value ? value.name : '-';
 
                 let unit = '';

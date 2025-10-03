@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\MJenis;
 use App\Models\TImage;
-use App\Models\MVariant;
 use App\Models\TProduct;
 use App\Models\MCategories;
+use App\Models\MSpecification;
 use App\Models\ProductView;
+use App\Models\TSpecificationValue;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\TVariantValue;
 use App\Services\ImageServices;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +28,7 @@ class TProductController extends Controller
 
     public function __construct(ImageServices $imageServices, ProductViewServices $viewServices)
     {
-        $this->middleware('auth')->except(['downloadPdf', 'downloadPdfProduct']);
+        $this->middleware('auth')->except(['downloadPdf', 'downloadPdfProduct', 'show']);
         $this->imageServices = $imageServices;
         $this->viewServices = $viewServices;
     }
@@ -140,6 +140,7 @@ class TProductController extends Controller
     public function show(TProduct $product, Request $request)
     {
         $this->viewServices->store($product, $request);
+        return response()->json(['status' => 'success', 'message' => 'Product viewed successfully.']);
     }
 
     /**
@@ -172,9 +173,9 @@ class TProductController extends Controller
             'image-mockup.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:5024',
             'category_id' => 'required|exists:m_categories,id',
             'url_video' => 'nullable|url',
-            'variants' => 'nullable|array',
-            'variants.*.name' => 'nullable|string|max:255',
-            'variants.*.value' => 'nullable|string|max:255',
+            'specifications' => 'nullable|array',
+            'specifications.*.name' => 'nullable|string|max:255',
+            'specifications.*.value' => 'nullable|string|max:255',
         ]);
 
         DB::beginTransaction();
@@ -193,28 +194,28 @@ class TProductController extends Controller
             $syncData = [];
 
 
-            if (!empty($request->variants)) {
-                $product->variants()->detach();
-                foreach ($request->variants as $variantData) {
+            if (!empty($request->specifications)) {
+                $product->specifications()->detach();
+                foreach ($request->specifications as $specificationData) {
                     // skip kalau kosong semua
-                    if (empty($variantData['name']) || empty($variantData['value'])) {
+                    if (empty($specificationData['name']) || empty($specificationData['value'])) {
                         continue;
                     }
 
-                    // 1. Cari atau buat variant
-                    $variant = MVariant::firstOrCreate(
-                        ['name' => $variantData['name']], // key unik
+                    // 1. Cari atau buat specification
+                    $specification = MSpecification::firstOrCreate(
+                        ['name' => $specificationData['name']], // key unik
                         ['jenis_id' => $product->category->jenis_id] // default jenis_id
                     );
 
                     // 2. Cari atau buat value
-                    $variantValue = TVariantValue::firstOrCreate([
-                        'variant_id' => $variant->id,
-                        'name'       => $variantData['value'],
+                    $specificationValue = TSpecificationValue::firstOrCreate([
+                        'specification_id' => $specification->id,
+                        'name'       => $specificationData['value'],
                     ]);
 
                     // 3. Masukkan ke array sync
-                    $syncData[$variant->id] = ['variant_value_id' => $variantValue->id];
+                    $syncData[$specification->id] = ['specification_value_id' => $specificationValue->id];
                 }
             }
 
@@ -278,13 +279,9 @@ class TProductController extends Controller
                 ]);
             }
 
-            $product->variants()->sync($syncData);
+            $product->specifications()->sync($syncData);
 
             $product->update($data);
-
-            if ($request->has('varian')) {
-                $product->variants()->sync($request->varian);
-            }
 
             DB::commit();
 

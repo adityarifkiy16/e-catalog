@@ -7,16 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class MVariant extends Model
+class MSpecification extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'm_variants';
+    protected $table = 'm_specifications';
     protected $guarded = ['id'];
 
     public function products()
     {
-        return $this->belongsToMany(TProduct::class, 't_product_m_variant', 'm_variant_id', 't_product_id');
+        return $this->belongsToMany(TProduct::class, 't_product_m_specification', 'specification_id', 'product_id');
     }
 
     public function jenis()
@@ -24,8 +24,8 @@ class MVariant extends Model
         return $this->belongsTo(MJenis::class, 'jenis_id', 'id');
     }
 
-    public function variant_values()
+    public function specification_values()
     {
-        return $this->hasMany(TVariantValue::class, 'variant_id', 'id');
+        return $this->hasMany(TSpecificationValue::class, 'specification_id', 'id');
     }
 }
