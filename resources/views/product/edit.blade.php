@@ -32,7 +32,7 @@
                             @enderror
 
                             <label class="mt-3"><i class="fas fa-tags"></i> Tambah Spesifikasi</label>
-                            <div id="variant-wrapper">
+                            <div id="variant-wrapper" class="d-flex flex-column">
                                 @if ($specifications->count())
                                     @foreach ($specifications as $index => $spec)
                                         <div class="input-group mb-2 variant-row">
@@ -40,12 +40,12 @@
                                                 class="form-control" placeholder="Nama Spesifikasi"
                                                 value="{{ old("specifications.$index.name", $spec->specification_name) }}">
                                             <input type="text" name="specifications[{{ $index }}][value]"
-                                                class="form-control" placeholder="Nilai Spesifikasi"
+                                                class="form-control ml-2" placeholder="Nilai Spesifikasi"
                                                 value="{{ old("specifications.$index.value", $spec->specification_value) }}">
                                             <input type="text" name="specifications[{{ $index }}][unit]"
-                                                class="form-control" placeholder="Satuan Spesifikasi"
+                                                class="form-control ml-2" placeholder="Satuan Spesifikasi"
                                                 value="{{ old("specifications.$index.unit", $spec->specification_unit) }}">
-                                            <button type="button" class="btn btn-danger btn-remove">X</button>
+                                            <button type="button" class="btn btn-danger btn-remove ml-2">X</button>
                                         </div>
                                     @endforeach
                                 @else
@@ -53,11 +53,11 @@
                                     <div class="input-group mb-2 variant-row">
                                         <input type="text" name="specifications[0][name]" class="form-control"
                                             placeholder="Nama Spesifikasi">
-                                        <input type="text" name="specifications[0][value]" class="form-control"
+                                        <input type="text" name="specifications[0][value]" class="form-control ml-2"
                                             placeholder="Nilai Spesifikasi">
-                                        <input type="text" name="specifications[0][unit]" class="form-control"
+                                        <input type="text" name="specifications[0][unit]" class="form-control ml-2"
                                             placeholder="Satuan Spesifikasi">
-                                        <button type="button" class="btn btn-danger btn-remove">X</button>
+                                        <button type="button" class="btn btn-danger btn-remove ml-2">X</button>
                                     </div>
                                 @endif
                             </div>
@@ -124,9 +124,9 @@
                 let newRow = `
                 <div class="input-group mb-2 variant-row">
                     <input type="text" name="specifications[${specificationIndex}][name]" class="form-control" placeholder="Nama Spesifikasi">
-                    <input type="text" name="specifications[${specificationIndex}][value]" class="form-control" placeholder="Nilai Spesifikasi">
-                    <input type="text" name="specifications[${specificationIndex}][unit]" class="form-control" placeholder="Satuan Spesifikasi">
-                    <button type="button" class="btn btn-danger btn-remove">X</button>
+                    <input type="text" name="specifications[${specificationIndex}][value]" class="form-control ml-2" placeholder="Nilai Spesifikasi">
+                    <input type="text" name="specifications[${specificationIndex}][unit]" class="form-control ml-2" placeholder="Satuan Spesifikasi">
+                    <button type="button" class="btn btn-danger btn-remove ml-2">X</button>
                 </div>
             `;
                 $('#variant-wrapper').append(newRow);

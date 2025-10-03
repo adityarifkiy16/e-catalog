@@ -207,12 +207,10 @@ class TProductController extends Controller
 
             $syncData = [];
 
-
             if (!empty($request->specifications)) {
-                $product->specifications()->detach();
                 foreach ($request->specifications as $specificationData) {
                     // skip kalau kosong semua
-                    if (empty($specificationData['name']) || empty($specificationData['value']) || empty($specificationData['unit'])) {
+                    if (empty($specificationData['name']) || empty($specificationData['value'])) {
                         continue;
                     }
 
@@ -237,7 +235,10 @@ class TProductController extends Controller
 
 
                     // 3. Masukkan ke array sync
-                    $syncData[$specification->id] = ['specification_value_id' => $specificationValue->id];
+                    $syncData[] = [
+                        'specification_id' => $specification->id,
+                        'specification_value_id' => $specificationValue->id
+                    ];
                 }
             }
 
@@ -302,6 +303,9 @@ class TProductController extends Controller
             }
 
             $product->specifications()->sync($syncData);
+
+            // setelah sync, hapus spec_values yang sudah tidak dipakai produk manapun
+            TSpecificationValue::whereDoesntHave('products')->delete();
 
             $product->update($data);
 

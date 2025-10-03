@@ -41,4 +41,9 @@ class TProduct extends Model
     {
         return $this->belongsToMany(MSpecification::class, 't_product_m_specification', 'product_id', 'specification_id')->withPivot('specification_value_id');
     }
+
+    public function specificationValues()
+    {
+        return $this->belongsToMany(TSpecificationValue::class, 't_product_m_specification', 'product_id', 'specification_value_id')->withPivot('specification_id');
+    }
 }
