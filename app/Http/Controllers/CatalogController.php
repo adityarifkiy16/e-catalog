@@ -115,7 +115,7 @@ class CatalogController extends Controller
                 $jenis = MJenis::with('categories.products')->find($jenisId);
                 if ($jenis) {
                     $response['jenis'] = $jenis;
-                    if ((int)$jenisId === 3) {
+                    if ($jenis->types->isNotEmpty()) {
                         $response['types'] = $jenis->types;
                     }
                 }

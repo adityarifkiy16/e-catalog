@@ -6,18 +6,56 @@ import { bindFilterButton } from './modules/filter';
 import { renderVariantsToModal } from './modules/renderVariant';
 
 // ===== Responsive Handling =====
-function handleFilterContainer(selectedJenis = null) {
-    if ($(window).width() < 768) {
-        $('#filter-container').addClass('d-none');
-    } else {
-        $('#filter-container').removeClass('d-none');
+export function toggleCategoryLayout({ selectedJenis = null, hasCategory = false, isRenderTypes = false }) {
+    const $filter = $('#filter-container');
+    const $categoryContainer = $('#category-container');
+    const $catalog = $('#catalog-col');
+
+    // Default responsive behavior
+    const isMobile = $(window).width() < 768;
+
+    // Reset state dulu
+    $filter.removeClass('d-none');
+    $categoryContainer.removeClass('d-none');
+    $catalog.removeClass('col-md-12 col-md-9');
+
+    // ====== LOGIKA INTI ======
+
+    // 1. Jika sedang render types → sembunyikan semua kategori
+    if (isRenderTypes) {
+        $filter.addClass('d-none');
+        $categoryContainer.addClass('d-none');
+        $catalog.addClass('col-md-12');
+        return;
     }
 
-    // khusus jenis tertentu → selalu hidden & full width
-    if (selectedJenis == 1 || selectedJenis == 3) {
-        $('#filter-container').addClass('d-none');
-        $('#catalog-col').removeClass('col-md-10').addClass('col-md-12');
+    // 2. Jika jenis = 1 → sembunyikan kategori total
+    if (selectedJenis == 1) {
+        $filter.addClass('d-none');
+        $categoryContainer.addClass('d-none');
+        $catalog.addClass('col-md-12');
+        return;
     }
+
+    // 3. Jika tidak ada kategori → sembunyikan sidebar & buat full
+    if (!hasCategory) {
+        $filter.addClass('d-none');
+        $categoryContainer.addClass('d-none');
+        $catalog.addClass('col-md-12');
+        return;
+    }
+
+    // 4. Kalau kategori ada, tampilkan sidebar (kecuali di mobile)
+    if (isMobile) {
+        $filter.addClass('d-none');
+        $categoryContainer.removeClass('d-none');
+    } else {
+        $filter.removeClass('d-none');
+        $categoryContainer.removeClass('d-none');
+    }
+
+    // Sidebar aktif → catalog 9 kolom
+    $catalog.addClass('col-md-9');
 }
 
 $(document).ready(function () {
@@ -29,21 +67,12 @@ $(document).ready(function () {
     let scrollTimer;
     let scrollLock = false;
 
-    if (selectedJenis == 5 || selectedJenis == 2) {
-        sessionStorage.removeItem('selectedWallpanel');
-    }
-
     setCatalogConfig({ selectedJenis, category });
     loadMoreData();
 
-    if (selectedJenis) {
-        $('#category-container').removeClass('d-md-none');
-        $('#catalog-col').removeClass('center-content');
-    }
-
     // panggil pertama kali + on resize
-    handleFilterContainer(selectedJenis);
-    $(window).on('resize', () => handleFilterContainer(selectedJenis));
+    toggleCategoryLayout({ selectedJenis, hasCategory: category, isRenderTypes: false });
+    $(window).on('resize', () => toggleCategoryLayout({ selectedJenis, hasCategory: category, isRenderTypes: false }));
 
     // ===== Search debounce =====
     $('#search-input').on('input', function () {
@@ -137,7 +166,6 @@ $(document).ready(function () {
 
     $(document).on('click', '.product-card', function () {
         const productId = $(this).data('id');
-        console.log('productId', productId);
         const code = $(this).data('code');
         const name = $(this).data('name');
         const category = $(this).data('category');
@@ -168,16 +196,17 @@ $(document).ready(function () {
             packagesImgs = packages.sort((a, b) => a.order - b.order).map((p) => `/storage/${p.image}`);
         }
 
+        // initialize modal
+        $('#notes').show();
         $('#modalPaket').empty();
 
         // contoh case wallpanel
-        if (jenis === 'tipe-wallpanel') {
+        if (jenis === 'card-types') {
             resetState();
-            setCatalogConfig({ selectedJenis: 3, type });
+            setCatalogConfig({ selectedJenis: selectedJenis, type });
             setFirstLoad(false);
             loadMoreData();
-            handleFilterContainer();
-            $('#catalog-col').toggleClass('col-md-10 col-md-12');
+            handleFilterContainer(category);
             return;
         }
 
@@ -229,7 +258,6 @@ $(document).ready(function () {
             $('#tinggi, #ketebalan, #kepadatan, .lebar, .density').hide();
             $('#modalCategory').text(category);
             renderVariantsToModal(specifications);
-
             $('#modalVideoPlayer').empty();
             $('#modalVideo, .density').hide();
             if (urlVideo) {

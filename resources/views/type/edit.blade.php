@@ -162,6 +162,7 @@
                                     icon: 'error',
                                     title: response.message
                                 });
+                                setTimeout(() => location.reload(), 1500);
                             }
                         },
                         error: function(response) {

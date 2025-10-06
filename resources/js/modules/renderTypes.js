@@ -10,8 +10,6 @@ export function renderTypes(types, selectedJenis) {
         // Masukkan gambar utama di paling depan
         const allImages = [image];
 
-        console.log(selectedJenis);
-
         const categoryName = selectedJenis == 3 ? 'wallpanel' : 'tanpa kategori';
 
         html += `
@@ -21,7 +19,7 @@ export function renderTypes(types, selectedJenis) {
 
         html += `
                     data-id="${type.id}"
-                    data-jenis="tipe-wallpanel"
+                    data-jenis="card-types"
                     data-category="${categoryName}"
                     data-type="${type.id}"
                     >

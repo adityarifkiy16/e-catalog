@@ -5,7 +5,6 @@ let isLoading = false;
 
 export function bindFilterButton(selectedJenis) {
     $(document).off('click', '.category-filter');
-
     $(document).on('click', '.category-filter', async function (e) {
         e.preventDefault();
         if (isLoading) return;

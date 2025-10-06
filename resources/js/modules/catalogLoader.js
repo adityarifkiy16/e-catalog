@@ -2,6 +2,7 @@ import { renderProducts } from './renderProduct';
 import { renderTypes } from './renderTypes';
 import { renderMockup } from './renderMockup';
 import { showLoading, hideLoading, setCategory } from './utils';
+import { toggleCategoryLayout } from '../catalog';
 
 // ===== Global State =====
 let state = {
@@ -93,6 +94,9 @@ export function loadMoreData() {
 function handleResponse(response) {
     const products = response.data.data ?? [];
     const types = response.types ?? [];
+    console.log('types', types);
+    console.log('state current page', state.currentPage);
+    console.log('response last page', response.data.last_page);
 
     // Handle back button
     if (state.type) {
@@ -100,12 +104,12 @@ function handleResponse(response) {
         $('#homeButton').addClass('d-none');
     }
 
-    if (state.selectedJenis == 3 && state.firstLoad) {
+    // 1. Render thumbnail type untuk jenis wallpanel (3) saat pertama kali load
+    if (state.selectedJenis && state.firstLoad && types.length > 0) {
         if (types.length > 0) {
             $('#search-form').addClass('d-none');
             renderTypes(types, state.selectedJenis);
-            state.currentPage++;
-            if (state.currentPage > response.data.last_page) state.lastPage = true;
+            state.lastPage = true;
         }
         updateCategoryMenu(response, true);
     } else {
@@ -129,13 +133,14 @@ function handleResponse(response) {
 
 // ===== Category Menu =====
 function updateCategoryMenu(response, firstLoad = true) {
-    // console.log('updateCategoryMenu', firstLoad);
-
     const categories = response.category ?? [];
     const types = response.data.data[0]?.category?.types?.images ?? [];
     const name = response.jenis?.name;
     const images = response.data.data[0]?.category?.images ?? [];
+    const isRenderTypes = state.firstLoad && (response.types?.length ?? 0) > 0;
+    const hasCategory = (response.category?.length ?? 0) > 0;
 
+    toggleCategoryLayout({ selectedJenis: state.selectedJenis, hasCategory, isRenderTypes });
     // Toggle category container
     if (categories.length === 0) {
         $('#category-container').addClass('d-none');
