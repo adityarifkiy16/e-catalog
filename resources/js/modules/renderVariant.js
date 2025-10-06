@@ -4,17 +4,12 @@ export function renderVariantsToModal(specifications, container = '#modalVariant
     $('#modalKepadatan').empty();
 
     if (Array.isArray(specifications) && specifications.length > 0) {
-        let hasWarna = false;
-        let hasDensity = false;
-
         specifications.forEach((v) => {
             const values = v.specification_values || [];
             const nameLower = v.name.toLowerCase();
 
             if (nameLower === 'warna') {
-                hasWarna = true;
                 $('#paket').text('Warna'); // ubah label Paket jadi Warna
-
                 if (values.length > 0) {
                     values.forEach((val) => {
                         if (v.pivot && val.id === v.pivot.specification_value_id) {
@@ -29,7 +24,6 @@ export function renderVariantsToModal(specifications, container = '#modalVariant
                     $('#modalPaket').append(`<span class="text-muted">Tidak ada data</span>`);
                 }
             } else if (nameLower === 'density') {
-                hasDensity = true;
                 if (values.length > 0) {
                     values.forEach((val) => {
                         if (v.pivot && val.id === v.pivot.specification_value_id) {
@@ -71,15 +65,6 @@ export function renderVariantsToModal(specifications, container = '#modalVariant
                 $(container).append(rowHtml);
             }
         });
-
-        // tampilkan badge jika ada warna atau density
-        if (!hasWarna && !hasDensity) {
-            $('.paket').hide();
-            $('.density').hide();
-        } else {
-            $('.paket').show();
-            $('.density').show();
-        }
     } else {
         $(container).append(`<div class="text-muted">Tidak ada varian</div>`);
         $('.paket').hide();
