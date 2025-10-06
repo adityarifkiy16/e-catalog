@@ -169,7 +169,7 @@
                                             class="product-details d-flex flex-column justify-content-center align-items-center justify-content-md-start">
 
                                             <!-- Kode Produk -->
-                                            <h3 id="modalCode"
+                                            <h3 id="modalName"
                                                 class="font-weight-bold mb-2 text-dark text-left text-md-left">
                                             </h3>
 

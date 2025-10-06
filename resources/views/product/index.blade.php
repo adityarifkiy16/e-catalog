@@ -59,6 +59,7 @@
                             <tr>
                                 <th style="width: 0.5rem;">No</th>
                                 <th>Kode</th>
+                                <th>Nama Produk</th>
                                 <th>Jenis</th>
                                 <th>Kategori</th>
                                 <th>Foto</th>
@@ -258,6 +259,10 @@
                     },
                     {
                         data: 'code',
+                        orderable: false,
+                    },
+                    {
+                        data: 'name',
                         orderable: false,
                     },
                     {

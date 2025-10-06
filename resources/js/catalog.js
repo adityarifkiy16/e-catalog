@@ -139,6 +139,7 @@ $(document).ready(function () {
         const productId = $(this).data('id');
         console.log('productId', productId);
         const code = $(this).data('code');
+        const name = $(this).data('name');
         const category = $(this).data('category');
         const type = $(this).data('type');
         const jenis = $(this).data('jenis');
@@ -246,8 +247,8 @@ $(document).ready(function () {
 
         renderCarouselProduct(images, packagesImgs, jenis);
 
-        $('#modalCode').text(code);
-        $('#productModalLabel').text(code);
+        $('#modalName').text(name);
+        $('#productModalLabel').text(name);
         $('#modalDownload').data('id', productId);
         $('#productModal').modal('show');
         $('#modalContact').data({ jenis, category, code, length, width, height, density, type });

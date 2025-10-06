@@ -44,7 +44,7 @@ class TProductController extends Controller
                 'category' => fn($q) => $q->select('id', 'name', 'jenis_id'),
                 'category.jenis' => fn($q) => $q->select('id', 'name'),
             ])
-                ->select('id', 'photo', 'code', 'category_id')
+                ->select('id', 'photo', 'code', 'category_id', 'name')
                 ->orderBy('code', 'asc');
 
             if ($request->has('filter')) {

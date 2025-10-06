@@ -18,18 +18,6 @@ export function renderProducts(products, selectedJenis) {
 
         const categoryName = product.category?.name ?? 'Tanpa Kategori';
 
-        let displayCode = product.code;
-
-        if (selectedJenis == 3) {
-            displayCode = product.code.split(' ').slice(4).join(' ').trim();
-        } else if (selectedJenis == 4) {
-            displayCode = product.code.split(' ').slice(1).join(' ');
-        } else if (selectedJenis == 5) {
-            displayCode = product.code.split(' ').slice(1).join(' ');
-        } else {
-            displayCode = product.code;
-        }
-
         // Tampilan sesuai bentuk
         if (product.category?.display_style === 'square' || selectedJenis === null) {
             html += `
@@ -52,7 +40,8 @@ export function renderProducts(products, selectedJenis) {
 
         html += `
                     data-id="${product.id}"
-                    data-code="${displayCode}"
+                    data-code="${product.code}"
+                    data-name="${product.name}"
                     data-category="${categoryName}"
                     data-jenis="${product.category?.jenis?.name ?? ''}"
                     data-images="${imagesJson}"
@@ -82,7 +71,7 @@ export function renderProducts(products, selectedJenis) {
                         >
                         <div class="card-body d-flex flex-column text-center">
                             <h4 class="card-title font-weight-bold text-uppercase mb-2">
-                                ${displayCode}
+                                ${product.name}
                             </h4>
                             <h6 class="card-text text-muted mb-1">${categoryName}</h6>
                         </div>
