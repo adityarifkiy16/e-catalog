@@ -6,7 +6,7 @@
             <i class="right fas fa-angle-left"></i>
         </p>
     </a>
-    <ul class="nav nav-treeview">
+    <ul class="nav nav-treeview pl-4">
         @foreach ($items as $item)
             <li class="nav-item">
                 <a href="{{ route($item['route']) }}" class="nav-link" style="">
