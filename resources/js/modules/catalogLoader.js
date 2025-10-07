@@ -48,8 +48,6 @@ export function resetState() {
 // ===== Main Loader =====
 export function loadMoreData() {
     if (state.isLoading || state.lastPage) return Promise.resolve();
-
-    console.log('loadMoreData');
     state.isLoading = true;
     showLoading();
 
@@ -94,9 +92,6 @@ export function loadMoreData() {
 function handleResponse(response) {
     const products = response.data.data ?? [];
     const types = response.types ?? [];
-    console.log('types', types);
-    console.log('state current page', state.currentPage);
-    console.log('response last page', response.data.last_page);
 
     // Handle back button
     if (state.type) {
@@ -199,7 +194,6 @@ function updateCategoryMenu(response, firstLoad = true) {
 
     // Auto choose first category if none selected
     if (!state.category && categories.length > 0) {
-        console.log('auto choose category');
         state.category = categories[0].id;
         setCategory(state.category);
         resetState();

@@ -12,7 +12,6 @@ export function bindFilterButton(selectedJenis) {
 
         const category = $(this).data('id');
         const type = $(this).data('type');
-        console.log(type);
         try {
             setCatalogConfig({ selectedJenis, category, type });
             setCategory(category);
