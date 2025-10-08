@@ -11,10 +11,10 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('permission:management_users', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy', 'search']]);
     }
 
-    public function index(Request $request)
+    public function index()
     {
         $arr['users'] = \App\Models\User::with('role')->get();
         return view('user.index', $arr);

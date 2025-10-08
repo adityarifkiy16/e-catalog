@@ -92,9 +92,6 @@
                         <i class="fas fa-user"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <a href="{{ route('users.edit', Auth::user()->id) }}" class="dropdown-item">
-                            <i class="fas fa-user-circle mr-2"></i> Profile
-                        </a>
                         <div class="dropdown-divider"></div>
                         <form action="{{ route('logout') }}" method="POST" class="d-inline">
                             @csrf

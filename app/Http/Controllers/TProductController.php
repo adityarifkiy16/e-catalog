@@ -28,7 +28,7 @@ class TProductController extends Controller
 
     public function __construct(ImageServices $imageServices, ProductViewServices $viewServices)
     {
-        $this->middleware('auth')->except(['downloadPdf', 'downloadPdfProduct', 'show']);
+        $this->middleware('permission:management_product')->except(['downloadPdf', 'downloadPdfProduct', 'show']);
         $this->imageServices = $imageServices;
         $this->viewServices = $viewServices;
     }
@@ -411,48 +411,6 @@ class TProductController extends Controller
             return $output;
         }
     }
-
-    public function deleteImage()
-    {
-        $folderPath = storage_path('app/public/images/products/2025/07/02');
-        $files = File::glob($folderPath . '/*.webp');
-
-        foreach ($files as $file) {
-            $relativePath = str_replace(storage_path('app/public/'), '', $file);
-            if (!TProduct::where('photo', $relativePath)->exists()) {
-                if (file_exists($file)) {
-                    @unlink($file);
-                }
-            }
-        }
-    }
-
-
-    public function deleteUnusedImages()
-    {
-        $unusedImages = TImage::whereDoesntHave('product')
-            ->whereDoesntHave('categories')
-            ->get();
-
-        foreach ($unusedImages as $image) {
-            $filePath = 'public/' . $image->path;
-            if (Storage::exists($filePath)) {
-                Storage::delete($filePath);
-            }
-
-            $image->delete();
-        }
-
-        if ($unusedImages->count() > 0) {
-            return response()->json([
-                'message' => 'Unused images deleted successfully',
-                'data' => $unusedImages
-            ], 200);
-        }
-
-        return response()->json(['message' => 'No unused images found'], 404);
-    }
-
 
     public function downloadPdfProduct(Request $request)
     {

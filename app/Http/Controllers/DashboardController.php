@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index(Request $request)
     {
         $produkPerJenis = TProduct::with('category.jenis')->whereNull('deleted_at')

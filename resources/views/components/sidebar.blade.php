@@ -2,7 +2,7 @@
     @include('partials.sidebar._user_panel')
 
     <ul class="nav nav-pills nav-sidebar nav-dark flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        @if (auth()->check() && auth()->user()->hasPermission('view_dashboard'))
+        @if (auth()->check())
             @include('partials.sidebar._nav_item', [
                 'route' => 'dashboard',
                 'icon' => 'fas fa-home',
@@ -10,7 +10,7 @@
             ])
         @endif
 
-        @if (auth()->check() && auth()->user()->hasPermission('view_users'))
+        @if (auth()->check() && auth()->user()->hasPermission('management_users'))
             @include('partials.sidebar._nav_item', [
                 'route' => 'users.index',
                 'icon' => 'fas fa-users',
@@ -23,16 +23,18 @@
             ])
         @endif
 
-        @include('partials.sidebar._nav_tree', [
-            'title' => 'Manajemen Produk',
-            'icon' => 'fas fa-box',
-            'items' => [
-                ['route' => 'jenis.index', 'label' => 'Jenis', 'icon' => 'fas fa-layer-group'],
-                ['route' => 'type.index', 'label' => 'Tipe (Wallpanel)', 'icon' => 'fas fa-shapes'],
-                ['route' => 'categories.index', 'label' => 'Kategori', 'icon' => 'fas fa-folder'],
-                ['route' => 'products.index', 'label' => 'Produk/Motif', 'icon' => 'fas fa-cubes'],
-                ['route' => 'package.index', 'label' => 'Paket', 'icon' => 'fas fa-box'],
-            ],
-        ])
+        @if (auth()->check() && auth()->user()->hasPermission('management_product'))
+            @include('partials.sidebar._nav_tree', [
+                'title' => 'Manajemen Produk',
+                'icon' => 'fas fa-box',
+                'items' => [
+                    ['route' => 'jenis.index', 'label' => 'Jenis', 'icon' => 'fas fa-layer-group'],
+                    ['route' => 'type.index', 'label' => 'Tipe (Wallpanel)', 'icon' => 'fas fa-shapes'],
+                    ['route' => 'categories.index', 'label' => 'Kategori', 'icon' => 'fas fa-folder'],
+                    ['route' => 'products.index', 'label' => 'Produk', 'icon' => 'fas fa-cubes'],
+                    ['route' => 'package.index', 'label' => 'Paket', 'icon' => 'fas fa-box'],
+                ],
+            ])
+        @endif
     </ul>
 </nav>

@@ -15,6 +15,7 @@ class MCategoriesController extends Controller
 
     public function __construct(ImageServices $imageServices)
     {
+        $this->middleware('permission:management_product', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']]);
         $this->imageServices = $imageServices;
     }
 

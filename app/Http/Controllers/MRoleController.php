@@ -9,6 +9,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class MRoleController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:management_roles', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']]);
+    }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -54,7 +61,7 @@ class MRoleController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
             'permission' => 'required|array|min:1',
         ]);
 
@@ -95,7 +102,7 @@ class MRoleController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
             'permission' => 'required|array|min:1',
         ]);
 

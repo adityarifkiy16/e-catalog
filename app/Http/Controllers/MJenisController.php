@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class MJenisController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:management_product', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      */

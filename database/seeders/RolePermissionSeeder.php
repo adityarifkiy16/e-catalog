@@ -12,29 +12,26 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void
     {
+        \App\Models\MPermissions::truncate();
+        \App\Models\MRole::truncate();
+
         // Create roles
-        $adminRole = \App\Models\MRole::firstOrCreate(['name' => 'admin']);
+        $adminRole = \App\Models\MRole::firstOrCreate(['name' => 'Admin Data']);
+        $superAdminRole = \App\Models\MRole::firstOrCreate(['name' => 'Super Admin']);
 
         // Create permissions
         $permissions = [
-            ['name' => 'view_dashboard'],
-            ['name' => 'view_users'],
-            ['name' => 'create_users'],
-            ['name' => 'edit_users'],
-            ['name' => 'delete_users'],
-            ['name' => 'view_categories'],
-            ['name' => 'create_categories'],
-            ['name' => 'edit_categories'],
-            ['name' => 'delete_categories'],
-            ['name' => 'view_products'],
-            ['name' => 'create_products'],
-            ['name' => 'edit_products'],
-            ['name' => 'delete_products'],
+            ['name' => 'management_users'],
+            ['name' => 'management_roles'],
+            ['name' => 'management_product'],
         ];
 
         foreach ($permissions as $permission) {
             $perm = \App\Models\MPermissions::firstOrCreate($permission);
-            $adminRole->permissions()->syncWithoutDetaching($perm->id);
+            if ($permission['name'] == 'management_users') {
+                $adminRole->permissions()->syncWithoutDetaching($perm->id);
+            }
+            $superAdminRole->permissions()->syncWithoutDetaching($perm->id);
         }
     }
 }
