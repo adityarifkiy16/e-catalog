@@ -4,7 +4,7 @@
         <x-breadcrumb :items="[
             ['label' => 'Home', 'url' => route('dashboard')],
             ['label' => 'users', 'url' => route('users.index')],
-            ['label' => 'Tamabah'],
+            ['label' => 'Tambah'],
         ]">
         </x-breadcrumb>
     </div>
