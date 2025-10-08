@@ -83,62 +83,64 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 mb-3">
-            <form action="{{ route('products.viewed') }}" method="GET"
-                class="d-flex justify-content-end align-items-center">
-                <select name="filter" id="date-filter" class="select2">
-                    <option value="">Semua</option>
-                    <option value="7">7 Hari Terakhir</option>
-                    <option value="30">30 Hari Terakhir</option>
-                    <option value="365">1 Tahun Terakhir</option>
-                </select>
-                <button type="button" class="btn btn-primary ml-2" id="btn-filter-date">Filter</button>
-            </form>
-        </div>
-        <div class="col-6">
-            <div class="card card-danger">
-                <div class="card-header">
-                    <h3 class="card-title">Grafik Top produk</h3>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
-                        </button>
+        @if (auth()->check() && auth()->user()->hasPermission('management_product'))
+            <div class="col-12 mb-3">
+                <form action="{{ route('products.viewed') }}" method="GET"
+                    class="d-flex justify-content-end align-items-center">
+                    <select name="filter" id="date-filter" class="select2">
+                        <option value="">Semua</option>
+                        <option value="7">7 Hari Terakhir</option>
+                        <option value="30">30 Hari Terakhir</option>
+                        <option value="365">1 Tahun Terakhir</option>
+                    </select>
+                    <button type="button" class="btn btn-primary ml-2" id="btn-filter-date">Filter</button>
+                </form>
+            </div>
+            <div class="col-6">
+                <div class="card card-danger">
+                    <div class="card-header">
+                        <h3 class="card-title">Grafik Top produk</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="pieChart"
+                            style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                     </div>
                 </div>
-                <div class="card-body">
-                    <canvas id="pieChart"
-                        style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                </div>
             </div>
-        </div>
-        <div class="col-6">
-            <div class="card card-primary">
-                <div class="card-header bg-primary">
-                    <h4 class="card-title mb-0"><i class="fas fa-chart-bar mr-2"></i> Top Produk Berdasarkan Klik</h4>
-                    <div class="card-tools">
-                        <!-- Collapse Button -->
-                        <button type="button" class="btn btn-tool text-white" data-card-widget="collapse"><i
-                                class="fas fa-minus"></i></button>
+            <div class="col-6">
+                <div class="card card-primary">
+                    <div class="card-header bg-primary">
+                        <h4 class="card-title mb-0"><i class="fas fa-chart-bar mr-2"></i> Top Produk Berdasarkan Klik</h4>
+                        <div class="card-tools">
+                            <!-- Collapse Button -->
+                            <button type="button" class="btn btn-tool text-white" data-card-widget="collapse"><i
+                                    class="fas fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table id="product-table" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width: 0.5rem;">No</th>
+                                    <th>Kode</th>
+                                    <th>Jumlah Klik</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="card-body table-responsive">
-                    <table id="product-table" class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th style="width: 0.5rem;">No</th>
-                                <th>Kode</th>
-                                <th>Jumlah Klik</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
             </div>
-        </div>
+        @endif
     </div>
 @endsection
 @push('scripts')

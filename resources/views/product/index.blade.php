@@ -9,7 +9,7 @@
     <div class="card d-flex px-4 py-2" style="border-radius: 1rem;">
         <x-breadcrumb :items="[
             ['label' => 'Home', 'url' => route('dashboard')],
-            ['label' => 'Product', 'url' => route('products.index')],
+            ['label' => 'Master Data Produk', 'url' => route('products.index')],
         ]">
         </x-breadcrumb>
     </div>
@@ -21,7 +21,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
-                        <h3 class="h3 font-weight-bold">Product List</h3>
+                        <h3 class="h3 font-weight-bold">Daftar Produk</h3>
                         <div class="d-flex justify-content-end align-items-center">
                             <form action="{{ route('products.index') }}" method="GET">
                                 <div class="d-flex justify-content-between align-items-center ml-2">
@@ -40,7 +40,7 @@
                                     </button>
                                 </div>
                             </form>
-                            @if ($isAuthenticated && $user->hasPermission('create_products'))
+                            @if ($isAuthenticated && $user->hasPermission('management_product'))
                                 <a href="{{ route('products.create') }}" class="btn btn-success ml-2">
                                     <i class="fa fa-plus"></i> upload bulk produk
                                 </a>
@@ -63,7 +63,7 @@
                                 <th>Jenis</th>
                                 <th>Kategori</th>
                                 <th>Foto</th>
-                                @if ($isAuthenticated && ($user->hasPermission('edit_products') || $user->hasPermission('edit_products')))
+                                @if ($isAuthenticated && $user->hasPermission('management_product'))
                                     <th style="text-align: end; width: 2rem;">Action</th>
                                 @endif
                             </tr>
@@ -298,7 +298,7 @@
                         render: function(data) {
                             return `
                         <div class="d-flex flex-row justify-content-end align-items-end">
-                                <a href="/products/${data.id}/edit" title="Edit"><button type="button" class="btn btn-primary mx-2"><i class="fas fa-pencil-alt"></i></button></a>
+                                <a href="/products/${data.id}/edit" title="Edit Produk"><button type="button" class="btn btn-primary mx-2"><i class="fas fa-pencil-alt"></i></button></a>
                                 <form action="/products/${data.id}" style="display: inline;" class="delete-product">
                                             <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
                                             <input type="hidden" name="_method" value="DELETE">
@@ -309,14 +309,14 @@
                                 <form action="/products/reset-mockup/${data.id}" style="display: inline;" class="reset-mockup mx-2">
                                             <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="btn btn-success" data-user-id="${data.id}" title="Reset Mockup">
+                                            <button type="submit" class="btn btn-success" data-user-id="${data.id}" title="Reset Gambar 1">
                                                 <i class="fas fa-undo"></i>
                                             </button>
                                 </form>
                                 <form action="/products/reset-motif/${data.id}" style="display: inline;" class="reset-motif">
                                             <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="btn btn-warning" data-user-id="${data.id}" title="Reset Motif">
+                                            <button type="submit" class="btn btn-warning" data-user-id="${data.id}" title="Reset Gambar 2">
                                                 <i class="fas fa-undo"></i>
                                             </button>
                                 </form>

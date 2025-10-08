@@ -16,6 +16,8 @@
                 'icon' => 'fas fa-users',
                 'label' => 'User',
             ])
+        @endif
+        @if (auth()->check() && auth()->user()->hasPermission('management_roles'))
             @include('partials.sidebar._nav_item', [
                 'route' => 'role.index',
                 'icon' => 'fas fa-user',
@@ -31,8 +33,8 @@
                     ['route' => 'jenis.index', 'label' => 'Jenis', 'icon' => 'fas fa-layer-group'],
                     ['route' => 'type.index', 'label' => 'Tipe (Wallpanel)', 'icon' => 'fas fa-shapes'],
                     ['route' => 'categories.index', 'label' => 'Kategori', 'icon' => 'fas fa-folder'],
-                    ['route' => 'products.index', 'label' => 'Produk', 'icon' => 'fas fa-cubes'],
                     ['route' => 'package.index', 'label' => 'Paket', 'icon' => 'fas fa-box'],
+                    ['route' => 'products.index', 'label' => 'Produk', 'icon' => 'fas fa-cubes'],
                 ],
             ])
         @endif

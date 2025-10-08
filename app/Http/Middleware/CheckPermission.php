@@ -23,7 +23,7 @@ class CheckPermission
         }
 
         if (!$user->hasPermission($permission)) {
-            abort(403, 'Anda tidak memiliki izin untuk mengakses halaman ini.');
+            abort(403, 'Forbidden');
         }
 
         return $next($request);

@@ -150,7 +150,7 @@
                             if (data.permissions) {
                                 if (data.permissions.length > 0) {
                                     return data.permissions.map(permission =>
-                                        `<span class="badge badge-success">${permission.name.replace(/_/g, ' ')}</span>`
+                                        `<span class="px-3 py-1 badge bg-warning rounded-pill">${permission.name.replace(/_/g, ' ')}</span>`
                                     ).join(' ');
                                 } else {
                                     return '<span class="text-muted">No Permissions</span>';

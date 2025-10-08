@@ -9,7 +9,7 @@
     <div class="card d-flex px-4 py-2" style="border-radius: 1rem;">
         <x-breadcrumb :items="[
             ['label' => 'Home', 'url' => route('dashboard')],
-            ['label' => 'Type', 'url' => route('type.index')],
+            ['label' => 'Master Data Tipe', 'url' => route('type.index')],
         ]">
         </x-breadcrumb>
     </div>
@@ -17,6 +17,12 @@
 
 @section('content')
     <div class="row">
+        <div class="col-12">
+            <div class="alert alert-info text-white" role="alert">
+                <i class="fas fa-info-circle"></i> <strong>Master Data Tipe</strong> digunakan untuk jenis wallpanel.
+            </div>
+        </div>
+
         <div class="col-12">
             <div class="card card-primary">
                 <div class="card-body table-responsive">

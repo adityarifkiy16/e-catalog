@@ -9,7 +9,7 @@
     <div class="card d-flex px-4 py-2" style="border-radius: 1rem;">
         <x-breadcrumb :items="[
             ['label' => 'Home', 'url' => route('dashboard')],
-            ['label' => 'Categories', 'url' => route('categories.index')],
+            ['label' => 'Master Data Kategori', 'url' => route('categories.index')],
         ]">
         </x-breadcrumb>
     </div>
