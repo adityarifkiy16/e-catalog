@@ -62,7 +62,7 @@ class MRoleController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:255',
-            'permission' => 'required|array|min:1',
+            'permission' => 'nullable|array|min:1',
         ]);
 
         $role = MRole::create([
@@ -103,7 +103,7 @@ class MRoleController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:255',
-            'permission' => 'required|array|min:1',
+            'permission' => 'nullable|array|min:1',
         ]);
 
         $role->update([
