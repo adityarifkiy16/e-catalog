@@ -16,8 +16,8 @@ class RolePermissionSeeder extends Seeder
         \App\Models\MRole::truncate();
 
         // Create roles
-        $adminRole = \App\Models\MRole::firstOrCreate(['name' => 'Admin Data']);
         $superAdminRole = \App\Models\MRole::firstOrCreate(['name' => 'Super Admin']);
+        $adminRole = \App\Models\MRole::firstOrCreate(['name' => 'Admin Data']);
 
         // Create permissions
         $permissions = [
