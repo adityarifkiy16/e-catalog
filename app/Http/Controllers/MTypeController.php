@@ -136,12 +136,17 @@ class MTypeController extends Controller
             'jenis_id' => $request->jenis_id,
         ];
 
-        if ($type->categories()->count() > 0) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Type cannot be updated because it has categories.',
-            ], 200);
+        if ($request->has('jenis_id')) {
+            if ($request->jenis_id != $type->jenis_id) {
+                if ($type->categories()->exists()) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Type cannot be updated because it has categories.',
+                    ], 200);
+                }
+            }
         }
+
 
         if ($request->hasFile('mockups')) {
             foreach ($request->file('mockups') as $file) {
