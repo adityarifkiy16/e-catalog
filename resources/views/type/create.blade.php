@@ -26,13 +26,14 @@
                         <!-- Role Info -->
                         <div class="form-group">
                             <label><i class="fas fa-tags"></i> Nama Tipe</label>
-                            <input type="text" class="form-control" name="name" placeholder="Masukkan Nama">
+                            <input type="text" class="form-control" name="name" placeholder="Masukkan Nama"
+                                id="name">
                             @error('name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <label class="mt-3"><i class="fas fa-user-tag"></i> Jenis</label>
-                        <select class="form-control" name="jenis_id">
+                        <select class="form-control" name="jenis_id" id="jenis_id">
                             <option value="">Pilih Jenis</option>
                             @foreach ($jenis as $item)
                                 <option value="{{ $item->id }}" {{ old('jenis_id') == $item->id ? 'selected' : '' }}>
@@ -41,10 +42,23 @@
                             @endforeach
                         </select>
                         <label class="mt-3"><i class="fas fa-image"></i> Upload Thumbnail</label>
-                        <input type="file" class="form-control" id="img" name="thumbnail" accept="image/*">
+                        <input type="file" class="form-control" id="thumbnail" name="thumbnail" accept="image/*">
                         <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar Ukuran</label>
-                        <input type="file" class="form-control" id="img" name="image" accept="image/*">
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*">
+
+                        <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar Mockup (slider)</label>
+                        <div class="dropzone" id="image-dropzone">
+                            <div class="dz-message">
+                                <div style="font-size: 3rem; color: #bbb;">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <p class="font-weight-bold">Pilih file atau drag and drop</p>
+                                <p class="text-muted">jpeg, webp, jpg hingga 2 MB.</p>
+                            </div>
+                        </div>
+
                         <button class="btn btn-primary mt-3" type="submit" id="btn-submit">Kirim</button>
+
                     </form>
                 </div>
             </div>
@@ -54,6 +68,7 @@
 
 @push('scripts')
     <script>
+        Dropzone.autoDiscover = false;
         $(document).ready(function() {
             const Toast = Swal.mixin({
                 toast: true,
@@ -67,58 +82,108 @@
                 }
             });
 
+            const dz = new Dropzone("#image-dropzone", {
+                url: "{{ route('type.store') }}",
+                paramName: "mockups",
+                maxFilesize: 2,
+                acceptedFiles: "image/*",
+                autoProcessQueue: false,
+                parallelUploads: 5,
+                uploadMultiple: true,
+                maxFiles: 5,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                init: function() {
+                    this.on("sendingmultiple", function(file, xhr, formData) {
+                        formData.append("name", $('#name').val());
+                        formData.append("jenis_id", $('#jenis_id').val());
+                        formData.append('_method', 'POST');
+
+                        let thumbnail = $('#thumbnail')[0].files[0];
+                        if (thumbnail) formData.append("thumbnail", thumbnail);
+
+                        let image = $('#image')[0].files[0];
+                        if (image) formData.append("image", image);
+                    });
+
+                    this.on("successmultiple", function(files, response) {
+                        Toast.fire({
+                            icon: 'success',
+                            title: response.message
+                        });
+                        setTimeout(function() {
+                            location.reload();
+                        }, 3500);
+                    });
+
+                    this.on("errormultiple", function(files, response) {
+                        Toast.fire({
+                            icon: 'error',
+                            title: response.message
+                        });
+                        this.removeAllFiles(true);
+                    });
+                },
+            });
+
             $("#form-tambah").on('submit', function(e) {
                 e.preventDefault();
                 console.log("submit");
-                $("#btn-submit").prop('disabled', true);
-                $("#btn-submit").html(
-                    '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Loading...'
-                );
-                let form = $(this);
-                let url = form.attr('action');
-                let formData = new FormData(this);
 
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url: url,
-                    type: 'POST',
-                    data: formData,
-                    contentType: false, // ⬅️ WAJIB
-                    processData: false, // ⬅️ WAJIB
-                    success: function(response) {
-                        console.log(response);
-                        if (response.status == "success") {
-                            Toast.fire({
-                                icon: 'success',
-                                title: response.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                            setTimeout(() => {
-                                location.reload();
-                            }, 1500);
-                        } else {
-                            Toast.fire({
-                                icon: 'error',
-                                title: response.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
+                $("#btn-submit").prop('disabled', true).html(
+                    '<span class="spinner-border spinner-border-sm mr-2"></span> Loading...'
+                );
+
+                if (dz.getAcceptedFiles().length > 0) {
+                    dz.processQueue();
+                } else {
+                    let form = $(this);
+                    let url = form.attr('action');
+                    let formData = new FormData(this);
+
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: url,
+                        type: 'POST',
+                        data: formData,
+                        contentType: false, // ⬅️ WAJIB
+                        processData: false, // ⬅️ WAJIB
+                        success: function(response) {
+                            console.log(response);
+                            if (response.status == "success") {
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: response.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 1500);
+                            } else {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: response.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                            }
+                        },
+                        error: function(response) {
+                            if (response.status === 422) {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: response.responseJSON.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                            }
                         }
-                    },
-                    error: function(response) {
-                        if (response.status === 422) {
-                            Toast.fire({
-                                icon: 'error',
-                                title: response.responseJSON.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                        }
-                    }
-                });
+                    });
+                }
             });
         });
     </script>

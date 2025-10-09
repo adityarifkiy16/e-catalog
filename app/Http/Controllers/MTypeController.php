@@ -69,6 +69,8 @@ class MTypeController extends Controller
             'jenis_id' => 'required|exists:m_jenis,id',
             'thumbnail' => 'nullable',
             'thumbnail.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'mockups' => 'nullable',
+            'mockups.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         $data = [
@@ -90,7 +92,18 @@ class MTypeController extends Controller
             $data['thumbnail'] = $path;
         }
 
-        MType::create($data);
+        $type = MType::create($data); //create type
+
+        if ($request->hasFile('mockups')) {
+            foreach ($request->file('mockups') as $file) {
+                $folder = 'types';
+                $path = $this->imageServices->store($file, $folder, 1200);
+                $type->images()->create([
+                    'path' => $path
+                ]);
+            }
+        }
+
         return response()->json([
             'status' => 'success',
             'message' => 'Type created successfully.',
@@ -208,6 +221,14 @@ class MTypeController extends Controller
                 'status' => 'error',
                 'message' => 'type cannot be deleted because it has associated category.',
             ], 200);
+        }
+
+        foreach ($type->images as $image) {
+            $imagePath = storage_path('app/public/' . $image->path);
+            if (file_exists($imagePath)) {
+                @unlink($imagePath);
+            }
+            $image->delete();
         }
 
         $type->delete();
