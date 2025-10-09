@@ -11,6 +11,9 @@
         @endif
 
         @if (auth()->check() && auth()->user()->hasPermission('management_users'))
+            <li class="nav-header">
+                Pengguna
+            </li>
             @include('partials.sidebar._nav_item', [
                 'route' => 'users.index',
                 'icon' => 'fas fa-users',
@@ -26,20 +29,26 @@
         @endif
 
         @if (auth()->check() && auth()->user()->hasPermission('management_product'))
+            <li class="nav-header">
+                Produk
+            </li>
             @include('partials.sidebar._nav_tree', [
                 'title' => 'Manajemen Produk',
                 'icon' => 'fas fa-box',
                 'items' => [
-                    ['route' => 'jenis.index', 'label' => 'Jenis', 'icon' => 'fas fa-layer-group'],
-                    ['route' => 'type.index', 'label' => 'Tipe (Wallpanel)', 'icon' => 'fas fa-shapes'],
-                    ['route' => 'categories.index', 'label' => 'Kategori', 'icon' => 'fas fa-folder'],
-                    ['route' => 'package.index', 'label' => 'Paket', 'icon' => 'fas fa-box'],
-                    ['route' => 'products.index', 'label' => 'Produk', 'icon' => 'fas fa-cubes'],
+                    ['route' => 'jenis.index', 'label' => 'Jenis', 'icon' => 'far fa-circle'],
+                    ['route' => 'type.index', 'label' => 'Tipe (Wallpanel)', 'icon' => 'far fa-circle'],
+                    ['route' => 'categories.index', 'label' => 'Kategori', 'icon' => 'far fa-circle'],
+                    ['route' => 'package.index', 'label' => 'Paket', 'icon' => 'far fa-circle'],
+                    ['route' => 'products.index', 'label' => 'Produk', 'icon' => 'far fa-circle'],
                 ],
             ])
         @endif
 
         @if (auth()->check())
+            <li class="nav-header">
+                Lainnya
+            </li>
             @include('partials.sidebar._nav_item', [
                 'route' => 'clear-cache',
                 'icon' => 'fas fa-trash',
