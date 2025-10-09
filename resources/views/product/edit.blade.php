@@ -26,8 +26,15 @@
                         <div class="form-group">
                             <label class="mt-3"><i class="fas fa-code"></i> Kode Barang</label>
                             <input type="text" class="form-control" name="code"
-                                value="{{ old('name', $product->code) }}" placeholder="Kode Produk">
+                                value="{{ old('code', $product->code) }}" placeholder="Kode Produk">
                             @error('code')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+
+                            <label class="mt-3"><i class="fas fa-code"></i> Nama</label>
+                            <input type="text" class="form-control" name="name"
+                                value="{{ old('name', $product->name) }}" placeholder="Nama Produk">
+                            @error('name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
 
