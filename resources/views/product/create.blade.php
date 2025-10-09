@@ -89,7 +89,7 @@
                     <div class="modal-header bg-danger text-white">
                         <h5 class="modal-title" id="alertModalLabel">
                             <h4 class="fw-bold">
-                                <i class="fas fa-info-circle me-2"></i> Format Penamaan Barang
+                                <i class="fas fa-info-circle me-2"></i> Perhatian!
                             </h4>
                         </h5>
                         <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
@@ -97,21 +97,28 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <ul class="list-group list-group-flush text-start">
-                            <li class="list-group-item">
-                                <i class="fas fa-circle text-danger me-2" style="font-size:8px;"></i>
-                                [8mm/5mm] <b> JL Black </b> <span class="text-muted">(Aksesoris)</span>
-                            </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-circle text-danger me-2" style="font-size:8px;"></i>
-                                Type<b> 644 </b> - motif <b> xxxxx</b> <span class="text-muted">(Wallpanel)</span>
-                            </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-circle text-danger me-2" style="font-size:8px;"></i>
-                                <b> WOOD xxxx</b> <span class="text-muted">(UV Board)</span>
-                            </li>
-                        </ul>
+                        <div class="alert alert-danger border-0 shadow-sm" role="alert">
+                            <h6 class="font-weight-bold mb-2">
+                                <i class="bi bi-info-circle me-1"></i> Informasi Penting
+                            </h6>
+                            <p class="mb-2">
+                                Sistem akan <strong>secara otomatis mengambil kode produk</strong> dari
+                                <strong>nama file gambar</strong> yang diunggah.
+                            </p>
+                            <div class="bg-light rounded p-3 mb-2">
+                                <small>
+                                    <i class="bi bi-file-earmark-image me-1 text-primary"></i>
+                                    Contoh:
+                                    <br>
+                                    <code>ABC123.jpg</code> → kode produk: <strong>ABC123</strong>
+                                </small>
+                            </div>
+                            <p class="mb-0 text-white badge">
+                                Pastikan setiap nama file gambar bersifat <u>unik</u> agar tidak terjadi duplikasi data.
+                            </p>
+                        </div>
                     </div>
+
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Mengerti</button>
