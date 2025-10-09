@@ -1,10 +1,12 @@
-import { prepareImageOrder } from './utils';
+import { prepareImageOrder } from "./utils";
 
 export function renderProducts(products, selectedJenis) {
-    $('#btn-download').removeClass('d-none');
-    let html = '';
+    $("#btn-download").removeClass("d-none");
+    let html = "";
     products.forEach((product) => {
-        const image = product.photo ? `/storage/${product.photo}` : 'https://via.placeholder.com/300x200?text=No+Image';
+        const image = product.photo
+            ? `/storage/${product.photo}`
+            : "https://via.placeholder.com/300x200?text=No+Image";
 
         const orderedImage = prepareImageOrder(product.images);
 
@@ -12,18 +14,24 @@ export function renderProducts(products, selectedJenis) {
         const allImages = [image, ...orderedImage];
 
         // Simpan array ini sebagai string JSON yang aman untuk HTML
-        const imagesJson = JSON.stringify(allImages).replace(/"/g, '&quot;');
-        const packagesJson = JSON.stringify(product.packages).replace(/"/g, '&quot;');
+        const imagesJson = JSON.stringify(allImages).replace(/"/g, "&quot;");
+        const packagesJson = JSON.stringify(product.packages).replace(
+            /"/g,
+            "&quot;"
+        );
 
-        const categoryName = product.category?.name ?? 'Tanpa Kategori';
+        const categoryName = product.category?.name ?? "Tanpa Kategori";
 
         // Tampilan sesuai bentuk
-        if (product.category?.display_style === 'square' || selectedJenis === null) {
+        if (
+            product.category?.display_style === "square" ||
+            selectedJenis === null
+        ) {
             html += `
                     <div class="col-md-2 col-6 mb-4">
                         <div class="h-100 product-card"
                     `;
-        } else if (product.category?.display_style === 'rectangle') {
+        } else if (product.category?.display_style === "rectangle") {
             html += `
                     <div class="col-md-4 col-6 mb-4">
                         <div class="h-100 product-card"
@@ -35,18 +43,22 @@ export function renderProducts(products, selectedJenis) {
                     `;
         }
 
-        const specificationsJson = JSON.stringify(product.specifications).replace(/"/g, '&quot;');
+        const isRectangle = product.category?.display_style === "rectangle";
+
+        const specificationsJson = JSON.stringify(
+            product.specifications
+        ).replace(/"/g, "&quot;");
 
         html += `
                     data-id="${product.id}"
                     data-code="${product.code}"
                     data-name="${product.name}"
                     data-category="${categoryName}"
-                    data-jenis="${product.category?.jenis?.name ?? ''}"
+                    data-jenis="${product.category?.jenis?.name ?? ""}"
                     data-images="${imagesJson}"
                     data-image="${image}"
-                    data-type="${product.category?.types?.name ?? ''}"
-                    data-type-image="${product.category?.types?.image ?? ''}"
+                    data-type="${product.category?.types?.name ?? ""}"
+                    data-type-image="${product.category?.types?.image ?? ""}"
                     data-url="${product.url_video}"
                     data-paket="${packagesJson}"
                     data-specifications = "${specificationsJson}"
@@ -58,14 +70,17 @@ export function renderProducts(products, selectedJenis) {
                             style="
                                 border : 1px solid #2c2c2c;
                                 min-height: 10rem;
-                                aspect-ratio: 1/1;
                                 height: auto; 
                                 border-radius: 8px;
                                 width: 100%; 
                                 object-fit: cover; 
                                 object-position: ${
-                                    product.category?.jenis?.name === 'PVC Board' ? 'bottom center' : 'center center'
+                                    product.category?.jenis?.name ===
+                                    "PVC Board"
+                                        ? "bottom center"
+                                        : "center center"
                                 };
+                                aspect-ratio: ${isRectangle ? "16/9" : "1/1"};
                             "
                         >
                         <div class="card-body d-flex flex-column text-center">
@@ -77,5 +92,5 @@ export function renderProducts(products, selectedJenis) {
                     </div>
                 </div>`;
     });
-    $('#product-list .row').append(html);
+    $("#product-list .row").append(html);
 }
