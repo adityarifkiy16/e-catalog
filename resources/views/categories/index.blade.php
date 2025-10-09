@@ -39,7 +39,7 @@
                     </form>
                     <div class="d-flex justify-content-end align-items-center mb-3">
                         <a href="{{ route('categories.create') }}" class="btn btn-success ml-2">
-                            <i class="fa fa-plus"></i> Tambah Kategory
+                            <i class="fa fa-plus"></i> Tambah Kategori
                         </a>
                     </div>
                     <table id="category-table" class="table table-bordered">

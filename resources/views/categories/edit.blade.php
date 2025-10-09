@@ -246,4 +246,25 @@
             });
         });
     </script>
+    @if (session('success'))
+        <script>
+            $(document).ready(function() {
+                Toast.fire({
+                    icon: 'success',
+                    title: "{{ session('success') }}",
+                })
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            $(document).ready(function() {
+                Toast.fire({
+                    icon: 'error',
+                    title: "{{ session('error') }}",
+                })
+            });
+        </script>
+    @endif
 @endpush

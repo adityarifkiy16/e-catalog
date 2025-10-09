@@ -69,19 +69,19 @@
 @push('scripts')
     <script>
         Dropzone.autoDiscover = false;
-        $(document).ready(function() {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
-            });
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
 
+        $(document).ready(function() {
             const dz = new Dropzone("#image-dropzone", {
                 url: "{{ route('type.store') }}",
                 paramName: "mockups",
@@ -187,4 +187,25 @@
             });
         });
     </script>
+    @if (session('success'))
+        <script>
+            $(document).ready(function() {
+                Toast.fire({
+                    icon: 'success',
+                    title: "{{ session('success') }}",
+                })
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            $(document).ready(function() {
+                Toast.fire({
+                    icon: 'error',
+                    title: "{{ session('error') }}",
+                })
+            });
+        </script>
+    @endif
 @endpush

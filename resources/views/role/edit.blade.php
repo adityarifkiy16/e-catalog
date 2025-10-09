@@ -3,7 +3,7 @@
     <div class="card d-flex px-4 py-2" style="border-radius: 1rem;">
         <x-breadcrumb :items="[
             ['label' => 'Home', 'url' => route('dashboard')],
-            ['label' => 'Type', 'url' => route('type.index')],
+            ['label' => 'Role', 'url' => route('role.index')],
             ['label' => 'Edit'],
         ]">
         </x-breadcrumb>
@@ -69,19 +69,19 @@
 @push('scripts')
     <script>
         Dropzone.autoDiscover = false;
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            },
+        });
 
         $(document).ready(function() {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                },
-            });
 
             // ✅ Jika tidak ada file di Dropzone, jalankan AJAX biasa
             $("#form-edit").on('submit', function(e) {
@@ -119,4 +119,26 @@
             });
         });
     </script>
+
+    @if (session('success'))
+        <script>
+            $(document).ready(function() {
+                Toast.fire({
+                    icon: 'success',
+                    title: "{{ session('success') }}",
+                })
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            $(document).ready(function() {
+                Toast.fire({
+                    icon: 'error',
+                    title: "{{ session('error') }}",
+                })
+            });
+        </script>
+    @endif
 @endpush
