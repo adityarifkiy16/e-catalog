@@ -3,8 +3,8 @@
     <div class="card d-flex px-4 py-2" style="border-radius: 1rem;">
         <x-breadcrumb :items="[
             ['label' => 'Home', 'url' => route('dashboard')],
-            ['label' => 'product', 'url' => route('products.index')],
-            ['label' => 'Tambah'],
+            ['label' => 'Paket', 'url' => route('package.index')],
+            ['label' => 'Bulk Tambah'],
         ]">
         </x-breadcrumb>
     </div>
@@ -72,6 +72,48 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-danger">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="alertModalLabel">
+                            <h4 class="fw-bold">
+                                <i class="fas fa-info-circle me-2"></i> Perhatian!
+                            </h4>
+                        </h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger border-0 shadow-sm" role="alert">
+                            <h6 class="font-weight-bold mb-2">
+                                <i class="bi bi-info-circle me-1"></i> Informasi Penting
+                            </h6>
+                            <p class="mb-2">
+                                Sistem akan <strong>secara otomatis mengambil kode produk</strong> dari
+                                <strong>nama file gambar</strong> yang diunggah.
+                            </p>
+                            <div class="bg-light rounded p-3 mb-2">
+                                <small>
+                                    <i class="bi bi-file-earmark-image me-1 text-primary"></i>
+                                    Contoh:
+                                    <br>
+                                    <code>ABC123.jpg</code>
+                                    <br>→ kode produk: <strong>ABC123</strong>
+                                </small>
+                            </div>
+                            <p class="mb-0 text-white badge">
+                                Pastikan setiap nama file terdapat kode produk yang terdaftar dalam sistem.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Mengerti</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -80,6 +122,7 @@
         // Initialize Dropzone
         Dropzone.autoDiscover = false;
         $(document).ready(function() {
+            $('#alertModal').modal('show');
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
