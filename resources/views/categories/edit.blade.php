@@ -3,7 +3,7 @@
     <div class="card d-flex px-4 py-2" style="border-radius: 1rem;">
         <x-breadcrumb :items="[
             ['label' => 'Home', 'url' => route('dashboard')],
-            ['label' => 'categories', 'url' => route('categories.index')],
+            ['label' => 'Kategori', 'url' => route('categories.index')],
             ['label' => 'Edit'],
         ]">
         </x-breadcrumb>
@@ -15,7 +15,7 @@
         <div class="col-md-12">
             <div class="card card-maroon">
                 <div class="card-header">
-                    <h2 class="card-title">Edit Category</h2>
+                    <h2 class="card-title">Edit Kategori</h2>
                 </div>
 
                 <div class="card-body">
@@ -24,7 +24,7 @@
                         @csrf
                         @method('PUT')
                         <div class="form-group">
-                            <label><i class="fas fa-user"></i> Name</label>
+                            <label><i class="fas fa-user"></i> Nama Kategori</label>
                             <input type="text" class="form-control" name="name" value="{{ $categories->name }}"
                                 id="name">
                             @error('name')
@@ -48,7 +48,7 @@
                             @endforeach
                         </select>
 
-                        <label class="mt-3"><i class="fas fa-image"></i> tampilan</label>
+                        <label class="mt-3"><i class="fas fa-image"></i> Tampilan Produk</label>
                         <select class="form-control" name="display_style" id="display_style">
                             <option value="">Pilih tampilan</option>
                             <option value="square"
@@ -58,12 +58,12 @@
                                 {{ old('display_style', $categories->display_style) == 'rectangle' ? 'selected' : '' }}>
                                 Persegi panjang</option>
                         </select>
-                        <label class="mt-3"><i class="fas fa-tags"></i> Order</label>
+                        <label class="mt-3"><i class="fas fa-tags"></i> Order (Urutan)</label>
                         <input type="text" class="form-control" name="order"
                             value="{{ old('order', $categories->order) }}" id="order">
-                        <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar 3D</label>
+                        <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar 3D (Menu)</label>
                         <input type="file" class="form-control" id="img" name="image" accept="image/*">
-                        <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar Mockup</label>
+                        <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar Mockup (Slider)</label>
                         <div class="dropzone" id="image-dropzone">
                             <div class="dz-message" id="dz-message">
                                 <div style="font-size: 3rem; color: #bbb;">
@@ -84,19 +84,18 @@
 @push('scripts')
     <script>
         Dropzone.autoDiscover = false;
-
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            },
+        });
         $(document).ready(function() {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                },
-            });
             $('#jenis_id').on('change', function() {
                 var jenisId = $(this).val();
 

@@ -71,31 +71,42 @@ class MCategoriesController extends Controller
             'name' => 'required|string|max:255',
             'image' => 'nullable',
             'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'image-mockup' => 'nullable',
+            'image-mockup.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'jenis_id' => 'required|exists:m_jenis,id',
             'type_id' => 'nullable|exists:m_types,id',
             'display_style' => 'nullable|string|max:255|in:square,rectangle',
+            'order' => 'nullable|numeric',
         ]);
+
+        $data = [
+            'name' => $request->name,
+            'jenis_id' => $request->jenis_id,
+            'type_id' => $request->type_id,
+            'display_style' => $request->display_style,
+            'order' => $request->order
+        ];
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $folder = 'categories';
             $path = $this->imageServices->store($file, $folder, 800);
-
-            MCategories::create([
-                'name' => $request->name,
-                'jenis_id' => $request->jenis_id,
-                'type_id' => $request->type_id,
-                'path' => $path,
-                'display_style' => $request->display_style
-            ]);
-        } else {
-            MCategories::create([
-                'name' => $request->name,
-                'jenis_id' => $request->jenis_id,
-                'type_id' => $request->type_id,
-                'display_style' => $request->display_style
-            ]);
+            $data['path'] = $path;
         }
+
+        $categories = MCategories::create($data);
+
+        if ($request->hasFile('image-mockup')) {
+            $files = $request->file('image-mockup');
+            $folder = 'mockupcategories';
+            foreach ($files as $file) {
+                $path = $this->imageServices->store($file, $folder, 800);
+                $categories->images()->create([
+                    'path' => $path,
+                ]);
+            }
+        }
+
         return response()->json([
             'status' => 'success',
             'message' => 'category created successfully.',
@@ -137,11 +148,19 @@ class MCategoriesController extends Controller
             'image-mockup' => 'nullable',
             'image-mockup.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
+
+        $data = [
+            'name' => $request->name,
+            'jenis_id' => $request->jenis_id,
+            'type_id' => $request->type_id,
+            'display_style' => $request->display_style,
+            'order' => $request->order
+        ];
+
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $folder = 'categories';
 
-            // Hapus gambar lama jika ada
             if ($categories->path) {
                 $oldPath = storage_path('app/public/' . $categories->path);
                 if (file_exists($oldPath)) {
@@ -150,23 +169,7 @@ class MCategoriesController extends Controller
             }
 
             $path = $this->imageServices->store($file, $folder, 800);
-
-            $categories->update([
-                'name' => $request->name,
-                'jenis_id' => $request->jenis_id,
-                'path' => $path,
-                'display_style' => $request->display_style,
-                'order' => $request->order,
-                'type_id' => $request->type_id
-            ]);
-        } else {
-            $categories->update([
-                'name' => $request->name,
-                'jenis_id' => $request->jenis_id,
-                'display_style' => $request->display_style,
-                'order' => $request->order,
-                'type_id' => $request->type_id
-            ]);
+            $data['path'] = $path;
         }
 
         if ($request->hasFile('image-mockup')) {
@@ -174,7 +177,6 @@ class MCategoriesController extends Controller
             $folder = 'mockupcategories';
 
             foreach ($files as $file) {
-                // Hapus gambar lama jika ada
                 foreach ($categories->images as $oldImage) {
                     $oldPath = storage_path('app/public/' . $oldImage->path);
                     if (file_exists($oldPath)) {
@@ -184,21 +186,13 @@ class MCategoriesController extends Controller
                 }
 
                 $path = $this->imageServices->store($file, $folder, 1200);
-                // Simpan ke relasi images (One to Many)
                 $categories->images()->create([
                     'path' => $path,
                 ]);
             }
-
-            // Update data kategori
-            $categories->update([
-                'name' => $request->name,
-                'jenis_id' => $request->jenis_id,
-                'display_style' => $request->display_style,
-                'order' => $request->order,
-                'type_id' => $request->type_id
-            ]);
         }
+
+        $categories->update($data);
 
         return response()->json([
             'status' => 'success',
@@ -217,6 +211,16 @@ class MCategoriesController extends Controller
                 'status' => 'error',
                 'message' => 'Category cannot be deleted because it has associated products.',
             ], 200);
+        }
+
+        if ($categories->images()->count() > 0) {
+            foreach ($categories->images as $image) {
+                $imagePath = storage_path('app/public/' . $image->path);
+                if (file_exists($imagePath)) {
+                    @unlink($imagePath);
+                }
+                $image->delete();
+            }
         }
 
         $categories->delete();
