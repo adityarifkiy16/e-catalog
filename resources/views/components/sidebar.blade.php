@@ -38,5 +38,13 @@
                 ],
             ])
         @endif
+
+        @if (auth()->check())
+            @include('partials.sidebar._nav_item', [
+                'route' => 'clear-cache',
+                'icon' => 'fas fa-trash',
+                'label' => 'Clean Up',
+            ])
+        @endif
     </ul>
 </nav>
