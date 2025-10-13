@@ -137,7 +137,7 @@
             let specificationIndex = $('#variant-wrapper .variant-row').length;
 
             // Jalankan load awal (saat edit)
-            setTimeout(initialLoad, 200);
+            initialLoad();
 
             // Tambah baris spesifikasi
             $('#add-variant').on('click', function() {
@@ -241,11 +241,13 @@
                     },
                     success: function(data) {
                         const $cat = $('#category_id');
+                        const $type = $('#type_id');
                         $cat.html('<option value="">Pilih Kategori</option>');
                         console.log("run load category by jenis");
                         console.log(data);
                         if (data.length > 0) {
                             $cat.prop('disabled', false);
+                            $type.prop('disabled', true);
                             $.each(data, function(_, item) {
                                 $cat.append(
                                     `<option value="${item.id}" ${item.id == selectedId ? 'selected' : ''}>${item.name}</option>`
