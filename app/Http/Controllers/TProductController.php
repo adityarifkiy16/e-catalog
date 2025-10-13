@@ -149,7 +149,7 @@ class TProductController extends Controller
     public function edit(TProduct $product)
     {
         $arr['product'] = $product;
-        $arr['categories'] = MCategories::with('jenis')->get();
+        $arr['jenises'] = MJenis::with('categories')->get();
 
         // Ambil spesifikasi dari pivot + join ke tabel terkait
         $arr['specifications'] = DB::table('t_product_m_specification as tps')
@@ -187,6 +187,8 @@ class TProductController extends Controller
             'image-motif' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'image-mockup' => 'nullable|array|max:5',
             'image-mockup.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:5024',
+            'jenis_id' => 'required|exists:m_jenis,id',
+            'type_id' => 'nullable|exists:m_types,id',
             'category_id' => 'required|exists:m_categories,id',
             'url_video' => 'nullable|url',
             'specifications' => 'nullable|array',

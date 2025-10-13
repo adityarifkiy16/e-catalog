@@ -86,15 +86,25 @@
                                 accept="image/*" multiple>
 
 
-                            <label class="mt-3"><i class="fas fa-tag"></i> Kategori</label>
-                            <select class="form-control" name="category_id">
-                                <option value="">Pilih Kategori</option>
-                                @foreach ($categories as $item)
+                            <label class="mt-3"><i class="fas fa-tag"></i> Jenis</label>
+                            <select class="form-control" name="jenis_id" id="jenis_id">
+                                <option value="">Pilih Jenis</option>
+                                @foreach ($jenises as $item)
                                     <option value="{{ $item->id }}"
-                                        {{ old('category_id', $product->category_id) == $item->id ? 'selected' : '' }}>
+                                        {{ old('jenis_id', $product->category->jenis_id) == $item->id ? 'selected' : '' }}>
                                         {{ $item->name }}
                                     </option>
                                 @endforeach
+                            </select>
+
+                            <label class="mt-3"><i class="fas fa-tag"></i> Type</label>
+                            <select class="form-control" name="type_id" id="type_id">
+                                <option value="">Pilih Type</option>
+                            </select>
+
+                            <label class="mt-3"><i class="fas fa-tag"></i> Kategori</label>
+                            <select class="form-control" name="category_id" id="category_id">
+                                <option value="">Pilih Kategori</option>
                             </select>
 
                             <label class="mt-3"><i class="fas fa-video"></i> url video</label>
@@ -126,7 +136,10 @@
         $(document).ready(function() {
             let specificationIndex = $('#variant-wrapper .variant-row').length;
 
-            // klik tombol tambah
+            // Jalankan load awal (saat edit)
+            setTimeout(initialLoad, 200);
+
+            // Tambah baris spesifikasi
             $('#add-variant').on('click', function() {
                 let newRow = `
                 <div class="input-group mb-2 variant-row">
@@ -140,21 +153,170 @@
                 specificationIndex++;
             });
 
-            // hapus row
+            // Hapus baris spesifikasi
             $(document).on('click', '.btn-remove', function() {
                 $(this).closest('.variant-row').remove();
             });
 
+            // === EVENT KETIKA GANTI JENIS ===
+            $('#jenis_id').on('change', function() {
+                const jenisId = $(this).val();
+                const $typeSelect = $('#type_id');
+                const $categorySelect = $('#category_id');
+
+                if (!jenisId) return;
+
+                $.ajax({
+                    url: "{{ url('types/by-jenis') }}/" + jenisId,
+                    type: 'GET',
+                    success: function(data) {
+                        if (data.length > 0) {
+                            $typeSelect.prop('disabled', false)
+                                .html('<option value="">Pilih Type</option>');
+                            $.each(data, function(_, item) {
+                                $typeSelect.append(
+                                    `<option value="${item.id}">${item.name}</option>`
+                                );
+                            });
+                            // Reset kategori
+                            $categorySelect.prop('disabled', true)
+                                .html('<option value="">Pilih Kategori</option>');
+                        } else {
+                            // Jika jenis tidak punya type, langsung load kategori berdasarkan jenis
+                            $typeSelect.prop('disabled', true)
+                                .html('<option value="">Tidak ada type</option>');
+                            loadCategoryByJenis(jenisId);
+                        }
+                    }
+                });
+            });
+
+            // === EVENT KETIKA GANTI TYPE ===
+            $('#type_id').on('change', function() {
+                const typeId = $(this).val();
+                const jenisId = $('#jenis_id').val();
+
+                if (typeId) {
+                    loadCategoryByType(typeId);
+                } else {
+                    // Jika type dikosongkan, ambil kategori berdasarkan jenis
+                    loadCategoryByJenis(jenisId);
+                }
+            });
+
+            function loadTypeByJenis(jenisId, selectedId = null) {
+                if (!jenisId) return;
+                $.ajax({
+                    url: "{{ url('types/by-jenis') }}/" + jenisId,
+                    type: 'GET',
+                    data: {
+                        jenis_id: jenisId
+                    },
+                    success: function(data) {
+                        const $type = $('#type_id');
+                        $type.html('<option value="">Pilih Type</option>');
+                        if (data.length > 0) {
+                            $type.prop('disabled', false);
+                            $.each(data, function(_, item) {
+                                $type.append(
+                                    `<option value="${item.id}" ${item.id == selectedId ? 'selected' : ''}>${item.name}</option>`
+                                );
+                            });
+                        } else {
+                            $type.prop('disabled', true)
+                                .html('<option value="">Tidak ada type tersedia</option>');
+                        }
+                    }
+                });
+            }
+
+            // === LOAD CATEGORY BERDASARKAN JENIS ===
+            function loadCategoryByJenis(jenisId, selectedId = null) {
+                if (!jenisId) return;
+                $.ajax({
+                    url: "{{ url('categories/by-jenis') }}/" + jenisId,
+                    type: 'GET',
+                    data: {
+                        jenis_id: jenisId
+                    },
+                    success: function(data) {
+                        const $cat = $('#category_id');
+                        $cat.html('<option value="">Pilih Kategori</option>');
+                        console.log("run load category by jenis");
+                        console.log(data);
+                        if (data.length > 0) {
+                            $cat.prop('disabled', false);
+                            $.each(data, function(_, item) {
+                                $cat.append(
+                                    `<option value="${item.id}" ${item.id == selectedId ? 'selected' : ''}>${item.name}</option>`
+                                );
+                            });
+                        } else {
+                            $cat.prop('disabled', true)
+                                .html('<option value="">Tidak ada kategori tersedia</option>');
+                        }
+                    }
+                });
+            }
+
+            // === LOAD CATEGORY BERDASARKAN TYPE ===
+            function loadCategoryByType(typeId, selectedId = null) {
+                if (!typeId) return;
+                $.ajax({
+                    url: "{{ url('categories/by-type') }}/" + typeId,
+                    type: 'GET',
+                    data: {
+                        type_id: typeId
+                    },
+                    success: function(data) {
+                        const $cat = $('#category_id');
+                        $cat.html('<option value="">Pilih Kategori</option>');
+                        console.log("run load category by type");
+                        console.log(data);
+                        if (data.length > 0) {
+                            $cat.prop('disabled', false);
+                            $.each(data, function(_, item) {
+                                $cat.append(
+                                    `<option value="${item.id}" ${item.id == selectedId ? 'selected' : ''}>${item.name}</option>`
+                                );
+                            });
+                        } else {
+                            $cat.prop('disabled', true)
+                                .html('<option value="">Tidak ada kategori tersedia</option>');
+                        }
+                    }
+                });
+            }
+
+
+            // === LOAD AWAL (EDIT MODE) ===
+            function initialLoad() {
+                const initialJenisId = $('#jenis_id').val();
+                const initialTypeId = "{{ old('type_id', $product->category->type_id ?? '') }}";
+                const initialCategoryId = "{{ old('category_id', $product->category_id ?? '') }}";
+                console.log(initialJenisId, initialTypeId, initialCategoryId);
+
+                if (!initialJenisId) return;
+
+                if (initialTypeId && initialTypeId !== "null") {
+                    loadTypeByJenis(initialJenisId, initialTypeId);
+                    loadCategoryByType(initialTypeId, initialCategoryId);
+                } else {
+                    loadCategoryByJenis(initialJenisId, initialCategoryId);
+                }
+            }
+
+            // === HANDLE SUBMIT FORM ===
             $("#form-edit").on('submit', function(e) {
                 e.preventDefault();
-                console.log("submit");
-                $("#btn-submit").prop('disabled', true);
-                $("#btn-submit").html(
+                $("#btn-submit").prop('disabled', true).html(
                     '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Loading...'
                 );
+
                 let form = $(this);
                 let url = form.attr('action');
                 let formData = new FormData(this);
+
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -162,43 +324,35 @@
                     url: url,
                     type: 'POST',
                     data: formData,
-                    contentType: false, // ⬅️ WAJIB
-                    processData: false, // ⬅️ WAJIB
+                    contentType: false,
+                    processData: false,
                     success: function(response) {
-                        console.log(response);
-                        if (response.status == "success") {
+                        if (response.status === "success") {
                             Toast.fire({
                                 icon: 'success',
-                                title: response.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                            setTimeout(() => {
-                                location.reload();
-                            }, 1500);
+                                title: response.message
+                            });
+                            setTimeout(() => location.reload(), 1500);
                         } else {
                             Toast.fire({
                                 icon: 'error',
-                                title: response.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
+                                title: response.message
+                            });
+                            $("#btn-submit").prop('disabled', false).html('Kirim');
                         }
                     },
                     error: function(response) {
-                        if (response.status === 422) {
-                            Toast.fire({
-                                icon: 'error',
-                                title: response.responseJSON.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                        }
+                        Toast.fire({
+                            icon: 'error',
+                            title: response.responseJSON?.message || 'Terjadi kesalahan'
+                        });
+                        $("#btn-submit").prop('disabled', false).html('Kirim');
                     }
                 });
             });
         });
     </script>
+
 
     @if (session('success'))
         <script>
