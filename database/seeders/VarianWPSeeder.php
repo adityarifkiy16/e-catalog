@@ -13,8 +13,10 @@ class VarianWPSeeder extends Seeder
     {
         $types = [
             1 => ['panjang' => 300, 'tinggi' => 1,   'lebar' => 20.7], // Type 628
+            2 => ['panjang' => 300, 'tinggi' => 2.2, 'lebar' => 17], // Type 629
             3 => ['panjang' => 300, 'tinggi' => 1.5, 'lebar' => 21.5], // Type 643
             4 => ['panjang' => 300, 'tinggi' => 0.9, 'lebar' => 16.7], // Type 644
+            5 => ['panjang' => 300, 'tinggi' => 1.5, 'lebar' => 26.7], // Type 709
             6 => ['panjang' => 300, 'tinggi' => 1.4, 'lebar' => 15.5], // Type 710
         ];
 
