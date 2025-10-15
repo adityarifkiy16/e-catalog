@@ -66,7 +66,8 @@
         <table width="100%" cellspacing="10">
             <tr>
                 <td align="center">
-                    <p style="font-size: 12px">Copyright &copy; {{ date('Y') }} Osborn</p>
+                    <p><strong>&copy;{{ date('Y') }} Osborn</strong> — osborn.id</p>
+                    <p>Design Beyond Limits</p>
                 </td>
             </tr>
         </table>

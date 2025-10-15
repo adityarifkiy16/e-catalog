@@ -367,7 +367,7 @@ class TProductController extends Controller
     public function downloadPdf(Request $request)
     {
 
-        $query = TProduct::with('category', 'category.jenis')->select('id', 'code', 'photo', 'category_id');
+        $query = TProduct::with('category', 'category.jenis')->select('id', 'code', 'photo', 'category_id')->orderBy('code', 'asc');
 
         if ($request->filled('category')) {
             $arr['products'] =  $query->whereHas('category', function ($q) use ($request) {
@@ -422,6 +422,19 @@ class TProductController extends Controller
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
         }
+
+        $arr['specifications'] = DB::table('t_product_m_specification as tps')
+            ->join('m_specifications as ms', 'ms.id', '=', 'tps.specification_id')
+            ->join('t_specification_values as tsv', 'tsv.id', '=', 'tps.specification_value_id')
+            ->select(
+                'ms.id as specification_id',
+                'ms.name as specification_name',
+                'tsv.id as specification_value_id',
+                'tsv.name as specification_value',
+                'tsv.unit as specification_unit'
+            )
+            ->where('tps.product_id', $productId)
+            ->get();
 
         $arr['product'] = $product;
 
