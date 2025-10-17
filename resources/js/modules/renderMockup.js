@@ -103,6 +103,7 @@ export function renderMockup(categories, selectedJenis, uniquePaths, firstLoad =
         } else {
             $('#mockup .carousel-control-next').removeClass('d-none');
             $('#mockup .carousel-control-prev').removeClass('d-none');
+            $carouselIndicators.removeClass('d-none');
         }
 
         paths.slice(0, 5).forEach((path, i) => {
