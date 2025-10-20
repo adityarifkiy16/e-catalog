@@ -482,8 +482,7 @@ class TProductController extends Controller
         }
 
         // Generate PDF
-        $pdf = FacadePdf::loadView('product.pdf', $arr)->setPaper('a4', 'landscape');
-        $output = $pdf->stream('products.pdf');
+        $pdf = FacadePdf::loadView('product.pdf', $arr)->setPaper('a4', 'landscape')->stream('products.pdf', ['Attachment' => false]);
 
         foreach ($convertedImgs as $img) {
             if (file_exists($img)) {
@@ -491,7 +490,7 @@ class TProductController extends Controller
             }
         }
 
-        return $output;
+        return $pdf;
     }
 
     public function destroyByCategory(Request $request)
