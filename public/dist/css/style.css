@@ -158,7 +158,8 @@
 #mockup-carousel-indicators {
     background-color: rgba(0, 0, 0, 0.5); /* transparan */
     position: absolute;
-    width: 100px;
+    width: fit-content;
+    padding: 0px 10px;
     border-radius: 10px;
     bottom: 10px;
     left: 0;
@@ -222,6 +223,12 @@
 
 #category-menu-item:hover::-webkit-scrollbar-thumb {
     background-color: #888; /* Sedikit lebih gelap saat hover */
+}
+
+.category-filter.active {
+    border-radius: 8px;
+    background-color: #313131;
+    color: #fff;
 }
 
 .mockup-image {

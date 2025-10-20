@@ -149,7 +149,7 @@ class TProductController extends Controller
     public function edit(TProduct $product)
     {
         $arr['product'] = $product;
-        $arr['categories'] = MCategories::with('jenis')->get();
+        $arr['jenises'] = MJenis::with('categories')->get();
 
         // Ambil spesifikasi dari pivot + join ke tabel terkait
         $arr['specifications'] = DB::table('t_product_m_specification as tps')
@@ -187,6 +187,8 @@ class TProductController extends Controller
             'image-motif' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'image-mockup' => 'nullable|array|max:5',
             'image-mockup.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:5024',
+            'jenis_id' => 'required|exists:m_jenis,id',
+            'type_id' => 'nullable|exists:m_types,id',
             'category_id' => 'required|exists:m_categories,id',
             'url_video' => 'nullable|url',
             'specifications' => 'nullable|array',
@@ -365,7 +367,7 @@ class TProductController extends Controller
     public function downloadPdf(Request $request)
     {
 
-        $query = TProduct::with('category', 'category.jenis')->select('id', 'code', 'photo', 'category_id');
+        $query = TProduct::with('category', 'category.jenis')->select('id', 'code', 'photo', 'category_id')->orderBy('code', 'asc');
 
         if ($request->filled('category')) {
             $arr['products'] =  $query->whereHas('category', function ($q) use ($request) {
@@ -421,6 +423,19 @@ class TProductController extends Controller
             return response()->json(['message' => 'Product not found'], 404);
         }
 
+        $arr['specifications'] = DB::table('t_product_m_specification as tps')
+            ->join('m_specifications as ms', 'ms.id', '=', 'tps.specification_id')
+            ->join('t_specification_values as tsv', 'tsv.id', '=', 'tps.specification_value_id')
+            ->select(
+                'ms.id as specification_id',
+                'ms.name as specification_name',
+                'tsv.id as specification_value_id',
+                'tsv.name as specification_value',
+                'tsv.unit as specification_unit'
+            )
+            ->where('tps.product_id', $productId)
+            ->get();
+
         $arr['product'] = $product;
 
         $convertedImgs = [];
@@ -467,8 +482,7 @@ class TProductController extends Controller
         }
 
         // Generate PDF
-        $pdf = FacadePdf::loadView('product.pdf', $arr)->setPaper('a4', 'landscape');
-        $output = $pdf->stream('products.pdf');
+        $pdf = FacadePdf::loadView('product.pdf', $arr)->setPaper('a4', 'landscape')->stream('products.pdf', ['Attachment' => false]);
 
         foreach ($convertedImgs as $img) {
             if (file_exists($img)) {
@@ -476,7 +490,7 @@ class TProductController extends Controller
             }
         }
 
-        return $output;
+        return $pdf;
     }
 
     public function destroyByCategory(Request $request)

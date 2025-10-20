@@ -71,6 +71,7 @@
                                 </div>
                                 <p class="font-weight-bold">choose a file or drag and drop it here</p>
                                 <p class="text-muted">jpeg, webp, jpg up to 2 MB.</p>
+                                <p class="text-muted">Max 10 files</p>
                             </div>
                         </div>
                         <button class="btn btn-primary mt-3" id="btn-submit" type="submit">Kirim</button>
@@ -151,7 +152,7 @@
                 acceptedFiles: "image/*",
                 addRemoveLinks: false,
                 autoProcessQueue: false,
-                parallelUploads: 5,
+                parallelUploads: 10,
                 uploadMultiple: true,
                 maxFiles: 10,
                 headers: {
