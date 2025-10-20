@@ -159,6 +159,7 @@
     background-color: rgba(0, 0, 0, 0.5); /* transparan */
     position: absolute;
     width: fit-content;
+    padding: 0px 10px;
     border-radius: 10px;
     bottom: 10px;
     left: 0;
