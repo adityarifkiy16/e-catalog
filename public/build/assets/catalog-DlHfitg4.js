@@ -142,7 +142,7 @@ Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${s}
             </div>
         `),h.append(`
             <li data-bs-target="#mockup-carousel" data-bs-slide-to="${r}" ${r===0?'class="active"':""}></li>
-        `)}),$("#mockup").removeClass("d-none");return}l.length>0?(l.length===1?($("#mockup .carousel-control-next").addClass("d-none"),$("#mockup .carousel-control-prev").addClass("d-none"),h.addClass("d-none")):($("#mockup .carousel-control-next").removeClass("d-none"),$("#mockup .carousel-control-prev").removeClass("d-none"),h.removeClass("d-none")),l.slice(0,5).forEach((n,r)=>{i.append(`
+        `)}),$("#mockup").removeClass("d-none");return}l.length>0?(l.length===1?($("#mockup .carousel-control-next").addClass("d-none"),$("#mockup .carousel-control-prev").addClass("d-none"),h.addClass("d-none")):($("#mockup .carousel-control-next").removeClass("d-none"),$("#mockup .carousel-control-prev").removeClass("d-none"),h.removeClass("d-none")),l.forEach((n,r)=>{i.append(`
                 <div class="carousel-item ${r===0?"active":""}">
                     <img src="/storage/${n}" alt="mockup" 
                         class="img-fluid w-100 rounded-lg d-block mx-auto mockup-image"

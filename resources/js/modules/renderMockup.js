@@ -106,7 +106,7 @@ export function renderMockup(categories, selectedJenis, uniquePaths, firstLoad =
             $carouselIndicators.removeClass('d-none');
         }
 
-        paths.slice(0, 5).forEach((path, i) => {
+        paths.forEach((path, i) => {
             $carouselInner.append(`
                 <div class="carousel-item ${i === 0 ? 'active' : ''}">
                     <img src="/storage/${path}" alt="mockup" 
