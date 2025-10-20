@@ -10,9 +10,9 @@ export function bindDownloadButtons() {
             handleDownload(this, url);
         });
 
-    $('#btn-download')
+    $(document)
         .off('click', '#btn-download')
-        .on('click', function (e) {
+        .on('click', '#btn-download', function (e) {
             e.preventDefault();
             handleDownload(this, 'catalog/pdf?category=' + encodeURIComponent(getCategory()));
         });
