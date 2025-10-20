@@ -45,6 +45,17 @@
             ])
         @endif
 
+        @if (auth()->check() && auth()->user()->hasPermission('view_reports'))
+            <li class="nav-header">
+                Laporan
+            </li>
+            @include('partials.sidebar._nav_item', [
+                'route' => 'laporan.index',
+                'icon' => 'fas fa-file-alt',
+                'label' => 'Laporan Produk',
+            ])
+        @endif
+
         @if (auth()->check())
             <li class="nav-header">
                 Lainnya

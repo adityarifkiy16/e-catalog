@@ -116,5 +116,9 @@ Route::middleware("auth")->group(function () {
         Route::get("/package/{package}/edit", [App\Http\Controllers\TPackageController::class, "edit"])->name("package.edit");
         Route::put("/package/{package}", [App\Http\Controllers\TPackageController::class, "update"])->name("package.update");
         Route::delete("/package/{package}", [App\Http\Controllers\TPackageController::class, "destroy"])->name("package.destroy");
+
+        // Laporan
+        Route::get("/laporan", [App\Http\Controllers\ProductViewController::class, "laporan"])->name("laporan.index");
+        Route::get("/laporan/download", [App\Http\Controllers\ProductViewController::class, "downloadLaporan"])->name("laporan.download");
     });
 });

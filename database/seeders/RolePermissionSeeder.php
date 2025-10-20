@@ -24,6 +24,8 @@ class RolePermissionSeeder extends Seeder
             ['name' => 'management_users'],
             ['name' => 'management_roles'],
             ['name' => 'management_product'],
+            ['name' => 'view_reports'],
+            ['name' => 'management_settings'],
         ];
 
         foreach ($permissions as $permission) {
