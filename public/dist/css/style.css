@@ -158,7 +158,7 @@
 #mockup-carousel-indicators {
     background-color: rgba(0, 0, 0, 0.5); /* transparan */
     position: absolute;
-    width: 100px;
+    width: fit-content;
     border-radius: 10px;
     bottom: 10px;
     left: 0;
