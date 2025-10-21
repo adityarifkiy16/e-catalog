@@ -45,16 +45,17 @@ class ProductViewController extends Controller
 
     public function downloadLaporan(Request $request)
     {
-        $dateFilter = $request->query('filter');
-
-        $query = TProduct::with('category', 'category.jenis')->select('id', 'code', 'photo', 'category_id', 'created_at');
-
-        if ($dateFilter) {
-            $query->whereDate('created_at', $dateFilter);
+        $query = TProduct::withCount('views')->orderBy('views_count', 'desc')->limit(10);
+        $dateFilter = null;
+        if ($request->has('filter') && $request->filter !== null) {
+            $dateFilter = $request->filter;
+            $query = $this->viewServices->filter($dateFilter);
         }
 
         $products = $query->get();
 
+
         $pdf = FacadePdf::loadView('laporan.pdf', ['products' => $products, 'dateFilter' => $dateFilter]);
+        return $pdf->stream('laporan.pdf');
     }
 }

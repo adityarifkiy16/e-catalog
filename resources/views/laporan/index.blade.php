@@ -13,16 +13,11 @@
     <div class="row">
         @if (auth()->check() && auth()->user()->hasPermission('view_reports'))
             <div class="col-12 mb-3">
-                <form action="{{ route('products.viewed') }}" method="GET"
-                    class="d-flex justify-content-end align-items-center">
-                    <select name="filter" id="date-filter" class="select2">
-                        <option value="">Semua</option>
-                        <option value="7">7 Hari Terakhir</option>
-                        <option value="30">30 Hari Terakhir</option>
-                        <option value="365">1 Tahun Terakhir</option>
-                    </select>
-                </form>
-                <button class="btn btn-success" id="btn-download">download</button>
+                <div class="d-flex justify-content-end align-items-center">
+                    <input type="text" id="date-range" class="form-control" style="width: 230px;"
+                        placeholder="Pilih rentang tanggal">
+                    <button class="btn btn-success ml-2 text-capitalize" id="btn-download">Print Laporan</button>
+                </div>
             </div>
             <div class="col-6">
                 <div class="card card-danger">
@@ -75,6 +70,14 @@
     <script type="text/javascript">
         $(function() {
             $('.select2').select2()
+            $('#date-range').daterangepicker({
+                autoUpdateInput: false,
+                locale: {
+                    format: 'YYYY-MM-DD',
+                    cancelLabel: 'Batal',
+                    applyLabel: 'Terapkan'
+                }
+            });
         })
 
         const Toast = Swal.mixin({
@@ -105,9 +108,8 @@
                 processing: true,
                 pageLength: 10,
                 lengthMenu: [5, 10, 25, 50, 100],
+                searching: false,
                 language: {
-                    searchPlaceholder: 'Cari Produk',
-                    search: '',
                     paginate: {
                         next: '<i class="fas fa-arrow-right"></i>',
                         previous: '<i class="fas fa-arrow-left"></i>'
@@ -117,7 +119,7 @@
                     url: "{{ route('products.viewed') }}",
                     type: "GET",
                     data: function(data) {
-                        data.filter = $('#date-filter').val();
+                        data.filter = $('#date-range').val();
                     },
                     dataSrc: function(response) {
                         return response.data;
@@ -176,22 +178,23 @@
                 });
             });
 
-            $('#date-filter').on('change', function() {
+            $('#date-range').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format(
+                    'YYYY-MM-DD'));
+                table.ajax.reload();
+            });
+
+            $('#date-range').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('');
                 table.ajax.reload();
             });
 
             $('#btn-download').on('click', function() {
-                const filter = $('#date-filter').val();
-                const url = "{{ route('laporan.download') }}";
-                const params = new URLSearchParams();
-
-                if (filter) {
-                    params.append('filter', filter);
-                }
-
-                // PENTING: Gabungkan URL dengan params
-                const finalUrl = params.toString() ? `${url}?${params.toString()}` : url;
-                window.open(finalUrl, '_blank');
+                let filter = $('#date-range').val();
+                let url = "{{ route('laporan.download') }}";
+                let params = new URLSearchParams();
+                if (filter) params.append('filter', filter);
+                window.open(params.toString() ? `${url}?${params.toString()}` : url, '_blank');
             });
         });
     </script>

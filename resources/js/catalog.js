@@ -164,104 +164,102 @@ $(document).ready(function () {
             });
     }
 
-    $(document).on('click', '.product-card', function () {
-        const productId = $(this).data('id');
-        const code = $(this).data('code');
-        const name = $(this).data('name');
-        const category = $(this).data('category');
-        const type = $(this).data('type');
-        const jenis = $(this).data('jenis');
-        const length = parseInt($(this).data('length'), 10);
-        const width = parseFloat($(this).data('width')).toFixed(1);
-        const density = parseFloat($(this).data('density')).toFixed(1);
-        const urlVideo = $(this).data('url');
-        const specifications = JSON.parse($(this).attr('data-specifications') || '[]');
-        const imagesStr = $(this).attr('data-images');
-        const packages = JSON.parse($(this).attr('data-paket') || '[]');
-        let height = $(this).data('height');
-        let imageType = $(this).data('type-image');
-        let images = [];
-        let packagesImgs = [];
+    $(document)
+        .off('click', '.product-card')
+        .on('click', '.product-card', function () {
+            const productId = $(this).data('id');
+            const code = $(this).data('code');
+            const name = $(this).data('name');
+            const category = $(this).data('category');
+            const type = $(this).data('type');
+            const jenis = $(this).data('jenis');
+            const length = parseInt($(this).data('length'), 10);
+            const width = parseFloat($(this).data('width')).toFixed(1);
+            const density = parseFloat($(this).data('density')).toFixed(1);
+            const urlVideo = $(this).data('url');
+            const specifications = JSON.parse($(this).attr('data-specifications') || '[]');
+            const imagesStr = $(this).attr('data-images');
+            const packages = JSON.parse($(this).attr('data-paket') || '[]');
+            let height = $(this).data('height');
+            let imageType = $(this).data('type-image');
+            let images = [];
+            let packagesImgs = [];
 
-        if (imagesStr) {
-            try {
-                images = JSON.parse(imagesStr.replace(/&quot;/g, '"'));
-            } catch (e) {
-                images = [];
-            }
-        }
-
-        // Handling urutan paket
-        if (Array.isArray(packages)) {
-            packagesImgs = packages.sort((a, b) => a.order - b.order).map((p) => `/storage/${p.image}`);
-        }
-
-        // initialize modal
-        $('#notes').show();
-        $('#modalPaket').empty();
-
-        // contoh case wallpanel
-        if (jenis === 'card-types') {
-            resetState();
-            setCatalogConfig({ selectedJenis: selectedJenis, type });
-            setFirstLoad(false);
-            loadMoreData();
-            handleFilterContainer(category);
-            return;
-        }
-
-        if (jenis.toLowerCase() === 'uv board') {
             viewProduct(productId);
-            renderVariantsToModal(specifications);
-            $('#modalVideo, .lebar').hide();
-            $('#modalCategory').text(category);
-            if (packages.length > 0) {
-                packages
-                    .sort((a, b) => a.order - b.order)
-                    .map((p) => {
-                        $('#modalPaket').append(`
+
+            if (imagesStr) {
+                try {
+                    images = JSON.parse(imagesStr.replace(/&quot;/g, '"'));
+                } catch (e) {
+                    images = [];
+                }
+            }
+
+            // Handling urutan paket
+            if (Array.isArray(packages)) {
+                packagesImgs = packages.sort((a, b) => a.order - b.order).map((p) => `/storage/${p.image}`);
+            }
+
+            // initialize modal
+            $('#notes').show();
+            $('#modalPaket').empty();
+
+            // contoh case wallpanel
+            if (jenis === 'card-types') {
+                resetState();
+                setCatalogConfig({ selectedJenis: selectedJenis, type });
+                setFirstLoad(false);
+                loadMoreData();
+                return;
+            }
+
+            if (jenis.toLowerCase() === 'uv board') {
+                renderVariantsToModal(specifications);
+                $('#modalVideo, .lebar').hide();
+                $('#modalCategory').text(category);
+                if (packages.length > 0) {
+                    packages
+                        .sort((a, b) => a.order - b.order)
+                        .map((p) => {
+                            $('#modalPaket').append(`
                         <span class="badge badge-outline-primary px-2 py-1 kepadatan" data-value="${p.name}">${p.name}</span>
                     `);
-                    });
-            } else {
-                $('#modalPaket').append('<span class="text-muted">Tidak ada paket</span>');
-                $('#notes').hide();
+                        });
+                } else {
+                    $('#modalPaket').append('<span class="text-muted">Tidak ada paket</span>');
+                    $('#notes').hide();
+                }
             }
-        }
 
-        if (jenis.toLowerCase() === 'wallboard') {
-            viewProduct(productId);
-            renderVariantsToModal(specifications);
-            $('#modalCategory').text(category);
-            $('#ketebalan, .density, #notes, .paket,  #modalVideo, .lebar').hide();
-        }
+            if (jenis.toLowerCase() === 'wallboard') {
+                renderVariantsToModal(specifications);
+                $('#modalCategory').text(category);
+                $('#ketebalan, .density, #notes, .paket,  #modalVideo, .lebar').hide();
+            }
 
-        if (jenis === 'PVC Board') {
-            viewProduct(productId);
-            renderVariantsToModal(specifications);
-            $('#modalCategory').text(jenis);
-            $('#modalVideo, .lebar, .paket').hide();
-        }
+            if (jenis === 'PVC Board') {
+                renderVariantsToModal(specifications);
+                $('#modalCategory').text(jenis);
+                $('#modalVideo, .lebar, .paket').hide();
+            }
 
-        if (jenis === 'Wallpanel') {
-            viewProduct(productId);
-            renderVariantsToModal(specifications);
-            $('#modalContact').data('type', type);
-            $('#modalCategory').text(category + ' / ' + type);
-            $('#ketebalan, #kepadatan, .paket, #modalVideo, #notes, .density').hide();
-            $('#modalGrafis').attr('src', `/storage/${imageType}`);
-            $('.grafis').removeClass('d-none');
-        }
+            if (jenis === 'Wallpanel') {
+                renderVariantsToModal(specifications);
+                $('#modalContact').data('type', type);
+                $('#modalCategory').text(category + ' / ' + type);
+                $('#ketebalan, #kepadatan, .paket, #modalVideo, #notes, .density').hide();
+                $('#modalGrafis').attr('src', `/storage/${imageType}`);
+                $('.grafis').removeClass('d-none');
+            }
 
-        if (jenis.toLowerCase() === 'aksesoris') {
-            viewProduct(productId);
-            $('#tinggi, #ketebalan, #kepadatan, .lebar, .density').hide();
-            $('#modalCategory').text(category);
-            renderVariantsToModal(specifications);
-            $('#modalVideoPlayer').empty();
-            $('#modalVideo, .density').hide();
-            if (urlVideo) {
-                $('#modalVideoPlayer').append(`
+            if (jenis.toLowerCase() === 'aksesoris') {
+                $('#tinggi, #ketebalan, #kepadatan, .lebar, .density').hide();
+                $('#modalCategory').text(category);
+                renderVariantsToModal(specifications);
+                $('#modalVideoPlayer').empty();
+                $('#modalVideo, .density').hide();
+                if (urlVideo) {
+                    $('#modalVideoPlayer').append(`
                     <iframe class="embed-responsive-item"
                     src="${urlVideo}"
                     title="YouTube video player" frameborder="0"
@@ -269,23 +267,23 @@ $(document).ready(function () {
                     referrerpolicy="strict-origin-when-cross-origin"
                     allowfullscreen></iframe>
                 `);
-                $('#modalVideo').show();
+                    $('#modalVideo').show();
+                }
             }
-        }
 
-        renderCarouselProduct(images, packagesImgs, jenis);
+            renderCarouselProduct(images, packagesImgs, jenis);
 
-        $('#modalName').text(name);
-        $('#productModalLabel').text(name);
-        $('#modalDownload').data('id', productId);
-        $('#productModal').modal('show');
-        $('#modalContact').data({ jenis, category, code, length, width, height, density, type });
+            $('#modalName').text(name);
+            $('#productModalLabel').text(name);
+            $('#modalDownload').data('id', productId);
+            $('#productModal').modal('show');
+            $('#modalContact').data({ jenis, category, code, length, width, height, density, type });
 
-        // reset kepadatan/notes
-        $('.kepadatan').removeClass('active');
-        $('#modalContact').data({ kepadatan: null, paket: null });
-        $('.modalContact').prop('disabled', $('.kepadatan').length > 0);
-    });
+            // reset kepadatan/notes
+            $('.kepadatan').removeClass('active');
+            $('#modalContact').data({ kepadatan: null, paket: null });
+            $('.modalContact').prop('disabled', $('.kepadatan').length > 0);
+        });
 
     $(document).on('click', '.kepadatan', function () {
         $('.modalContact').prop('disabled', false);
