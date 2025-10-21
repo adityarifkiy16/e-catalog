@@ -122,5 +122,5 @@ Route::middleware("auth")->group(function () {
         // Laporan
         Route::get("/laporan", [App\Http\Controllers\ProductViewController::class, "laporan"])->name("laporan.index");
         Route::get("/laporan/download", [App\Http\Controllers\ProductViewController::class, "downloadLaporan"])->name("laporan.download");
-    })
+    });
 });
