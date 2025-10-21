@@ -17,7 +17,7 @@ class ProductViewController extends Controller
     public function __construct(ProductViewServices $viewServices)
     {
         $this->viewServices = $viewServices;
-        $this->middleware('permission:view_reports')->only(['laporan', 'downloadLaporan']);
+        $this->middleware('permission:view_reports');
     }
 
 
