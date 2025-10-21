@@ -56,7 +56,7 @@
             ])
         @endif
 
-        @if (auth()->check())
+        @if (auth()->check() && auth()->user()->hasPermission('management_product'))
             <li class="nav-header">
                 Lainnya
             </li>
