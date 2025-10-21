@@ -16,10 +16,19 @@
         }
 
         .date {
-            text-align: right;
+            text-align: left;
             margin-bottom: 10px;
             font-size: 12px;
+            font-style: italic;
             color: #555;
+        }
+
+        .heading {
+            text-align: left;
+            margin-bottom: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
         }
 
         table {
@@ -48,10 +57,10 @@
 
 <body>
 
-    <h2>Laporan Data Produk</h2>
+    <h2 class="heading">Laporan Data Produk</h2>
 
     @if ($dateFilter)
-        <div class="date">Tanggal Filter: {{ $dateFilter }}</div>
+        <div class="date">Tanggal : {{ $dateFilter }}</div>
     @endif
 
     <table>
@@ -60,6 +69,7 @@
                 <th>No</th>
                 <th>Kode Produk</th>
                 <th>Kategori</th>
+                <th>Jenis</th>
                 <th>Jumlah View</th>
             </tr>
         </thead>
@@ -67,8 +77,9 @@
             @forelse ($products as $index => $product)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $product->name }}</td>
+                    <td>{{ $product->code }}</td>
                     <td>{{ $product->category->name ?? '-' }}</td>
+                    <td>{{ $product->category->jenis->name ?? '-' }}</td>
                     <td>{{ $product->views_count }}</td>
                 </tr>
             @empty
