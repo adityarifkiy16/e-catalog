@@ -94,8 +94,6 @@ Route::middleware("auth")->group(function () {
         Route::delete("/products/reset-mockup/{product}", [App\Http\Controllers\TProductController::class, "resetMockup"])->name("products.reset-mockup");
         Route::delete("/products/reset-motif/{product}", [App\Http\Controllers\TProductController::class, "resetMotif"])->name("products.reset-motif");
 
-        // Product viewed
-        Route::get("/products/viewed", [App\Http\Controllers\ProductViewController::class, "index"])->name("products.viewed");
 
 
         // Type
@@ -120,6 +118,7 @@ Route::middleware("auth")->group(function () {
 
     Route::middleware('permission:view_reports')->group(function () {
         // Laporan
+        Route::get("/products/viewed", [App\Http\Controllers\ProductViewController::class, "index"])->name("products.viewed");
         Route::get("/laporan", [App\Http\Controllers\ProductViewController::class, "laporan"])->name("laporan.index");
         Route::get("/laporan/download", [App\Http\Controllers\ProductViewController::class, "downloadLaporan"])->name("laporan.download");
     });
