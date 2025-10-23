@@ -147,6 +147,7 @@ class MCategoriesController extends Controller
             'order' => 'nullable|numeric',
             'image-mockup' => 'nullable',
             'image-mockup.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'existing_images' => 'nullable|string',
         ]);
 
         $data = [
@@ -172,23 +173,28 @@ class MCategoriesController extends Controller
             $data['path'] = $path;
         }
 
-        if ($request->hasFile('image-mockup')) {
-            $files = $request->file('image-mockup');
+        if ($request->hasFile('image-mockup') || $request->has('existing_images')) {
             $folder = 'mockupcategories';
 
-            foreach ($files as $file) {
-                foreach ($categories->images as $oldImage) {
+            $existingImagesIds = $request->existing_images ? json_decode($request->existing_images, true) : [];
+            $existingToDelete = $categories->images()->whereNotIn('id', $existingImagesIds)->get();
+            // dd($existingToDelete);
+            if ($existingToDelete->count() > 0) {
+                foreach ($existingToDelete as $oldImage) {
                     $oldPath = storage_path('app/public/' . $oldImage->path);
                     if (file_exists($oldPath)) {
                         unlink($oldPath);
                     }
                     $oldImage->delete();
                 }
-
-                $path = $this->imageServices->store($file, $folder, 1200);
-                $categories->images()->create([
-                    'path' => $path,
-                ]);
+            }
+            if ($request->hasFile('image-mockup')) {
+                foreach ($request->file('image-mockup') as $file) {
+                    $path = $this->imageServices->store($file, $folder, 800);
+                    $categories->images()->create([
+                        'path' => $path,
+                    ]);
+                }
             }
         }
 

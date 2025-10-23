@@ -150,7 +150,7 @@
                 paramName: "image-mockup",
                 maxFilesize: 2,
                 acceptedFiles: "image/*",
-                addRemoveLinks: false,
+                addRemoveLinks: true,
                 autoProcessQueue: false,
                 parallelUploads: 10,
                 uploadMultiple: true,
@@ -159,46 +159,94 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 init: function() {
-                    this.on("sendingmultiple", function(file, xhr, formData) {
+                    const dropzoneInstance = this;
+
+                    // ✅ PENTING: Simpan di dropzone instance agar bisa diakses dari luar
+                    dropzoneInstance.existingImageIds = [];
+
+                    // ✅ Load gambar existing
+                    @if ($categories->images)
+                        @foreach ($categories->images as $image)
+                            {
+                                let mockFile = {
+                                    name: "{{ basename($image->path) }}",
+                                    size: {{ $image->size ?? 123456 }},
+                                    type: 'image/webp',
+                                    existing: true,
+                                    imageId: {{ $image->id }}
+                                };
+
+                                dropzoneInstance.emit("addedfile", mockFile);
+                                dropzoneInstance.emit("thumbnail", mockFile,
+                                    "{{ asset('storage/' . $image->path) }}");
+                                dropzoneInstance.emit("complete", mockFile);
+                                dropzoneInstance.files.push(mockFile);
+                                dropzoneInstance.existingImageIds.push({{ $image->id }});
+                            }
+                        @endforeach
+                    @endif
+
+                    // ✅ Ketika file dihapus dari Dropzone
+                    dropzoneInstance.on("removedfile", function(file) {
+                        if (file.existing && file.imageId) {
+                            const index = dropzoneInstance.existingImageIds.indexOf(file
+                                .imageId);
+                            if (index > -1) {
+                                dropzoneInstance.existingImageIds.splice(index, 1);
+                            }
+                            console.log('Removed ID:', file.imageId); // Debug
+                            console.log('Remaining IDs:', dropzoneInstance
+                                .existingImageIds); // Debug
+                        }
+                    });
+
+                    // ✅ Kirim data saat upload
+                    dropzoneInstance.on("sendingmultiple", function(files, xhr, formData) {
                         formData.append("name", $('#name').val());
                         formData.append('_method', 'PUT');
                         formData.append("jenis_id", $('#jenis_id').val());
                         formData.append("type_id", $('#type_id').val());
                         formData.append("display_style", $('#display_style').val());
                         formData.append("order", $('#order').val());
+                        formData.append("existing_images", JSON.stringify(dropzoneInstance
+                            .existingImageIds));
 
                         const imageInput = $('#img')[0].files[0];
                         if (imageInput) {
                             formData.append("image", imageInput);
                         }
+
+                        console.log('Sending existing_images:', dropzoneInstance
+                            .existingImageIds); // Debug
                     });
 
-                    this.on("successmultiple", function(files, response) {
+                    dropzoneInstance.on("successmultiple", function(files, response) {
                         Toast.fire({
                             icon: 'success',
                             title: response.message
                         });
-                        window.location.href = "{{ route('categories.index') }}";
+                        setTimeout(function() {
+                            window.location.href = "{{ route('categories.index') }}";
+                        }, 1500);
                     });
 
-                    this.on("errormultiple", function(files, response) {
+                    dropzoneInstance.on("errormultiple", function(files, response) {
                         Toast.fire({
                             icon: 'error',
-                            title: response.message
+                            title: response.message || 'Terjadi kesalahan'
                         });
-                        this.removeAllFiles(true);
                     });
-                },
+                }
             });
 
-            // ✅ Jika tidak ada file di Dropzone, jalankan AJAX biasa
+            // ✅ Submit handler
             $("#btn-submit").on("click", function(e) {
                 e.preventDefault();
 
-                const hasDropzoneFiles = dz.getAcceptedFiles().length > 0;
+                const hasNewDropzoneFiles = dz.getAcceptedFiles().length > 0;
 
-                if (hasDropzoneFiles) {
-                    dz.processQueue(); // Proses Dropzone
+                if (hasNewDropzoneFiles) {
+                    dz.processQueue();
                 } else {
                     // Proses AJAX manual
                     const formData = new FormData();
@@ -209,6 +257,11 @@
                     formData.append("type_id", $('#type_id').val());
                     formData.append("display_style", $('#display_style').val());
                     formData.append("order", $('#order').val());
+
+                    // ✅ PENTING: Akses dari dropzone instance
+                    formData.append("existing_images", JSON.stringify(dz.existingImageIds || []));
+
+                    console.log('AJAX existing_images:', dz.existingImageIds); // Debug
 
                     const imageFile = $('#img')[0].files[0];
                     if (imageFile) {
@@ -230,9 +283,8 @@
                                 icon: 'success',
                                 title: response.message
                             });
-                            setTimeout(() => {
-                                window.location.href =
-                                    "{{ route('categories.index') }}";
+                            setTimeout(function() {
+                                window.location.reload();
                             }, 1500);
                         },
                         error: function(xhr) {
