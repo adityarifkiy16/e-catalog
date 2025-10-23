@@ -90,6 +90,7 @@
                 paramName: "mockups",
                 maxFilesize: 2,
                 acceptedFiles: "image/*",
+                addRemoveLinks: true,
                 autoProcessQueue: false,
                 parallelUploads: 5,
                 uploadMultiple: true,
@@ -98,10 +99,45 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 init: function() {
-                    this.on("sendingmultiple", function(file, xhr, formData) {
+                    const dropzoneInstance = this;
+                    dropzoneInstance.existingImageIds = [];
+
+                    @if ($type->images)
+                        @foreach ($type->images as $image)
+                            {
+                                let mockFile = {
+                                    name: "{{ basename($image->path) }}",
+                                    size: {{ $image->size ?? 123456 }},
+                                    type: 'image/webp',
+                                    existing: true,
+                                    imageId: {{ $image->id }}
+                                };
+
+                                dropzoneInstance.emit("addedfile", mockFile);
+                                dropzoneInstance.emit("thumbnail", mockFile,
+                                    "{{ asset('storage/' . $image->path) }}");
+                                dropzoneInstance.emit("complete", mockFile);
+                                dropzoneInstance.files.push(mockFile);
+                                dropzoneInstance.existingImageIds.push({{ $image->id }});
+                            }
+                        @endforeach
+                    @endif
+
+                    dropzoneInstance.on("removedfile", function(file) {
+                        if (file.existing && file.imageId) {
+                            const index = dropzoneInstance.existingImageIds.indexOf(file
+                                .imageId);
+                            if (index > -1) {
+                                dropzoneInstance.existingImageIds.splice(index, 1);
+                            }
+                        }
+                    });
+                    dropzoneInstance.on("sendingmultiple", function(file, xhr, formData) {
                         formData.append("name", $('#name').val());
                         formData.append("jenis_id", $('#jenis_id').val());
                         formData.append('_method', 'PUT');
+                        formData.append("existing_images", JSON.stringify(dropzoneInstance
+                            .existingImageIds));
 
                         let thumbnail = $('#thumbnail')[0].files[0];
                         if (thumbnail) formData.append("thumbnail", thumbnail);
@@ -110,20 +146,22 @@
                         if (image) formData.append("image", image);
                     });
 
-                    this.on("successmultiple", function(files, response) {
+                    dropzoneInstance.on("successmultiple", function(files, response) {
                         Toast.fire({
                             icon: 'success',
                             title: response.message
                         });
-                        window.location.href = "{{ route('type.index') }}";
+                        setTimeout(function() {
+                            window.location.href = "{{ route('type.index') }}";
+                        }, 1500);
                     });
 
-                    this.on("errormultiple", function(files, response) {
+                    dropzoneInstance.on("errormultiple", function(files, response) {
                         Toast.fire({
                             icon: 'error',
                             title: response.message
                         });
-                        this.removeAllFiles(true);
+                        dropzoneInstance.removeAllFiles(true);
                     });
                 },
             });
@@ -134,19 +172,34 @@
                     '<span class="spinner-border spinner-border-sm mr-2"></span> Loading...'
                 );
 
-                if (dz.getAcceptedFiles().length > 0) {
+                const hasNewDropzoneFiles = dz.getAcceptedFiles().length > 0;
+
+                if (hasNewDropzoneFiles) {
                     dz.processQueue();
                 } else {
-                    let form = $(this);
-                    let url = form.attr('action');
-                    let formData = new FormData(this);
+                    const formData = new FormData();
+                    formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
+                    formData.append('_method', 'PUT');
+                    formData.append("name", $('#name').val());
+                    formData.append("jenis_id", $('#jenis_id').val());
+                    formData.append("existing_images", JSON.stringify(dz.existingImageIds || []));
+
+                    let thumbnail = $('#thumbnail')[0].files[0];
+                    if (thumbnail) formData.append("thumbnail", thumbnail);
+
+                    let image = $('#image')[0].files[0];
+                    if (image) formData.append("image", image);
+
+                    $("#btn-submit").prop("disabled", true).html(
+                        '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Loading...'
+                    );
 
                     $.ajax({
+                        url: "{{ route('type.update', $type) }}",
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
-                        url: url,
-                        type: 'POST',
+                        method: "POST",
                         data: formData,
                         contentType: false,
                         processData: false,

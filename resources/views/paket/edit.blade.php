@@ -41,7 +41,7 @@
                                 </option>
                             @endforeach
                         </select>
-                        <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar 3D</label>
+                        <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar Paket</label>
                         <div class="dropzone" id="image">
                             <div class="dz-message" id="dz-message">
                                 <div style="font-size: 3rem; color: #bbb;">
