@@ -122,4 +122,10 @@ Route::middleware("auth")->group(function () {
         Route::get("/laporan", [App\Http\Controllers\ProductViewController::class, "laporan"])->name("laporan.index");
         Route::get("/laporan/download", [App\Http\Controllers\ProductViewController::class, "downloadLaporan"])->name("laporan.download");
     });
+
+    Route::middleware('permission:management_settings')->group(function () {
+        // Setting management routes
+        Route::get("/settings", [App\Http\Controllers\MSettingController::class, "index"])->name("settings.index");
+        Route::post("/settings", [App\Http\Controllers\MSettingController::class, "store"])->name("settings.store");
+    });
 });

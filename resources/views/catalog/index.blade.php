@@ -256,9 +256,8 @@
                                 <div class="d-flex">
                                     <span class="font-weight-bold" style="min-width: 80px;">Email</span>
                                     <span class="mr-1">:</span>
-                                    <a href="mailto:{{ config('mail.from.address') }}"
-                                        class="text-white font-weight-lighter">
-                                        {{ config('mail.from.address') }}
+                                    <a href="mailto:{{ $setting->email }}" class="text-white font-weight-lighter">
+                                        {{ $setting->email }}
                                     </a>
                                 </div>
                             </li>
@@ -268,7 +267,8 @@
                                 <div class="d-flex">
                                     <span class="font-weight-bold" style="min-width: 80px;">Call</span>
                                     <span class="mr-1">:</span>
-                                    <a href="tel:0816659688" class="text-white font-weight-lighter">+62816659688</a>
+                                    <a href="tel:0816659688"
+                                        class="text-white font-weight-lighter">{{ $setting->phone }}</a>
                                 </div>
                             </li>
 
@@ -278,7 +278,7 @@
                                     <span class="font-weight-bold" style="min-width: 80px;">Address</span>
                                     <span class="mr-1">:</span>
                                     <span class="text-white font-weight-lighter">
-                                        Jl. Kamajaya No. 8A Wonosari, Ngaliyan, <br>Kota Semarang
+                                        {{ $setting->address }}
                                     </span>
                                 </div>
                             </li>
@@ -321,7 +321,7 @@
                 <div class="col-md-6 mb-3 text-center text-md-left">
                     <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn Logo" style="width: 130px; height: auto;"
                         class="mb-4">
-                    <p class="mb-2 h5">admin@osborn.id</p>
+                    <p class="mb-2 h5">{{ $setting->email }}</p>
                     <p class="mb-0 text-muted">Design Beyond Limits</p>
                 </div>
 
@@ -353,8 +353,9 @@
                         </li>
                     </ul>
                     <p class="mt-5 mb-1">&copy; 2025 Osborn. All rights reserved.</p>
-                    <span class="text-muted">Updated: 19 September 2025 | v1.7</span>
-
+                    <span class="text-muted">Updated:
+                        {{ \Carbon\Carbon::parse($setting->last_update)->formatLocalized('%d %B %Y') }} |
+                        {{ $setting->version }}</span>
                 </div>
             </div>
         </div>

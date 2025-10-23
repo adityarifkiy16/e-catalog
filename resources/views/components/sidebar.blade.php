@@ -66,5 +66,16 @@
                 'label' => 'Clean Up',
             ])
         @endif
+
+        @if (auth()->check() && auth()->user()->hasPermission('management_settings'))
+            <li class="nav-header">
+                setting
+            </li>
+            @include('partials.sidebar._nav_item', [
+                'route' => 'settings.index',
+                'icon' => 'fas fa-cog',
+                'label' => 'Pengaturan',
+            ])
+        @endif
     </ul>
 </nav>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\MJenis;
+use App\Models\MSetting;
 use App\Models\TProduct;
 use App\Models\MCategories;
 use Illuminate\Http\Request;
@@ -15,24 +16,25 @@ class CatalogController extends Controller
 {
     public function index()
     {
+        $arr['setting'] = MSetting::first();
+
         // Ambil semua file dalam folder
-        $files = File::files(public_path('dist/img/slide-depan'));
+        $arr['files'] = File::files(public_path('dist/img/slide-depan'));
 
         // Ambil nama file tanpa path
-        $products = collect($files)->map(function ($file) {
+        $arr['products'] = collect($arr['files'])->map(function ($file) {
             return $file->getFilename(); // misalnya "01.jpg"
         });
 
-        return view('catalog.index', [
-            'products' => $products,
-            'jenis' => MJenis::withCount([
-                'categories as products_count' => function ($query) {
-                    $query->select(DB::raw('count(t_products.id)'))
-                        ->join('t_products', 'm_categories.id', '=', 't_products.category_id')
-                        ->whereNull('t_products.deleted_at');
-                }
-            ])->whereNull('deleted_at')->get()
-        ]);
+        $arr['jenis'] = MJenis::withCount([
+            'categories as products_count' => function ($query) {
+                $query->select(DB::raw('count(t_products.id)'))
+                    ->join('t_products', 'm_categories.id', '=', 't_products.category_id')
+                    ->whereNull('t_products.deleted_at');
+            }
+        ])->whereNull('deleted_at')->get();
+
+        return view('catalog.index', $arr);
     }
     public function catalog(Request $request)
     {
