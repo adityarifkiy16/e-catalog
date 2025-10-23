@@ -194,9 +194,6 @@
                             if (index > -1) {
                                 dropzoneInstance.existingImageIds.splice(index, 1);
                             }
-                            console.log('Removed ID:', file.imageId); // Debug
-                            console.log('Remaining IDs:', dropzoneInstance
-                                .existingImageIds); // Debug
                         }
                     });
 
@@ -215,9 +212,6 @@
                         if (imageInput) {
                             formData.append("image", imageInput);
                         }
-
-                        console.log('Sending existing_images:', dropzoneInstance
-                            .existingImageIds); // Debug
                     });
 
                     dropzoneInstance.on("successmultiple", function(files, response) {
@@ -260,8 +254,6 @@
 
                     // ✅ PENTING: Akses dari dropzone instance
                     formData.append("existing_images", JSON.stringify(dz.existingImageIds || []));
-
-                    console.log('AJAX existing_images:', dz.existingImageIds); // Debug
 
                     const imageFile = $('#img')[0].files[0];
                     if (imageFile) {
