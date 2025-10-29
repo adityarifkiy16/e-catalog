@@ -11,7 +11,7 @@ class VarianUVSeeder extends Seeder
 {
     public function run(): void
     {
-        $uvboard = ['panjang' => 122, 'tinggi' => 300, 'ketebalan' => 0.8, 'density' => 0.9];
+        $uvboard = ['panjang' => 122, 'tinggi' => 300, 'ketebalan' => 8, 'density' => 0.9];
 
         foreach ($uvboard as $attrName => $attrValue) {
             $specification = MSpecification::firstOrCreate([
