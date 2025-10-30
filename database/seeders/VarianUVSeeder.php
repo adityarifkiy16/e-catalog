@@ -11,26 +11,36 @@ class VarianUVSeeder extends Seeder
 {
     public function run(): void
     {
-        $uvboard = ['lebar' => 122, 'tinggi' => 300, 'ketebalan' => 8, 'density' => 0.9];
+        $uvboard = [
+            'lebar' => 122,
+            'tinggi' => 300,
+            'ketebalan' => 8,
+            'density' => 0.9,
+        ];
 
-        foreach ($uvboard as $attrName => $attrValue) {
-            $specification = MSpecification::firstOrCreate([
-                'name' => $attrName,
-                'jenis_id' => 5,
-            ]);
+        // Ambil semua produk yang punya jenis_id = 5
+        $products = TProduct::whereHas('category.jenis', fn($q) => $q->where('id', 5))->get();
 
-            $specificationValue = TSpecificationValue::firstOrCreate([
-                'specification_id' => $specification->id,
-                'name' => $attrValue,
-            ]);
+        foreach ($products as $p) {
+            // Hapus dulu semua spesifikasi terkait jenis 5 (biar bersih)
+            $specsToDetach = MSpecification::where('jenis_id', 5)->pluck('id')->toArray();
+            $p->specifications()->detach($specsToDetach);
 
-            $product = TProduct::whereHas('category.jenis', fn($q) => $q->where('id', 5))->get();
+            // Tambah lagi sesuai urutan $uvboard
+            foreach ($uvboard as $attrName => $attrValue) {
+                $specification = MSpecification::firstOrCreate([
+                    'name' => $attrName,
+                    'jenis_id' => 5,
+                ]);
 
-            foreach ($product as $p) {
-                $panjangSpec = MSpecification::where('name', 'panjang')->where('jenis_id', 5)->first();
-                $p->specifications()->detach($panjangSpec->id);
+                $specificationValue = TSpecificationValue::firstOrCreate([
+                    'specification_id' => $specification->id,
+                    'name' => $attrValue,
+                ]);
+
+                // Tambahkan relasi baru sesuai urutan array
                 $p->specifications()->syncWithoutDetaching([
-                    $specification->id => ['specification_value_id' => $specificationValue->id]
+                    $specification->id => ['specification_value_id' => $specificationValue->id],
                 ]);
             }
         }
