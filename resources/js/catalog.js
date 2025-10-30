@@ -185,7 +185,9 @@ $(document).ready(function () {
             let images = [];
             let packagesImgs = [];
 
-            viewProduct(productId);
+            if (jenis !== 'card-types') {
+                viewProduct(productId);
+            }
 
             if (imagesStr) {
                 try {
