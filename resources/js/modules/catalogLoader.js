@@ -58,16 +58,23 @@ export function loadMoreData() {
         state.currentRequest.abort();
     }
 
+    const params = {
+        page: state.currentPage,
+        search,
+        jenis: state.selectedJenis,
+        category: state.category,
+        type: state.type
+    };
+
+    const query = $.param(params);
+    const newUrl = `/catalog?${query}`;
+    window.history.pushState(null, null, newUrl);
+
+    // kirim AJAX request
     state.currentRequest = $.ajax({
         url: `/catalog`,
         type: 'GET',
-        data: {
-            page: state.currentPage,
-            search,
-            jenis: state.selectedJenis,
-            category: state.category,
-            type: state.type
-        }
+        data: params
     });
 
     return new Promise((resolve, reject) => {
