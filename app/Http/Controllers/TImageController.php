@@ -27,14 +27,15 @@ class TImageController extends Controller
         $dbProducts = TProduct::pluck('photo')->toArray();
         $dbPackages = TPackage::pluck('image')->toArray();
         $dbCategories = MCategories::pluck('path')->toArray();
-        $dbTypes = MType::pluck('thumbnail', 'image')->toArray();
+        $dbTypesThumbnail = MType::pluck('thumbnail')->toArray();
+        $dbTypes = MType::pluck('image')->toArray();
         $dbUsers = User::pluck('path_image')->toArray();
         // relasi images
         $dbImages = TImage::pluck('path')->toArray();
         $dbImgType = ImageTypes::pluck('path')->toArray();
         $dbImgCat = ImageCategories::pluck('path')->toArray();
 
-        $images = array_merge($dbImages, $dbProducts, $dbPackages, $dbCategories, $dbTypes, $dbUsers, $dbImgType, $dbImgCat);
+        $images = array_merge($dbImages, $dbProducts, $dbPackages, $dbCategories, $dbTypesThumbnail, $dbTypes, $dbUsers, $dbImgType, $dbImgCat);
         $storageImages = Storage::disk('public')->allFiles('images');
 
         $unusedImages = array_diff($storageImages, $images);
