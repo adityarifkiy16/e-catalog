@@ -66,10 +66,6 @@ export function loadMoreData() {
         type: state.type
     };
 
-    const query = $.param(params);
-    const newUrl = `/catalog?${query}`;
-    window.history.pushState(null, null, newUrl);
-
     // kirim AJAX request
     state.currentRequest = $.ajax({
         url: `/catalog`,
