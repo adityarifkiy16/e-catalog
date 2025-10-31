@@ -233,9 +233,9 @@
                     <!-- Teks -->
                     <div class="col-md-6 offset-md-1 animate__animated animate__faster animate__fadeInRight">
                         <span class="text-uppercase" style="color: #bbb">Crafted for Your Space</span>
-                        <h1 class="font-weight-bold mb-3">Unleash Your Design Vision with Over 70 Premium Motifs</h1>
+                        <h1 class="font-weight-bold mb-3">Unleash Your Design Vision with Over 1000 Premium Motifs</h1>
                         <ul class="list-styled">
-                            <li>70+ elegant and exclusive motifs</li>
+                            <li>1000+ elegant and exclusive motifs</li>
                             <li>Durable, lightweight, and easy-to-install material</li>
                             <li>Perfect for any interior style</li>
                         </ul>
