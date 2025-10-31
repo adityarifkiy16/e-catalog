@@ -78,8 +78,9 @@
 
                                     <!-- Tombol Download -->
                                     <div class="mb-2 mb-md-0  text-center text-md-right mr-2 order-2">
-                                        <a href="#" class="btn btn-light w-100 w-md-auto" id="btn-download">
-                                            <i class="fa fa-arrow-down mr-1"></i> Download
+                                        <a href="#" class="btn btn-light w-100 w-md-auto" data-target="#pdfcatalog"
+                                            data-toggle="modal">
+                                            <i class="fa fa-arrow-down mr-1"></i> Catalog PDF
                                         </a>
                                     </div>
                                 </div>
@@ -131,8 +132,27 @@
 
             </div>
 
+            <div class="modal fade" id="pdfcatalog" tabindex="-1" aria-labelledby="pdfcatalogLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content bg-black text-white">
+                        <div class="modal-header">
+                            <h5 class="modal-title font-weight-bold" id="pdfcatalogLabel">Pilih Kategori</h5>
+                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="pdf-catalog"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                id="btn-download">Download PDF</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Modal -->
-            <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+            <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header text-white" style="background: #000">
@@ -257,7 +277,6 @@
                     </div>
                 </div>
             </div>
-
 
             <!-- Modal Kategori -->
             <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel"

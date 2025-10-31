@@ -4,16 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\MJenis;
 use App\Models\TImage;
+use App\Models\MSetting;
 use App\Models\TProduct;
 use App\Models\MCategories;
-use App\Models\MSpecification;
 use App\Models\ProductView;
-use App\Models\TSpecificationValue;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\MSpecification;
 use App\Services\ImageServices;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use App\Models\TSpecificationValue;
 use Illuminate\Support\Facades\File;
 use App\Services\ProductViewServices;
 use Intervention\Image\Facades\Image;
@@ -368,10 +369,10 @@ class TProductController extends Controller
     {
 
         $query = TProduct::with('category', 'category.jenis')->select('id', 'code', 'photo', 'category_id')->orderBy('code', 'asc');
-
+        $arr['setting'] = MSetting::first();
         if ($request->filled('category')) {
             $arr['products'] =  $query->whereHas('category', function ($q) use ($request) {
-                $q->where('id', $request->category);
+                $q->whereIn('id', $request->category);
             })->get();
 
             $convertedImgs = [];

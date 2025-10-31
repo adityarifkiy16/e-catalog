@@ -139,7 +139,8 @@ function updateCategoryMenu(response, firstLoad = true) {
     const hasCategory = (response.category?.length ?? 0) > 0;
 
     toggleCategoryLayout({ selectedJenis: state.selectedJenis, hasCategory, isRenderTypes });
-    // Toggle category container
+
+    // --- 1. Toggle Layout ---
     if (categories.length === 0) {
         $('#category-container').addClass('d-none');
     } else {
@@ -157,42 +158,21 @@ function updateCategoryMenu(response, firstLoad = true) {
         }
     }
 
-    // Header label
-    const labelMap = {
-        'PVC Board': () => {
-            $('#category-container').addClass('d-none');
-            $('.category-modal-container').text('Tidak ada kategori');
-        },
-        Wallboard: () => setCategoryLabel('Motif'),
-        'UV Board': () => setCategoryLabel('Motif'),
-        Wallpanel: () => setCategoryLabel('Motif'),
-        Aksesoris: () => setCategoryLabel('Ukuran'),
-        default: () => setCategoryLabel('Kategori')
-    };
-    (labelMap[name] || labelMap.default)();
+    // --- 2. Apply Header Label ---
+    applyLabelMap(name);
 
-    // Build dropdown
-    let dropdown = `<li class="nav-item font-poppins">`;
-    if (categories.length > 0) {
-        categories.forEach((cat) => {
-            dropdown += `
-                <a class="nav-link text-white category-filter d-flex align-items-center justify-content-start" 
-                   href="#" data-jenis-id="${cat.jenis_id}" data-id="${cat.id}" data-type="${cat.type_id}">
-                    <img src="${cat.path ? 'storage/' + cat.path : 'dist/img/product/1.webp'}" alt="${cat.name}" 
-                         class="mr-2 img-thumbnail" style="width:50px;height:50px;object-fit:contain;">
-                    <span class="text-capitalize">${cat.name}</span>
-                </a>`;
-        });
-    } else {
-        dropdown += `<a class="nav-link text-white category-filter" href="#">Tanpa Kategori</a>`;
-    }
-    dropdown += `</li>`;
+    // --- 3. Render Category Menu ---
+    const dropdown = renderCategory(categories);
+
+    // --- 4. Render Download Checkbox ---
+    const checkbox = renderDownloadCheckbox(categories);
 
     // Inject to DOM
     if (firstLoad) {
         $('#category-menu-item, #category-menu-item-modal').html('tidak ada kategori');
     } else {
         $('#category-menu-item, #category-menu-item-modal').html(dropdown);
+        $('#pdf-catalog').html(checkbox);
     }
 
     // Auto choose first category if none selected
@@ -211,4 +191,77 @@ function updateCategoryMenu(response, firstLoad = true) {
 
 function setCategoryLabel(label) {
     $('#category-menu-item-label, #category-modal-item-label').html(label);
+}
+
+function renderDownloadCheckbox(categories) {
+    if (categories.length === 0) {
+        return `
+            <div class="row font-poppins">
+                <div class="col-12 mb-2">
+                    <div class="text-white rounded py-2 px-3">
+                        <input type="checkbox" class="custom-control-input" id="no-cat" disabled>
+                        <label class="custom-control-label" for="no-cat">
+                            Tanpa Kategori
+                        </label>
+                    </div>
+                </div>
+            </div>`;
+    }
+
+    const items = categories
+        .map(
+            (cat) => `
+            <div class="col-6 col-md-4 mb-2">
+                <div class="text-white rounded py-2 px-3">
+                    <input type="checkbox" class="custom-control-input category-filter-download" 
+                           id="cat-${cat.id}" value="${cat.id}">
+                    <label class="custom-control-label" for="cat-${cat.id}">
+                        ${cat.name}
+                    </label>
+                </div>
+            </div>`
+        )
+        .join('');
+
+    return `<div class="row font-poppins">${items}</div>`;
+}
+
+function renderCategory(categories) {
+    if (categories.length === 0) {
+        return `
+            <li class="nav-item font-poppins">
+                <a class="nav-link text-white category-filter" href="#">Tanpa Kategori</a>
+            </li>`;
+    }
+
+    const items = categories
+        .map(
+            (cat) => `
+            <a class="nav-link text-white category-filter d-flex align-items-center justify-content-start" 
+               href="#" data-jenis-id="${cat.jenis_id}" data-id="${cat.id}" data-type="${cat.type_id}">
+                <img src="${cat.path ? 'storage/' + cat.path : 'dist/img/product/1.webp'}"
+                     alt="${cat.name}"
+                     class="mr-2 img-thumbnail"
+                     style="width:50px;height:50px;object-fit:contain;">
+                <span class="text-capitalize">${cat.name}</span>
+            </a>`
+        )
+        .join('');
+
+    return `<li class="nav-item font-poppins">${items}</li>`;
+}
+
+function applyLabelMap(name) {
+    const labelMap = {
+        'PVC Board': () => {
+            $('#category-container').addClass('d-none');
+            $('.category-modal-container').text('Tidak ada kategori');
+        },
+        Wallboard: () => setCategoryLabel('Motif'),
+        'UV Board': () => setCategoryLabel('Motif'),
+        Wallpanel: () => setCategoryLabel('Motif'),
+        Aksesoris: () => setCategoryLabel('Ukuran'),
+        default: () => setCategoryLabel('Kategori')
+    };
+    (labelMap[name] || labelMap.default)();
 }

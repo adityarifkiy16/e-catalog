@@ -14,7 +14,21 @@ export function bindDownloadButtons() {
         .off('click', '#btn-download')
         .on('click', '#btn-download', function (e) {
             e.preventDefault();
-            handleDownload(this, 'catalog/pdf?category=' + encodeURIComponent(getCategory()));
+            const selectedCategories = $('.category-filter-download:checked')
+                .map(function () {
+                    return $(this).val();
+                })
+                .get();
+
+            if (selectedCategories.length === 0) {
+                alert('Pilih minimal satu kategori untuk diunduh.');
+                return;
+            }
+
+            const params = selectedCategories.map((id) => `category[]=${encodeURIComponent(id)}`).join('&');
+            const url = `catalog/pdf?${params}`;
+
+            handleDownload(this, url);
         });
 }
 
