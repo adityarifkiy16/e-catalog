@@ -5,6 +5,11 @@
             background-color: #FFFFFF;
         }
 
+        .product-img:hover {
+            transform: scale(1.3);
+            transition: all 0.3s ease;
+        }
+
         .slider-container {
             overflow: hidden;
             width: 100%;
