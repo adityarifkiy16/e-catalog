@@ -1,19 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MVariantController;
-use App\Http\Controllers\TVariantValueController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::get("/catalog", [App\Http\Controllers\CatalogController::class, "catalog"])->name("catalog");
 Route::get("/", [App\Http\Controllers\CatalogController::class, "index"])->name("catalog.index");
@@ -42,6 +30,7 @@ Route::middleware("auth")->group(function () {
     Route::get("/clear-cache", [App\Http\Controllers\TImageController::class, "clear"])->name("clear-cache");
 
 
+    // 1. User Management
     Route::middleware("permission:management_users")->group(function () {
         // User management routes
         Route::get("/users", [App\Http\Controllers\UserController::class, "index"])->name("users.index");
@@ -53,6 +42,7 @@ Route::middleware("auth")->group(function () {
         Route::get("/users/search", [App\Http\Controllers\UserController::class, "search"])->name("users.search");
     });
 
+    // 2. Role Management
     Route::middleware('permission:management_roles')->group(function () {
         // Role management routes
         Route::get("/roles", [App\Http\Controllers\MRoleController::class, "index"])->name("role.index");
@@ -63,6 +53,7 @@ Route::middleware("auth")->group(function () {
         Route::delete("/role/{role}", [App\Http\Controllers\MRoleController::class, "destroy"])->name("role.destroy");
     });
 
+    // 3. Product Management
     Route::middleware("permission:management_product")->group(function () {
         // Jenis management routes
         Route::get("/jenis", [App\Http\Controllers\MJenisController::class, "index"])->name("jenis.index");
@@ -97,9 +88,7 @@ Route::middleware("auth")->group(function () {
         Route::delete("/products/reset-mockup/{product}", [App\Http\Controllers\TProductController::class, "resetMockup"])->name("products.reset-mockup");
         Route::delete("/products/reset-motif/{product}", [App\Http\Controllers\TProductController::class, "resetMotif"])->name("products.reset-motif");
 
-
-
-        // Type
+        // Type Management routes
         Route::get("/type", [App\Http\Controllers\MTypeController::class, "index"])->name("type.index");
         Route::get("/type/create", [App\Http\Controllers\MTypeController::class, "create"])->name("type.create");
         Route::post("/type", [App\Http\Controllers\MTypeController::class, "store"])->name("type.store");
@@ -109,7 +98,7 @@ Route::middleware("auth")->group(function () {
         Route::get('/types/by-jenis/{jenisId}', [\App\Http\Controllers\MTypeController::class, 'getByJenis'])
             ->name('types.byJenis');
 
-        //Package
+        // Package Management routes
         Route::get("/package", [App\Http\Controllers\TPackageController::class, "index"])->name("package.index");
         route::get("/package/bulk-upload/create", [App\Http\Controllers\TPackageController::class, "bulkUpload"])->name("package.bulk.create");
         Route::get("/package/create", [App\Http\Controllers\TPackageController::class, "create"])->name("package.create");
@@ -119,16 +108,23 @@ Route::middleware("auth")->group(function () {
         Route::delete("/package/{package}", [App\Http\Controllers\TPackageController::class, "destroy"])->name("package.destroy");
     });
 
+    // 4. Reports Management
     Route::middleware('permission:view_reports')->group(function () {
-        // Laporan
         Route::get("/products/viewed", [App\Http\Controllers\ProductViewController::class, "index"])->name("products.viewed");
         Route::get("/laporan", [App\Http\Controllers\ProductViewController::class, "laporan"])->name("laporan.index");
         Route::get("/laporan/download", [App\Http\Controllers\ProductViewController::class, "downloadLaporan"])->name("laporan.download");
     });
 
+    // 5. Settings Management
     Route::middleware('permission:management_settings')->group(function () {
         // Setting management routes
         Route::get("/settings", [App\Http\Controllers\MSettingController::class, "index"])->name("settings.index");
         Route::post("/settings", [App\Http\Controllers\MSettingController::class, "store"])->name("settings.store");
     });
+
+    // 6. PDF Management
+    Route::resource("pdf", App\Http\Controllers\PdfController::class);
+
+    // 7. Version Management
+    Route::resource("version", App\Http\Controllers\MVersionController::class);
 });

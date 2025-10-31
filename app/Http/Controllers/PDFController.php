@@ -16,20 +16,29 @@ class PDFController extends Controller
 {
     public function index(Request $request)
     {
-        $query = DB::table('generate_pdfs')->select('id', 'path', 'version_id')->orderBy('id', 'desc')->with('version');
+        $query = DB::table('generated_pdfs')
+            ->join('m_versions', 'generated_pdfs.version_id', '=', 'm_versions.id')
+            ->select('generated_pdfs.id', 'generated_pdfs.path', 'generated_pdfs.version_id', 'm_versions.version')
+            ->orderBy('generated_pdfs.id', 'desc')
+            ->get();
+
+
         if ($request->ajax()) {
-            if ($request->has('search') && $request->search['value'] !== null) {
+            if ($request->has('search') && $request->search['value']) {
                 $search = $request->search['value'];
-                $query->where(function ($q) use ($search) {
-                    $q->where('path', 'like', '%' . $search . '%');
-                });
+                $query->where('path', 'LIKE', "%{$search}%");
             }
 
             return DataTables::of($query)
                 ->addIndexColumn()
+                ->addColumn('version', function ($item) {
+                    return $item->version;
+                })
                 ->rawColumns(['action'])
                 ->toJson();
         }
+
+        return view('pdf.index');
     }
 
     public function generatePdf(Request $request)

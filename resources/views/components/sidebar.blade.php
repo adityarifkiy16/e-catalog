@@ -77,5 +77,15 @@
                 'label' => 'Pengaturan',
             ])
         @endif
+        @include('partials.sidebar._nav_item', [
+            'route' => 'pdf.index',
+            'icon' => 'fas fa-cog',
+            'label' => 'Manajemen PDF',
+        ])
+        @include('partials.sidebar._nav_item', [
+            'route' => 'version.index',
+            'icon' => 'fas fa-cog',
+            'label' => 'Manajemen Versi Katalog',
+        ])
     </ul>
 </nav>
