@@ -11,7 +11,8 @@ class VarianWBSeeder extends Seeder
 {
     public function run(): void
     {
-        $wallboard = ['panjang' => 122, 'tinggi' => 300];
+        // $wallboard = ['panjang' => 122, 'tinggi' => 300];
+        $wallboard = ['Ketebalan' => "5/8"];
 
         foreach ($wallboard as $attrName => $attrValue) {
             $specification = MSpecification::firstOrCreate([
@@ -22,6 +23,7 @@ class VarianWBSeeder extends Seeder
             $specificationValue = TSpecificationValue::firstOrCreate([
                 'specification_id' => $specification->id,
                 'name' => $attrValue,
+                'unit' => 'mm',
             ]);
 
             $product = TProduct::whereHas('category.jenis', fn($q) => $q->where('id', 2))->get();
