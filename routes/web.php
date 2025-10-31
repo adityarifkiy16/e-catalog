@@ -19,7 +19,10 @@ Route::get("/catalog", [App\Http\Controllers\CatalogController::class, "catalog"
 Route::get("/", [App\Http\Controllers\CatalogController::class, "index"])->name("catalog.index");
 
 // DOWNLOAD PDF
-Route::get("/catalog/pdf", [App\Http\Controllers\TProductController::class, "downloadPdf"])->name("catalog.pdf");
+// Generate File PDF Catalog - tidak sering dijalankan
+Route::get("/generate-pdf-catalog", [App\Http\Controllers\TProductController::class, "downloadPdf"])->name("catalog.pdf");
+
+Route::get("/catalog/pdf/download", [App\Http\Controllers\TProductController::class, "downloadPdfCategory"])->name("catalog.download");
 Route::get("/catalog/pdf/product", [App\Http\Controllers\TProductController::class, "downloadPdfProduct"])->name("catalog.pdf.product");
 Route::post("/products/{product}/viewed", [App\Http\Controllers\TProductController::class, "show"])->name("products.viewed.stored");
 

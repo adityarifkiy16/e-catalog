@@ -37,8 +37,6 @@ class MSettingController extends Controller
             'phone' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'email' => 'required|string|max:255',
-            'version_catalog' => 'required|string|max:255',
-            'last_update_catalog' => 'required|date|max:255',
         ]);
 
         $setting = MSetting::first();
@@ -48,9 +46,7 @@ class MSettingController extends Controller
         }
 
         $setting->fill($request->only([
-            'last_update_catalog',
             'last_update',
-            'version_catalog',
             'version',
             'phone',
             'address',

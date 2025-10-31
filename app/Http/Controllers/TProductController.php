@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Mpdf\Mpdf;
 use App\Models\MJenis;
 use App\Models\TImage;
 use App\Models\MSetting;
 use App\Models\TProduct;
 use App\Models\MCategories;
-use App\Models\ProductView;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\MSpecification;
@@ -15,7 +15,6 @@ use App\Services\ImageServices;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Models\TSpecificationValue;
-use Illuminate\Support\Facades\File;
 use App\Services\ProductViewServices;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
@@ -363,135 +362,6 @@ class TProductController extends Controller
         $arr['categories'] = MCategories::all();
         $arr['products'] = TProduct::where('name', 'LIKE', '%' . $request->search . '%')->orWhere('code', 'LIKE', '%' . $request->search . '%')->get();
         return view('product.index', $arr);
-    }
-
-    public function downloadPdf(Request $request)
-    {
-
-        $query = TProduct::with('category', 'category.jenis')->select('id', 'code', 'photo', 'category_id')->orderBy('code', 'asc');
-        $arr['setting'] = MSetting::first();
-        if ($request->filled('category')) {
-            $arr['products'] =  $query->whereHas('category', function ($q) use ($request) {
-                $q->whereIn('id', $request->category);
-            })->get();
-
-            $convertedImgs = [];
-            foreach ($arr['products'] as $product) {
-                $photopath = storage_path('app/public/' . $product->photo);
-                if (file_exists($photopath) && Str::endsWith($product->photo, '.webp')) {
-                    $jpgName = Str::replaceLast('.webp', '.jpg', $product->photo);
-                    $jpgPath = storage_path('app/public/temp_images/' . $jpgName);
-                    $directory = dirname($jpgPath);
-                    if (!file_exists($directory)) {
-                        mkdir($directory, 0755, true);
-                    }
-
-                    if (!file_exists($jpgPath)) {
-                        Image::make($photopath)
-                            ->resize(600, null, function ($constraint) {
-                                $constraint->aspectRatio();
-                                $constraint->upsize();
-                            })
-                            ->encode('jpg', 70)
-                            ->save($jpgPath);
-                    }
-
-                    $product->converted_photo = $jpgPath;
-                    $convertedImgs[] = $jpgPath;
-                } else {
-                    $product->converted_photo = $photopath;
-                }
-            }
-            $pdf = FacadePdf::loadView('product.catalog', $arr)->setPaper('a4', 'landscape');
-            $output = $pdf->stream('products.pdf');
-
-            foreach ($convertedImgs as $img) {
-                if (file_exists($img)) {
-                    @unlink($img);
-                }
-            }
-
-            return $output;
-        }
-    }
-
-    public function downloadPdfProduct(Request $request)
-    {
-        $productId = $request->query('id');
-        $product = TProduct::with('category', 'category.jenis', 'images')->find($productId);
-
-        if (!$product) {
-            return response()->json(['message' => 'Product not found'], 404);
-        }
-
-        $arr['specifications'] = DB::table('t_product_m_specification as tps')
-            ->join('m_specifications as ms', 'ms.id', '=', 'tps.specification_id')
-            ->join('t_specification_values as tsv', 'tsv.id', '=', 'tps.specification_value_id')
-            ->select(
-                'ms.id as specification_id',
-                'ms.name as specification_name',
-                'tsv.id as specification_value_id',
-                'tsv.name as specification_value',
-                'tsv.unit as specification_unit'
-            )
-            ->where('tps.product_id', $productId)
-            ->get();
-
-        $arr['product'] = $product;
-
-        $convertedImgs = [];
-
-        // Handle conversion WEBP TO JPG
-        if ($product->photo && Str::endsWith($product->photo, '.webp')) {
-            $jpgName = Str::replaceLast('.webp', '.jpg', $product->photo);
-            $paths = [
-                'mockup' => storage_path("app/public/temp_images/mockup/$jpgName"),
-                'motif' => storage_path("app/public/temp_images/motif/$jpgName"),
-            ];
-
-            foreach ($paths as $key => $jpgPath) {
-                $directory = dirname($jpgPath);
-                if (!file_exists($directory)) {
-                    mkdir($directory, 0755, true);
-                }
-
-                if (!file_exists($jpgPath)) {
-                    $relativePath = $key === 'mockup'
-                        ? ($product->images->first()->path ?? $product->photo)
-                        : $product->photo;
-
-                    // Pastikan path relatif (tanpa awalan slash)
-                    $relativePath = ltrim($relativePath, '/');
-
-                    // Gunakan path absolut ke public/storage
-                    $source = storage_path("app/public/$relativePath");
-
-                    Image::make($source)
-                        ->resize($key === 'mockup' ? 1200 : 200, null, function ($constraint) {
-                            $constraint->aspectRatio();
-                            $constraint->upsize();
-                        })
-                        ->encode('jpg', 70)
-                        ->save($jpgPath);
-                }
-                $convertedImgs[] = $jpgPath;
-            }
-            $product->converted_photo = $paths['mockup'];
-            $product->converted_photo2 = $paths['motif'];
-        } else {
-            $product->converted_photo = $product->photo;
-        }
-
-        // Generate PDF
-        $pdf = FacadePdf::loadView('product.pdf', $arr)->setPaper('a4', 'landscape')->stream('products.pdf', ['Attachment' => false]);
-
-        foreach ($convertedImgs as $img) {
-            if (file_exists($img)) {
-                @unlink($img);
-            }
-        }
-
-        return $pdf;
     }
 
     public function destroyByCategory(Request $request)

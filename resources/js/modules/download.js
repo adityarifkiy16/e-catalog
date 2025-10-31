@@ -27,7 +27,6 @@ export function bindDownloadButtons() {
 
             const params = selectedCategories.map((id) => `category[]=${encodeURIComponent(id)}`).join('&');
             const url = `catalog/pdf?${params}`;
-
             handleDownload(this, url);
         });
 }

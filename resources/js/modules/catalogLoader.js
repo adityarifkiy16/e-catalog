@@ -208,6 +208,19 @@ function renderDownloadCheckbox(categories) {
             </div>`;
     }
 
+    // Checkbox "Semua Kategori"
+    const selectAll = `
+        <div class="col-12 mb-3 border-bottom pb-2">
+            <div class="text-white rounded py-2 px-3">
+                <input type="checkbox" class="custom-control-input" id="cat-all">
+                <label class="custom-control-label font-weight-bold" for="cat-all">
+                    Semua Kategori
+                </label>
+            </div>
+        </div>
+    `;
+
+    // Checkbox per kategori
     const items = categories
         .map(
             (cat) => `
@@ -223,7 +236,26 @@ function renderDownloadCheckbox(categories) {
         )
         .join('');
 
-    return `<div class="row font-poppins">${items}</div>`;
+    // Tambahkan event handler untuk toggle semua checkbox
+    setTimeout(() => {
+        $('#cat-all')
+            .off('change')
+            .on('change', function () {
+                const checked = $(this).is(':checked');
+                $('.category-filter-download').prop('checked', checked);
+            });
+
+        // Jika semua checkbox kategori dicentang/diubah, sinkronkan dengan “Semua Kategori”
+        $(document)
+            .off('change', '.category-filter-download')
+            .on('change', '.category-filter-download', function () {
+                const allChecked =
+                    $('.category-filter-download').length === $('.category-filter-download:checked').length;
+                $('#cat-all').prop('checked', allChecked);
+            });
+    }, 100);
+
+    return `<div class="row font-poppins">${selectAll}${items}</div>`;
 }
 
 function renderCategory(categories) {

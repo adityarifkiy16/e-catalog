@@ -19,38 +19,17 @@
                         @csrf
 
                         <div class="form-group">
-                            <label class="mt-2"><i class="fas fa-envelope"></i> Email</label>
-                            <input type="text" class="form-control" name="email" placeholder="Masukkan Email"
-                                value="{{ old('email', $setting->email ?? '') }}">
-                            @error('email')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-
-                            <label class="mt-2"><i class="fas fa-phone"></i> Phone</label>
-                            <input type="text" class="form-control" name="phone" id="phone"
-                                placeholder="Masukan Phone" value="{{ old('phone', $setting->phone ?? '') }}">
-                            @error('phone')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-
-                            <label class="mt-2"><i class="fas fa-map-pin"></i> Alamat</label>
-                            <input type="text" class="form-control" name="address" id="address"
-                                placeholder="Masukan Alamat" value="{{ old('address', $setting->address ?? '') }}">
-                            @error('address')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-
-                            <label class="mt-2"><i class="fas fa-tags"></i> Versi Website</label>
+                            <label class="mt-2"><i class="fas fa-tags"></i> Versi Katalog PDF</label>
                             <input type="text" class="form-control" name="version" id="version"
                                 placeholder="Masukan Versi" value="{{ old('version', $setting->version ?? '') }}">
                             @error('version')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
 
-                            <label class="mt-2"><i class="fas fa-calendar"></i> Tanggal Update</label>
-                            <input type="date" class="form-control" name="last_update" id="last_update"
-                                value="{{ old('last_update', $setting->last_update ?? '') }}">
-                            @error('last_update')
+                            <label class="mt-2"><i class="fas fa-tags"></i> Deskripsi</label>
+                            <input type="text" class="form-control" name="version" id="version"
+                                placeholder="Masukan Versi" value="{{ old('version', $setting->version ?? '') }}">
+                            @error('version')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>

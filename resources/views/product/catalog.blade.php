@@ -1,34 +1,5 @@
 <head>
     <title>CATALOG - PDF</title>
-    <style>
-        @page {
-            size: A4 landscape;
-            margin: 15mm 15mm 15mm 15mm;
-        }
-
-        p {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 12px;
-            line-height: 1.5;
-        }
-
-        strong {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 12px;
-        }
-
-        .uppercase {
-            text-transform: uppercase;
-        }
-
-        .lowercase {
-            text-transform: lowercase;
-        }
-
-        .capitalize {
-            text-transform: capitalize;
-        }
-    </style>
 </head>
 
 <body>
@@ -47,12 +18,16 @@
         </tr>
     </table>
     <br><br>
+
+    <h3 style="margin-top: 20px;">Kategori: {{ $categoryName }}</h3>
     <table width="100%" cellspacing="10" style="margin-bottom: 0;">
         <tr>
             @foreach ($products as $i => $product)
                 <td width="25%" align="center" valign="top">
-                    <img src="{{ $product->converted_photo }}" width="200px" height="auto"><br><br>
-                    <strong class="uppercase">{{ $product->category->name ?? 'Tanpa Kategori' }}</strong>
+                    <img src="{{ $product->converted_photo }}" style="max-width: 200px; heigh: auto;">
+                    <br>
+                    <br>
+                    <strong class="uppercase">{{ $categoryName }}</strong>
                     <p>{{ $product->code }}</p>
                 </td>
                 @if (($i + 1) % 4 == 0)
