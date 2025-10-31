@@ -39,6 +39,7 @@
                 <h2 style="margin-top: 1; font-weight: bold">{{ config('app.name') }}</h2>
             </td>
             <td width="30%" align="right">
+                <H3 style="margin-top: 0; font-weight: bold">Versi Katalog: {{ $setting->version_catalog ?? '' }}</H3>
                 <p style="margin-bottom: 0;">Jl. Kamajaya No. 8A, Kel. Wonosari, Kec. Ngaliyan, Kota Semarang, Jawa
                     Tengah</p>
                 <p style="margin-top: 0; font-weight: bold">Telp: +62816659688</p>

@@ -40,7 +40,7 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
 
-                            <label class="mt-2"><i class="fas fa-tags"></i> Versi</label>
+                            <label class="mt-2"><i class="fas fa-tags"></i> Versi Website</label>
                             <input type="text" class="form-control" name="version" id="version"
                                 placeholder="Masukan Versi" value="{{ old('version', $setting->version ?? '') }}">
                             @error('version')
@@ -51,6 +51,21 @@
                             <input type="date" class="form-control" name="last_update" id="last_update"
                                 value="{{ old('last_update', $setting->last_update ?? '') }}">
                             @error('last_update')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+
+                            <label class="mt-2"><i class="fas fa-tags"></i> Versi Katalog</label>
+                            <input type="text" class="form-control" name="version_catalog" id="version_catalog"
+                                placeholder="Masukan Versi"
+                                value="{{ old('version_catalog', $setting->version_catalog ?? '') }}">
+                            @error('version_catalog')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+
+                            <label class="mt-2"><i class="fas fa-calendar"></i> Tanggal Update Katalog</label>
+                            <input type="date" class="form-control" name="last_update_catalog" id="last_update_catalog"
+                                value="{{ old('last_update_catalog', $setting->last_update_catalog ?? '') }}">
+                            @error('last_update_catalog')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
