@@ -9,6 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class MVersion extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = 'm_version';
+    protected $table = 'm_versions';
     protected $guarded = ['id'];
 }

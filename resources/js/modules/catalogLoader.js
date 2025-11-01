@@ -236,25 +236,6 @@ function renderDownloadCheckbox(categories) {
         )
         .join('');
 
-    // Tambahkan event handler untuk toggle semua checkbox
-    setTimeout(() => {
-        $('#cat-all')
-            .off('change')
-            .on('change', function () {
-                const checked = $(this).is(':checked');
-                $('.category-filter-download').prop('checked', checked);
-            });
-
-        // Jika semua checkbox kategori dicentang/diubah, sinkronkan dengan “Semua Kategori”
-        $(document)
-            .off('change', '.category-filter-download')
-            .on('change', '.category-filter-download', function () {
-                const allChecked =
-                    $('.category-filter-download').length === $('.category-filter-download:checked').length;
-                $('#cat-all').prop('checked', allChecked);
-            });
-    }, 100);
-
     return `<div class="row font-poppins">${selectAll}${items}</div>`;
 }
 

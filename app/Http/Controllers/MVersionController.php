@@ -4,16 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Models\MVersion;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class MVersionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $arr['version'] = MVersion::first();
-        return view('version.index', $arr);
+        $query = MVersion::orderBy('id', 'desc');
+        if ($request->ajax()) {
+            if ($request->has('search') && $request->search['value']) {
+                $search = $request->search['value'];
+                $query->where('path', 'LIKE', "%{$search}%");
+            }
+
+            return DataTables::of($query)
+                ->addIndexColumn()
+                ->rawColumns(['action'])
+                ->toJson();
+        }
+        return view('version.index');
     }
 
     /**
@@ -21,7 +33,7 @@ class MVersionController extends Controller
      */
     public function create()
     {
-        //
+        return view('version.create');
     }
 
     /**
@@ -34,16 +46,12 @@ class MVersionController extends Controller
             'description' => 'required|string|max:255',
         ]);
 
-        $version = MVersion::first();
+        MVersion::create([
+            'version' => $request->version,
+            'description' => $request->description,
+        ]);
 
-        if (!$version) {
-            $version = new MVersion();
-        }
-
-        $version->fill($request->only([
-            'version',
-            'description',
-        ]));
+        return response()->json(['status' => 'success', 'message' => 'Version updated successfully.']);
     }
 
     /**

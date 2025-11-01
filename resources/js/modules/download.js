@@ -20,13 +20,13 @@ export function bindDownloadButtons() {
                 })
                 .get();
 
-            if (selectedCategories.length === 0) {
-                alert('Pilih minimal satu kategori untuk diunduh.');
-                return;
-            }
+            const selectedJenis = new URLSearchParams(window.location.search).get('jenis');
+            const selectedVersion = 1;
 
             const params = selectedCategories.map((id) => `category[]=${encodeURIComponent(id)}`).join('&');
-            const url = `catalog/pdf?${params}`;
+            const jenisParams = selectedJenis ? `&jenis_id=${encodeURIComponent(selectedJenis)}` : '';
+            const versionParams = selectedVersion ? `&version_id=${encodeURIComponent(selectedVersion)}` : '';
+            const url = `catalog/pdf?${params}${jenisParams}${versionParams}`;
             handleDownload(this, url);
         });
 }

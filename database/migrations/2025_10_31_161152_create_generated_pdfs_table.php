@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('path')->nullable();
             $table->unsignedBigInteger('version_id');
+            $table->unsignedBigInteger('jenis_id');
             $table->timestamps();
         });
     }
