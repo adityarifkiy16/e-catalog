@@ -157,6 +157,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+                        <div class="modal-body" id="pdf-catalog"></div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" data-dismiss="modal"
                                 id="btn-download">Download PDF</button>
