@@ -140,7 +140,7 @@ Route::middleware("auth")->group(function () {
     });
 
     // 6. PDF Management
-    Route::resource("pdf", App\Http\Controllers\PdfController::class);
+    Route::resource("pdf", App\Http\Controllers\PDFController::class);
 
     // 7. Version Management
     Route::resource("version", App\Http\Controllers\MVersionController::class);
