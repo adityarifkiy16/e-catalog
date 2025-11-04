@@ -4,6 +4,7 @@ import { initScrollTopButton } from './modules/scroll';
 import { resetState, setCatalogConfig, loadMoreData, setFirstLoad, getIsLoading } from './modules/catalogLoader';
 import { bindFilterButton } from './modules/filter';
 import { renderVariantsToModal } from './modules/renderVariant';
+import { bindFilterVersion } from './modules/bindFilterVersion';
 
 // ===== Responsive Handling =====
 export function toggleCategoryLayout({ selectedJenis = null, hasCategory = false, isRenderTypes = false }) {
@@ -61,13 +62,14 @@ export function toggleCategoryLayout({ selectedJenis = null, hasCategory = false
 $(document).ready(function () {
     const urlParams = new URLSearchParams(window.location.search);
     const selectedJenis = urlParams.get('jenis');
+    const selectedVersion = urlParams.get('version');
     const category = urlParams.get('category');
 
     let delayTimer;
     let scrollTimer;
     let scrollLock = false;
 
-    setCatalogConfig({ selectedJenis, category });
+    setCatalogConfig({ selectedJenis, category, selectedVersion });
     loadMoreData();
 
     // panggil pertama kali + on resize
@@ -194,6 +196,7 @@ $(document).ready(function () {
                     images = JSON.parse(imagesStr.replace(/&quot;/g, '"'));
                 } catch (e) {
                     images = [];
+                    console.error(e);
                 }
             }
 
@@ -277,7 +280,7 @@ $(document).ready(function () {
 
             $('#modalName').text(name);
             $('#productModalLabel').text(name);
-            $('#modalDownload').data('id', productId);
+            // $('#modalDownload').data('id', productId);
             $('#productModal').modal('show');
             $('#modalContact').data({ jenis, category, code, length, width, height, density, type });
 
@@ -305,6 +308,7 @@ $(document).ready(function () {
     bindDownloadButtons();
     bindOrderButton();
     initScrollTopButton();
+    bindFilterVersion();
 
     // ===== View Product Tracker =====
     function viewProduct(productId) {

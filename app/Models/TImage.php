@@ -14,13 +14,8 @@ class TImage extends Model
     protected $table = 't_images';
     protected $guarded = ['id'];
 
-    public function product()
+    public function productVersion()
     {
-        return $this->belongsTo(TProduct::class, 'product_id', 'id');
-    }
-
-    public function categories()
-    {
-        return $this->belongsTo(MCategories::class, 'category_id', 'id');
+        return $this->belongsTo(ProductVersion::class, 'product_version_id', 'id');
     }
 }

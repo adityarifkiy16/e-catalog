@@ -7,6 +7,7 @@ use App\Models\MJenis;
 use App\Models\MSetting;
 use App\Models\TProduct;
 use App\Models\MCategories;
+use App\Models\MVersion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -43,8 +44,19 @@ class CatalogController extends Controller
         $search = $request->query('search');
         $jenisId = $request->query('jenis');
         $typeId = $request->query('type');
+        $versionId = $request->query('version');
 
-        $query = TProduct::with(['category', 'category.jenis', 'images', "category.images", 'category.types.images', 'packages', 'specifications.specification_values']);
+        $query = TProduct::with(['category', 'category.jenis', "category.images", 'category.types.images', 'packages', 'specifications.specification_values', 'productVersions.images']);
+
+        if ($versionId) {
+            $query->whereHas('productVersions', function ($q) use ($versionId) {
+                if (is_array($versionId)) {
+                    $q->whereIn('version_id', $versionId);
+                } else {
+                    $q->where('version_id', $versionId);
+                }
+            });
+        }
 
         // Filter kategori
         if ($categoryId) {
@@ -135,7 +147,8 @@ class CatalogController extends Controller
             'data' => $query->get(),
             'jenis' => MJenis::with('categories.products.images')->get(),
             'categories' => MCategories::all(),
-            'types' => \App\Models\MType::with('jenis')->get()
+            'types' => \App\Models\MType::with('jenis')->get(),
+            'versions' => MVersion::orderBy('id', 'desc')->get(),
         ]);
     }
 }

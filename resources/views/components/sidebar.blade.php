@@ -43,6 +43,18 @@
                     ['route' => 'products.index', 'label' => 'Produk', 'icon' => 'far fa-circle'],
                 ],
             ])
+            <li class="nav-header">
+                Produk Katalog
+            </li>
+            @include('partials.sidebar._nav_tree', [
+                'title' => 'Manajemen Katalog',
+                'icon' => 'fas fa-box',
+                'items' => [
+                    ['route' => 'version.index', 'label' => 'Master Versi', 'icon' => 'far fa-circle'],
+                    ['route' => 'product-versions.index', 'label' => 'Produk Versi', 'icon' => 'far fa-circle'],
+                    ['route' => 'pdf.index', 'label' => 'Manajemen PDF', 'icon' => 'far fa-circle'],
+                ],
+            ])
         @endif
 
         @if (auth()->check() && auth()->user()->hasPermission('view_reports'))
@@ -74,18 +86,8 @@
             @include('partials.sidebar._nav_item', [
                 'route' => 'settings.index',
                 'icon' => 'fas fa-cog',
-                'label' => 'Pengaturan',
+                'label' => 'Pengaturan Website',
             ])
         @endif
-        @include('partials.sidebar._nav_item', [
-            'route' => 'pdf.index',
-            'icon' => 'fas fa-cog',
-            'label' => 'Manajemen PDF',
-        ])
-        @include('partials.sidebar._nav_item', [
-            'route' => 'version.index',
-            'icon' => 'fas fa-cog',
-            'label' => 'Manajemen Versi Katalog',
-        ])
     </ul>
 </nav>

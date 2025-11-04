@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductVersionController;
 
 
 Route::get("/catalog", [App\Http\Controllers\CatalogController::class, "catalog"])->name("catalog");
@@ -8,8 +9,8 @@ Route::get("/", [App\Http\Controllers\CatalogController::class, "index"])->name(
 
 // DOWNLOAD PDF
 // Generate File PDF Catalog - tidak sering dijalankan
+// Route::get("/catalog/pdf/product", [App\Http\Controllers\TProductController::class, "downloadPdfProduct"])->name("catalog.pdf.product");
 Route::get("/catalog/pdf", [App\Http\Controllers\PDFController::class, "downloadPdf"])->name("catalog.download");
-Route::get("/catalog/pdf/product", [App\Http\Controllers\TProductController::class, "downloadPdfProduct"])->name("catalog.pdf.product");
 Route::post("/products/{product}/viewed", [App\Http\Controllers\TProductController::class, "show"])->name("products.viewed.stored");
 
 
@@ -81,10 +82,28 @@ Route::middleware("auth")->group(function () {
         Route::delete("/products/{product}", [App\Http\Controllers\TProductController::class, "destroy"])->name("products.destroy");
         Route::get("/products/search", [App\Http\Controllers\TProductController::class, "search"])->name("products.search");
         Route::get("/products/delete-by-category", [App\Http\Controllers\TProductController::class, "destroyByCategory"])->name("products.destroy-by-category");
-        Route::get("/products/bulk-upload/create", [App\Http\Controllers\TProductController::class, "bulkUpload"])->name("products.bulk.create");
-        Route::post("/products/bulk-upload", [App\Http\Controllers\TProductController::class, "storeBulkUpload"])->name("products.bulk.store");
-        Route::delete("/products/reset-mockup/{product}", [App\Http\Controllers\TProductController::class, "resetMockup"])->name("products.reset-mockup");
-        Route::delete("/products/reset-motif/{product}", [App\Http\Controllers\TProductController::class, "resetMotif"])->name("products.reset-motif");
+
+
+        // ProductVersion management routes
+        Route::prefix('product-versions')->name('product-versions.')->group(function () {
+            Route::controller(ProductVersionController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/create', 'create')->name('create');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{productVersion}/edit', 'edit')->name('edit');
+                Route::put('/{productVersion}', 'update')->name('update');
+                Route::delete('/{productVersion}', 'destroy')->name('destroy');
+
+                // Custom actions
+                Route::delete('/reset-mockup/{productVersion}', 'resetMockup')->name('reset-mockup');
+                Route::delete('/reset-motif/{productVersion}', 'resetMotif')->name('reset-motif');
+                Route::get('/bulk-upload/create', 'bulkCreate')->name('create.bulk');
+                Route::post('/bulk-upload', 'storeBulkCreate')->name('store.bulk');
+                Route::get('/bulk-mockup/create', 'bulkCreateMotif')->name('bulk.create-motif');
+                Route::post('/bulk-mockup', 'storeBulkCreateMotif')->name('bulk.store-motif');
+            });
+        });
+
 
         // Type Management routes
         Route::get("/type", [App\Http\Controllers\MTypeController::class, "index"])->name("type.index");

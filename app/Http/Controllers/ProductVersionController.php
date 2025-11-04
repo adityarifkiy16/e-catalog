@@ -57,7 +57,9 @@ class ProductVersionController extends Controller
 
 
             if ($request->has('version')) {
-                $query = $query->where('version_id', $request->version);
+                $query = $query->whereHas('version', function ($q) use ($request) {
+                    $q->where('id', $request->version);
+                });
             }
 
             return DataTables::of($query)
@@ -175,6 +177,20 @@ class ProductVersionController extends Controller
                 'version_id' => $request->version_id
             ];
 
+            $existData = ProductVersion::where('product_id', $productVersion->product_id)
+                ->where('version_id', $request->version_id)
+                ->where('id', '!=', $productVersion->id)
+                ->first();
+
+            if ($existData) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Version already exists for this product.'
+                ]);
+            }
+
+            $productVersion->update($data);
+
             // Gambar
             if ($request->hasFile('image-mockup')) {
                 // 1. Hapus semua gambar sebelumnya dari relasi dan storage
@@ -235,8 +251,6 @@ class ProductVersionController extends Controller
                     'path' => $path,
                 ]);
             }
-
-            $productVersion->update($data);
 
             DB::commit();
 
@@ -405,5 +419,63 @@ class ProductVersionController extends Controller
                 'message' => 'Terjadi kesalahan saat mengupload mockup.'
             ], 500);
         }
+    }
+
+    public function create()
+    {
+        $arr['product'] = TProduct::with('category')->get();
+        $arr['versions'] = MVersion::all();
+        return view('productVersion.create', $arr);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|array',
+            'product_id.*' => 'exists:t_products,id',
+            'version_id' => 'required|exists:m_versions,id',
+        ]);
+
+        $version = MVersion::findOrFail($request->version_id);
+        $addedProducts = [];
+        $skippedProducts = [];
+
+        foreach ($request->product_id as $productId) {
+            $product = TProduct::find($productId);
+
+            // 1. Cek apakah kombinasi product_id + version_id sudah ada
+            $exists = ProductVersion::where('product_id', $productId)
+                ->where('version_id', $version->id)
+                ->exists();
+
+            if ($exists) {
+                $skippedProducts[] = $product->name ?? $product->code;
+                continue;
+            }
+
+            ProductVersion::create([
+                'name' => $product->name ?? $product->code,
+                'product_id' => $product->id,
+                'version_id' => $version->id,
+            ]);
+
+            $addedProducts[] = $product->name ?? $product->code;
+        }
+
+        // 2. Siapkan pesan yang lebih informatif
+        $message = 'Versi ' . $version->version . ' berhasil diperbarui.';
+
+        if (count($addedProducts)) {
+            $message .= ' Produk ditambahkan: ' . implode(', ', $addedProducts) . '.';
+        }
+
+        if (count($skippedProducts)) {
+            $message .= ' (Lewati duplikat: ' . implode(', ', $skippedProducts) . ')';
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => $message,
+        ]);
     }
 }

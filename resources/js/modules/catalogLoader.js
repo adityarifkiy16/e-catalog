@@ -4,6 +4,8 @@ import { renderMockup } from './renderMockup';
 import { showLoading, hideLoading, setCategory } from './utils';
 import { toggleCategoryLayout } from '../catalog';
 
+export { state };
+
 // ===== Global State =====
 let state = {
     selectedJenis: null,
@@ -14,7 +16,8 @@ let state = {
     lastPage: false,
     firstLoad: true,
     currentRequest: null,
-    uniquePaths: new Set()
+    uniquePaths: new Set(),
+    version: null
 };
 
 // ===== State Helpers =====
@@ -28,6 +31,7 @@ export function setCatalogConfig(config) {
     state.selectedJenis = config.selectedJenis;
     state.category = config.category ?? null;
     state.type = config.type ?? null;
+    state.version = config.version ?? null;
 }
 export function setIsLoading(value) {
     state.isLoading = value;
@@ -63,7 +67,8 @@ export function loadMoreData() {
         search,
         jenis: state.selectedJenis,
         category: state.category,
-        type: state.type
+        type: state.type,
+        version: state.version
     };
 
     // kirim AJAX request
@@ -100,6 +105,18 @@ function handleResponse(response) {
     if (state.type) {
         $('#backButton').removeClass('d-none');
         $('#homeButton').addClass('d-none');
+    }
+
+    if (state.version != null) {
+        // Kalau versi sebelumnya sudah tersimpan di state
+        $('#version-select').val(state.version).trigger('change');
+    } else {
+        // Kalau belum ada versi yang dipilih, otomatis pilih yang pertama
+        const firstVersion = $('#version-select option:first').val();
+        if (firstVersion) {
+            state.version = firstVersion;
+            $('#version-select').val(firstVersion).trigger('change');
+        }
     }
 
     // 1. Render thumbnail type untuk jenis wallpanel (3) saat pertama kali load

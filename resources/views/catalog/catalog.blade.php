@@ -83,6 +83,21 @@
                                             <i class="fa fa-arrow-down mr-1"></i> Catalog PDF
                                         </a>
                                     </div>
+
+                                    <!-- filter versi -->
+                                    <div class="mb-2 mb-md-0 text-center text-md-right mr-2 order-3">
+                                        <select id="version-select"
+                                            class="form-control bg-dark text-white border-secondary">
+                                            @forelse ($versions as $v)
+                                                <option value="{{ $v->id }}"
+                                                    {{ request('version_id') == $v->id ? 'selected' : '' }}>
+                                                    {{ $v->version }}
+                                                </option>
+                                            @empty
+                                                <option value="" disabled>Tidak ada versi</option>
+                                            @endforelse
+                                        </select>
+                                    </div>
                                 </div>
 
                             </div>
@@ -132,7 +147,8 @@
 
             </div>
 
-            <div class="modal fade" id="pdfcatalog" tabindex="-1" aria-labelledby="pdfcatalogLabel" aria-hidden="true">
+            <div class="modal fade" id="pdfcatalog" tabindex="-1" aria-labelledby="pdfcatalogLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable">
                     <div class="modal-content bg-black text-white">
                         <div class="modal-header">
@@ -141,7 +157,6 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body" id="pdf-catalog"></div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" data-dismiss="modal"
                                 id="btn-download">Download PDF</button>
@@ -262,10 +277,10 @@
                         <div
                             class="modal-footer d-flex justify-content-center align-items-center justify-content-md-end align-items-md-center">
                             <div class="mt-2 d-flex flex-wrap">
-                                <a class="btn btn-md modalDownload text-white" style="background: #000"
+                                {{-- <a class="btn btn-md modalDownload text-white" style="background: #000"
                                     id="modalDownload" href="#">
                                     <i class="fas fa-arrow-down mr-2"></i>Download
-                                </a>
+                                </a> --}}
                             </div>
 
                             <div class="mt-2 d-flex flex-wrap ml-2">

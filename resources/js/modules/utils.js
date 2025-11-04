@@ -16,9 +16,19 @@ export function hideLoading() {
     $('#loading').addClass('d-none');
 }
 
-export function prepareImageOrder(images) {
+export function prepareImageOrder(images = []) {
+    if (!Array.isArray(images)) return [];
+
+    // Urutan prioritas tipe gambar
+    const typePriority = {
+        thumbnail: 3,
+        motif: 2,
+        product: 1
+    };
+
+    // Urutkan berdasarkan prioritas di atas (thumbnail > motif > product > lainnya)
     return images
         .slice()
-        .sort((a, b) => (b.type === 'motif') - (a.type === 'motif'))
+        .sort((a, b) => (typePriority[b.type] || 0) - (typePriority[a.type] || 0))
         .map((image) => '/storage/' + image.path);
 }

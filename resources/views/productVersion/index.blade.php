@@ -56,6 +56,9 @@
                                 <a href="{{ route('product-versions.bulk.create-motif') }}" class="btn btn-primary ml-2">
                                     <i class="fa fa-plus"></i> mockup/motif
                                 </a>
+                                <a href="{{ route('product-versions.create') }}" class="btn btn-primary ml-2">
+                                    <i class="fa fa-plus"></i> Sync Produk-Versi
+                                </a>
                             @endif
                         </div>
                     </div>
@@ -270,8 +273,12 @@
                     data: function(d) {
                         let urlParams = new URLSearchParams(window.location.search);
                         let filter = urlParams.get('filter');
+                        let version = urlParams.get('version');
                         if (filter) {
                             d.filter = filter;
+                        }
+                        if (version) {
+                            d.version = version;
                         }
                     },
                     dataSrc: function(response) {
