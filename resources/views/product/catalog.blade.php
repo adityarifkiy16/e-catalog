@@ -24,12 +24,17 @@
         <tr>
             @foreach ($products as $i => $product)
                 <td width="25%" align="center" valign="top">
-                    <img src="{{ $product->converted_photo }}" style="max-width: 200px; heigh: auto;">
-                    <br>
+                    @foreach ($product->images as $image)
+                        @if ($image->type == 'thumbnail')
+                            <img src="{{ $image->converted_photo }}"
+                                style="max-width: 200px; height: auto; margin-bottom: 10px;">
+                        @endif
+                    @endforeach
                     <br>
                     <strong class="uppercase">{{ $categoryName }}</strong>
-                    <p>{{ $product->code }}</p>
+                    <p>{{ $product->product->code ?? '' }}</p>
                 </td>
+
                 @if (($i + 1) % 4 == 0)
         </tr>
         <tr>

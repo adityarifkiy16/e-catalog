@@ -8,6 +8,7 @@ use App\Models\MVersion;
 use App\Models\TProduct;
 use App\Models\GeneratePdf;
 use App\Models\MCategories;
+use App\Models\ProductVersion;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -57,52 +58,52 @@ class PDFController extends Controller
         $version = MVersion::find($request->version_id);
         $filename = 'Osborn-' . $version->version . '.pdf';
 
-        $products = DB::table('t_products as p')
-            ->leftJoin('m_categories as c', 'c.id', '=', 'p.category_id')
-            ->leftJoin('m_jenis as j', 'j.id', '=', 'c.jenis_id')
-            ->select(
-                'p.id',
-                'p.code',
-                'p.photo',
-                'p.category_id',
-                'c.name as category_name',
-                'j.name as jenis_name'
-            )
-            ->where('c.jenis_id', $request->jenis_id)
-            ->where('p.deleted_at', null)
-            ->orderBy('p.code', 'asc')
+        $pvs = ProductVersion::with(['images', 'product.category'])
+            ->where('version_id', $version->id)
+            ->whereHas('product.category', function ($query) use ($request) {
+                $query->where('jenis_id', $request->jenis_id);
+            })
+            ->join('t_products', 't_products.id', '=', 't_product_m_versions.product_id')
+            ->orderBy('t_products.code', 'asc')
+            ->select('t_product_m_versions.*') // penting: supaya tidak bentrok kolom
             ->get();
 
         // Konversi gambar webp ke jpg
         $convertedImgs = [];
-        foreach ($products as $product) {
-            $photopath = storage_path('app/public/' . $product->photo);
-            if (file_exists($photopath) && Str::endsWith($product->photo, '.webp')) {
-                $jpgName = Str::replaceLast('.webp', '.jpg', $product->photo);
-                $jpgPath = storage_path('app/public/temp_images/' . $jpgName);
-                $directory = dirname($jpgPath);
-                if (!file_exists($directory)) {
-                    mkdir($directory, 0755, true);
-                }
 
-                if (!file_exists($jpgPath)) {
-                    Image::make($photopath)
-                        ->resize(200, null, function ($constraint) {
-                            $constraint->aspectRatio();
-                            $constraint->upsize();
-                        })
-                        ->encode('jpg', 50)
-                        ->save($jpgPath);
-                }
+        foreach ($pvs as $pv) {
+            foreach ($pv->images as $i) {
+                $photopath = storage_path('app/public/' . $i->path);
+                if (file_exists($photopath) && Str::endsWith($i->path, '.webp')) {
+                    $jpgName = Str::replaceLast('.webp', '.jpg', $i->path);
+                    $jpgPath = storage_path('app/public/temp_images/' . $jpgName);
+                    $directory = dirname($jpgPath);
+                    if (!file_exists($directory)) {
+                        mkdir($directory, 0755, true);
+                    }
 
-                $product->converted_photo = $jpgPath;
-                $convertedImgs[] = $jpgPath;
-            } else {
-                $product->converted_photo = $photopath;
+                    if (!file_exists($jpgPath)) {
+                        Image::make($photopath)
+                            ->resize(200, null, function ($constraint) {
+                                $constraint->aspectRatio();
+                                $constraint->upsize();
+                            })
+                            ->encode('jpg', 50)
+                            ->save($jpgPath);
+                    }
+
+                    $i->converted_photo = $jpgPath;
+                    $convertedImgs[] = $jpgPath;
+                } else {
+                    $i->converted_photo = $photopath;
+                }
             }
         }
 
-        $grouped = collect($products)->groupBy('category_name');
+        $grouped = $pvs->groupBy(function ($pv) {
+            return $pv->product->category->name ?? 'Tanpa Kategori';
+        });
+
         $exists = DB::table('generated_pdfs')
             ->where('version_id', $version->id)
             ->where('jenis_id', $request->jenis_id)
@@ -124,12 +125,12 @@ class PDFController extends Controller
         $mpdf->SetAuthor(config('app.name'));
 
         // 🔹 Loop tiap kategori
-        foreach ($grouped as $cat => $list) {
+        foreach ($grouped as $cat => $p) {
             // Bookmark sisi kiri PDF
             $mpdf->Bookmark($cat, 0);
             $html = view('product.catalog', [
                 'categoryName' => $cat,
-                'products' => $list,
+                'products' => $p,
                 'version' => $version,
             ])->render();
 
@@ -138,7 +139,7 @@ class PDFController extends Controller
             if ($cat !== $grouped->keys()->last()) {
                 $mpdf->AddPage();
             }
-            $filename = 'Osborn-' . $list->first()->jenis_name . '-' . $cat . '-v' . $version->version . '.pdf';
+            $filename = 'Osborn-' . $p[0]->product->category->jenis->name . '-v' . $version->version . '.pdf';
         }
 
         // 🔹 Hapus file sementara
@@ -209,60 +210,52 @@ class PDFController extends Controller
                 ]);
             }
 
-            $products = DB::table('t_products as p')
-                ->leftJoin('m_categories as c', 'c.id', '=', 'p.category_id')
-                ->leftJoin('m_jenis as j', 'j.id', '=', 'c.jenis_id')
-                ->leftJoin('t_product_m_versions as pmv', function ($join) use ($request) {
-                    $join->on('pmv.product_id', '=', 'p.id')
-                        ->where('pmv.version_id', '=', $request->version_id); // ✅ filter versi
+            $pvs = ProductVersion::with(['images', 'product.category'])
+                ->where('version_id', $version->id)
+                ->whereHas('product', function ($query) use ($request) {
+                    $query->whereIn('category_id', $request->category);
                 })
-                ->leftJoin('t_images as i', function ($join) {
-                    $join->on('i.product_version_id', '=', 'pmv.id')
-                        ->where('i.type', '=', 'thumbnail'); // ✅ hanya thumbnail
-                })
-                ->select(
-                    'p.id',
-                    'p.code',
-                    'p.category_id',
-                    'c.name as category_name',
-                    'j.name as jenis_name',
-                    'i.path as image'
-                )
-                ->whereIn('p.category_id', $request->category)
-                ->orderBy('p.code', 'asc')
+                ->join('t_products', 't_products.id', '=', 't_product_m_versions.product_id')
+                ->orderBy('t_products.code', 'asc')
+                ->select('t_product_m_versions.*') // penting: supaya tidak bentrok kolom
                 ->get();
 
 
             // Konversi gambar webp ke jpg
             $convertedImgs = [];
-            foreach ($products as $product) {
-                $photopath = storage_path('app/public/' . $product->image);
-                if (file_exists($photopath) && Str::endsWith($product->image, '.webp')) {
-                    $jpgName = Str::replaceLast('.webp', '.jpg', $product->image);
-                    $jpgPath = storage_path('app/public/temp_images/' . $jpgName);
-                    $directory = dirname($jpgPath);
-                    if (!file_exists($directory)) {
-                        mkdir($directory, 0755, true);
-                    }
 
-                    if (!file_exists($jpgPath)) {
-                        Image::make($photopath)
-                            ->resize(200, null, function ($constraint) {
-                                $constraint->aspectRatio();
-                                $constraint->upsize();
-                            })
-                            ->encode('jpg', 50)
-                            ->save($jpgPath);
-                    }
+            foreach ($pvs as $pv) {
+                foreach ($pv->images as $i) {
+                    $photopath = storage_path('app/public/' . $i->path);
+                    if (file_exists($photopath) && Str::endsWith($i->path, '.webp')) {
+                        $jpgName = Str::replaceLast('.webp', '.jpg', $i->path);
+                        $jpgPath = storage_path('app/public/temp_images/' . $jpgName);
+                        $directory = dirname($jpgPath);
+                        if (!file_exists($directory)) {
+                            mkdir($directory, 0755, true);
+                        }
 
-                    $product->converted_photo = $jpgPath;
-                    $convertedImgs[] = $jpgPath;
-                } else {
-                    $product->converted_photo = $photopath;
+                        if (!file_exists($jpgPath)) {
+                            Image::make($photopath)
+                                ->resize(200, null, function ($constraint) {
+                                    $constraint->aspectRatio();
+                                    $constraint->upsize();
+                                })
+                                ->encode('jpg', 50)
+                                ->save($jpgPath);
+                        }
+
+                        $i->converted_photo = $jpgPath;
+                        $convertedImgs[] = $jpgPath;
+                    } else {
+                        $i->converted_photo = $photopath;
+                    }
                 }
             }
 
-            $grouped = collect($products)->groupBy('category_name');
+            $grouped = $pvs->groupBy(function ($pv) {
+                return $pv->product->category->name ?? 'Tanpa Kategori';
+            });
 
             // 🔹 Inisialisasi mPDF
             $mpdf = new Mpdf([
@@ -277,11 +270,11 @@ class PDFController extends Controller
             $mpdf->SetAuthor(config('app.name'));
 
             // 🔹 Loop tiap kategori
-            foreach ($grouped as $cat => $list) {
+            foreach ($grouped as $cat => $p) {
                 $mpdf->Bookmark($cat, 0);
                 $html = view('product.catalog', [
                     'categoryName' => $cat,
-                    'products' => $list,
+                    'products' => $p,
                     'version' => $version,
                 ])->render();
 
@@ -290,7 +283,7 @@ class PDFController extends Controller
                 if ($cat !== $grouped->keys()->last()) {
                     $mpdf->AddPage();
                 }
-                $filename = 'Osborn-' . $list->first()->jenis_name . '-' . $cat . '-v' . $version->name . '.pdf';
+                $filename = 'Osborn-' . $p[0]->product->category->first()->jenis_name . '-' . $cat . '-v' . $version->name . '.pdf';
             }
 
             // 🔹 Hapus file sementara
