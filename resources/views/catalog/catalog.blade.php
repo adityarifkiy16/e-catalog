@@ -77,7 +77,7 @@
                                     </div>
 
                                     <!-- Tombol Download -->
-                                    <div class="mb-2 mb-md-0  text-center text-md-right mr-2 order-2">
+                                    <div class="mb-2 mb-md-0 text-center text-md-right mr-2 order-2">
                                         <a href="#" class="btn btn-light w-100 w-md-auto" data-target="#pdfcatalog"
                                             data-toggle="modal">
                                             <i class="fa fa-arrow-down mr-1"></i> Catalog PDF
@@ -87,7 +87,7 @@
                                     <!-- filter versi -->
                                     <div class="mb-2 mb-md-0 text-center text-md-right mr-2 order-3" id="version-filter">
                                         <select id="version-select"
-                                            class="form-control bg-dark text-white border-secondary">
+                                            class="form-control bg-danger text-white border-secondary">
                                             @forelse ($versions as $v)
                                                 <option value="{{ $v->id }}"
                                                     {{ request('version_id') == $v->id ? 'selected' : '' }}>
@@ -350,6 +350,17 @@
 
 @push('scripts')
     <script type="text/javascript">
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
         $(document).ready(function() {
             // Scroll to top button
             if ($(window).width() < 768) {
@@ -361,4 +372,22 @@
             });
         });
     </script>
+
+    @if (session('success'))
+        <script>
+            Toast.fire({
+                icon: 'success',
+                title: '{{ session('success') }}'
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            Toast.fire({
+                icon: 'error',
+                title: '{{ session('error') }}'
+            });
+        </script>
+    @endif
 @endpush

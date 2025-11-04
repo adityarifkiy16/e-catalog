@@ -193,17 +193,11 @@ class PDFController extends Controller
                 ->first();
 
             if ($exists && file_exists(storage_path('app/public/' . $exists->path))) {
-                return response()->json([
-                    'status' => 'success',
-                    'url' => asset('storage/' . $exists->path)
-                ]);
+                return response()->file(storage_path('app/public/' . $exists->path));
             }
 
             // Kalau belum ada file full version-nya
-            return response()->json([
-                'status' => 'error',
-                'message' => 'File PDF untuk semua kategori belum tersedia. Silakan generate terlebih dahulu.'
-            ]);
+            return redirect()->back()->with('error', 'PDF not found.');
         }
 
         if ($request->filled('category')) {

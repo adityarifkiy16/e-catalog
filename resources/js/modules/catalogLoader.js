@@ -226,6 +226,16 @@ function renderDownloadCheckbox(categories) {
             </div>`;
     }
 
+    const all = `
+        <div class="col-12 mb-2">
+            <div class="text-white rounded py-2 px-3">
+                <input type="checkbox" class="custom-control-input category-filter-download" id="all-cat" value="">
+                <label class="custom-control-label" for="all-cat">
+                    Semua Kategori
+                </label>
+            </div>
+        </div>`;
+
     // Checkbox per kategori
     const items = categories
         .map(
@@ -242,7 +252,7 @@ function renderDownloadCheckbox(categories) {
         )
         .join('');
 
-    return `<div class="row font-poppins">${items}</div>`;
+    return `<div class="row font-poppins">${all}${items}</div>`;
 }
 
 function renderCategory(categories) {
