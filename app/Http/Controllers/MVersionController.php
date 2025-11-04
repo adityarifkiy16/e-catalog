@@ -107,6 +107,8 @@ class MVersionController extends Controller
                 }
             }
 
+            DB::commit();
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Version created successfully.'
