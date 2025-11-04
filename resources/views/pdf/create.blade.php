@@ -37,7 +37,7 @@
                             <option value="">Pilih Versi</option>
                             @foreach ($version as $item)
                                 <option value="{{ $item->id }}" {{ old('jenis_id') == $item->id ? 'selected' : '' }}>
-                                    {{ $item->name }}
+                                    {{ $item->version }}
                                 </option>
                             @endforeach
                         </select>

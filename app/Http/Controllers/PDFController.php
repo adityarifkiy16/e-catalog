@@ -6,6 +6,7 @@ use Mpdf\Mpdf;
 use App\Models\MJenis;
 use App\Models\MVersion;
 use App\Models\TProduct;
+use App\Models\GeneratePdf;
 use App\Models\MCategories;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -26,11 +27,6 @@ class PDFController extends Controller
 
 
         if ($request->ajax()) {
-            if ($request->has('search') && $request->search['value']) {
-                $search = $request->search['value'];
-                $query->where('path', 'LIKE', "%{$search}%");
-            }
-
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('version', function ($item) {
@@ -72,7 +68,8 @@ class PDFController extends Controller
                 'c.name as category_name',
                 'j.name as jenis_name'
             )
-            ->whereIn('c.jenis_id', $request->jenis_id)
+            ->where('c.jenis_id', $request->jenis_id)
+            ->where('p.deleted_at', null)
             ->orderBy('p.code', 'asc')
             ->get();
 
@@ -106,8 +103,14 @@ class PDFController extends Controller
         }
 
         $grouped = collect($products)->groupBy('category_name');
+        $exists = DB::table('generated_pdfs')
+            ->where('version_id', $version->id)
+            ->where('jenis_id', $request->jenis_id)
+            ->first();
 
-
+        if ($exists && file_exists(storage_path('app/public/' . $exists->path))) {
+            unlink(storage_path('app/public/' . $exists->path));
+        }
         // 🔹 Inisialisasi mPDF
         $mpdf = new Mpdf([
             'format' => 'A4-L',
@@ -135,7 +138,7 @@ class PDFController extends Controller
             if ($cat !== $grouped->keys()->last()) {
                 $mpdf->AddPage();
             }
-            $filename = 'Osborn-' . $list->first()->jenis_name . '-' . $cat . '-v' . $version->name . '.pdf';
+            $filename = 'Osborn-' . $list->first()->jenis_name . '-' . $cat . '-v' . $version->version . '.pdf';
         }
 
         // 🔹 Hapus file sementara
@@ -145,30 +148,37 @@ class PDFController extends Controller
             }
         }
 
-
-        $filePath = storage_path('app/public/pdf_catalogs/' . $filename);
+        $relativePath = 'pdf_catalogs/' . $filename;
+        $filePath = storage_path('app/public/' . $relativePath);
         if (!file_exists(dirname($filePath))) {
             mkdir(dirname($filePath), 0755, true);
         }
 
+
+
+        // 🔹 Output PDF
+        $mpdf->Output($filePath, 'F');
+
         // Simpan path ke database
         DB::table('generated_pdfs')->insert([
-            'path' => $filePath,
+            'path' => $relativePath,
             'version_id' => $version->id,
             'jenis_id' => $request->jenis_id
         ]);
 
-        // 🔹 Output PDF
-        return response($mpdf->Output('OsbornCatalog.pdf', 'F'))
-            ->header('Content-Type', 'application/pdf');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'PDF generated successfully.',
+        ]);
     }
 
 
+    // Donwload PDF by Categories
     public function downloadPdf(Request $request)
     {
         // dd($request->all());
         $request->validate([
-            'version_id' => 'required|exists:m_versions,id',
+            'version_id' => 'nullable|exists:m_versions,id',
             'jenis_id' => 'required|exists:m_jenis,id',
             'category' => 'nullable|array',
             'category.*' => 'exists:m_categories,id'
@@ -183,13 +193,17 @@ class PDFController extends Controller
                 ->first();
 
             if ($exists && file_exists(storage_path('app/public/' . $exists->path))) {
-                return response()->download(storage_path('app/public/' . $exists->path));
+                return response()->json([
+                    'status' => 'success',
+                    'url' => asset('storage/' . $exists->path)
+                ]);
             }
 
             // Kalau belum ada file full version-nya
             return response()->json([
+                'status' => 'error',
                 'message' => 'File PDF untuk semua kategori belum tersedia. Silakan generate terlebih dahulu.'
-            ], 404);
+            ]);
         }
 
         if ($request->filled('category')) {
@@ -204,24 +218,33 @@ class PDFController extends Controller
             $products = DB::table('t_products as p')
                 ->leftJoin('m_categories as c', 'c.id', '=', 'p.category_id')
                 ->leftJoin('m_jenis as j', 'j.id', '=', 'c.jenis_id')
+                ->leftJoin('t_product_m_versions as pmv', function ($join) use ($request) {
+                    $join->on('pmv.product_id', '=', 'p.id')
+                        ->where('pmv.version_id', '=', $request->version_id); // ✅ filter versi
+                })
+                ->leftJoin('t_images as i', function ($join) {
+                    $join->on('i.product_version_id', '=', 'pmv.id')
+                        ->where('i.type', '=', 'thumbnail'); // ✅ hanya thumbnail
+                })
                 ->select(
                     'p.id',
                     'p.code',
-                    'p.photo',
                     'p.category_id',
                     'c.name as category_name',
-                    'j.name as jenis_name'
+                    'j.name as jenis_name',
+                    'i.path as image'
                 )
                 ->whereIn('p.category_id', $request->category)
                 ->orderBy('p.code', 'asc')
                 ->get();
 
+
             // Konversi gambar webp ke jpg
             $convertedImgs = [];
             foreach ($products as $product) {
-                $photopath = storage_path('app/public/' . $product->photo);
-                if (file_exists($photopath) && Str::endsWith($product->photo, '.webp')) {
-                    $jpgName = Str::replaceLast('.webp', '.jpg', $product->photo);
+                $photopath = storage_path('app/public/' . $product->image);
+                if (file_exists($photopath) && Str::endsWith($product->image, '.webp')) {
+                    $jpgName = Str::replaceLast('.webp', '.jpg', $product->image);
                     $jpgPath = storage_path('app/public/temp_images/' . $jpgName);
                     $directory = dirname($jpgPath);
                     if (!file_exists($directory)) {
@@ -283,14 +306,8 @@ class PDFController extends Controller
                 }
             }
 
-
-            $filePath = storage_path('app/public/pdf_catalogs/' . $filename);
-            if (!file_exists(dirname($filePath))) {
-                mkdir(dirname($filePath), 0755, true);
-            }
-
             // 🔹 Output PDF
-            return $mpdf->Output('OsbornCatalog.pdf', 'I');
+            return $mpdf->Output($filename, 'I');
         } else {
             return response()->json(['message' => 'Category is required'], 400);
         }
@@ -308,6 +325,11 @@ class PDFController extends Controller
         $arr['specifications'] = DB::table('t_product_m_specification as tps')
             ->join('m_specifications as ms', 'ms.id', '=', 'tps.specification_id')
             ->join('t_specification_values as tsv', 'tsv.id', '=', 'tps.specification_value_id')
+            ->leftJoin('t_product_m_versions as pmv', 'pmv.product_id', '=', 'p.id')
+            ->leftJoin('t_images as i', function ($join) {
+                $join->on('i.product_version_id', '=', 'pmv.id')
+                    ->where('i.type', '=', 'thumbnail'); // 🔍 hanya ambil image thumbnail
+            })
             ->select(
                 'ms.id as specification_id',
                 'ms.name as specification_name',
@@ -373,5 +395,14 @@ class PDFController extends Controller
         }
 
         return $pdf;
+    }
+
+    public function destroy(GeneratePdf $pdf)
+    {
+        if (file_exists(storage_path('app/public/' . $pdf->path))) {
+            unlink(storage_path('app/public/' . $pdf->path));
+        }
+        $pdf->delete();
+        return response()->json(['status' => 'success', 'message' => 'PDF deleted successfully'], 200);
     }
 }

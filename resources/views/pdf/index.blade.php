@@ -22,6 +22,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h3 class="h3 font-weight-bold">Daftar PDF Katalog</h3>
+                        <a href="{{ route('pdf.create') }}" class="btn btn-primary">Generate PDF</a>
                     </div>
                 </div>
             </div>
@@ -147,7 +148,15 @@
                     {
                         data: 'path',
                         orderable: false,
+                        render: function(data) {
+                            return `
+                                <a href="/storage/${data}" target="_blank" class="text-primary" title="Download PDF">
+                                    ${data.split('/').pop()}  <!-- tampilkan nama file saja -->
+                                </a>
+                            `;
+                        }
                     },
+
                     {
                         data: 'version',
                         orderable: false,
@@ -159,7 +168,6 @@
                         render: function(data) {
                             return `
                         <div class="d-flex flex-row justify-content-end align-items-end">
-                                <a href="/pdf/${data.id}/edit" title="Edit Produk"><button type="button" class="btn btn-primary mx-2"><i class="fas fa-pencil-alt"></i></button></a>
                                 <form action="/pdf/${data.id}" style="display: inline;" class="delete-product">
                                             <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
                                             <input type="hidden" name="_method" value="DELETE">
@@ -171,37 +179,6 @@
                         }
                     }
                 ],
-            });
-
-
-
-
-            $(document).on('click', '.img-thumbnail', function(e) {
-                e.preventDefault();
-
-                var imgsrc = $(this).attr('src');
-
-                $('#detailModal').modal('show');
-                $('#modal-body-content').html('<img src="' + imgsrc + '" class="img-fluid">');
-            });
-
-            $('#btn-filter-category').on('click', function() {
-                const selectedCategory = $('#category-filter').val();
-                const url = new URL(window.location.href);
-
-                // Update or remove 'category' parameter
-                if (selectedCategory) {
-                    url.searchParams.set('category', selectedCategory);
-                }
-
-                // Optional: Remove empty 'search' if exists
-                const search = url.searchParams.get('search');
-                if (!search || search.trim() === '') {
-                    url.searchParams.delete('search');
-                }
-
-                // Redirect to updated URL
-                window.location.href = url.toString();
             });
         });
     </script>
