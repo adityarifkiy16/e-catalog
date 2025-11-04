@@ -50,6 +50,12 @@
                                 </div>
                             </form>
                             @if ($isAuthenticated && $user->hasPermission('management_product'))
+                                <a href="{{ route('product-versions.create.bulk') }}" class="btn btn-success ml-2">
+                                    <i class="fa fa-plus"></i> upload bulk produk
+                                </a>
+                                <a href="{{ route('product-versions.bulk.create-motif') }}" class="btn btn-primary ml-2">
+                                    <i class="fa fa-plus"></i> mockup/motif
+                                </a>
                             @endif
                         </div>
                     </div>
