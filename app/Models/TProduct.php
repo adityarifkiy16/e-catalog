@@ -46,4 +46,9 @@ class TProduct extends Model
     {
         return $this->belongsToMany(TSpecificationValue::class, 't_product_m_specification', 'product_id', 'specification_value_id')->withPivot('specification_id');
     }
+
+    public function productVersions()
+    {
+        return $this->hasMany(ProductVersion::class, 'product_id', 'id');
+    }
 }

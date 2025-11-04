@@ -3,8 +3,8 @@
     <div class="card d-flex px-4 py-2" style="border-radius: 1rem;">
         <x-breadcrumb :items="[
             ['label' => 'Home', 'url' => route('dashboard')],
-            ['label' => 'product', 'url' => route('products.index')],
-            ['label' => 'Tambah'],
+            ['label' => 'Product', 'url' => route('products.index')],
+            ['label' => 'Edit'],
         ]">
         </x-breadcrumb>
     </div>
@@ -24,105 +24,64 @@
                         @csrf
                         @method('POST')
                         <div class="form-group">
-                            <label class="mt-3"><i class="fas fa-tags"></i> Jenis</label>
-                            <select class="custom-select" name="jenis" id="jenis">
+                            <label class="mt-3"><i class="fas fa-code"></i> Kode Barang</label>
+                            <input type="text" class="form-control" name="code" value="{{ old('code') }}"
+                                placeholder="Kode Produk">
+                            @error('code')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+
+                            <label class="mt-3"><i class="fas fa-code"></i> Nama</label>
+                            <input type="text" class="form-control" name="name" value="{{ old('name') }}"
+                                placeholder="Nama Produk">
+                            @error('name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+
+                            <label class="mt-3"><i class="fas fa-tags"></i> Tambah Spesifikasi</label>
+                            <div id="variant-wrapper" class="d-flex flex-column">
+                                <div class="input-group mb-2 variant-row">
+                                    <input type="text" name="specifications[0][name]" class="form-control"
+                                        placeholder="Nama Spesifikasi">
+                                    <input type="text" name="specifications[0][value]" class="form-control ml-2"
+                                        placeholder="Nilai Spesifikasi">
+                                    <input type="text" name="specifications[0][unit]" class="form-control ml-2"
+                                        placeholder="Satuan Spesifikasi">
+                                    <button type="button" class="btn btn-danger btn-remove ml-2">X</button>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-success btn-sm w-100" id="add-variant">
+                                <i class="fas fa-plus"></i> Tambah Spesifikasi
+                            </button>
+
+                            <label class="mt-3"><i class="fas fa-tag"></i> Jenis</label>
+                            <select class="form-control" name="jenis_id" id="jenis_id">
                                 <option value="">Pilih Jenis</option>
-                                @foreach ($jenis as $item)
+                                @foreach ($jenises as $item)
                                     <option value="{{ $item->id }}"
-                                        {{ old('jenis', request()->query('jenis')) == $item->id ? 'selected' : '' }}>
+                                        {{ old('jenis_id') == $item->id ? 'selected' : '' }}>
                                         {{ $item->name }}
                                     </option>
                                 @endforeach
                             </select>
 
-                            <label class="mt-3 type"><i class="fas fa-tags"></i> Type</label>
-                            <select class="custom-select type" name="type_id" id="type_id">
-                                <option value="">Pilih type</option>
+                            <label class="mt-3"><i class="fas fa-tag"></i> Type</label>
+                            <select class="form-control" name="type_id" id="type_id">
+                                <option value="">Pilih Type</option>
                             </select>
 
-
-                            <label class="mt-3"><i class="fas fa-tags"></i> Kategori</label>
-                            <select class="custom-select" name="category_id" id="category_id">
-                                <option value="">Silahkan Pilih Jenis dahulu</option>
+                            <label class="mt-3"><i class="fas fa-tag"></i> Kategori</label>
+                            <select class="form-control" name="category_id" id="category_id">
+                                <option value="">Pilih Kategori</option>
                             </select>
 
-                            <label class="mt-3"><i class="fas fa-image"></i> Upload Gambar Produk</label>
-                            <div class="dropzone" id="image-dropzone">
-                                <div class="dz-message" id="dz-message">
-                                    <div style="font-size: 3rem; color: #bbb;">
-                                        <i class="fas fa-cloud-upload-alt"></i>
-                                    </div>
-                                    <p class="font-weight-bold">choose a file or drag and drop it here</p>
-                                    <p class="text-muted">jpeg, webp, jpg up to 2 MB.</p>
-                                </div>
-                            </div>
-
-                            @error('image')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-
-                            @if ($errors->has('image.*'))
-                                @foreach ($errors->get('image.*') as $messages)
-                                    @foreach ($messages as $msg)
-                                        <span class="text-danger">{{ $msg }}</span><br>
-                                    @endforeach
-                                @endforeach
-                            @endif
-
-                            <div class="py-1 mb-0 d-flex align-items-center" role="alert" style="border-radius: .5rem;">
-                                <i class="fa fa-info-circle mr-2"></i>
-                                <span class="font-italic">
-                                    Anda dapat mengunggah lebih dari satu gambar motif/produk. Kode motif/produk akan
-                                    otomatis diambil dari nama file gambar yang diunggah.
-                                </span>
-                            </div>
+                            <label class="mt-3"><i class="fas fa-video"></i> url video</label>
+                            <input type="text" class="form-control" name="url_video" placeholder="Masukan url video"
+                                value="{{ old('video') }}">
                         </div>
-                        <button class="btn btn-primary mt-3" type="submit" id="btn-tambah">Kirim</button>
+                        <button class="btn btn-primary mt-3" id="btn-submit" type="submit">Kirim</button>
                     </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content border-danger">
-                    <div class="modal-header bg-danger text-white">
-                        <h5 class="modal-title" id="alertModalLabel">
-                            <h4 class="fw-bold">
-                                <i class="fas fa-info-circle me-2"></i> Perhatian!
-                            </h4>
-                        </h5>
-                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="alert alert-danger border-0 shadow-sm" role="alert">
-                            <h6 class="font-weight-bold mb-2">
-                                <i class="bi bi-info-circle me-1"></i> Informasi Penting
-                            </h6>
-                            <p class="mb-2">
-                                Sistem akan <strong>secara otomatis mengambil kode produk</strong> dari
-                                <strong>nama file gambar</strong> yang diunggah.
-                            </p>
-                            <div class="bg-light rounded p-3 mb-2">
-                                <small>
-                                    <i class="bi bi-file-earmark-image me-1 text-primary"></i>
-                                    Contoh:
-                                    <br>
-                                    <code>ABC123.jpg</code> → kode produk: <strong>ABC123</strong>
-                                </small>
-                            </div>
-                            <p class="mb-0 text-white badge">
-                                Pastikan setiap nama file gambar bersifat <u>unik</u> agar tidak terjadi duplikasi data.
-                            </p>
-                        </div>
-                    </div>
-
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Mengerti</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -131,8 +90,6 @@
 
 @push('scripts')
     <script>
-        // Initialize Dropzone
-        Dropzone.autoDiscover = false;
         const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -146,13 +103,79 @@
         });
 
         $(document).ready(function() {
-            $('#alertModal').modal('show');
+            let specificationIndex = $('#variant-wrapper .variant-row').length;
 
-            $('#jenis').on('change', function() {
-                console.log("change jenis");
-                var jenisId = $(this).val();
-                let type = $('.type');
+            // Jalankan load awal (saat edit)
+            initialLoad();
 
+            // Tambah baris spesifikasi
+            $('#add-variant').on('click', function() {
+                let newRow = `
+                <div class="input-group mb-2 variant-row">
+                    <input type="text" name="specifications[${specificationIndex}][name]" class="form-control" placeholder="Nama Spesifikasi">
+                    <input type="text" name="specifications[${specificationIndex}][value]" class="form-control ml-2" placeholder="Nilai Spesifikasi">
+                    <input type="text" name="specifications[${specificationIndex}][unit]" class="form-control ml-2" placeholder="Satuan Spesifikasi">
+                    <button type="button" class="btn btn-danger btn-remove ml-2">X</button>
+                </div>
+            `;
+                $('#variant-wrapper').append(newRow);
+                specificationIndex++;
+            });
+
+            // Hapus baris spesifikasi
+            $(document).on('click', '.btn-remove', function() {
+                $(this).closest('.variant-row').remove();
+            });
+
+            // === EVENT KETIKA GANTI JENIS ===
+            $('#jenis_id').on('change', function() {
+                const jenisId = $(this).val();
+                const $typeSelect = $('#type_id');
+                const $categorySelect = $('#category_id');
+
+                if (!jenisId) return;
+
+                $.ajax({
+                    url: "{{ url('types/by-jenis') }}/" + jenisId,
+                    type: 'GET',
+                    success: function(data) {
+                        if (data.length > 0) {
+                            $typeSelect.prop('disabled', false)
+                                .html('<option value="">Pilih Type</option>');
+                            $.each(data, function(_, item) {
+                                $typeSelect.append(
+                                    `<option value="${item.id}">${item.name}</option>`
+                                );
+                            });
+                            // Reset kategori
+                            $categorySelect.prop('disabled', true)
+                                .html('<option value="">Pilih Kategori</option>');
+                        } else {
+                            // Jika jenis tidak punya type, langsung load kategori berdasarkan jenis
+                            $typeSelect.prop('disabled', true)
+                                .html('<option value="">Tidak ada type</option>');
+                            loadCategoryByJenis(jenisId);
+                        }
+                    }
+                });
+            });
+
+            // === EVENT KETIKA GANTI TYPE ===
+            $('#type_id').on('change', function() {
+                const typeId = $(this).val();
+                const jenisId = $('#jenis_id').val();
+
+                if (typeId) {
+                    loadCategoryByType(typeId);
+                } else {
+                    // Jika type dikosongkan, ambil kategori berdasarkan jenis
+                    loadCategoryByJenis(jenisId);
+                }
+            });
+
+            // === LOAD TYPE BERDASARKAN JENIS ===
+            function loadTypeByJenis(jenisId, selectedId = null) {
+                if (!jenisId) return;
                 $.ajax({
                     url: "{{ url('types/by-jenis') }}/" + jenisId,
                     type: 'GET',
@@ -160,65 +183,26 @@
                         jenis_id: jenisId
                     },
                     success: function(data) {
+                        const $type = $('#type_id');
+                        $type.html('<option value="">Pilih Type</option>');
                         if (data.length > 0) {
-                            type.show();
-                            $('#type_id').prop('disabled', false);
-                            $('#type_id').html('<option value="">Pilih Type</option>');
-                            $.each(data, function(key, item) {
-                                $('#type_id').append('<option value="' + item.id +
-                                    '">' + item.name + '</option>');
+                            $type.prop('disabled', false);
+                            $.each(data, function(_, item) {
+                                $type.append(
+                                    `<option value="${item.id}" ${item.id == selectedId ? 'selected' : ''}>${item.name}</option>`
+                                );
                             });
-
-                            // kosongkan kategori saat jenis berubah
-                            $('#category_id').prop('disabled', true).html(
-                                '<option value="">Pilih Kategori</option>');
                         } else {
-                            type.hide();
-                            $('#type_id').prop('disabled', true).html(
-                                '<option value="">Tidak ada type</option>');
-
-                            // langsung ambil kategori berdasarkan jenis
-                            loadCategoryByJenis(jenisId);
+                            $type.prop('disabled', true)
+                                .html('<option value="">Tidak ada type tersedia</option>');
                         }
                     }
                 });
-            });
+            }
 
-            $('#type_id').on('change', function() {
-                console.log("change type");
-                var typeId = $(this).val();
-                var jenisId = $('#jenis').val();
-
-                if (typeId) {
-                    // ambil kategori berdasarkan type
-                    $.ajax({
-                        url: "{{ url('categories/by-type') }}/" + typeId,
-                        type: 'GET',
-                        data: {
-                            type_id: typeId
-                        },
-                        success: function(data) {
-                            if (data.length > 0) {
-                                $('#category_id').prop('disabled', false).html(
-                                    '<option value="">Pilih Kategori</option>');
-                                $.each(data, function(key, item) {
-                                    $('#category_id').append('<option value="' + item
-                                        .id + '">' + item.name + '</option>');
-                                });
-                            } else {
-                                $('#category_id').prop('disabled', true).html(
-                                    '<option value="">Tidak ada kategori tersedia</option>');
-                            }
-                        }
-                    });
-                } else {
-                    // kalau type tidak dipilih → ambil kategori berdasarkan jenis
-                    loadCategoryByJenis(jenisId);
-                }
-            });
-
-            // fungsi bantu untuk ambil kategori by jenis
-            function loadCategoryByJenis(jenisId) {
+            // === LOAD CATEGORY BERDASARKAN JENIS ===
+            function loadCategoryByJenis(jenisId, selectedId = null) {
+                if (!jenisId) return;
                 $.ajax({
                     url: "{{ url('categories/by-jenis') }}/" + jenisId,
                     type: 'GET',
@@ -226,128 +210,122 @@
                         jenis_id: jenisId
                     },
                     success: function(data) {
+                        const $cat = $('#category_id');
+                        const $type = $('#type_id');
+                        $cat.html('<option value="">Pilih Kategori</option>');
+                        console.log("run load category by jenis");
+                        console.log(data);
                         if (data.length > 0) {
-                            $('#category_id').prop('disabled', false).html(
-                                '<option value="">Pilih Kategori</option>');
-                            $.each(data, function(key, item) {
-                                $('#category_id').append('<option value="' + item.id + '">' +
-                                    item.name + '</option>');
+                            $cat.prop('disabled', false);
+                            $type.prop('disabled', true);
+                            $.each(data, function(_, item) {
+                                $cat.append(
+                                    `<option value="${item.id}" ${item.id == selectedId ? 'selected' : ''}>${item.name}</option>`
+                                );
                             });
                         } else {
-                            $('#category_id').prop('disabled', true).html(
-                                '<option value="">Tidak ada kategori tersedia</option>');
+                            $cat.prop('disabled', true)
+                                .html('<option value="">Tidak ada kategori tersedia</option>');
+                        }
+                    }
+                });
+            }
+
+            // === LOAD CATEGORY BERDASARKAN TYPE ===
+            function loadCategoryByType(typeId, selectedId = null) {
+                if (!typeId) return;
+                $.ajax({
+                    url: "{{ url('categories/by-type') }}/" + typeId,
+                    type: 'GET',
+                    data: {
+                        type_id: typeId
+                    },
+                    success: function(data) {
+                        const $cat = $('#category_id');
+                        $cat.html('<option value="">Pilih Kategori</option>');
+                        console.log("run load category by type");
+                        console.log(data);
+                        if (data.length > 0) {
+                            $cat.prop('disabled', false);
+                            $.each(data, function(_, item) {
+                                $cat.append(
+                                    `<option value="${item.id}" ${item.id == selectedId ? 'selected' : ''}>${item.name}</option>`
+                                );
+                            });
+                        } else {
+                            $cat.prop('disabled', true)
+                                .html('<option value="">Tidak ada kategori tersedia</option>');
                         }
                     }
                 });
             }
 
 
-            new Dropzone("#image-dropzone", {
-                url: "{{ route('products.store') }}",
-                paramName: "image", // matches your backend expectation
-                maxFilesize: 2, // MB
-                acceptedFiles: "image/jpeg,image/png,image/jpg,image/gif,image/svg,image/webp",
-                addRemoveLinks: false,
-                autoProcessQueue: false, // important for manual submit
-                parallelUploads: 50,
-                uploadMultiple: true, // send all files in one request
-                maxFiles: 50,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                init: function() {
-                    const dz = this;
-                    // When submit button is clicked
-                    document.getElementById("btn-tambah").addEventListener("click",
-                        function(e) {
-                            $("#btn-tambah").prop('disabled', true);
-                            $("#btn-tambah").html(
-                                '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Loading...'
-                            );
-                            e.preventDefault();
-                            e.stopPropagation();
-                            console.log("submit");
-                            console.log(`category_id: ${$('#category_id').val()}`);
-                            const categoryId = $('#category_id').val();
-                            if (!categoryId) {
-                                Toast.fire({
-                                    icon: 'warning',
-                                    title: 'Silahkan Pilih Kategori Dahulu',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                })
-                                $("#btn-tambah").prop('disabled', false);
-                                $("#btn-tambah").html('Kirim');
-                                return;
-                            }
+            // === LOAD AWAL (EDIT MODE) ===
+            function initialLoad() {
+                const initialJenisId = $('#jenis_id').val();
+                const initialTypeId = "{{ old('type_id') }}";
+                const initialCategoryId = "{{ old('category_id') }}";
+                console.log(initialJenisId, initialTypeId, initialCategoryId);
 
-                            // Process the queue
-                            dz.processQueue();
-                        });
+                if (!initialJenisId) return;
 
-                    // Send all required data with the file
-                    this.on("sendingmultiple", function(file, xhr, formData) {
-                        formData.append("category_id", $('#category_id').val());
-                    });
+                if (initialTypeId && initialTypeId !== "null") {
+                    loadTypeByJenis(initialJenisId, initialTypeId);
+                    loadCategoryByType(initialTypeId, initialCategoryId);
+                } else {
+                    loadCategoryByJenis(initialJenisId, initialCategoryId);
+                }
+            }
 
-                    this.on("successmultiple", function(files, response) {
-                        // Handle success response
-                        if (response.warning && response.warning.length > 0) {
-                            let warningMessage = '';
-                            if (Array.isArray(response.warning)) {
-                                warningMessage =
-                                    '<ul style="text-align: left; margin-left: 20px;">';
-                                response.warning.forEach(function(item) {
-                                    warningMessage += '<li>' + item + '</li>';
-                                });
-                                warningMessage += '</ul>';
-                            }
-                            Toast.fire({
-                                icon: 'warning',
-                                title: "Warning",
-                                html: warningMessage,
-                                timer: 3000,
-                                showConfirmButton: false,
-                            });
-                            setTimeout(function() {
-                                window.location.href = "{{ route('products.index') }}";
-                            }, 3000);
-                        } else if (response.status == "success") {
+            // === HANDLE SUBMIT FORM ===
+            $("#form-tambah").on('submit', function(e) {
+                e.preventDefault();
+                $("#btn-submit").prop('disabled', true).html(
+                    '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Loading...'
+                );
+
+                let form = $(this);
+                let url = form.attr('action');
+                let formData = new FormData(this);
+
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: url,
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.status === "success") {
                             Toast.fire({
                                 icon: 'success',
-                                title: response.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                            setTimeout(function() {
-                                window.location.href = "{{ route('products.index') }}";
-                            }, 1500);
+                                title: response.message
+                            });
+                            setTimeout(() => location.reload(), 1500);
                         } else {
                             Toast.fire({
                                 icon: 'error',
-                                title: response.responseJSON.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
+                                title: response.message
+                            });
+                            $("#btn-submit").prop('disabled', false).html('Kirim');
                         }
-                        this.removeAllFiles(true);
-                    });
-
-                    this.on("errormultiple", function(files, response) {
+                    },
+                    error: function(response) {
                         Toast.fire({
                             icon: 'error',
-                            title: response,
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                        files.forEach(file => {
-                            this.removeFile(file);
+                            title: response.responseJSON?.message || 'Terjadi kesalahan'
                         });
-                    });
-                },
+                        $("#btn-submit").prop('disabled', false).html('Kirim');
+                    }
+                });
             });
         });
     </script>
+
+
     @if (session('success'))
         <script>
             $(document).ready(function() {

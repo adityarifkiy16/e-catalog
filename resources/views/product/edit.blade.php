@@ -73,19 +73,6 @@
                                 <i class="fas fa-plus"></i> Tambah Spesifikasi
                             </button>
 
-                            <label class="mt-3"><i class="fas fa-image"></i> Upload gambar utama (Thumbnail)</label>
-                            <input type="file" class="form-control" id="img" name="image" accept="image/*"
-                                multiple>
-
-
-                            <label class="mt-3"><i class="fas fa-image"></i> Upload gambar ke 2 (Motif)</label>
-                            <input type="file" class="form-control" id="img-motif" name="image-motif" accept="image/*">
-
-                            <label class="mt-3"><i class="fas fa-image"></i> Upload gambar ke 3 (Mockup)</label>
-                            <input type="file" class="form-control" id="img-mockup" name="image-mockup[]"
-                                accept="image/*" multiple>
-
-
                             <label class="mt-3"><i class="fas fa-tag"></i> Jenis</label>
                             <select class="form-control" name="jenis_id" id="jenis_id">
                                 <option value="">Pilih Jenis</option>
@@ -204,6 +191,7 @@
                 }
             });
 
+            // === LOAD TYPE BERDASARKAN JENIS ===
             function loadTypeByJenis(jenisId, selectedId = null) {
                 if (!jenisId) return;
                 $.ajax({
