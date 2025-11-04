@@ -85,13 +85,13 @@
                                     </div>
 
                                     <!-- filter versi -->
-                                    <div class="mb-2 mb-md-0 text-center text-md-right mr-2 order-3">
+                                    <div class="mb-2 mb-md-0 text-center text-md-right mr-2 order-3" id="version-filter">
                                         <select id="version-select"
                                             class="form-control bg-dark text-white border-secondary">
                                             @forelse ($versions as $v)
                                                 <option value="{{ $v->id }}"
                                                     {{ request('version_id') == $v->id ? 'selected' : '' }}>
-                                                    {{ $v->version }}
+                                                    Versi {{ $v->version }}
                                                 </option>
                                             @empty
                                                 <option value="" disabled>Tidak ada versi</option>

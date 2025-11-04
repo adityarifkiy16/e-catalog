@@ -107,27 +107,28 @@ function handleResponse(response) {
         $('#homeButton').addClass('d-none');
     }
 
-    if (state.version != null) {
-        // Kalau versi sebelumnya sudah tersimpan di state
-        $('#version-select').val(state.version).trigger('change');
-    } else {
-        // Kalau belum ada versi yang dipilih, otomatis pilih yang pertama
+    console.log('state.version', state.version);
+    console.log('state.type', state.type);
+
+    if (state.version == null) {
         const firstVersion = $('#version-select option:first').val();
         if (firstVersion) {
             state.version = firstVersion;
-            $('#version-select').val(firstVersion).trigger('change');
         }
     }
 
     // 1. Render thumbnail type untuk jenis wallpanel (3) saat pertama kali load
     if (state.selectedJenis && state.firstLoad && types.length > 0) {
+        $('#search-form').addClass('d-none');
+        $('#version-filter').addClass('d-none');
         if (types.length > 0) {
-            $('#search-form').addClass('d-none');
             renderTypes(types, state.selectedJenis);
             state.lastPage = true;
         }
         updateCategoryMenu(response, true);
     } else {
+        $('#search-form').removeClass('d-none');
+        $('#version-filter').removeClass('d-none');
         if (products.length > 0) {
             renderProducts(products, state.selectedJenis);
             state.currentPage++;
@@ -225,18 +226,6 @@ function renderDownloadCheckbox(categories) {
             </div>`;
     }
 
-    // Checkbox "Semua Kategori"
-    const selectAll = `
-        <div class="col-12 mb-3 border-bottom pb-2">
-            <div class="text-white rounded py-2 px-3">
-                <input type="checkbox" class="custom-control-input" id="cat-all">
-                <label class="custom-control-label font-weight-bold" for="cat-all">
-                    Semua Kategori
-                </label>
-            </div>
-        </div>
-    `;
-
     // Checkbox per kategori
     const items = categories
         .map(
@@ -253,7 +242,7 @@ function renderDownloadCheckbox(categories) {
         )
         .join('');
 
-    return `<div class="row font-poppins">${selectAll}${items}</div>`;
+    return `<div class="row font-poppins">${items}</div>`;
 }
 
 function renderCategory(categories) {
