@@ -11,4 +11,9 @@ class MVersion extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'm_versions';
     protected $guarded = ['id'];
+
+    public function productVersion()
+    {
+        return $this->hasMany(ProductVersion::class, 'version_id', 'id');
+    }
 }

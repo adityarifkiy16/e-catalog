@@ -33,6 +33,7 @@
                             <tr>
                                 <th style="width: 0.5rem;">No</th>
                                 <th>Version</th>
+                                <th>Description</th>
                                 <th style="text-align: end; width: 2rem;">Action</th>
                             </tr>
                         </thead>
