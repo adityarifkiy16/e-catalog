@@ -145,7 +145,7 @@ class CatalogController extends Controller
 
         return view('catalog.catalog', [
             'data' => $query->get(),
-            'jenis' => MJenis::with('categories.products.images')->get(),
+            'jenis' => MJenis::with('categories')->get(),
             'categories' => MCategories::all(),
             'types' => \App\Models\MType::with('jenis')->get(),
             'versions' => MVersion::orderBy('id', 'desc')->get(),
