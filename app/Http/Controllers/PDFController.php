@@ -186,15 +186,19 @@ class PDFController extends Controller
         ]);
 
         $version = MVersion::find($request->version_id);
-        $filename = 'Osborn-' . $version->version . '.pdf';
+        $filename = 'E-Catalog-Osborn-v' . $version->version . '.pdf';
         if (!$request->has('category')) {
-            $exists = DB::table('generated_pdfs')
-                ->where('version_id', $version->id)
+            $exists = GeneratePdf::where('version_id', $version->id)
                 ->where('jenis_id', $request->jenis_id)
                 ->first();
 
             if ($exists && file_exists(storage_path('app/public/' . $exists->path))) {
-                return response()->file(storage_path('app/public/' . $exists->path));
+                $path = storage_path('app/public/' . $exists->path);
+                $newFilename = 'E-Catalog-Osborn-v' . $version->version . "-" . $exists->jenis->name . '.pdf';
+                return response()->file($path, [
+                    'Content-Disposition' => 'inline; filename="' . $newFilename . '"',
+                    'Content-Type' => 'application/pdf',
+                ]);
             }
 
             // Kalau belum ada file full version-nya
@@ -280,7 +284,7 @@ class PDFController extends Controller
                 if ($cat !== $grouped->keys()->last()) {
                     $mpdf->AddPage();
                 }
-                $filename = 'Osborn-' . $p[0]->product->category->first()->jenis_name . '-' . $cat . '-v' . $version->name . '.pdf';
+                $filename = 'E-Catalog-Osborn-v' . $version->version . '-' . $p->first()->product->category->jenis->name . '.pdf';
             }
 
             // 🔹 Hapus file sementara

@@ -11,4 +11,9 @@ class GeneratePdf extends Model
 
     protected $table = 'generated_pdfs';
     protected $guarded = ['id'];
+
+    public function jenis()
+    {
+        return $this->belongsTo(MJenis::class);
+    }
 }
