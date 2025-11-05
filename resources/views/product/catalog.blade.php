@@ -1,5 +1,5 @@
 <head>
-    <title>CATALOG - PDF</title>
+    <title>E-CATALOG OSBORN</title>
 </head>
 
 <body>
