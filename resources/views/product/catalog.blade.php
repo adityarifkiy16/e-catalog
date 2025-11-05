@@ -17,7 +17,13 @@
             </td>
         </tr>
     </table>
-    <br><br>
+
+    @if ($thumb)
+        <div class="mockup-page" style="page-break-after: always; text-align:center; margin-top:40px;">
+            <h2 style="margin-bottom:20px;">Preview Mockup</h2>
+            <img src="{{ $thumb }}" style="max-width: 400px; height: auto; margin-bottom: 10px;">
+        </div>
+    @endif
 
     <h3 style="margin-top: 20px;">Kategori: {{ $categoryName }}</h3>
     <table width="100%" cellspacing="10" style="margin-bottom: 0;">

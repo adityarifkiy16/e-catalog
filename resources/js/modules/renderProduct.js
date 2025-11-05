@@ -8,7 +8,14 @@ export function renderProducts(products, selectedJenis) {
         const image = orderedImages.length ? orderedImages[0] : 'https://via.placeholder.com/300x200?text=No+Image';
 
         // Masukkan gambar utama di paling depan
-        const allImages = orderedImages;
+        let allImages = orderedImages;
+        let thumb = product.category?.types?.thumbnail ?? '';
+
+        if (thumb && !thumb.startsWith('http')) {
+            thumb = `storage/${thumb.replace(/^\/?storage\//, '')}`;
+        }
+
+        allImages.push(thumb);
 
         // Simpan array ini sebagai string JSON yang aman untuk HTML
         const imagesJson = JSON.stringify(allImages).replace(/"/g, '&quot;');

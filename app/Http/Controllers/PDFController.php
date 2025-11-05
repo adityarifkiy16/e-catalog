@@ -211,7 +211,7 @@ class PDFController extends Controller
                 return redirect()->back()->with('error', 'Pilih maksimal 3 kategori.');
             }
 
-            $pvs = ProductVersion::with(['images', 'product.category'])
+            $pvs = ProductVersion::with(['images', 'product.category.jenis', 'product.category.types'])
                 ->where('version_id', $version->id)
                 ->whereHas('product', function ($query) use ($request) {
                     $query->whereIn('category_id', $request->category);
@@ -273,10 +273,15 @@ class PDFController extends Controller
             // 🔹 Loop tiap kategori
             foreach ($grouped as $cat => $p) {
                 $mpdf->Bookmark($cat, 0);
+
+                $thumb = $p->first()->product->category->types->thumbnail;
+                $thumbPath = $thumb ? storage_path('app/public/' . $thumb) : null;
+                // dd($thumb);
                 $html = view('product.catalog', [
                     'categoryName' => $cat,
                     'products' => $p,
                     'version' => $version,
+                    'thumb' => $thumbPath,
                 ])->render();
 
                 $mpdf->WriteHTML($html);
