@@ -204,10 +204,7 @@ class PDFController extends Controller
         if ($request->filled('category')) {
 
             if (count($request->category) > 3) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Anda hanya bisa memilih maksimal 3 kategori'
-                ]);
+                return redirect()->back()->with('error', 'Pilih maksimal 3 kategori.');
             }
 
             $pvs = ProductVersion::with(['images', 'product.category'])
