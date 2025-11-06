@@ -13,9 +13,8 @@ export function renderProducts(products, selectedJenis, version) {
 
         if (thumb && !thumb.startsWith('http')) {
             thumb = `storage/${thumb.replace(/^\/?storage\//, '')}`;
+            allImages.push(thumb);
         }
-
-        allImages.push(thumb);
 
         // Simpan array ini sebagai string JSON yang aman untuk HTML
         const imagesJson = JSON.stringify(allImages).replace(/"/g, '&quot;');
