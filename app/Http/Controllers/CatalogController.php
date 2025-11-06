@@ -46,17 +46,23 @@ class CatalogController extends Controller
         $typeId = $request->query('type');
         $versionId = $request->query('version');
 
-        $query = TProduct::with(['category', 'category.jenis', "category.images", 'category.types.images', 'packages', 'specifications.specification_values', 'productVersions.images']);
+        $query = TProduct::with([
+            'category',
+            'category.jenis',
+            "category.images",
+            'category.types.images',
+            'packages',
+            'specifications.specification_values',
+            'productVersions.images'
+        ]);
 
-        if ($versionId) {
-            $query->whereHas('productVersions', function ($q) use ($versionId) {
-                if (is_array($versionId)) {
-                    $q->whereIn('version_id', $versionId);
-                } else {
-                    $q->where('version_id', $versionId);
-                }
-            });
-        }
+        $query->whereHas('productVersions', function ($q) use ($versionId) {
+            if (is_array($versionId)) {
+                $q->whereIn('version_id', $versionId);
+            } else {
+                $q->where('version_id', $versionId);
+            }
+        });
 
         // Filter kategori
         if ($categoryId) {

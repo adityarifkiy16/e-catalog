@@ -180,7 +180,7 @@ function updateCategoryMenu(response, firstLoad = true) {
     applyLabelMap(name);
 
     // --- 3. Render Category Menu ---
-    const dropdown = renderCategory(categories);
+    const dropdown = renderCategory(categories, state.version);
 
     // --- 4. Render Download Checkbox ---
     const checkbox = renderDownloadCheckbox(categories);
@@ -255,7 +255,7 @@ function renderDownloadCheckbox(categories) {
     return `<div class="row font-poppins">${all}${items}</div>`;
 }
 
-function renderCategory(categories) {
+function renderCategory(categories, version = null) {
     if (categories.length === 0) {
         return `
             <li class="nav-item font-poppins">
@@ -267,7 +267,11 @@ function renderCategory(categories) {
         .map(
             (cat) => `
             <a class="nav-link text-white category-filter d-flex align-items-center justify-content-start" 
-               href="#" data-jenis-id="${cat.jenis_id}" data-id="${cat.id}" data-type="${cat.type_id}">
+               href="#" 
+               data-jenis-id="${cat.jenis_id}" 
+               data-id="${cat.id}" 
+               data-type="${cat.type_id}"
+               data-version="${version}">
                 <img src="${cat.path ? 'storage/' + cat.path : 'dist/img/product/1.webp'}"
                      alt="${cat.name}"
                      class="mr-2 img-thumbnail"

@@ -12,8 +12,9 @@ export function bindFilterButton(selectedJenis) {
 
         const category = $(this).data('id');
         const type = $(this).data('type');
+        const version = $(this).data('version');
         try {
-            setCatalogConfig({ selectedJenis, category, type });
+            setCatalogConfig({ selectedJenis, category, type, version });
             setCategory(category);
             $('#filterModal').modal('hide');
             resetState();
