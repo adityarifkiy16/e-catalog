@@ -1,6 +1,6 @@
 import { prepareImageOrder } from './utils';
 
-export function renderProducts(products, selectedJenis) {
+export function renderProducts(products, selectedJenis, version) {
     $('#btn-download').removeClass('d-none');
     let html = '';
     products.forEach((product) => {
@@ -20,8 +20,8 @@ export function renderProducts(products, selectedJenis) {
         // Simpan array ini sebagai string JSON yang aman untuk HTML
         const imagesJson = JSON.stringify(allImages).replace(/"/g, '&quot;');
         const packagesJson = JSON.stringify(product.packages).replace(/"/g, '&quot;');
-
         const categoryName = product.category?.name ?? 'Tanpa Kategori';
+        const displayName = product.product_versions.find((p) => p.version_id == version)?.name ?? 'Tanpa Nama';
 
         // Tampilan sesuai bentuk
         if (product.category?.display_style === 'square' || selectedJenis === null) {
@@ -48,7 +48,7 @@ export function renderProducts(products, selectedJenis) {
         html += `
                     data-id="${product.id}"
                     data-code="${product.code}"
-                    data-name="${product.name}"
+                    data-name="${displayName}"
                     data-category="${categoryName}"
                     data-jenis="${product.category?.jenis?.name ?? ''}"
                     data-images="${imagesJson}"
@@ -78,7 +78,7 @@ export function renderProducts(products, selectedJenis) {
                         >
                         <div class="card-body d-flex flex-column text-center">
                             <h4 class="card-title font-weight-bold text-uppercase mb-2">
-                                ${product.name}
+                                ${displayName}
                             </h4>
                             <h6 class="card-text text-muted mb-1">${categoryName}</h6>
                         </div>

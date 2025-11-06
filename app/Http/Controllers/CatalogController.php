@@ -140,7 +140,7 @@ class CatalogController extends Controller
                     }
                 }
             }
-
+            $response['active_version_id'] = $versionId;
             return response()->json($response);
         }
 

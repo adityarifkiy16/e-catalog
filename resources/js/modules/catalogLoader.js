@@ -98,8 +98,10 @@ export function loadMoreData() {
 
 // ===== Response Handler =====
 function handleResponse(response) {
+    console.log(response);
     const products = response.data.data ?? [];
     const types = response.types ?? [];
+    const version = response.active_version_id;
 
     // Handle back button
     if (state.type) {
@@ -130,7 +132,7 @@ function handleResponse(response) {
         $('#search-form').removeClass('d-none');
         $('#version-filter').removeClass('d-none');
         if (products.length > 0) {
-            renderProducts(products, state.selectedJenis);
+            renderProducts(products, state.selectedJenis, version);
             state.currentPage++;
             if (state.currentPage > response.data.last_page) state.lastPage = true;
         } else {
@@ -205,6 +207,8 @@ function updateCategoryMenu(response, firstLoad = true) {
 
         setTimeout(() => {
             loadMoreData();
+            console.log('loadMoreData');
+            console.log('state.vers', state.version);
         }, 200);
     } else if (state.category) {
         $(`.category-filter[data-id="${state.category}"]`).addClass('active');
