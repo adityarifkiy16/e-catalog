@@ -274,9 +274,8 @@ class PDFController extends Controller
             foreach ($grouped as $cat => $p) {
                 $mpdf->Bookmark($cat, 0);
 
-                $thumb = $p->first()->product->category->types->thumbnail;
+                $thumb = $p->first()?->product?->category?->types?->thumbnail;
                 $thumbPath = $thumb ? storage_path('app/public/' . $thumb) : null;
-                // dd($thumb);
                 $html = view('product.catalog', [
                     'categoryName' => $cat,
                     'products' => $p,
