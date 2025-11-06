@@ -185,11 +185,15 @@ function updateCategoryMenu(response, firstLoad = true) {
     // --- 4. Render Download Checkbox ---
     const checkbox = renderDownloadCheckbox(categories);
 
+    // --- 5. Render Type Menu ---
+    const typeMenu = renderTypeMenu(response.types ?? []);
+
     // Inject to DOM
     if (firstLoad) {
         $('#category-menu-item, #category-menu-item-modal').html('tidak ada kategori');
     } else {
         $('#category-menu-item, #category-menu-item-modal').html(dropdown);
+        $('#type-menu-item, #type-menu-item-modal').html(typeMenu);
         $('#pdf-catalog').html(checkbox);
     }
 
@@ -204,6 +208,10 @@ function updateCategoryMenu(response, firstLoad = true) {
         }, 200);
     } else if (state.category) {
         $(`.category-filter[data-id="${state.category}"]`).addClass('active');
+    }
+
+    if (state.type) {
+        $(`.type-filter[data-id="${state.type}"]`).addClass('active');
     }
 }
 
@@ -266,21 +274,44 @@ function renderCategory(categories, version = null) {
     const items = categories
         .map(
             (cat) => `
-            <a class="nav-link text-white category-filter d-flex align-items-center justify-content-start" 
-               href="#" 
-               data-jenis-id="${cat.jenis_id}" 
-               data-id="${cat.id}" 
-               data-type="${cat.type_id}"
-               data-version="${version}">
-                <img src="${cat.path ? 'storage/' + cat.path : 'dist/img/product/1.webp'}"
-                     alt="${cat.name}"
-                     class="mr-2 img-thumbnail"
-                     style="width:50px;height:50px;object-fit:contain;">
-                <span class="text-capitalize">${cat.name}</span>
-            </a>`
+                <a class="nav-link text-white category-filter d-flex align-items-center justify-content-start" 
+                href="#" 
+                data-jenis-id="${cat.jenis_id}" 
+                data-id="${cat.id}" 
+                data-type="${cat.type_id}"
+                data-version="${version}">
+                    <img src="${cat.path ? 'storage/' + cat.path : 'dist/img/product/1.webp'}"
+                        alt="${cat.name}"
+                        class="mr-2 img-thumbnail"
+                        style="width:50px;height:50px;object-fit:contain;">
+                    <span class="text-capitalize">${cat.name}</span>
+                </a>
+            `
         )
         .join('');
 
+    return `<li class="nav-item font-poppins">${items}</li>`;
+}
+
+function renderTypeMenu(types) {
+    if (types.length === 0) {
+        $('#type-menu-item-label').hide();
+    }
+
+    const items = types
+        .map(
+            (type) => `
+                <a class="nav-link text-white type-filter d-flex align-items-center justify-content-start" 
+                href="#" data-id="${type.id}">
+                    <img src="${type.thumbnail ? `/storage/${type.thumbnail}` : 'dist/img/product/1.webp'}"
+                        alt="${type.name}"
+                        class="mr-2 img-thumbnail"
+                        style="width:50px;height:50px;object-fit:contain;">
+                    <span class="text-capitalize">${type.name}</span>
+                </a>
+            `
+        )
+        .join('');
     return `<li class="nav-item font-poppins">${items}</li>`;
 }
 

@@ -26,4 +26,23 @@ export function bindFilterButton(selectedJenis) {
             isLoading = false;
         }
     });
+
+    $(document).off('click', '.type-filter');
+    $(document).on('click', '.type-filter', async function (e) {
+        e.preventDefault();
+        if (isLoading) return;
+        isLoading = true;
+
+        const type = $(this).data('id');
+        try {
+            setCatalogConfig({ selectedJenis, type });
+            $('#filterModal').modal('hide');
+            resetState();
+            await loadMoreData(false);
+        } catch (err) {
+            console.error('Gagal memuat data:', err);
+        } finally {
+            isLoading = false;
+        }
+    });
 }

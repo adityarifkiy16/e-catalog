@@ -311,6 +311,10 @@
                                 <ul class="nav flex-column" id="category-menu-item-modal">
                                     <!-- Akan diisi oleh JS -->
                                 </ul>
+                                <h5 id="type-modal-item-label" class="font-cocogoose">Type</h5>
+                                <ul class="nav flex-column" id="type-menu-item-modal">
+                                    <!-- Akan diisi oleh JS -->
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -328,6 +332,9 @@
                                     <div id="category-container" class="d-none text-white">
                                         <h3 id="category-menu-item-label" class="font-cocogoose">Category</h3>
                                         <ul class="nav flex-column" id="category-menu-item">
+                                        </ul>
+                                        <h3 id="type-menu-item-label" class="font-cocogoose mt-2">Type</h3>
+                                        <ul class="nav flex-column" id="type-menu-item">
                                         </ul>
                                     </div>
                                 </div>
