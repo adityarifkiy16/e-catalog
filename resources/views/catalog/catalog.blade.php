@@ -77,7 +77,7 @@
                                     </div>
 
                                     <!-- Tombol Download -->
-                                    <div class="mb-2 mb-md-0 text-center text-md-right mr-2 order-2">
+                                    <div class="mb-2 mb-md-0 text-center text-md-right mr-2 order-2" id="downloadButton">
                                         <a href="#" class="btn btn-light w-100 w-md-auto" data-target="#pdfcatalog"
                                             data-toggle="modal">
                                             <i class="fa fa-arrow-down mr-1"></i> Catalog PDF
@@ -160,7 +160,7 @@
                         <div class="modal-body" id="pdf-catalog"></div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" data-dismiss="modal"
-                                id="btn-download">Download PDF</button>
+                                id="btn-download">Preview PDF</button>
                         </div>
                     </div>
                 </div>
@@ -307,12 +307,12 @@
                         </div>
                         <div class="modal-body">
                             <div class="category-modal-container">
-                                <h5 id="category-modal-item-label" class="font-cocogoose">Category</h5>
-                                <ul class="nav flex-column" id="category-menu-item-modal">
+                                <h5 id="type-modal-item-label" class="font-cocogoose mb-2">Type</h5>
+                                <ul class="nav flex-column" id="type-menu-item-modal">
                                     <!-- Akan diisi oleh JS -->
                                 </ul>
-                                <h5 id="type-modal-item-label" class="font-cocogoose">Type</h5>
-                                <ul class="nav flex-column" id="type-menu-item-modal">
+                                <h5 id="category-modal-item-label" class="font-cocogoose">Category</h5>
+                                <ul class="nav flex-column" id="category-menu-item-modal">
                                     <!-- Akan diisi oleh JS -->
                                 </ul>
                             </div>
@@ -330,11 +330,11 @@
                                 data-parent="#accordionExample">
                                 <div class="pt-2">
                                     <div id="category-container" class="d-none text-white">
+                                        <h3 id="type-menu-item-label" class="font-cocogoose mb-2">Type</h3>
+                                        <ul class="nav flex-column" id="type-menu-item">
+                                        </ul>
                                         <h3 id="category-menu-item-label" class="font-cocogoose">Category</h3>
                                         <ul class="nav flex-column" id="category-menu-item">
-                                        </ul>
-                                        <h3 id="type-menu-item-label" class="font-cocogoose mt-2">Type</h3>
-                                        <ul class="nav flex-column" id="type-menu-item">
                                         </ul>
                                     </div>
                                 </div>

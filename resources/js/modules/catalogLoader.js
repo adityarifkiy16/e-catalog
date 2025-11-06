@@ -122,6 +122,7 @@ function handleResponse(response) {
     // 1. Render thumbnail type untuk jenis wallpanel (3) saat pertama kali load
     if (state.selectedJenis && state.firstLoad && types.length > 0) {
         $('#search-form').addClass('d-none');
+        $('#downloadButton').addClass('d-none');
         $('#version-filter').addClass('d-none');
         if (types.length > 0) {
             renderTypes(types, state.selectedJenis);
@@ -130,6 +131,7 @@ function handleResponse(response) {
         updateCategoryMenu(response, true);
     } else {
         $('#search-form').removeClass('d-none');
+        $('#downloadButton').removeClass('d-none');
         $('#version-filter').removeClass('d-none');
         if (products.length > 0) {
             renderProducts(products, state.selectedJenis, version);
@@ -310,7 +312,7 @@ function renderTypeMenu(types) {
                     <img src="${type.thumbnail ? `/storage/${type.thumbnail}` : 'dist/img/product/1.webp'}"
                         alt="${type.name}"
                         class="mr-2 img-thumbnail"
-                        style="width:50px;height:50px;object-fit:contain;">
+                        style="width:6.5rem;height:6.5rem;object-fit:contain;">
                     <span class="text-capitalize">${type.name}</span>
                 </a>
             `
