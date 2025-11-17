@@ -194,7 +194,7 @@ class ProductVersionController extends Controller
             // Gambar
             if ($request->hasFile('image-mockup')) {
                 // 1. Hapus semua gambar sebelumnya dari relasi dan storage
-                foreach ($productVersion->images()->where('type', 'mockup')->get() as $existingImage) {
+                foreach ($productVersion->images()->where('type', 'product')->get() as $existingImage) {
                     $oldPath = storage_path('app/public/' . $existingImage->path);
                     if (file_exists($oldPath)) {
                         @unlink($oldPath);
@@ -209,7 +209,7 @@ class ProductVersionController extends Controller
                     // 3. Simpan gambar ke database images
                     $productVersion->images()->create([
                         'path' => $path,
-                        'type' => 'mockup',
+                        'type' => 'product',
                     ]);
                 }
             }
