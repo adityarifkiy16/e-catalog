@@ -244,12 +244,16 @@ class ProductVersionController extends Controller
                     if (file_exists($imagePath)) {
                         @unlink($imagePath);
                     }
+                    // 2. Simpan gambar ke database images
+                    $motifImage->update([
+                        'path' => $path,
+                    ]);
+                } else {
+                    $productVersion->images()->create([
+                        'path' => $path,
+                        'type' => 'motif',
+                    ]);
                 }
-
-                // 2. Simpan gambar ke database images
-                $motifImage->update([
-                    'path' => $path,
-                ]);
             }
 
             DB::commit();
