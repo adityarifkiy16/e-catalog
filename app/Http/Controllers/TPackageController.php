@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MJenis;
 use App\Models\TPackage;
 use App\Models\TProduct;
-use App\Services\ImageServices;
 use Illuminate\Http\Request;
+use App\Services\ImageServices;
 use Illuminate\Support\Facades\DB;
-use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
 class TPackageController extends Controller
@@ -46,11 +46,16 @@ class TPackageController extends Controller
                                 });
                         });
                     }
+
+                    if ($request->has('filter') && !empty($request->filter)) {
+                        $query->whereHas('product', fn($q) => $q->where('category_id', $request->filter));
+                    }
                 })
                 ->rawColumns(['action'])
                 ->toJson();
         }
-        return view('paket.index');
+        $arr['jenises'] = MJenis::whereHas('categories')->get();
+        return view('paket.index', $arr);
     }
 
     /**
@@ -211,6 +216,16 @@ class TPackageController extends Controller
                 unlink(storage_path('app/public/' . $package->image));
             }
         }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Paket berhasil dihapus.',
+        ]);
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->ids;
+        TPackage::whereIn('id', $ids)->delete();
         return response()->json([
             'status' => 'success',
             'message' => 'Paket berhasil dihapus.',

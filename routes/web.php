@@ -123,6 +123,7 @@ Route::middleware("auth")->group(function () {
         Route::get("/package/{package}/edit", [App\Http\Controllers\TPackageController::class, "edit"])->name("package.edit");
         Route::put("/package/{package}", [App\Http\Controllers\TPackageController::class, "update"])->name("package.update");
         Route::delete("/package/{package}", [App\Http\Controllers\TPackageController::class, "destroy"])->name("package.destroy");
+        Route::post("/package/bulk-destroy", [App\Http\Controllers\TPackageController::class, "bulkDestroy"])->name("package.bulk.destroy");
     });
 
     // 4. Reports Management

@@ -27,10 +27,37 @@
                         <a href="{{ route('package.bulk.create') }}" class="btn btn-success ml-2">
                             <i class="fa fa-plus"></i> Upload Bulk
                         </a>
+                        <div class="d-flex justify-content-between align-items-center ml-2">
+                            <select id="jenis-filter" class="form-control select2">
+                                <option value="">Semua Jenis</option>
+                                @foreach ($jenises as $jenis)
+                                    <option value="{{ $jenis->id }}">{{ $jenis->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <form action="{{ route('package.index') }}" method="GET">
+                            <div class="d-flex justify-content-between align-items-center ml-2">
+                                <select id="category-filter" class="form-control select2" name="filter">
+                                    <option value="">All Categories</option>
+                                </select>
+                                <button class="btn btn-secondary ml-2" type="submit" id="btn-filter-category"
+                                    style="width: 100px;">
+                                    Filter
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="mb-3" id="bulk-delete-wrapper" style="display:none;">
+                        <button id="bulk-delete-btn" class="btn btn-danger">
+                            <i class="fa fa-trash"></i> Hapus Terpilih
+                        </button>
                     </div>
                     <table id="type-table" class="table table-bordered">
                         <thead>
                             <tr>
+                                <th>
+                                    <input type="checkbox" id="select-all">
+                                </th>
                                 <th style="width: 0.5rem;">No</th>
                                 <th>Nama</th>
                                 <th>Produk</th>
@@ -61,7 +88,8 @@
             }
         });
 
-        $(document).on('submit', '.delete-type', function(e) {
+        // ==== Delete Paket ====
+        $(document).on('submit', '.delete-paket', function(e) {
             e.preventDefault();
             const form = $(this);
             const url = form.attr('action');
@@ -102,6 +130,88 @@
         });
 
         $(document).ready(function() {
+            // SELECT ALL checkbox
+            $(document).on('change', '#select-all', function() {
+                $('.row-checkbox').prop('checked', this.checked);
+                toggleBulkDeleteButton();
+            });
+
+            // Checkbox per baris
+            $(document).on('change', '.row-checkbox', function() {
+                toggleBulkDeleteButton();
+            });
+
+            // Fungsi menampilkan tombol bulk delete
+            function toggleBulkDeleteButton() {
+                let checked = $('.row-checkbox:checked').length;
+                if (checked > 0) {
+                    $('#bulk-delete-wrapper').show();
+                } else {
+                    $('#bulk-delete-wrapper').hide();
+                }
+            }
+
+            $('#jenis-filter').on('change', function() {
+                let jenisId = $(this).val();
+                let url = "{{ route('categories.byJenis', ':id') }}".replace(':id', jenisId);
+
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: {
+                        jenis_id: jenisId
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        let options = '';
+                        response.forEach(function(category) {
+                            options += '<option value="' + category.id + '">' + category
+                                .name + '</option>';
+                        });
+                        $('#category-filter').html(options);
+                    }
+                })
+
+            })
+
+
+            // ==== Bulk Delete Paket ====
+            $('#bulk-delete-btn').on('click', function() {
+                let ids = $('.row-checkbox:checked').map(function() {
+                    return $(this).val();
+                }).get();
+
+                if (ids.length === 0) return;
+
+                Swal.fire({
+                    title: 'Hapus semua yang dipilih?',
+                    text: "Data tidak bisa dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, hapus!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        $.ajax({
+                            url: "{{ route('package.bulk.destroy') }}",
+                            type: 'POST',
+                            data: {
+                                _token: $('meta[name="csrf-token"]').attr('content'),
+                                ids: ids
+                            },
+                            success: function(response) {
+                                Swal.fire('Berhasil!', response.message, 'success');
+                                $('#type-table').DataTable().ajax.reload(null, false);
+                                $('#bulk-delete-wrapper').hide();
+                            }
+                        });
+                    }
+                });
+            });
+
             $("#type-table").DataTable({
                 "paging": true,
                 "lengthChange": true,
@@ -138,6 +248,14 @@
                 },
 
                 columns: [{
+                        data: 'id',
+                        orderable: false,
+                        searchable: false,
+                        render: function(id) {
+                            return `<input type="checkbox" class="row-checkbox" value="${id}">`;
+                        }
+                    },
+                    {
                         data: 'DT_RowIndex',
                         orderable: false,
                         searchable: false
@@ -173,7 +291,7 @@
                             return `
                         <div class="d-flex flex-row justify-content-end align-items-end">
                             <a href="/package/${data.id}/edit"><button type="button" class="btn btn-primary mx-2"><i class="fas fa-pencil-alt" title="Edit"></i></button></a>
-                                <form action="/package/${data.id}" style="display: inline;" class="delete-type">
+                                <form action="/package/${data.id}" style="display: inline;" class="delete-paket">
                                             <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <button type="submit" class="btn btn-danger delete-task-button" data-user-id="${data.id}">

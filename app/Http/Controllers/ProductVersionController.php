@@ -276,7 +276,7 @@ class ProductVersionController extends Controller
     {
         $productVersion->delete();
         if ($productVersion->images()->count() > 0) {
-            foreach ($productVersion->images()->get() as $image) {
+            foreach ($productVersion->images as $image) {
                 $imagePath = storage_path('app/public/' . $image->path);
                 if (file_exists($imagePath)) {
                     @unlink($imagePath);
