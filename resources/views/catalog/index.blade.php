@@ -156,10 +156,17 @@
             <div class="carousel-inner">
                 @for ($key = 0; $key < 7; $key++)
                     <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                        <img src="{{ asset('dist/img/slider/' . ($key + 1) . '.webp') }}?v={{ $version }}"
-                            class="d-block w-100 img-fluid" alt="{{ 'Slide ' . ($key + 1) }}"
+                        @php $img = 'dist/img/slider/' . ($key + 1); @endphp
+
+                        <img src="{{ asset("$img-1600.webp") }}?v={{ $version }}"
+                            srcset="
+                                        {{ asset("$img-800.webp") }}?v={{ $version }} 800w,
+                                        {{ asset("$img-1600.webp") }}?v={{ $version }} 1600w
+                                    "
+                            sizes="100vw" class="d-block w-100 img-fluid" alt="{{ 'Slide ' . ($key + 1) }}"
                             style="object-fit: cover; object-position: center bottom; height: 65vh;"
                             fetchpriority="{{ $key == 0 ? 'high' : 'low' }}">
+
                     </div>
                 @endfor
             </div>
@@ -181,12 +188,27 @@
         <div class="slider-track">
             @foreach ($products as $product)
                 <div class="slider-item">
-                    <img src="{{ asset('/dist/img/slide-depan/' . $product) }}?v{{ $version }}" alt="Product" />
+                    @php $img = 'dist/img/slide-depan/' . pathinfo($product, PATHINFO_FILENAME); @endphp
+                    <img src="{{ asset("$img-600.webp") }}?v={{ $version }}"
+                        srcset="
+                                    {{ asset("$img-300.webp") }}?v={{ $version }} 300w,
+                                    {{ asset("$img-600.webp") }}?v={{ $version }} 600w
+                                "
+                        sizes="200px" alt="Product" />
+
                 </div>
             @endforeach
             @foreach ($products as $product)
+                <span>{{ $product }}</span>
                 <div class="slider-item">
-                    <img src="{{ asset('/dist/img/slide-depan/' . $product) }}?v{{ $version }}" alt="Product" />
+                    @php $img = 'dist/img/slide-depan/' . pathinfo($product, PATHINFO_FILENAME); @endphp
+                    <img src="{{ asset("$img-600.webp") }}?v={{ $version }}"
+                        srcset="
+                                    {{ asset("$img-300.webp") }}?v={{ $version }} 300w,
+                                    {{ asset("$img-600.webp") }}?v={{ $version }} 600w
+                                "
+                        sizes="200px" alt="Product" />
+
                 </div>
             @endforeach
         </div>
@@ -214,8 +236,16 @@
                 <div class="col-6 col-sm-4 col-md-2 text-center mb-5 product-card" data-id="{{ $item->id }}">
                     <div
                         class="border-0 h-100 pointer d-flex flex-column justify-content-center align-items-center overflow-hidden">
-                        <img src="{{ asset('dist/img/product/' . $key . '.webp') }}?v={{ $version }}"
-                            class="img-fluid d-block w-100 product-img" alt="{{ $item->name }}" fetchpriority="high">
+                        @php $img = 'dist/img/product/' . $key; @endphp
+
+                        <img src="{{ asset("$img-400.webp") }}?v={{ $version }}"
+                            srcset="
+                                        {{ asset("$img-200.webp") }}?v={{ $version }} 200w,
+                                        {{ asset("$img-400.webp") }}?v={{ $version }} 400w
+                                    "
+                            sizes="(max-width: 768px) 50vw, 200px" class="img-fluid d-block w-100 product-img"
+                            alt="{{ $item->name }}">
+
                         <div class="card-body mt-0">
                             <h4 class="card-text font-weight-bold text-uppercase">{{ $item->name }}</h4>
                             <div class="d-flex flex-row justify-content-center">
@@ -235,7 +265,14 @@
                     <!-- Gambar -->
                     <div class="col-md-5 mb-3 mb-md-0 animate__animated animate__faster animate__fadeInLeft">
                         <div class="square-wrapper">
-                            <img src="{{ asset('dist/img/slider/1.webp') }}" alt="about" class="img-fluid w-100">
+                            @php $img = 'dist/img/slider/1'; @endphp
+
+                            <img src="{{ asset("$img-1600.webp") }}"
+                                srcset="
+                                            {{ asset("$img-800.webp") }} 800,
+                                            {{ asset("$img-1600.webp") }} 1600w
+                                        "
+                                sizes="100vw" class="img-fluid w-100" alt="about">
                         </div>
                     </div>
 
@@ -309,7 +346,14 @@
                     <!-- Gambar -->
                     <div class="col-md-5 mb-3 mb-md-0 animate__animated animate__faster animate__fadeInLeft order-1">
                         <div class="square-wrapper">
-                            <img src="{{ asset('dist/img/slider/2.webp') }}" alt="about" class="img-fluid w-100">
+                            @php $img = 'dist/img/slider/2'; @endphp
+
+                            <img src="{{ asset("$img-1600.webp") }}"
+                                srcset="
+                                            {{ asset("$img-800.webp") }} 800w,
+                                            {{ asset("$img-1600.webp") }} 1600w
+                                        "
+                                sizes="100vw" class="img-fluid w-100" alt="about">
                         </div>
                     </div>
                 </div>

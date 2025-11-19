@@ -23,9 +23,12 @@ class CatalogController extends Controller
         $arr['files'] = File::files(public_path('dist/img/slide-depan'));
 
         // Ambil nama file tanpa path
-        $arr['products'] = collect($arr['files'])->map(function ($file) {
-            return $file->getFilename(); // misalnya "01.jpg"
-        });
+        $arr['products'] = collect($arr['files'])->map(fn($f) => $f->getFilename())
+            ->filter(function ($name) {
+                // Membuang file yang punya pattern: -300.webp, -600.webp, -800.webp, dst.
+                return !preg_match('/-\d{2,4}\.(jpg|jpeg|png|webp)$/i', $name);
+            })
+            ->values();
 
         $arr['jenis'] = MJenis::withCount([
             'categories as products_count' => function ($query) {
