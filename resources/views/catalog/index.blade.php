@@ -1,3 +1,6 @@
+@php
+    $version = 12;
+@endphp
 @extends ('layouts.catalog')
 @push('styles')
     <style>
@@ -124,7 +127,7 @@
     <div class="w-100 d-flex justify-content-center align-items-center">
         <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100 bg-black">
             <a href="https://osborn.id/" target="_blank" class="py-2">
-                <img src="{{ asset('dist/img/osborn.png') }}?v={{ time() }}" alt="osborn-logo"
+                <img src="{{ asset('dist/img/osborn.png') }}?v={{ $version }}" alt="osborn-logo"
                     style="width: 130px; height: auto;">
             </a>
 
@@ -153,9 +156,10 @@
             <div class="carousel-inner">
                 @for ($key = 0; $key < 7; $key++)
                     <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                        <img src="{{ asset('dist/img/slider/' . ($key + 1) . '.webp') }}?v={{ time() }}"
+                        <img src="{{ asset('dist/img/slider/' . ($key + 1) . '.webp') }}?v={{ $version }}"
                             class="d-block w-100 img-fluid" alt="{{ 'Slide ' . ($key + 1) }}"
-                            style="object-fit: cover; object-position: center bottom; height: 65vh;" fetchpriority="high">
+                            style="object-fit: cover; object-position: center bottom; height: 65vh;"
+                            fetchpriority="{{ $key == 0 ? 'high' : 'low' }}">
                     </div>
                 @endfor
             </div>
@@ -177,12 +181,12 @@
         <div class="slider-track">
             @foreach ($products as $product)
                 <div class="slider-item">
-                    <img src="{{ asset('/dist/img/slide-depan/' . $product) }}?v{{ time() }}" alt="Product" />
+                    <img src="{{ asset('/dist/img/slide-depan/' . $product) }}?v{{ $version }}" alt="Product" />
                 </div>
             @endforeach
             @foreach ($products as $product)
                 <div class="slider-item">
-                    <img src="{{ asset('/dist/img/slide-depan/' . $product) }}?v{{ time() }}" alt="Product" />
+                    <img src="{{ asset('/dist/img/slide-depan/' . $product) }}?v{{ $version }}" alt="Product" />
                 </div>
             @endforeach
         </div>
@@ -210,7 +214,7 @@
                 <div class="col-6 col-sm-4 col-md-2 text-center mb-5 product-card" data-id="{{ $item->id }}">
                     <div
                         class="border-0 h-100 pointer d-flex flex-column justify-content-center align-items-center overflow-hidden">
-                        <img src="{{ asset('dist/img/product/' . $key . '.webp') }}?v={{ time() }}"
+                        <img src="{{ asset('dist/img/product/' . $key . '.webp') }}?v={{ $version }}"
                             class="img-fluid d-block w-100 product-img" alt="{{ $item->name }}" fetchpriority="high">
                         <div class="card-body mt-0">
                             <h4 class="card-text font-weight-bold text-uppercase">{{ $item->name }}</h4>
