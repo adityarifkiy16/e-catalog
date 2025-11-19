@@ -155,7 +155,7 @@
                     <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                         <img src="{{ asset('dist/img/slider/' . ($key + 1) . '.webp') }}?v={{ time() }}"
                             class="d-block w-100 img-fluid" alt="{{ 'Slide ' . ($key + 1) }}"
-                            style="object-fit: cover; object-position: center bottom; height: 65vh;">
+                            style="object-fit: cover; object-position: center bottom; height: 65vh;" fetchpriority="high">
                     </div>
                 @endfor
             </div>
@@ -211,7 +211,7 @@
                     <div
                         class="border-0 h-100 pointer d-flex flex-column justify-content-center align-items-center overflow-hidden">
                         <img src="{{ asset('dist/img/product/' . $key . '.webp') }}?v={{ time() }}"
-                            class="img-fluid d-block w-100 product-img" alt="{{ $item->name }}">
+                            class="img-fluid d-block w-100 product-img" alt="{{ $item->name }}" fetchpriority="high">
                         <div class="card-body mt-0">
                             <h4 class="card-text font-weight-bold text-uppercase">{{ $item->name }}</h4>
                             <div class="d-flex flex-row justify-content-center">
