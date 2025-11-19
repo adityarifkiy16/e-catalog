@@ -159,10 +159,7 @@
                         @php $img = 'dist/img/slider/' . ($key + 1); @endphp
 
                         <img src="{{ asset("$img-1600.webp") }}?v={{ $version }}"
-                            srcset="
-                                        {{ asset("$img-800.webp") }}?v={{ $version }} 800w,
-                                        {{ asset("$img-1600.webp") }}?v={{ $version }} 1600w
-                                    "
+                            srcset="{{ asset("$img-800.webp") }}?v={{ $version }} 800w,{{ asset("$img-1600.webp") }}?v={{ $version }} 1600w"
                             sizes="100vw" class="d-block w-100 img-fluid" alt="{{ 'Slide ' . ($key + 1) }}"
                             style="object-fit: cover; object-position: center bottom; height: 65vh;"
                             fetchpriority="{{ $key == 0 ? 'high' : 'low' }}">
@@ -190,10 +187,7 @@
                 <div class="slider-item">
                     @php $img = 'dist/img/slide-depan/' . pathinfo($product, PATHINFO_FILENAME); @endphp
                     <img src="{{ asset("$img-300.webp") }}?v={{ $version }}"
-                        srcset="
-                                    {{ asset("$img-300.webp") }}?v={{ $version }} 300w,
-                                    {{ asset("$img-600.webp") }}?v={{ $version }} 600w
-                                "
+                        srcset="{{ asset("$img-300.webp") }}?v={{ $version }} 300w,{{ asset("$img-600.webp") }}?v={{ $version }} 600w"
                         sizes="200px" alt="Product" />
 
                 </div>
@@ -203,10 +197,7 @@
                 <div class="slider-item">
                     @php $img = 'dist/img/slide-depan/' . pathinfo($product, PATHINFO_FILENAME); @endphp
                     <img src="{{ asset("$img-300.webp") }}?v={{ $version }}"
-                        srcset="
-                                    {{ asset("$img-300.webp") }}?v={{ $version }} 300w,
-                                    {{ asset("$img-600.webp") }}?v={{ $version }} 600w
-                                "
+                        srcset="{{ asset("$img-300.webp") }}?v={{ $version }} 300w,{{ asset("$img-600.webp") }}?v={{ $version }} 600w"
                         sizes="200px" alt="Product" />
 
                 </div>
@@ -239,10 +230,7 @@
                         @php $img = 'dist/img/product/' . $key; @endphp
 
                         <img src="{{ asset("$img-400.webp") }}?v={{ $version }}"
-                            srcset="
-                                        {{ asset("$img-200.webp") }}?v={{ $version }} 200w,
-                                        {{ asset("$img-400.webp") }}?v={{ $version }} 400w
-                                    "
+                            srcset="{{ asset("$img-200.webp") }}?v={{ $version }} 200w,{{ asset("$img-400.webp") }}?v={{ $version }} 400w"
                             sizes="(max-width: 768px) 50vw, 200px" class="img-fluid d-block w-100 product-img"
                             alt="{{ $item->name }}">
 
@@ -268,10 +256,7 @@
                             @php $img = 'dist/img/slider/1'; @endphp
 
                             <img src="{{ asset("$img-1600.webp") }}"
-                                srcset="
-                                            {{ asset("$img-800.webp") }} 800,
-                                            {{ asset("$img-1600.webp") }} 1600w
-                                        "
+                                srcset="{{ asset("$img-800.webp") }} 800,{{ asset("$img-1600.webp") }} 1600w"
                                 sizes="100vw" class="img-fluid w-100" alt="about">
                         </div>
                     </div>
@@ -349,10 +334,7 @@
                             @php $img = 'dist/img/slider/2'; @endphp
 
                             <img src="{{ asset("$img-1600.webp") }}"
-                                srcset="
-                                            {{ asset("$img-800.webp") }} 800w,
-                                            {{ asset("$img-1600.webp") }} 1600w
-                                        "
+                                srcset="{{ asset("$img-800.webp") }} 800w,{{ asset("$img-1600.webp") }} 1600w"
                                 sizes="100vw" class="img-fluid w-100" alt="about">
                         </div>
                     </div>
