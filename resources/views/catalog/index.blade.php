@@ -189,7 +189,7 @@
             @foreach ($products as $product)
                 <div class="slider-item">
                     @php $img = 'dist/img/slide-depan/' . pathinfo($product, PATHINFO_FILENAME); @endphp
-                    <img src="{{ asset("$img-600.webp") }}?v={{ $version }}"
+                    <img src="{{ asset("$img-300.webp") }}?v={{ $version }}"
                         srcset="
                                     {{ asset("$img-300.webp") }}?v={{ $version }} 300w,
                                     {{ asset("$img-600.webp") }}?v={{ $version }} 600w
@@ -202,7 +202,7 @@
                 <span>{{ $product }}</span>
                 <div class="slider-item">
                     @php $img = 'dist/img/slide-depan/' . pathinfo($product, PATHINFO_FILENAME); @endphp
-                    <img src="{{ asset("$img-600.webp") }}?v={{ $version }}"
+                    <img src="{{ asset("$img-300.webp") }}?v={{ $version }}"
                         srcset="
                                     {{ asset("$img-300.webp") }}?v={{ $version }} 300w,
                                     {{ asset("$img-600.webp") }}?v={{ $version }} 600w
