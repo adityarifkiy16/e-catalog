@@ -43,7 +43,7 @@
                                 class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center justify-content-between">
 
                                 <!-- Input Search -->
-                                <div class="mb-md-0 mb-2 flex-grow-1 mr-2 order-1 order-md-3" id="search-form">
+                                <div class="mb-md-0 mb-2 flex-grow-1 mr-2 order-2 order-md-3" id="search-form">
                                     <div class="input-group">
                                         <input type="text" id="search-input" class="form-control"
                                             placeholder="Search product..." value="{{ request()->query('search') }}"
@@ -83,23 +83,20 @@
                                             <i class="fa fa-arrow-down mr-1"></i> Catalog PDF
                                         </a>
                                     </div>
-
-                                    <!-- filter versi -->
-                                    <div class="mb-2 mb-md-0 text-center text-md-right mr-2 order-3" id="version-filter">
-                                        <select id="version-select"
-                                            class="form-control bg-danger text-white border-secondary">
-                                            @forelse ($versions as $v)
-                                                <option value="{{ $v->id }}"
-                                                    {{ request('version_id') == $v->id ? 'selected' : '' }}>
-                                                    Versi {{ $v->version }}
-                                                </option>
-                                            @empty
-                                                <option value="" disabled>Tidak ada versi</option>
-                                            @endforelse
-                                        </select>
-                                    </div>
                                 </div>
-
+                                <!-- filter versi -->
+                                <div class="mb-2 mb-md-0 text-center text-md-right mr-2 order-1" id="version-filter">
+                                    <select id="version-select" class="form-control bg-danger text-white border-secondary">
+                                        @forelse ($versions as $v)
+                                            <option value="{{ $v->id }}"
+                                                {{ request('version_id') == $v->id ? 'selected' : '' }}>
+                                                Versi {{ $v->version }}
+                                            </option>
+                                        @empty
+                                            <option value="" disabled>Tidak ada versi</option>
+                                        @endforelse
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
