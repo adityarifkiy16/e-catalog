@@ -9,30 +9,41 @@
     <title>@yield('title', 'Catalog - OSBORN')</title>
     <link rel="shortcut icon" href="{{ asset('dist/img/favicon.ico') }}" />
 
-
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Google Font: Poppins-->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
-    <!-- DataTables -->
-    <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <!-- Theme style -->
+
+    <!-- FontAwesome (delayed load) -->
+    <link rel="preload" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}" as="style">
+    <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}" media="print"
+        onload="this.media='all'">
+
+    <!-- AdminLTE -->
+    <link rel="preload" href="{{ asset('dist/css/adminlte.min.css') }}" as="style">
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
-    <!-- custom css -->
+
+    <!-- Custom style.css (IMPORTANT) -->
+    <link rel="preload" href="{{ asset('dist/css/style.css') }}?v={{ time() }}" as="style">
     <link rel="stylesheet" href="{{ asset('dist/css/style.css') }}?v={{ time() }}">
+
+    <!-- CSS yang tidak penting dibuat NON-blocking -->
+    <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}" media="print"
+        onload="this.media='all'">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}"
+        media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}"
+        media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}"
+        media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}" media="print"
+        onload="this.media='all'">
+
+    <!-- Animate CSS (non critical) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+        media="print" onload="this.media='all'">
+
 
     @vite(['resources/js/app.js', 'resources/js/catalog.js'])
 
