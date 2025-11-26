@@ -42,6 +42,19 @@ class ProductViewController extends Controller
     {
         $query = ProductView::with('product');
 
+        if ($request->has('filter') && $request->filter !== null) {
+            $filter = trim($request->filter);
+            if (str_contains($filter, ' - ')) {
+                [$start, $end] = array_map('trim', explode(' - ', $filter));
+                $start = \Carbon\Carbon::parse($start)->startOfDay();
+                $end =  \Carbon\Carbon::parse($end)->endOfDay();
+                $query->whereBetween('viewed_at', [$start, $end]);
+            } else {
+                $date =  \Carbon\Carbon::parse($filter)->toDateString();
+                $query->whereDate('viewed_at', $date);
+            }
+        }
+
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('product_name', fn($row) => $row->product->code ?? '-')

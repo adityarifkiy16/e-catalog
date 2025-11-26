@@ -164,9 +164,34 @@
             });
 
             $('#product-view-log-table').DataTable({
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                info: true,
+                autoWidth: false,
+                responsive: true,
+                order: [],
+                serverSide: false,
                 processing: true,
-                serverSide: true,
-                ajax: "{{ route('products.viewed.log') }}",
+                pageLength: 5,
+                lengthMenu: [5, 10, 25, 50, 100],
+                searching: false,
+                language: {
+                    paginate: {
+                        next: '<i class="fas fa-arrow-right"></i>',
+                        previous: '<i class="fas fa-arrow-left"></i>'
+                    }
+                },
+                ajax: {
+                    url: "{{ route('products.viewed.log') }}",
+                    type: "GET",
+                    data: function(data) {
+                        data.filter = $('#date-range').val();
+                    },
+                    dataSrc: function(response) {
+                        return response.data;
+                    }
+                },
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
@@ -235,11 +260,14 @@
                 $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format(
                     'YYYY-MM-DD'));
                 table.ajax.reload();
+                $('#product-view-log-table').DataTable().ajax.reload(); // >>> reload log
+
             });
 
             $('#date-range').on('cancel.daterangepicker', function(ev, picker) {
                 $(this).val('');
                 table.ajax.reload();
+                $('#product-view-log-table').DataTable().ajax.reload(); // >>> reload log
             });
 
             $('#btn-download').on('click', function() {
