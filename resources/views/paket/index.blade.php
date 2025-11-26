@@ -77,6 +77,24 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="detailModal">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Gambar Paket</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="img-thumbnail" id="modal-body-content"></div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
@@ -91,6 +109,15 @@
                 toast.onmouseenter = Swal.stopTimer;
                 toast.onmouseleave = Swal.resumeTimer;
             }
+        });
+
+        $(document).on('click', '.img-thumbnail', function(e) {
+            e.preventDefault();
+
+            var imgsrc = $(this).attr('src');
+
+            $('#detailModal').modal('show');
+            $('#modal-body-content').html('<img src="' + imgsrc + '" class="img-fluid">');
         });
 
         // ==== Delete Paket ====
