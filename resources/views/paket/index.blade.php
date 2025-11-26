@@ -18,16 +18,10 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-            <div class="card card-primary">
-                <div class="card-body table-responsive">
-                    <div class="d-flex justify-content-end align-items-center mb-3">
-                        <a href="{{ route('package.create') }}" class="btn btn-success ml-2">
-                            <i class="fa fa-plus"></i> Tambah Paket
-                        </a>
-                        <a href="{{ route('package.bulk.create') }}" class="btn btn-success ml-2">
-                            <i class="fa fa-plus"></i> Upload Bulk
-                        </a>
-                        <div class="d-flex justify-content-between align-items-center ml-2">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-end align-items-center">
+                        <div class="ml-2">
                             <select id="jenis-filter" class="form-control select2">
                                 <option value="">Semua Jenis</option>
                                 @foreach ($jenises as $jenis)
@@ -38,7 +32,7 @@
                         <form action="{{ route('package.index') }}" method="GET">
                             <div class="d-flex justify-content-between align-items-center ml-2">
                                 <select id="category-filter" class="form-control select2" name="filter">
-                                    <option value="">All Categories</option>
+                                    <option value="">Pilih Kategori</option>
                                 </select>
                                 <button class="btn btn-secondary ml-2" type="submit" id="btn-filter-category"
                                     style="width: 100px;">
@@ -46,7 +40,18 @@
                                 </button>
                             </div>
                         </form>
+                        <a href="{{ route('package.create') }}" class="btn btn-success ml-2">
+                            <i class="fa fa-plus"></i> Tambah
+                        </a>
+                        <a href="{{ route('package.bulk.create') }}" class="btn btn-primary ml-2">
+                            <i class="fa fa-upload"></i> Upload
+                        </a>
                     </div>
+                </div>
+            </div>
+
+            <div class="card card-primary">
+                <div class="card-body table-responsive">
                     <div class="mb-3" id="bulk-delete-wrapper" style="display:none;">
                         <button id="bulk-delete-btn" class="btn btn-danger">
                             <i class="fa fa-trash"></i> Hapus Terpilih

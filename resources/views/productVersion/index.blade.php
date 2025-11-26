@@ -20,30 +20,33 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <h3 class="h3 font-weight-bold">Daftar Produk Versi</h3>
-                        <div class="d-flex justify-content-end align-items-center">
+                    <div class="d-flex justify-content-end">
+                        <div class="d-flex justify-content-between align-items-center">
                             <form action="{{ route('product-versions.index') }}" method="GET">
                                 <div class="d-flex justify-content-between align-items-center ml-2">
-                                    <select id="category-filter" class="form-control select2" name="filter">
-                                        <option value="">All Categories</option>
-                                        @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}"
-                                                {{ old('category', request()->query('filter')) == $category->id ? 'selected' : '' }}>
-                                                {{ $category->name }} ({{ $category->jenis->name ?? 'Unknown' }})
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <select id="version" class="form-control select2" name="version">
-                                        <option value="">All Version</option>
-                                        @foreach ($versions as $item)
-                                            <option value="{{ $item->id }}"
-                                                {{ old('category', request()->query('version')) == $item->id ? 'selected' : '' }}>
-                                                {{ $item->version }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <button class="btn btn-secondary ml-2" type="submit" id="btn-filter-category"
+                                    <div class="mr-2">
+                                        <select id="category-filter" class="form-control select2" name="filter">
+                                            <option value="">All Categories</option>
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}"
+                                                    {{ old('category', request()->query('filter')) == $category->id ? 'selected' : '' }}>
+                                                    {{ $category->name }} ({{ $category->jenis->name ?? 'Unknown' }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mr-2">
+                                        <select id="version" class="form-control select2 mr-2" name="version">
+                                            <option value="">All Version</option>
+                                            @foreach ($versions as $item)
+                                                <option value="{{ $item->id }}"
+                                                    {{ old('category', request()->query('version')) == $item->id ? 'selected' : '' }}>
+                                                    {{ $item->version }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-secondary" type="submit" id="btn-filter-category"
                                         style="width: 100px;">
                                         Filter
                                     </button>
@@ -51,13 +54,13 @@
                             </form>
                             @if ($isAuthenticated && $user->hasPermission('management_product'))
                                 <a href="{{ route('product-versions.create.bulk') }}" class="btn btn-success ml-2">
-                                    <i class="fa fa-plus"></i> upload bulk produk
+                                    <i class="fa fa-plus"></i> <span class="text-capitalize">upload produk</span>
                                 </a>
                                 <a href="{{ route('product-versions.bulk.create-motif') }}" class="btn btn-primary ml-2">
-                                    <i class="fa fa-plus"></i> mockup/motif
+                                    <i class="fa fa-plus"></i> <span class="text-capitalize">upload desain</span>
                                 </a>
-                                <a href="{{ route('product-versions.create') }}" class="btn btn-primary ml-2">
-                                    <i class="fa fa-plus"></i> Sync Produk-Versi
+                                <a href="{{ route('product-versions.create') }}" class="btn btn-warning ml-2">
+                                    <i class="fa fa-upload"></i> <span class="text-capitalize">sync data</span>
                                 </a>
                             @endif
                         </div>

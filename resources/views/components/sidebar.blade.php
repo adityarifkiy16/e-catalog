@@ -30,10 +30,10 @@
 
         @if (auth()->check() && auth()->user()->hasPermission('management_product'))
             <li class="nav-header">
-                Produk
+                Master
             </li>
             @include('partials.sidebar._nav_tree', [
-                'title' => 'Manajemen Produk',
+                'title' => 'Produk',
                 'icon' => 'fas fa-box',
                 'items' => [
                     ['route' => 'jenis.index', 'label' => 'Jenis', 'icon' => 'far fa-circle'],
@@ -51,7 +51,7 @@
                 'icon' => 'fas fa-box',
                 'items' => [
                     ['route' => 'version.index', 'label' => 'Master Versi', 'icon' => 'far fa-circle'],
-                    ['route' => 'product-versions.index', 'label' => 'Produk Versi', 'icon' => 'far fa-circle'],
+                    ['route' => 'product-versions.index', 'label' => 'Produk & Versi', 'icon' => 'far fa-circle'],
                     ['route' => 'pdf.index', 'label' => 'Manajemen PDF', 'icon' => 'far fa-circle'],
                 ],
             ])

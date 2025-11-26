@@ -120,7 +120,7 @@
         </aside>
 
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper" style="background-color: #f5efe0">
+        <div class="content-wrapper" style="background-color: #F5F5F5">
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <div class="container-fluid">

@@ -18,30 +18,36 @@
 @section('content')
     <div class="row">
         <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-end">
+                        <form action="{{ route('categories.index') }}" method="GET">
+                            <div class="d-flex justify-content-between align-items-center ">
+                                <select id="jenis-filter" class="custom-select mr-2" name="filter">
+                                    <option value="">Semua Jenis</option>
+                                    @foreach ($jenises as $jenis)
+                                        <option value="{{ $jenis->id }}"
+                                            {{ old('jenis', request()->query('filter')) == $jenis->id ? 'selected' : '' }}>
+                                            {{ $jenis->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <button class="btn btn-secondary" type="submit" id="btn-filter-jenis"
+                                    style="width: 100px;">
+                                    Filter
+                                </button>
+                            </div>
+                        </form>
+                        <div class="d-flex justify-content-end align-items-center">
+                            <a href="{{ route('categories.create') }}" class="btn btn-success ml-2">
+                                <i class="fa fa-plus"></i> Tambah
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="card card-primary">
                 <div class="card-body table-responsive">
-
-                    <form action="{{ route('categories.index') }}" method="GET">
-                        <div class="d-flex justify-content-between align-items-center mb-3 ">
-                            <select id="jenis-filter" class="custom-select mr-2" name="filter">
-                                <option value="">--Pilih Jenis---</option>
-                                @foreach ($jenises as $jenis)
-                                    <option value="{{ $jenis->id }}"
-                                        {{ old('jenis', request()->query('filter')) == $jenis->id ? 'selected' : '' }}>
-                                        {{ $jenis->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <button class="btn btn-secondary" type="submit" id="btn-filter-jenis" style="width: 100px;">
-                                Filter
-                            </button>
-                        </div>
-                    </form>
-                    <div class="d-flex justify-content-end align-items-center mb-3">
-                        <a href="{{ route('categories.create') }}" class="btn btn-success ml-2">
-                            <i class="fa fa-plus"></i> Tambah Kategori
-                        </a>
-                    </div>
                     <table id="category-table" class="table table-bordered">
                         <thead>
                             <tr>

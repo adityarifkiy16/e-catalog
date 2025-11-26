@@ -18,14 +18,20 @@
 @section('content')
     <div class="row">
         <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-end">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <a href="{{ route('jenis.create') }}" class="btn btn-success ml-2">
+                                <i class="fa fa-plus"></i>
+                                Tambah
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="card card-primary">
                 <div class="card-body table-responsive">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <a href="{{ route('jenis.create') }}" class="btn btn-success ml-2">
-                            <i class="fa fa-plus"></i>
-                            Tambah Jenis
-                        </a>
-                    </div>
                     <table id="user-table" class="table table-bordered">
                         <thead>
                             <tr>

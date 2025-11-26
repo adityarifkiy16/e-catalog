@@ -20,8 +20,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <h3 class="h3 font-weight-bold">Daftar Produk</h3>
+                    <div class="d-flex justify-content-end">
                         <div class="d-flex justify-content-end align-items-center">
                             <form action="{{ route('products.index') }}" method="GET">
                                 <div class="d-flex justify-content-between align-items-center ml-2">
@@ -59,7 +58,6 @@
                                 <th>Nama Produk</th>
                                 <th>Jenis</th>
                                 <th>Kategori</th>
-                                <th>Foto</th>
                                 @if ($isAuthenticated && $user->hasPermission('management_product'))
                                     <th style="text-align: end; width: 2rem;">Action</th>
                                 @endif
@@ -296,20 +294,6 @@
                         orderable: false,
                         searchable: false,
                         render: function(data) {
-                            if (data.photo) {
-                                return `<div class="d-flex flex-wrap gap-2">
-                                    <img src="storage/${data.photo}" alt="${data.name}" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
-                                </div>`;
-                            } else {
-                                return '<span class="text-muted">No Photos</span>';
-                            }
-                        }
-                    },
-                    {
-                        data: null,
-                        orderable: false,
-                        searchable: false,
-                        render: function(data) {
                             return `
                         <div class="d-flex flex-row justify-content-end align-items-end">
                                 <a href="/products/${data.id}/edit" title="Edit Produk"><button type="button" class="btn btn-primary mx-2"><i class="fas fa-pencil-alt"></i></button></a>
@@ -318,20 +302,6 @@
                                             <input type="hidden" name="_method" value="DELETE">
                                             <button type="submit" class="btn btn-danger delete-task-button" data-user-id="${data.id}" title="Hapus Produk">
                                                 <i class="fas fa-trash"></i>
-                                            </button>
-                                </form>
-                                <form action="/products/reset-mockup/${data.id}" style="display: inline;" class="reset-mockup mx-2">
-                                            <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="btn btn-success" data-user-id="${data.id}" title="Reset Gambar 1">
-                                                <i class="fas fa-undo"></i>
-                                            </button>
-                                </form>
-                                <form action="/products/reset-motif/${data.id}" style="display: inline;" class="reset-motif">
-                                            <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="btn btn-warning" data-user-id="${data.id}" title="Reset Gambar 2">
-                                                <i class="fas fa-undo"></i>
                                             </button>
                                 </form>
                         </div>`;

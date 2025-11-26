@@ -9,7 +9,7 @@
     <div class="card d-flex px-4 py-2" style="border-radius: 1rem;">
         <x-breadcrumb :items="[
             ['label' => 'Home', 'url' => route('dashboard')],
-            ['label' => 'Master PDF Katalog', 'url' => route('products.index')],
+            ['label' => 'Master Versi', 'url' => route('products.index')],
         ]">
         </x-breadcrumb>
     </div>
@@ -20,8 +20,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <h3 class="h3 font-weight-bold">Daftar Versi Katalog</h3>
+                    <div class="d-flex justify-content-end">
                         <a href="{{ route('version.create') }}" class="btn btn-primary">Tambah Versi</a>
                     </div>
                 </div>
