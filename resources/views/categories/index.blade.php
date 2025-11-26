@@ -56,7 +56,7 @@
                                 <th>Jenis</th>
                                 <th>Tipe</th>
                                 <th>Jumlah Produk</th>
-                                <th>Foto</th>
+                                <th>3D Foto</th>
                                 <th style="text-align: end; width: 2rem;">Action</th>
                             </tr>
                         </thead>
