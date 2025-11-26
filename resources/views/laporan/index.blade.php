@@ -19,7 +19,7 @@
                     <button class="btn btn-success ml-2 text-capitalize" id="btn-download">Print Laporan</button>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-6 h-100">
                 <div class="card card-danger">
                     <div class="card-header">
                         <h3 class="card-title">Grafik Top produk</h3>
@@ -34,7 +34,7 @@
                     </div>
                     <div class="card-body">
                         <canvas id="pieChart"
-                            style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            style="min-height: 400px; height: 400px; max-height: 400px; max-width: 100%;"></canvas>
                     </div>
                 </div>
             </div>
@@ -60,6 +60,29 @@
                             <tbody>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card">
+                    <div class="card">
+                        <div class="card-header bg-warning text-white">
+                            <h4 class="card-title mb-0"><i class="fas fa-globe mr-2"></i> Log View Produk (Browser & IP)
+                            </h4>
+                        </div>
+                        <div class="card-body table-responsive">
+                            <table id="product-view-log-table" class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Produk</th>
+                                        <th>IP Address</th>
+                                        <th>Browser / User Agent</th>
+                                        <th>Dilihat Pada</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -106,7 +129,7 @@
                 order: [],
                 serverSide: false,
                 processing: true,
-                pageLength: 10,
+                pageLength: 5,
                 lengthMenu: [5, 10, 25, 50, 100],
                 searching: false,
                 language: {
@@ -139,6 +162,36 @@
                     }
                 ],
             });
+
+            $('#product-view-log-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('products.viewed.log') }}",
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'product_name',
+                        name: 'product_name'
+                    },
+                    {
+                        data: 'ip_address',
+                        name: 'ip_address'
+                    },
+                    {
+                        data: 'browser',
+                        name: 'browser'
+                    },
+                    {
+                        data: 'viewed_at',
+                        name: 'viewed_at'
+                    }
+                ]
+            });
+
 
             // Setelah DataTable load data, update Chart
             table.on('xhr.dt', function(e, settings, json, xhr) {

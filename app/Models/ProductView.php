@@ -11,6 +11,9 @@ class ProductView extends Model
     use HasFactory;
     protected $table = 'product_views';
     protected $guarded = ['id'];
+    protected $casts = [
+        'viewed_at' => 'datetime',
+    ];
 
     public function product()
     {

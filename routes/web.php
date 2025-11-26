@@ -129,6 +129,7 @@ Route::middleware("auth")->group(function () {
     // 4. Reports Management
     Route::middleware('permission:view_reports')->group(function () {
         Route::get("/products/viewed", [App\Http\Controllers\ProductViewController::class, "index"])->name("products.viewed");
+        Route::get("/products/viewed/log", [App\Http\Controllers\ProductViewController::class, "productViewLog"])->name("products.viewed.log");
         Route::get("/laporan", [App\Http\Controllers\ProductViewController::class, "laporan"])->name("laporan.index");
         Route::get("/laporan/download", [App\Http\Controllers\ProductViewController::class, "downloadLaporan"])->name("laporan.download");
     });

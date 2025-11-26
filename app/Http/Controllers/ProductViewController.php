@@ -38,6 +38,20 @@ class ProductViewController extends Controller
         }
     }
 
+    public function productViewLog(Request $request)
+    {
+        $query = ProductView::with('product');
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('product_name', fn($row) => $row->product->name ?? '-')
+            ->addColumn('browser', fn($row) => $row->user_agent)
+            ->addColumn('ip_address', fn($row) => $row->ip_address)
+            ->addColumn('viewed_at', fn($row) => $row->viewed_at->format('d M Y H:i:s'))
+            ->toJson();
+    }
+
+
     // Laporan
     public function laporan()
     {
