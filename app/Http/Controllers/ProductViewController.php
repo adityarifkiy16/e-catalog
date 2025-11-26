@@ -44,7 +44,7 @@ class ProductViewController extends Controller
 
         return DataTables::of($query)
             ->addIndexColumn()
-            ->addColumn('product_name', fn($row) => $row->product->name ?? '-')
+            ->addColumn('product_name', fn($row) => $row->product->code ?? '-')
             ->addColumn('browser', fn($row) => $row->user_agent)
             ->addColumn('ip_address', fn($row) => $row->ip_address)
             ->addColumn('viewed_at', fn($row) => $row->viewed_at->format('d M Y H:i:s'))
