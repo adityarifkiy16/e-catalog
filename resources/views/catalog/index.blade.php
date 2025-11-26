@@ -222,7 +222,7 @@
         <!-- Product Categories -->
         <div class="row justify-content-center">
             @foreach ($jenis as $key => $item)
-                <div class="col-6 col-sm-4 col-md-2 text-center mb-5 product-card" data-id="{{ $item->id }}">
+                <div class="col-6 col-sm-4 col-md-2 text-center mb-5 jenis-card" data-id="{{ $item->id }}">
                     <div
                         class="border-0 h-100 pointer d-flex flex-column justify-content-center align-items-center overflow-hidden">
                         @php $img = 'dist/img/product/' . $key; @endphp
@@ -397,7 +397,7 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            $('.product-card').click(function() {
+            $('.jenis-card').click(function() {
                 var jenisId = $(this).data('id');
                 window.location.href = '/catalog?jenis=' + jenisId;
             });
