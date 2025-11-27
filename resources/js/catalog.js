@@ -117,27 +117,55 @@ $(document).ready(function () {
             newImages = [...images, ...wallpanelImages];
         }
 
+        // Lazy Loading observer
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const img = $(entry.target);
+                        img.attr('src', img.data('src')); // load image
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { rootMargin: '100px' }
+        );
+
         newImages.forEach((img, i) => {
             const activeClass = i === 0 ? 'active' : '';
+
+            // FULL image lazy, start with placeholder
             $('#carousel-product-image').append(`
                 <div class="carousel-item ${activeClass}">
-                    <img src="${img}" class="img-fluid d-block mx-auto"
+                    <img data-src="${img}" 
+                        src="/dist/img/placeholder.png"
+                        class="img-fluid d-block mx-auto lazy-modal-img"
                         style="width:100%;max-width:400px;aspect-ratio:1/1;object-fit:cover;border-radius:8px;border:1px solid #ccc;">
                 </div>
             `);
 
+            // Thumbnail tetap load cepat (kecil)
             $('#thumbnailGallery').append(`
                 <div class="col-2 mb-0 d-flex justify-content-center">
                     <div style="height:90%">
-                        <img src="${img}" 
-                            class="img-thumbnail thumbnail-image p-0 w-100 h-100"
+                        <img 
+                            data-src="${img}" 
+                            src="/dist/img/placeholder.png" 
+                            class="img-thumbnail thumbnail-image lazy-modal-img p-0 w-100 h-100"
                             style="aspect-ratio:1/1;border:1px solid #ccc;border-radius:8px;object-fit:cover;cursor:pointer;"
-                            data-index="${i}">
+                            data-index="${i}"
+                        >
                     </div>
                 </div>
             `);
         });
 
+        // Observasi semua img baru
+        $('.lazy-modal-img').each(function () {
+            observer.observe(this);
+        });
+
+        // Hide arrows if only 1 image
         if (newImages.length <= 1) {
             $('#carouselProduct .carousel-control-next, #carouselProduct .carousel-control-prev').addClass('d-none');
         } else {
@@ -146,7 +174,7 @@ $(document).ready(function () {
 
         $('#carouselProduct').carousel({ interval: 3000, pause: false });
 
-        // klik thumbnail
+        // Thumbnail click
         let carouselTimeout;
         $('#thumbnailGallery')
             .off('click')

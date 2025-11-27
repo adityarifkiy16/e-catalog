@@ -1,13 +1,4 @@
 export function bindDownloadButtons() {
-    // $(document)
-    //     .off('click', '.modalDownload')
-    //     .on('click', '.modalDownload', function (e) {
-    //         e.preventDefault();
-    //         const productId = $(this).data('id');
-    //         const url = 'catalog/pdf/product?id=' + encodeURIComponent(productId);
-    //         handleDownload(this, url);
-    //     });
-
     // === Checkbox logic ===
     let selectedCategories = [];
 
@@ -40,7 +31,6 @@ export function bindDownloadButtons() {
             $('#all-cat').prop('checked', true);
             selectedCategories = [''];
         }
-        console.log(selectedCategories);
     });
 
     $(document)
