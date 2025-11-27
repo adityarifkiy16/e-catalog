@@ -138,7 +138,7 @@ $(document).ready(function () {
             $('#carousel-product-image').append(`
                 <div class="carousel-item ${activeClass}">
                     <img data-src="${img}" 
-                        src="/dist/img/placeholder.png"
+                        src="/dist/img/placeholder.webp"
                         class="img-fluid d-block mx-auto lazy-modal-img"
                         style="width:100%;max-width:400px;aspect-ratio:1/1;object-fit:cover;border-radius:8px;border:1px solid #ccc;">
                 </div>
@@ -150,7 +150,7 @@ $(document).ready(function () {
                     <div style="height:90%">
                         <img 
                             data-src="${img}" 
-                            src="/dist/img/placeholder.png" 
+                            src="/dist/img/placeholder.webp" 
                             class="img-thumbnail thumbnail-image lazy-modal-img p-0 w-100 h-100"
                             style="aspect-ratio:1/1;border:1px solid #ccc;border-radius:8px;object-fit:cover;cursor:pointer;"
                             data-index="${i}"

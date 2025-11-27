@@ -167,7 +167,7 @@ Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${n}
                 `;$(n).append(r)}}):($(n).append('<div class="text-muted">Tidak ada varian</div>'),$(".paket").hide())}function W(){$("#version-select").on("change",function(){const e=$(this).val()||null;s.version=e,V(),w()})}function K({selectedJenis:e=null,hasCategory:n=!1,isRenderTypes:t=!1}){const a=$("#filter-container"),o=$("#category-container"),i=$("#catalog-col"),g=$(window).width()<768;if(a.removeClass("d-none"),o.removeClass("d-none"),i.removeClass("col-md-12 col-md-9"),t){a.addClass("d-none"),o.addClass("d-none"),i.addClass("col-md-12");return}if(e==1){a.addClass("d-none"),o.addClass("d-none"),i.addClass("col-md-12");return}if(!n){a.addClass("d-none"),o.addClass("d-none"),i.addClass("col-md-12");return}g?(a.addClass("d-none"),o.removeClass("d-none")):(a.removeClass("d-none"),o.removeClass("d-none")),i.addClass("col-md-9")}$(document).ready(function(){const e=new URLSearchParams(window.location.search),n=e.get("jenis");e.get("version");const t=e.get("category");let a,o,i=!1;A({selectedJenis:n,category:t}),w(),K({selectedJenis:n,hasCategory:t,isRenderTypes:!1}),$(window).on("resize",()=>K({selectedJenis:n,hasCategory:t,isRenderTypes:!1})),$("#search-input").on("input",function(){clearTimeout(a),a=setTimeout(()=>{V(),w()},500)}),$(window).on("scroll",function(){clearTimeout(o),o=setTimeout(async()=>{if(i||Y())return;const r=$(window).scrollTop(),l=$(window).height(),d=$(document).height();if(r+l>=d-150){i=!0;try{I(!1),await w()}finally{i=!1}}},200)});function g(r,l=[],d=""){$("#carousel-product-image").empty(),$("#thumbnailGallery").empty();let m=r||[];(d==null?void 0:d.toLowerCase())==="uv board"&&l.length&&(m=[...r,...l]);const f=new IntersectionObserver(h=>{h.forEach(p=>{if(p.isIntersecting){const y=$(p.target);y.attr("src",y.data("src")),f.unobserve(p.target)}})},{rootMargin:"100px"});m.forEach((h,p)=>{const y=p===0?"active":"";$("#carousel-product-image").append(`
                 <div class="carousel-item ${y}">
                     <img data-src="${h}" 
-                        src="/dist/img/placeholder.png"
+                        src="/dist/img/placeholder.webp"
                         class="img-fluid d-block mx-auto lazy-modal-img"
                         style="width:100%;max-width:400px;aspect-ratio:1/1;object-fit:cover;border-radius:8px;border:1px solid #ccc;">
                 </div>
@@ -176,7 +176,7 @@ Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${n}
                     <div style="height:90%">
                         <img 
                             data-src="${h}" 
-                            src="/dist/img/placeholder.png" 
+                            src="/dist/img/placeholder.webp" 
                             class="img-thumbnail thumbnail-image lazy-modal-img p-0 w-100 h-100"
                             style="aspect-ratio:1/1;border:1px solid #ccc;border-radius:8px;object-fit:cover;cursor:pointer;"
                             data-index="${p}"
@@ -248,7 +248,7 @@ Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${n}
             `).join("")}</li>`}function le(e){const n={"PVC Board":()=>{$("#category-container").addClass("d-none"),$(".category-modal-container").text("Tidak ada kategori")},Wallboard:()=>_("Motif"),"UV Board":()=>_("Motif"),Wallpanel:()=>_("Motif"),Aksesoris:()=>_("Ukuran"),default:()=>_("Kategori")};(n[e]||n.default)()}function G({selectedJenis:e=null,hasCategory:n=!1,isRenderTypes:t=!1}){const a=$("#filter-container"),o=$("#category-container"),i=$("#catalog-col"),g=$(window).width()<768;if(a.removeClass("d-none"),o.removeClass("d-none"),i.removeClass("col-md-12 col-md-9"),t){a.addClass("d-none"),o.addClass("d-none"),i.addClass("col-md-12");return}if(e==1){a.addClass("d-none"),o.addClass("d-none"),i.addClass("col-md-12");return}if(!n){a.addClass("d-none"),o.addClass("d-none"),i.addClass("col-md-12");return}g?(a.addClass("d-none"),o.removeClass("d-none")):(a.removeClass("d-none"),o.removeClass("d-none")),i.addClass("col-md-9")}$(document).ready(function(){const e=new URLSearchParams(window.location.search),n=e.get("jenis");e.get("version");const t=e.get("category");let a,o,i=!1;A({selectedJenis:n,category:t}),w(),G({selectedJenis:n,hasCategory:t,isRenderTypes:!1}),$(window).on("resize",()=>G({selectedJenis:n,hasCategory:t,isRenderTypes:!1})),$("#search-input").on("input",function(){clearTimeout(a),a=setTimeout(()=>{V(),w()},500)}),$(window).on("scroll",function(){clearTimeout(o),o=setTimeout(async()=>{if(i||Y())return;const r=$(window).scrollTop(),l=$(window).height(),d=$(document).height();if(r+l>=d-150){i=!0;try{I(!1),await w()}finally{i=!1}}},200)});function g(r,l=[],d=""){$("#carousel-product-image").empty(),$("#thumbnailGallery").empty();let m=r||[];(d==null?void 0:d.toLowerCase())==="uv board"&&l.length&&(m=[...r,...l]);const f=new IntersectionObserver(h=>{h.forEach(p=>{if(p.isIntersecting){const y=$(p.target);y.attr("src",y.data("src")),f.unobserve(p.target)}})},{rootMargin:"100px"});m.forEach((h,p)=>{const y=p===0?"active":"";$("#carousel-product-image").append(`
                 <div class="carousel-item ${y}">
                     <img data-src="${h}" 
-                        src="/dist/img/placeholder.png"
+                        src="/dist/img/placeholder.webp"
                         class="img-fluid d-block mx-auto lazy-modal-img"
                         style="width:100%;max-width:400px;aspect-ratio:1/1;object-fit:cover;border-radius:8px;border:1px solid #ccc;">
                 </div>
@@ -257,7 +257,7 @@ Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${n}
                     <div style="height:90%">
                         <img 
                             data-src="${h}" 
-                            src="/dist/img/placeholder.png" 
+                            src="/dist/img/placeholder.webp" 
                             class="img-thumbnail thumbnail-image lazy-modal-img p-0 w-100 h-100"
                             style="aspect-ratio:1/1;border:1px solid #ccc;border-radius:8px;object-fit:cover;cursor:pointer;"
                             data-index="${p}"
