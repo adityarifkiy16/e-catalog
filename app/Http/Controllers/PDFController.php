@@ -53,6 +53,7 @@ class PDFController extends Controller
         $request->validate([
             'version_id' => 'required|exists:m_versions,id',
             'jenis_id' => 'required|exists:m_jenis,id',
+            'type_id' => 'nullable|exists:m_types,id',
         ]);
 
         $version = MVersion::find($request->version_id);
@@ -62,6 +63,9 @@ class PDFController extends Controller
             ->where('version_id', $version->id)
             ->whereHas('product.category', function ($query) use ($request) {
                 $query->where('jenis_id', $request->jenis_id);
+                if ($request->type_id) {
+                    $query->where('type_id', $request->type_id);
+                }
             })
             ->join('t_products', 't_products.id', '=', 't_product_m_versions.product_id')
             ->orderBy('t_products.code', 'asc')
@@ -107,6 +111,7 @@ class PDFController extends Controller
         $exists = DB::table('generated_pdfs')
             ->where('version_id', $version->id)
             ->where('jenis_id', $request->jenis_id)
+            ->where('type_id', $request->type_id)
             ->first();
 
         if ($exists && file_exists(storage_path('app/public/' . $exists->path))) {
@@ -128,10 +133,13 @@ class PDFController extends Controller
         foreach ($grouped as $cat => $p) {
             // Bookmark sisi kiri PDF
             $mpdf->Bookmark($cat, 0);
+            $thumb = $p->first()?->product?->category?->types?->thumbnail;
+            $thumbPath = $thumb ? storage_path('app/public/' . $thumb) : null;
             $html = view('product.catalog', [
                 'categoryName' => $cat,
                 'products' => $p,
                 'version' => $version,
+                'thumb' => $thumbPath
             ])->render();
 
             $mpdf->WriteHTML($html);
@@ -139,7 +147,7 @@ class PDFController extends Controller
             if ($cat !== $grouped->keys()->last()) {
                 $mpdf->AddPage();
             }
-            $filename = 'Osborn-' . $p[0]->product->category->jenis->name . '-v' . $version->version . '.pdf';
+            $filename = 'Osborn-' . $p[0]->product->category->jenis->name . '-v' . $version->version . $p[0]->product->category->types?->name . '.pdf';
         }
 
         // 🔹 Hapus file sementara
@@ -164,7 +172,8 @@ class PDFController extends Controller
         DB::table('generated_pdfs')->insert([
             'path' => $relativePath,
             'version_id' => $version->id,
-            'jenis_id' => $request->jenis_id
+            'jenis_id' => $request->jenis_id,
+            'type_id' => $request->type_id
         ]);
 
         return response()->json([
@@ -181,6 +190,7 @@ class PDFController extends Controller
         $request->validate([
             'version_id' => 'nullable|exists:m_versions,id',
             'jenis_id' => 'required|exists:m_jenis,id',
+            'type_id' => 'nullable|exists:m_types,id',
             'category' => 'nullable|array',
             'category.*' => 'exists:m_categories,id'
         ]);
@@ -190,6 +200,7 @@ class PDFController extends Controller
         if (!$request->has('category')) {
             $exists = GeneratePdf::where('version_id', $version->id)
                 ->where('jenis_id', $request->jenis_id)
+                ->Where('type_id', $request->type_id)
                 ->first();
 
             if ($exists && file_exists(storage_path('app/public/' . $exists->path))) {
@@ -257,7 +268,6 @@ class PDFController extends Controller
             $grouped = $pvs->groupBy(function ($pv) {
                 return $pv->product->category->name ?? 'Tanpa Kategori';
             });
-
             // 🔹 Inisialisasi mPDF
             $mpdf = new Mpdf([
                 'format' => 'A4-L',

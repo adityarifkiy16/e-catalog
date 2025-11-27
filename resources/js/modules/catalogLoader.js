@@ -4,8 +4,6 @@ import { renderMockup } from './renderMockup';
 import { showLoading, hideLoading, setCategory } from './utils';
 import { toggleCategoryLayout } from '../catalog';
 
-export { state };
-
 // ===== Global State =====
 let state = {
     selectedJenis: null,
@@ -335,3 +333,5 @@ function applyLabelMap(name) {
     };
     (labelMap[name] || labelMap.default)();
 }
+
+export { state };

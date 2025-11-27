@@ -18,7 +18,7 @@
         </tr>
     </table>
 
-    @if ($thumb)
+    @if (isset($thumb) && $thumb)
         <div class="mockup-page" style="page-break-after: always; text-align:center; margin-top:40px;">
             <h2 style="margin-bottom:20px;">Preview Mockup</h2>
             <img src="{{ $thumb }}" style="max-width: 400px; height: auto; margin-bottom: 10px;">

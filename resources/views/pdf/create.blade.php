@@ -36,10 +36,15 @@
                         <select class="form-control select2" name="version_id">
                             <option value="">Pilih Versi</option>
                             @foreach ($version as $item)
-                                <option value="{{ $item->id }}" {{ old('jenis_id') == $item->id ? 'selected' : '' }}>
+                                <option value="{{ $item->id }}" {{ old('version_id') == $item->id ? 'selected' : '' }}>
                                     {{ $item->version }}
                                 </option>
                             @endforeach
+                        </select>
+
+                        <label class="mt-1"><i class="fas fa-user-tag"></i> Type</label>
+                        <select class="form-control select2" name="type_id" id="type_id">
+                            <option value="">Pilih Tipe</option>
                         </select>
 
                         <button class="btn btn-primary mt-3" type="submit" id="btn-submit">Kirim</button>
@@ -127,24 +132,24 @@
             $("#jenis_id").on('change', function() {
                 var jenisId = $(this).val();
                 $.ajax({
-                    url: "{{ url('categories/by-jenis') }}/" + jenisId,
+                    url: "{{ url('/types/by-jenis/') }}/" + jenisId,
                     type: 'GET',
                     data: {
                         jenis_id: jenisId
                     },
                     success: function(data) {
                         if (data.length > 0) {
-                            $('#category_id').prop('disabled', false);
-                            $('#category_id').html(
-                                '<option value="">Pilih Kategori</option>'); // reset type
+                            $('#type_id').prop('disabled', false);
+                            $('#type_id').html(
+                                '<option value="">Pilih tipe</option>'); // reset type
                             $.each(data, function(key, item) {
-                                $('#category_id').append('<option value="' + item.id +
+                                $('#type_id').append('<option value="' + item.id +
                                     '">' + item.name + '</option>');
                             });
                         } else {
-                            $('#category_id').prop('disabled', true);
-                            $('#category_id').html(
-                                '<option value="">Tidak ada kategori tersedia</option>');
+                            $('#type_id').prop('disabled', true);
+                            $('#type_id').html(
+                                '<option value="">Tidak ada tipe tersedia</option>');
                         }
                     }
                 });

@@ -1,3 +1,5 @@
+import { state } from './catalogLoader';
+
 export function bindDownloadButtons() {
     // === Checkbox logic ===
     let selectedCategories = [];
@@ -38,9 +40,11 @@ export function bindDownloadButtons() {
         .on('click', '#btn-download', function (e) {
             e.preventDefault();
 
+            const selectedType = state.type;
             const selectedJenis = new URLSearchParams(window.location.search).get('jenis');
             const selectedVersion = $('#version-select').val();
 
+            console.log(selectedType, selectedJenis, selectedVersion);
             if (!selectedVersion) {
                 alert('Silakan pilih versi terlebih dahulu.');
                 return;
@@ -53,6 +57,7 @@ export function bindDownloadButtons() {
             }
             if (selectedJenis) params.append('jenis_id', selectedJenis);
             if (selectedVersion) params.append('version_id', selectedVersion);
+            if (selectedType) params.append('type_id', selectedType);
 
             const url = `/catalog/pdf?${params.toString()}`;
 
