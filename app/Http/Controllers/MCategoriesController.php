@@ -6,7 +6,6 @@ use App\Models\MJenis;
 use App\Models\MCategories;
 use App\Services\ImageServices;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
 class MCategoriesController extends Controller
@@ -19,9 +18,6 @@ class MCategoriesController extends Controller
         $this->imageServices = $imageServices;
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         $arr['jenises'] = MJenis::all();
@@ -53,18 +49,12 @@ class MCategoriesController extends Controller
         return view('categories.index', $arr);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $arr['jenis'] = MJenis::all();
         return view('categories.create', $arr);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -76,7 +66,7 @@ class MCategoriesController extends Controller
             'jenis_id' => 'required|exists:m_jenis,id',
             'type_id' => 'nullable|exists:m_types,id',
             'display_style' => 'nullable|string|max:255|in:square,rectangle',
-            'order' => 'nullable|numeric',
+            'order' => 'required|numeric',
         ]);
 
         $data = [
@@ -113,17 +103,11 @@ class MCategoriesController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(MCategories $mCategories)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(MCategories $categories)
     {
         $arr['categories'] = $categories;
@@ -132,9 +116,6 @@ class MCategoriesController extends Controller
         return view('categories.edit', $arr);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, MCategories $categories)
     {
         $request->validate([
@@ -178,7 +159,6 @@ class MCategoriesController extends Controller
 
             $existingImagesIds = $request->existing_images ? json_decode($request->existing_images, true) : [];
             $existingToDelete = $categories->images()->whereNotIn('id', $existingImagesIds)->get();
-            // dd($existingToDelete);
             if ($existingToDelete->count() > 0) {
                 foreach ($existingToDelete as $oldImage) {
                     $oldPath = storage_path('app/public/' . $oldImage->path);
@@ -206,9 +186,6 @@ class MCategoriesController extends Controller
         ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(MCategories $categories)
     {
 
