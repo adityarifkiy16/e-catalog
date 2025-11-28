@@ -100,32 +100,19 @@
                     success: function(response) {
                         console.log(response);
                         if (response.status == "success") {
-                            Toast.fire({
-                                icon: 'success',
-                                title: response.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
+                            toast.success(response.message);
                             setTimeout(() => {
                                 location.reload();
                             }, 1500);
                         } else {
-                            Toast.fire({
-                                icon: 'error',
-                                title: response.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
+                            toast.error(response.message);
+                            $("#btn-submit").prop('disabled', false).html('Kirim');
                         }
                     },
                     error: function(response) {
                         if (response.status === 422) {
-                            Toast.fire({
-                                icon: 'error',
-                                title: response.responseJSON.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
+                            toast.error(response.responseJSON.message);
+                            $("#btn-submit").prop('disabled', false).html('Kirim');
                         }
                     }
                 });
@@ -135,10 +122,7 @@
     @if (session('success'))
         <script>
             $(document).ready(function() {
-                Toast.fire({
-                    icon: 'success',
-                    title: "{{ session('success') }}",
-                })
+                toast.success("{{ session('success') }}");
             });
         </script>
     @endif
@@ -146,10 +130,7 @@
     @if (session('error'))
         <script>
             $(document).ready(function() {
-                Toast.fire({
-                    icon: 'error',
-                    title: "{{ session('error') }}",
-                })
+                toast.error("{{ session('error') }}");
             });
         </script>
     @endif

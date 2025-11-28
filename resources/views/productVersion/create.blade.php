@@ -57,14 +57,6 @@
             });
         });
 
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-        });
-
         $('#form-tambah').on('submit', function(e) {
             e.preventDefault();
             const $btn = $("#btn-submit");
@@ -84,24 +76,15 @@
                 processData: false,
                 success: function(response) {
                     if (response.status === "success") {
-                        Toast.fire({
-                            icon: 'success',
-                            title: response.message
-                        });
+                        toast.success(response.message);
                         setTimeout(() => location.reload(), 1500);
                     } else {
-                        Toast.fire({
-                            icon: 'error',
-                            title: response.message
-                        });
+                        toast.error(response.message || 'terjadi kesalahan');
                         $btn.prop('disabled', false).html('Simpan');
                     }
                 },
                 error: function(response) {
-                    Toast.fire({
-                        icon: 'error',
-                        title: response.responseJSON.message || 'Terjadi kesalahan.'
-                    });
+                    toast.error(response.responseJSON.message || 'terjadi kesalahan');
                     $btn.prop('disabled', false).html('Simpan');
                 }
             });

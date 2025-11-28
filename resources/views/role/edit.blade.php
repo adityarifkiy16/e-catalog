@@ -69,18 +69,6 @@
 @push('scripts')
     <script>
         Dropzone.autoDiscover = false;
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            },
-        });
-
         $(document).ready(function() {
 
             // ✅ Jika tidak ada file di Dropzone, jalankan AJAX biasa
@@ -99,20 +87,14 @@
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        Toast.fire({
-                            icon: 'success',
-                            title: response.message
-                        });
+                        toast.success(response.message);
                         setTimeout(() => {
                             window.location.href =
                                 "{{ route('role.index') }}";
                         }, 1500);
                     },
                     error: function(xhr) {
-                        Toast.fire({
-                            icon: 'error',
-                            title: xhr.responseJSON?.message || 'Terjadi kesalahan.'
-                        });
+                        toast.success(xhr.responseJSON.message || 'Terjadi kesalahan.');
                         $("#btn-submit").prop("disabled", false).html("Submit");
                     }
                 });
@@ -123,10 +105,7 @@
     @if (session('success'))
         <script>
             $(document).ready(function() {
-                Toast.fire({
-                    icon: 'success',
-                    title: "{{ session('success') }}",
-                })
+                toast.success("{{ session('success') }}");
             });
         </script>
     @endif
@@ -134,10 +113,7 @@
     @if (session('error'))
         <script>
             $(document).ready(function() {
-                Toast.fire({
-                    icon: 'error',
-                    title: "{{ session('error') }}",
-                })
+                toast.error("{{ session('error') }}");
             });
         </script>
     @endif

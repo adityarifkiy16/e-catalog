@@ -99,18 +99,6 @@
 
 @push('scripts')
     <script type="text/javascript">
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
-
         $(document).on('click', '.img-thumbnail', function(e) {
             e.preventDefault();
 
@@ -195,7 +183,6 @@
                         jenis_id: jenisId
                     },
                     success: function(response) {
-                        console.log(response);
                         let options = '';
                         response.forEach(function(category) {
                             options += '<option value="' + category.id + '">' + category
@@ -360,19 +347,13 @@
 
     @if (session('success'))
         <script>
-            Toast.fire({
-                icon: 'success',
-                title: '{{ session('success') }}'
-            });
+            toast.success("{{ session('success') }}");
         </script>
     @endif
 
     @if (session('error'))
         <script>
-            Toast.fire({
-                icon: 'error',
-                title: '{{ session('error') }}'
-            });
+            toast.error("{{ session('error') }}");
         </script>
     @endif
 @endpush

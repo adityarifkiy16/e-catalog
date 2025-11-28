@@ -100,24 +100,15 @@
                     processData: false,
                     success: function(response) {
                         if (response.status === "success") {
-                            Toast.fire({
-                                icon: 'success',
-                                title: response.message
-                            });
+                            toast.success(response.message);
                             setTimeout(() => location.reload(), 1500);
                         } else {
-                            Toast.fire({
-                                icon: 'error',
-                                title: response.message
-                            });
+                            toast.error(response.message || 'terjadi kesalahan');
                             $("#btn-submit").prop('disabled', false).html('Kirim');
                         }
                     },
                     error: function(response) {
-                        Toast.fire({
-                            icon: 'error',
-                            title: response.responseJSON?.message || 'Terjadi kesalahan'
-                        });
+                        toast.error(response.responseJSON.message || 'terjadi kesalahan');
                         $("#btn-submit").prop('disabled', false).html('Kirim');
                     }
                 });
@@ -129,10 +120,7 @@
     @if (session('success'))
         <script>
             $(document).ready(function() {
-                Toast.fire({
-                    icon: 'success',
-                    title: "{{ session('success') }}",
-                })
+                toast.success("{{ session('success') }}");
             });
         </script>
     @endif
@@ -140,10 +128,7 @@
     @if (session('error'))
         <script>
             $(document).ready(function() {
-                Toast.fire({
-                    icon: 'error',
-                    title: "{{ session('error') }}",
-                })
+                toast.error("{{ session('error') }}");
             });
         </script>
     @endif

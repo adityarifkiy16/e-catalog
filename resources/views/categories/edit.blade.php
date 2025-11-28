@@ -84,18 +84,7 @@
 
 @push('scripts')
     <script>
-        Dropzone.autoDiscover = false;
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            },
-        });
+        Dropzone.autoDiscover = false
         $(document).ready(function() {
             $('#jenis_id').on('change', function() {
                 var jenisId = $(this).val();
@@ -215,20 +204,15 @@
                     });
 
                     dropzoneInstance.on("successmultiple", function(files, response) {
-                        Toast.fire({
-                            icon: 'success',
-                            title: response.message
-                        });
+                        toast.success(response.message);
                         setTimeout(function() {
                             window.location.href = "{{ route('categories.index') }}";
                         }, 1500);
                     });
 
                     dropzoneInstance.on("errormultiple", function(files, response) {
-                        Toast.fire({
-                            icon: 'error',
-                            title: response.message || 'Terjadi kesalahan'
-                        });
+                        toast.error(response.message);
+                        this.removeAllFiles(true);
                     });
                 }
             });
@@ -271,19 +255,13 @@
                         contentType: false,
                         processData: false,
                         success: function(response) {
-                            Toast.fire({
-                                icon: 'success',
-                                title: response.message
-                            });
+                            toast.success(response.message);
                             setTimeout(function() {
                                 window.location.reload();
                             }, 1500);
                         },
                         error: function(xhr) {
-                            Toast.fire({
-                                icon: 'error',
-                                title: xhr.responseJSON?.message || 'Terjadi kesalahan.'
-                            });
+                            toast.error(xhr.responseJSON?.message || 'Terjadi kesalahan.');
                             $("#btn-submit").prop("disabled", false).html("Submit");
                         }
                     });
@@ -294,10 +272,7 @@
     @if (session('success'))
         <script>
             $(document).ready(function() {
-                Toast.fire({
-                    icon: 'success',
-                    title: "{{ session('success') }}",
-                })
+                toast.success("{{ session('success') }}");
             });
         </script>
     @endif
@@ -305,10 +280,7 @@
     @if (session('error'))
         <script>
             $(document).ready(function() {
-                Toast.fire({
-                    icon: 'error',
-                    title: "{{ session('error') }}",
-                })
+                toast.success("{{ session('error') }}");
             });
         </script>
     @endif

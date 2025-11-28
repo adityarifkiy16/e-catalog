@@ -121,17 +121,6 @@
     <script>
         // Initialize Dropzone
         Dropzone.autoDiscover = false;
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
 
         $(document).ready(function() {
             $('#alertModal').modal('show');
@@ -190,13 +179,7 @@
                                 2000 : 0;
 
                             setTimeout(() => {
-                                Toast.fire({
-                                    icon: 'success',
-                                    title: response.message,
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                });
-
+                                toast.success(response.message);
                                 setTimeout(function() {
                                     window.location.href =
                                         "{{ route('package.index') }}";
@@ -204,24 +187,13 @@
                             }, delay);
 
                         } else {
-                            Toast.fire({
-                                icon: 'error',
-                                title: response.responseJSON ? response.responseJSON
-                                    .message : 'Terjadi kesalahan',
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
+                            toast.error(response.message);
                         }
                         this.removeAllFiles(true);
                     });
 
                     this.on("errormultiple", function(files, response) {
-                        Toast.fire({
-                            icon: 'error',
-                            title: response,
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
+                        toast.error(response.message);
                         files.forEach(file => {
                             this.removeFile(file);
                         });
@@ -233,10 +205,7 @@
     @if (session('success'))
         <script>
             $(document).ready(function() {
-                Toast.fire({
-                    icon: 'success',
-                    title: "{{ session('success') }}",
-                })
+                toast.success("{{ session('success') }}");
             });
         </script>
     @endif
@@ -244,10 +213,7 @@
     @if (session('error'))
         <script>
             $(document).ready(function() {
-                Toast.fire({
-                    icon: 'error',
-                    title: "{{ session('error') }}",
-                })
+                toat.error("{{ session('error') }}");
             });
         </script>
     @endif
