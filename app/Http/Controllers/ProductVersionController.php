@@ -225,11 +225,16 @@ class ProductVersionController extends Controller
                     if (file_exists($imagePath)) {
                         @unlink($imagePath);
                     }
+                    // 2. Update photo thumbnail
+                    $thumbnail->update([
+                        'path' => $path
+                    ]);
                 }
 
-                // 2. Update photo thumbnail
-                $thumbnail->update([
-                    'path' => $path
+                // 3. Simpan gambar ke database images
+                $productVersion->images()->create([
+                    'path' => $path,
+                    'type' => 'thumbnail',
                 ]);
             }
 
