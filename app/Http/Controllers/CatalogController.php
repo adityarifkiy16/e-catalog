@@ -53,7 +53,7 @@ class CatalogController extends Controller
             'category',
             'category.jenis',
             "category.images",
-            'category.types.images',
+            'category.type.images',
             'packages',
             'specifications.specification_values',
             'productVersions.images'
@@ -96,7 +96,7 @@ class CatalogController extends Controller
 
         // Filter type
         if ($typeId) {
-            $query->whereHas('category.types', function ($q) use ($typeId) {
+            $query->whereHas('category.type', function ($q) use ($typeId) {
                 if (is_array($typeId)) {
                     $q->whereIn('id', $typeId);
                 } else {
@@ -112,8 +112,8 @@ class CatalogController extends Controller
 
             // Jika categoryId spesifik
             if ($typeId) {
-                $categories = MCategories::with(['jenis', 'images', 'types.images'])
-                    ->whereHas('types', function ($q) use ($typeId) {
+                $categories = MCategories::with(['jenis', 'images', 'type.images'])
+                    ->whereHas('type', function ($q) use ($typeId) {
                         if (is_array($typeId)) {
                             $q->whereIn('id', $typeId);
                         } else {
@@ -156,7 +156,7 @@ class CatalogController extends Controller
             'data' => $query->get(),
             'jenis' => MJenis::with('categories')->get(),
             'categories' => MCategories::all(),
-            'types' => \App\Models\MType::with('jenis')->get(),
+            'type' => \App\Models\MType::with('jenis')->get(),
             'versions' => MVersion::orderBy('id', 'desc')->get(),
         ]);
     }

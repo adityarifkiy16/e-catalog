@@ -1,123 +1,59 @@
-import { bindDownloadButtons } from './modules/download';
-import { bindOrderButton } from './modules/orderButton';
-import { initScrollTopButton } from './modules/scroll';
-import { resetState, setCatalogConfig, loadMoreData, setFirstLoad, getIsLoading } from './modules/catalogLoader';
-import { bindFilterButton } from './modules/filter';
-import { renderVariantsToModal } from './modules/renderVariant';
-import { bindFilterVersion } from './modules/bindFilterVersion';
-
-// ===== Responsive Handling =====
-export function toggleCategoryLayout({ selectedJenis = null, hasCategory = false, isRenderTypes = false }) {
-    const $filter = $('#filter-container');
-    const $categoryContainer = $('#category-container');
-    const $catalog = $('#catalog-col');
-
-    // Default responsive behavior
-    const isMobile = $(window).width() < 768;
-
-    // Reset state dulu
-    $filter.removeClass('d-none');
-    $categoryContainer.removeClass('d-none');
-    $catalog.removeClass('col-md-12 col-md-9');
-
-    // ====== LOGIKA INTI ======
-
-    // 1. Jika sedang render types → sembunyikan semua kategori
-    if (isRenderTypes) {
-        $filter.addClass('d-none');
-        $categoryContainer.addClass('d-none');
-        $catalog.addClass('col-md-12');
-        return;
-    }
-
-    // 2. Jika jenis = 1 → sembunyikan kategori total
-    if (selectedJenis == 1) {
-        $filter.addClass('d-none');
-        $categoryContainer.addClass('d-none');
-        $catalog.addClass('col-md-12');
-        return;
-    }
-
-    // 3. Jika tidak ada kategori → sembunyikan sidebar & buat full
-    if (!hasCategory) {
-        $filter.addClass('d-none');
-        $categoryContainer.addClass('d-none');
-        $catalog.addClass('col-md-12');
-        return;
-    }
-
-    // 4. Kalau kategori ada, tampilkan sidebar (kecuali di mobile)
-    if (isMobile) {
-        $filter.addClass('d-none');
-        $categoryContainer.removeClass('d-none');
-    } else {
-        $filter.removeClass('d-none');
-        $categoryContainer.removeClass('d-none');
-    }
-
-    // Sidebar aktif → catalog 9 kolom
-    $catalog.addClass('col-md-9');
-}
+import { bindDownloadButtons } from './ui/bindDownloadButton';
+import { bindOrderButton } from './ui/bindOrderButton';
+import { bindScrollTopButton } from './ui/bindScrollTopButton';
+import { bindFilterButton } from './ui/bindFilterButton';
+import { bindFilterVersion } from './ui/bindFilterVersion';
+import { renderVariantsToModal } from './ui/renderVariant';
+import { toggleCategoryLayout } from './ui/toggleCategoryLayout';
+import { resetState, setFirstLoad, setCatalogConfig, getIsLoading } from './core/helpers';
+import { loadMoreData } from './core/loader';
 
 $(document).ready(function () {
     const urlParams = new URLSearchParams(window.location.search);
     const selectedJenis = urlParams.get('jenis');
-    const selectedVersion = urlParams.get('version');
+    const version = urlParams.get('version');
     const category = urlParams.get('category');
-
     let delayTimer;
     let scrollTimer;
     let scrollLock = false;
+    bindFilterButton(selectedJenis);
+    bindDownloadButtons();
+    bindOrderButton();
+    bindScrollTopButton();
+    bindFilterVersion();
 
-    setCatalogConfig({ selectedJenis, category, selectedVersion });
-    loadMoreData();
+    /**
+     * @function viewProduct
+     * @description Melakukan record view produk yang diklik
+     * @param {*} productId id dari produk yang diklik
+     */
+    function viewProduct(productId) {
+        $.ajax({
+            url: `/products/${productId}/viewed`,
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            success: (res) => console.log('View recorded:', res),
+            error: (err) => console.error(err)
+        });
+    }
 
-    // panggil pertama kali + on resize
-    toggleCategoryLayout({ selectedJenis, hasCategory: category, isRenderTypes: false });
-    $(window).on('resize', () => toggleCategoryLayout({ selectedJenis, hasCategory: category, isRenderTypes: false }));
-
-    // ===== Search debounce =====
-    $('#search-input').on('input', function () {
-        clearTimeout(delayTimer);
-        delayTimer = setTimeout(() => {
-            resetState();
-            loadMoreData();
-        }, 500);
-    });
-
-    // ===== Infinite Scroll =====
-    $(window).on('scroll', function () {
-        clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(async () => {
-            if (scrollLock || getIsLoading()) return;
-
-            const scrollTop = $(window).scrollTop();
-            const windowHeight = $(window).height();
-            const documentHeight = $(document).height();
-
-            if (scrollTop + windowHeight >= documentHeight - 150) {
-                scrollLock = true;
-                try {
-                    setFirstLoad(false);
-                    await loadMoreData();
-                } finally {
-                    scrollLock = false;
-                }
-            }
-        }, 200);
-    });
-
-    // ===== Modal Product Handling =====
-    function renderCarouselProduct(images, wallpanelImages = [], jenis = '') {
+    /**
+     * @function renderCarouselProduct
+     * @description fungsi ini digunakan untuk mengatur carousel/jumbotron product
+     * @param {*} image yang akan di render
+     * @param {*} extraImages gambar tambahan yang akan di render
+     * @param {*} jenis jenis yang dipilih
+     */
+    function renderCarouselProduct(images, extraImages = [], jenis = '') {
         $('#carousel-product-image').empty();
         $('#thumbnailGallery').empty();
 
         let newImages = images || [];
-        if (jenis?.toLowerCase() === 'uv board' && wallpanelImages.length) {
-            newImages = [...images, ...wallpanelImages];
+        if (jenis?.toLowerCase() === 'uv board' && extraImages.length) {
+            newImages = [...images, ...extraImages];
         }
 
-        // Lazy Loading observer
+        // load gambar dengan intersection observer
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
@@ -133,8 +69,6 @@ $(document).ready(function () {
 
         newImages.forEach((img, i) => {
             const activeClass = i === 0 ? 'active' : '';
-
-            // FULL image lazy, start with placeholder
             $('#carousel-product-image').append(`
                 <div class="carousel-item ${activeClass}">
                     <img data-src="${img}" 
@@ -143,8 +77,6 @@ $(document).ready(function () {
                         style="width:100%;max-width:400px;aspect-ratio:1/1;object-fit:cover;border-radius:8px;border:1px solid #ccc;">
                 </div>
             `);
-
-            // Thumbnail tetap load cepat (kecil)
             $('#thumbnailGallery').append(`
                 <div class="col-2 mb-0 d-flex justify-content-center">
                     <div style="height:90%">
@@ -159,13 +91,11 @@ $(document).ready(function () {
                 </div>
             `);
         });
-
-        // Observasi semua img baru
         $('.lazy-modal-img').each(function () {
             observer.observe(this);
         });
 
-        // Hide arrows if only 1 image
+        // Jika hanya ada 1 gambar, matikan tombol next/prev
         if (newImages.length <= 1) {
             $('#carouselProduct .carousel-control-next, #carouselProduct .carousel-control-prev').addClass('d-none');
         } else {
@@ -174,7 +104,6 @@ $(document).ready(function () {
 
         $('#carouselProduct').carousel({ interval: 3000, pause: false });
 
-        // Thumbnail click
         let carouselTimeout;
         $('#thumbnailGallery')
             .off('click')
@@ -190,10 +119,51 @@ $(document).ready(function () {
                 clearTimeout(carouselTimeout);
                 carouselTimeout = setTimeout(() => {
                     $('#carouselProduct').carousel('cycle');
-                }, 5000);
+                }, 7000);
             });
     }
 
+    // 1. Load pertama dan set global state
+    setCatalogConfig({ selectedJenis, category, version });
+    loadMoreData();
+
+    // 2. Toggle layout kategori dipanggil pertama kali + on resize
+    toggleCategoryLayout({ selectedJenis, hasCategory: category, isRenderTypes: false });
+    $(window).on('resize', () => toggleCategoryLayout({ selectedJenis, hasCategory: category, isRenderTypes: false }));
+
+    // 3. menghindari inputan terlalu cepat menggunakan debounce
+    $('#search-input').on('input', function () {
+        clearTimeout(delayTimer);
+        delayTimer = setTimeout(() => {
+            resetState();
+            loadMoreData();
+        }, 500);
+    });
+
+    // 4. Scroll handling untuk load more data dengan debounce
+    $(window).on('scroll', function () {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(async () => {
+            if (scrollLock || getIsLoading()) return; // jika sedang loading, return
+            const scrollTop = $(window).scrollTop();
+            const windowHeight = $(window).height();
+            const documentHeight = $(document).height();
+            if (scrollTop + windowHeight >= documentHeight - 150) {
+                scrollLock = true;
+                try {
+                    setFirstLoad(false);
+                    await loadMoreData();
+                } finally {
+                    scrollLock = false;
+                }
+            }
+        }, 200);
+    });
+
+    /**
+     * detail product
+     * @description fungsi ini digunakan untuk menampilkan detail product
+     */
     $(document)
         .off('click', '.product-card')
         .on('click', '.product-card', function () {
@@ -203,22 +173,20 @@ $(document).ready(function () {
             const category = $(this).data('category');
             const type = $(this).data('type');
             const jenis = $(this).data('jenis');
-            const length = parseInt($(this).data('length'), 10);
-            const width = parseFloat($(this).data('width')).toFixed(1);
-            const density = parseFloat($(this).data('density')).toFixed(1);
             const urlVideo = $(this).data('url');
-            const specifications = JSON.parse($(this).attr('data-specifications') || '[]');
             const imagesStr = $(this).attr('data-images');
-            const packages = JSON.parse($(this).attr('data-paket') || '[]');
-            let height = $(this).data('height');
             let imageType = $(this).data('type-image');
+            const specifications = JSON.parse($(this).attr('data-specifications') || '[]');
+            const packages = JSON.parse($(this).attr('data-paket') || '[]');
             let images = [];
             let packagesImgs = [];
 
+            // 1. Handling jika ada tipe produk
             if (jenis !== 'card-types') {
                 viewProduct(productId);
             }
 
+            // 2. Parsing gambar
             if (imagesStr) {
                 try {
                     images = JSON.parse(imagesStr.replace(/&quot;/g, '"'));
@@ -228,16 +196,16 @@ $(document).ready(function () {
                 }
             }
 
-            // Handling urutan paket
+            // 3. Handling urutan paket
             if (Array.isArray(packages)) {
                 packagesImgs = packages.sort((a, b) => a.order - b.order).map((p) => `/storage/${p.image}`);
             }
 
-            // initialize modal
+            // 4. inisialisasi modal
             $('#notes').show();
             $('#modalPaket').empty();
 
-            // contoh case wallpanel
+            // 5. Handling klik pada jenis produk yang terdapat tipe
             if (jenis === 'card-types') {
                 resetState();
                 setCatalogConfig({ selectedJenis: selectedJenis, type });
@@ -310,7 +278,7 @@ $(document).ready(function () {
             $('#productModalLabel').text(name);
             // $('#modalDownload').data('id', productId);
             $('#productModal').modal('show');
-            $('#modalContact').data({ jenis, category, code, length, width, height, density, type });
+            $('#modalContact').data({ jenis, category, code, type });
 
             // reset kepadatan/notes
             $('.kepadatan').removeClass('active');
@@ -318,6 +286,7 @@ $(document).ready(function () {
             $('.modalContact').prop('disabled', $('.kepadatan').length > 0);
         });
 
+    // ===== Handling klik Kepadatan =====
     $(document).on('click', '.kepadatan', function () {
         $('.modalContact').prop('disabled', false);
 
@@ -330,22 +299,4 @@ $(document).ready(function () {
         $('#notes').hide();
         $('#modalContact').data('kepadatan', kepadatan);
     });
-
-    // ===== Init Other Modules =====
-    bindFilterButton(selectedJenis);
-    bindDownloadButtons();
-    bindOrderButton();
-    initScrollTopButton();
-    bindFilterVersion();
-
-    // ===== View Product Tracker =====
-    function viewProduct(productId) {
-        $.ajax({
-            url: `/products/${productId}/viewed`,
-            method: 'POST',
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            success: (res) => console.log('View recorded:', res),
-            error: (err) => console.error(err)
-        });
-    }
 });

@@ -133,7 +133,7 @@ class PDFController extends Controller
         foreach ($grouped as $cat => $p) {
             // Bookmark sisi kiri PDF
             $mpdf->Bookmark($cat, 0);
-            $thumb = $p->first()?->product?->category?->types?->thumbnail;
+            $thumb = $p->first()?->product?->category?->type?->thumbnail;
             $thumbPath = $thumb ? storage_path('app/public/' . $thumb) : null;
             $html = view('product.catalog', [
                 'categoryName' => $cat,
@@ -147,7 +147,7 @@ class PDFController extends Controller
             if ($cat !== $grouped->keys()->last()) {
                 $mpdf->AddPage();
             }
-            $filename = 'Osborn-' . $p[0]->product->category->jenis->name . '-v' . $version->version . $p[0]->product->category->types?->name . '.pdf';
+            $filename = 'Osborn-' . $p[0]->product->category->jenis->name . '-v' . $version->version . $p[0]->product->category->type?->name . '.pdf';
         }
 
         // 🔹 Hapus file sementara
@@ -222,7 +222,7 @@ class PDFController extends Controller
                 return redirect()->back()->with('error', 'Pilih maksimal 3 kategori.');
             }
 
-            $pvs = ProductVersion::with(['images', 'product.category.jenis', 'product.category.types'])
+            $pvs = ProductVersion::with(['images', 'product.category.jenis', 'product.category.type'])
                 ->where('version_id', $version->id)
                 ->whereHas('product', function ($query) use ($request) {
                     $query->whereIn('category_id', $request->category);
@@ -284,7 +284,7 @@ class PDFController extends Controller
             foreach ($grouped as $cat => $p) {
                 $mpdf->Bookmark($cat, 0);
 
-                $thumb = $p->first()?->product?->category?->types?->thumbnail;
+                $thumb = $p->first()?->product?->category?->type?->thumbnail;
                 $thumbPath = $thumb ? storage_path('app/public/' . $thumb) : null;
                 $html = view('product.catalog', [
                     'categoryName' => $cat,

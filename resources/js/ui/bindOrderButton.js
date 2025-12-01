@@ -3,10 +3,8 @@ export function bindOrderButton() {
         .off('click', '.modalContact')
         .on('click', '.modalContact', function (e) {
             e.preventDefault();
-            console.log('Klik tombol order', $(this).data('code'));
             const phone = '62816659688';
             const jenis = $(this).data('jenis');
-            console.log(jenis.toLowerCase());
             let message = '';
             if (jenis.toLowerCase() == 'wallpanel') {
                 message =

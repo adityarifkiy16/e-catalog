@@ -1,4 +1,4 @@
-export function initScrollTopButton() {
+export function bindScrollTopButton() {
     $(window).scroll(function () {
         if ($(this).scrollTop() > 100) {
             $('#btn-scroll-top').fadeIn();

@@ -1,10 +1,15 @@
-import { state } from './catalogLoader';
+import { state } from '../core/state';
 
+/**
+ * @function bindDownloadButtons
+ * @description fungsi ini digunakan untuk mengatur checkbox yang
+ * digunakan untuk memilih kategori yang akan diunduh.
+ *
+ */
 export function bindDownloadButtons() {
-    // === Checkbox logic ===
     let selectedCategories = [];
 
-    // Handle perubahan "Semua Kategori"
+    // 1. Handle klik "Semua Kategori"
     $(document).on('change', '#all-cat', function () {
         if ($(this).prop('checked')) {
             $('.category-filter-download').prop('checked', true);
@@ -15,7 +20,7 @@ export function bindDownloadButtons() {
         }
     });
 
-    // Handle perubahan tiap kategori
+    // 2. Handle klik tiap kategori
     $(document).on('change', '.category-filter-download', function () {
         if (!$(this).prop('checked')) {
             $('#all-cat').prop('checked', false);
@@ -28,6 +33,7 @@ export function bindDownloadButtons() {
             .get()
             .filter((v) => v !== '');
 
+        // 3. Handle jika semua kategori di klik kecuali "Semua Kategori"
         const totalCats = $('.category-filter-download').length - 1; // -1 karena all-cat tidak dihitung
         if (selectedCategories.length === totalCats) {
             $('#all-cat').prop('checked', true);
@@ -35,32 +41,26 @@ export function bindDownloadButtons() {
         }
     });
 
+    // === Download logic ===
     $(document)
         .off('click', '#btn-download')
         .on('click', '#btn-download', function (e) {
             e.preventDefault();
-
             const selectedType = state.type;
-            const selectedJenis = new URLSearchParams(window.location.search).get('jenis');
-            const selectedVersion = $('#version-select').val();
-
-            console.log(selectedType, selectedJenis, selectedVersion);
+            const selectedJenis = state.selectedJenis;
+            const selectedVersion = state.version;
             if (!selectedVersion) {
                 alert('Silakan pilih versi terlebih dahulu.');
                 return;
             }
-
             let params = new URLSearchParams();
-
             if (selectedCategories.length > 0 && selectedCategories[0] !== '') {
                 selectedCategories.forEach((id) => params.append('category[]', id));
             }
             if (selectedJenis) params.append('jenis_id', selectedJenis);
             if (selectedVersion) params.append('version_id', selectedVersion);
             if (selectedType) params.append('type_id', selectedType);
-
             const url = `/catalog/pdf?${params.toString()}`;
-
             window.location.href = url;
         });
 }

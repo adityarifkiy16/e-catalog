@@ -1,19 +1,23 @@
-// import { loadYoutubeAPI } from './youtube';
-
 /**
- * Render mockup carousel
+ * @function renderMockup
+ * @description fungsi ini digunakan untuk handling carousel mockup
+ * @param {Array} images - array
+ * @param {Number} selectedJenis
+ * @param {Set} uniquePaths
+ * @param {Boolean} firstLoad
  */
-export function renderMockup(categories, selectedJenis, uniquePaths, firstLoad = false) {
+export function renderMockup(images, selectedJenis, uniquePaths, firstLoad = false) {
     if (selectedJenis == null) return;
 
-    categories.forEach((item) => {
+    images.forEach((item) => {
+        // 1. Handling gambar carousel dari mockup tipe
         if (item.images) {
             item.images.forEach((img) => {
                 if (img.path) uniquePaths.add(img.path);
             });
         }
 
-        // kalau langsung array of image object
+        // 2. Handling gambar carousel mockup kategori
         if (item.path) {
             uniquePaths.add(item.path);
         }
@@ -22,7 +26,6 @@ export function renderMockup(categories, selectedJenis, uniquePaths, firstLoad =
     const paths = Array.from(uniquePaths);
     const $carouselInner = $('#mockup-carousel-inner');
     const $carouselIndicators = $('#mockup-carousel-indicators');
-
     const videos = [
         'https://www.youtube.com/embed/BiiUrYAbL9s?autoplay=1&mute=1&rel=0&controls=0&amp;loop=1&playlist=BiiUrYAbL9s'
     ];

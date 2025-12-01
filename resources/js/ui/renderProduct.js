@@ -9,7 +9,7 @@ export function renderProducts(products, selectedJenis, version) {
 
         // Masukkan gambar utama di paling depan
         let allImages = orderedImages;
-        let thumb = product.category?.types?.thumbnail ?? '';
+        let thumb = product.category?.type?.thumbnail ?? '';
 
         if (thumb && !thumb.startsWith('http')) {
             thumb = `storage/${thumb.replace(/^\/?storage\//, '')}`;
@@ -52,8 +52,8 @@ export function renderProducts(products, selectedJenis, version) {
                     data-jenis="${product.category?.jenis?.name ?? ''}"
                     data-images="${imagesJson}"
                     data-image="${image}"
-                    data-type="${product.category?.types?.name ?? ''}"
-                    data-type-image="${product.category?.types?.image ?? ''}"
+                    data-type="${product.category?.type?.name ?? ''}"
+                    data-type-image="${product.category?.type?.image ?? ''}"
                     data-url="${product.url_video}"
                     data-paket="${packagesJson}"
                     data-specifications = "${specificationsJson}"

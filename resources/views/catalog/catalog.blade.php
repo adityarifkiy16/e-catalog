@@ -283,7 +283,7 @@
 
                             <div class="mt-2 d-flex flex-wrap ml-2">
                                 <button class="btn btn-md btn-primary modalContact" id="modalContact">
-                                    <i class="fas fa-cart-plus mr-2"></i>Order
+                                    <i class="fas fa-cart-plus mr-2"></i> Contact
                                 </button>
                             </div>
                         </div>

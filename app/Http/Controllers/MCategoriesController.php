@@ -35,7 +35,7 @@ class MCategoriesController extends Controller
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('type', function ($row) {
-                    return $row->types ? $row->types->name : '-';
+                    return $row->type ? $row->type->name : '-';
                 })
                 ->addColumn('jenis', function ($row) {
                     return $row->jenis ? $row->jenis->name : '-';

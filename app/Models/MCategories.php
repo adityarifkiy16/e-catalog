@@ -31,7 +31,7 @@ class MCategories extends Model
         return $this->hasMany(ImageCategories::class, "category_id", "id");
     }
 
-    public function types()
+    public function type()
     {
         return $this->belongsTo(MType::class, 'type_id', 'id');
     }
