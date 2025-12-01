@@ -7,6 +7,7 @@ import { renderVariantsToModal } from './ui/renderVariant';
 import { toggleCategoryLayout } from './ui/toggleCategoryLayout';
 import { resetState, setFirstLoad, setCatalogConfig, getIsLoading } from './core/helpers';
 import { loadMoreData } from './core/loader';
+import { searchHandler } from './events/searchHandler';
 
 $(document).ready(function () {
     const urlParams = new URLSearchParams(window.location.search);
@@ -131,14 +132,7 @@ $(document).ready(function () {
     toggleCategoryLayout({ selectedJenis, hasCategory: category, isRenderTypes: false });
     $(window).on('resize', () => toggleCategoryLayout({ selectedJenis, hasCategory: category, isRenderTypes: false }));
 
-    // 3. menghindari inputan terlalu cepat menggunakan debounce
-    $('#search-input').on('input', function () {
-        clearTimeout(delayTimer);
-        delayTimer = setTimeout(() => {
-            resetState();
-            loadMoreData();
-        }, 500);
-    });
+    searchHandler();
 
     // 4. Scroll handling untuk load more data dengan debounce
     $(window).on('scroll', function () {
