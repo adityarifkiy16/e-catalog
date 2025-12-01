@@ -3,9 +3,9 @@ Saya tertarik dengan produk berikut:
 
 • Tipe Wallpanel: *${$(this).data("type")}*
 • Kode : *${$(this).data("code")}*
-• panjang : *${$(this).data("length")} cm*
-• tinggi : *${$(this).data("height")} cm*
-• lebar : *${$(this).data("width")} cm*
+• panjang : *${$(this).data("panjang")}*
+• tinggi : *${$(this).data("tinggi")}*
+• lebar : *${$(this).data("lebar")}*
 • Produk : *${$(this).data("jenis")}*
 • Kategori: *${$(this).data("category")}*
 
@@ -217,7 +217,7 @@ Apakah produk ini masih tersedia? Terima kasih.`,window.open(`https://wa.me/${s}
                         <div class="col-auto">:</div>
                         <div class="col">${r}${c}</div>
                     </div>
-                `;$(s).append(u)}}):($(s).append('<div class="text-muted">Tidak ada varian</div>'),$(".paket").hide())}$(document).ready(function(){const e=new URLSearchParams(window.location.search),s=e.get("jenis"),a=e.get("version"),t=e.get("category");let n,i,r=!1;le(s),W(),G(),z(),de();function c(l){$.ajax({url:`/products/${l}/viewed`,method:"POST",headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")},success:d=>console.log("View recorded:",d),error:d=>console.error(d)})}function u(l,d=[],p=""){$("#carousel-product-image").empty(),$("#thumbnailGallery").empty();let g=l||[];(p==null?void 0:p.toLowerCase())==="uv board"&&d.length&&(g=[...l,...d]);const v=new IntersectionObserver(h=>{h.forEach(y=>{if(y.isIntersecting){const b=$(y.target);b.attr("src",b.data("src")),v.unobserve(y.target)}})},{rootMargin:"100px"});g.forEach((h,y)=>{const b=y===0?"active":"";$("#carousel-product-image").append(`
+                `;$(s).append(u),$("#modalContact").data(n,r+c)}}):($(s).append('<div class="text-muted">Tidak ada varian</div>'),$(".paket").hide())}$(document).ready(function(){const e=new URLSearchParams(window.location.search),s=e.get("jenis"),a=e.get("version"),t=e.get("category");let n,i,r=!1;le(s),W(),G(),z(),de();function c(l){$.ajax({url:`/products/${l}/viewed`,method:"POST",headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")},success:d=>console.log("View recorded:",d),error:d=>console.error(d)})}function u(l,d=[],p=""){$("#carousel-product-image").empty(),$("#thumbnailGallery").empty();let g=l||[];(p==null?void 0:p.toLowerCase())==="uv board"&&d.length&&(g=[...l,...d]);const v=new IntersectionObserver(h=>{h.forEach(y=>{if(y.isIntersecting){const b=$(y.target);b.attr("src",b.data("src")),v.unobserve(y.target)}})},{rootMargin:"100px"});g.forEach((h,y)=>{const b=y===0?"active":"";$("#carousel-product-image").append(`
                 <div class="carousel-item ${b}">
                     <img data-src="${h}" 
                         src="/dist/img/placeholder.webp"

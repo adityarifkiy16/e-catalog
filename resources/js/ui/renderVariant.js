@@ -63,6 +63,7 @@ export function renderVariantsToModal(specifications, container = '#modalVariant
                     </div>
                 `;
                 $(container).append(rowHtml);
+                $('#modalContact').data(nameLower, displayValue + unit);
             }
         });
     } else {

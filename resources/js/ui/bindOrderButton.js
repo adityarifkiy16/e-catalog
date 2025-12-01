@@ -11,9 +11,9 @@ export function bindOrderButton() {
                     `Halo Admin,\nSaya tertarik dengan produk berikut:\n\n` +
                     `• Tipe Wallpanel: *${$(this).data('type')}*\n` +
                     `• Kode : *${$(this).data('code')}*\n` +
-                    `• panjang : *${$(this).data('length')} cm*\n` +
-                    `• tinggi : *${$(this).data('height')} cm*\n` +
-                    `• lebar : *${$(this).data('width')} cm*\n` +
+                    `• panjang : *${$(this).data('panjang')}*\n` +
+                    `• tinggi : *${$(this).data('tinggi')}*\n` +
+                    `• lebar : *${$(this).data('lebar')}*\n` +
                     `• Produk : *${$(this).data('jenis')}*\n` +
                     `• Kategori: *${$(this).data('category')}*\n\n` +
                     `Apakah produk ini masih tersedia? Terima kasih.`;
