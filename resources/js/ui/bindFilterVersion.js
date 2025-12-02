@@ -3,7 +3,7 @@ import { loadMoreData } from '../core/loader';
 import { state } from '../core/state';
 
 /**
- * Mengikatkan event onchange pada select version
+ * bindFilterVersion - handling pilihan versi
  * dan mengeset list produk berdasarkan versi yang dipilih
  *
  * @returns {undefined}

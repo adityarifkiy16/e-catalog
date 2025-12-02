@@ -1,6 +1,8 @@
+// Core
 import { resetState } from '../core/helpers';
 import { loadMoreData } from '../core/loader';
 import { state } from '../core/state';
+// UI
 import { applyLabelMap } from './applyLabelMap';
 import { toggleCategoryLayout } from './toggleCategoryLayout';
 import { renderCategory } from './renderCategory';
@@ -10,16 +12,16 @@ import { setCategory } from './utils';
 
 /**
  * @function updateCategoryMenu
- * @description fungsi untuk mengupdate menu kategori
- * @param {*} response
- * @param {*} firstLoad
+ * @description function to update content on category menu
+ * @param {*} response - response data from API
+ * @param {Boolean} firstLoad - flagging first load
  */
 export function updateCategoryMenu(response, firstLoad = true) {
     const categories = response.category ?? [];
-    const name = response.jenis?.name;
-
+    const jenis = response.jenis?.name;
     const isRenderTypes = state.firstLoad && (response.types?.length ?? 0) > 0;
     const hasCategory = (response.category?.length ?? 0) > 0;
+
     toggleCategoryLayout({
         selectedJenis: state.selectedJenis,
         hasCategory,
@@ -34,7 +36,7 @@ export function updateCategoryMenu(response, firstLoad = true) {
     }
 
     // --- 2. Apply Header Label ---
-    applyLabelMap(name);
+    applyLabelMap(jenis);
     const dropdown = renderCategory(categories, state.version);
     const checkbox = renderDownloadCheckbox(categories);
     const typeMenu = renderTypeMenu(response.types ?? []);

@@ -1,7 +1,7 @@
 /**
  * @function renderTypeMenu
- * @description fungsi untuk menampilkan tipe sebagai menu
- * @param {Array} types - Array dari object tipe
+ * @description function to render type as menu sidebar
+ * @param {Array} types - Array of objects representing card types
  * @returns {string} - HTML string of type menu items
  */
 export function renderTypeMenu(types) {

@@ -1,6 +1,6 @@
 /**
  * @function renderDownloadCheckbox
- * @description Fungsi untuk membuat checkbox untuk download katalog
+ * @description function to render download checkbox
  * @param {Array} categories - An array of category objects.
  * @returns {string} - An HTML string representing a checkbox for download a catalog.
  */

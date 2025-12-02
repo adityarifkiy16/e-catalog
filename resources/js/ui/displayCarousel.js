@@ -3,7 +3,7 @@ import { state } from '../core/state';
 
 /**
  * @function displayCarousel
- * @description fungsi untuk menampilkan carousel gambar mockup dari Kategori atau Tipe
+ * @description function to showing carousel
  * @param {Object} response - response data from API
  * @param {Boolean} firstLoad - flaggin first load
  */

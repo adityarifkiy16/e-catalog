@@ -1,3 +1,8 @@
+/**
+ * Bind event listener for order button
+ * Send whatsapp message to admin when button is clicked
+ * The message will contain the product details
+ */
 export function bindOrderButton() {
     $(document)
         .off('click', '.modalContact')

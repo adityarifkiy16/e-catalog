@@ -1,3 +1,9 @@
+/**
+ * Render list of card types as a row of cards.
+ * Each card type will have a thumbnail image, a name
+ * @param {Array} types - Array of objects representing card types.
+ * @param {number} selectedJenis - The selected jenis ID.
+ */
 export function renderTypes(types, selectedJenis) {
     $('#btn-download').addClass('d-none');
 
@@ -6,9 +12,6 @@ export function renderTypes(types, selectedJenis) {
         const image = type.thumbnail
             ? `/storage/${type.thumbnail}`
             : 'https://via.placeholder.com/300x200?text=No+Image';
-
-        // Masukkan gambar utama di paling depan
-        const allImages = [image];
 
         const categoryName = selectedJenis == 3 ? 'wallpanel' : 'tanpa kategori';
 

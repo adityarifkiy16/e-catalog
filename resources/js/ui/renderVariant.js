@@ -1,3 +1,9 @@
+/**
+ * @function renderVariantsToModal
+ * @description renders the variants to the modal
+ * @param {array} specifications - an array of specification objects
+ * @param {string} container - the container element to append the rendered html
+ */
 export function renderVariantsToModal(specifications, container = '#modalVariants') {
     $(container).empty();
     $('#modalPaket').empty();

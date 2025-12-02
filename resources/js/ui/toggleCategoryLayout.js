@@ -1,9 +1,9 @@
 /**
  * @function toggleCategoryLayout
- * @description fungsi ini digunakan untuk mengatur layout kategori (sidebar)
- * @param {selectedJenis} jenis yang dipilih
- * @param {hasCategory} apakah jenis tersebut memiliki kategori
- * @param {isRenderTypes} apakah jenis tersebut memiliki types
+ * @description function to toggle category layout
+ * @param {Number} selectedJenis - id jenis selected by user
+ * @param {Boolean} hasCategory - flagging that category associated with jenis is exist or not
+ * @param {Boolean} isRenderTypes - flagging that is render types or not
  * @returns
  */
 export function toggleCategoryLayout({ selectedJenis = null, hasCategory = false, isRenderTypes = false }) {

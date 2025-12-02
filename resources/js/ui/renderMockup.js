@@ -1,10 +1,10 @@
 /**
  * @function renderMockup
- * @description fungsi ini digunakan untuk handling carousel mockup
- * @param {Array} images - array
- * @param {Number} selectedJenis
- * @param {Set} uniquePaths
- * @param {Boolean} firstLoad
+ * @description function to render mockup carousel
+ * @param {Array} images - Array of objects representing mockup images
+ * @param {Number} selectedJenis - The selected jenis ID
+ * @param {Set} uniquePaths - Set of unique image paths
+ * @param {Boolean} firstLoad - Flagging first load
  */
 export function renderMockup(images, selectedJenis, uniquePaths, firstLoad = false) {
     if (selectedJenis == null) return;

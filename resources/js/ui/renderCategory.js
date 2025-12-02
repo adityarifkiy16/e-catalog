@@ -1,6 +1,6 @@
 /**
  * @function renderCategory
- * @description fungsi untuk menampilkan kategori sebagai menu
+ * @description function to render category as menu sidebar
  * @param {Array} categories - Array dari object kategori
  * @param {Number} version - versi katalog
  * @returns {String} - rendered HTML for the dropdown menu

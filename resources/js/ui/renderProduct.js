@@ -1,5 +1,12 @@
 import { prepareImageOrder } from './utils';
 
+/**
+ * @function renderProducts
+ * Render list of products to the page
+ * @param {Array} products list of products to render
+ * @param {String} selectedJenis selected jenis id
+ * @param {String} version selected version id
+ */
 export function renderProducts(products, selectedJenis, version) {
     $('#btn-download').removeClass('d-none');
     let html = '';
