@@ -52,6 +52,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 0.5rem;">No</th>
+                                <th>ID</th>
                                 <th>Nama Kategori</th>
                                 <th>Jenis</th>
                                 <th>Tipe</th>
@@ -161,6 +162,11 @@
 
                 columns: [{
                         data: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'id',
                         orderable: false,
                         searchable: false
                     },

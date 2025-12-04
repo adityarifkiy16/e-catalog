@@ -9,11 +9,13 @@ use App\Models\MVersion;
 use App\Models\TProduct;
 use App\Models\MCategories;
 use Illuminate\Http\Request;
+use App\Imports\ProductImport;
 use App\Models\MSpecification;
 use App\Services\ImageServices;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Models\TSpecificationValue;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Services\ProductViewServices;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -366,6 +368,23 @@ class TProductController extends Controller
 
         return response()->json([
             'message' => 'Produk dalam kategori berhasil dihapus.'
+        ]);
+    }
+
+    public function importExcel()
+    {
+        return view('product.import');
+    }
+
+    public function import(Request $request)
+    {
+        $import = new ProductImport();
+        Excel::import($import, $request->file('file'));
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Data imported successfully.',
+            'errors'  => $import->errors, // ← kirim error ke frontend
         ]);
     }
 }

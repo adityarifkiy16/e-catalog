@@ -82,6 +82,8 @@ Route::middleware("auth")->group(function () {
         Route::delete("/products/{product}", [App\Http\Controllers\TProductController::class, "destroy"])->name("products.destroy");
         Route::get("/products/search", [App\Http\Controllers\TProductController::class, "search"])->name("products.search");
         Route::get("/products/delete-by-category", [App\Http\Controllers\TProductController::class, "destroyByCategory"])->name("products.destroy-by-category");
+        Route::get("/products/import-excel", [App\Http\Controllers\TProductController::class, "importExcel"])->name("products.import-excel");
+        Route::post("/products/import", [App\Http\Controllers\TProductController::class, "import"])->name("products.import");
 
 
         // ProductVersion management routes

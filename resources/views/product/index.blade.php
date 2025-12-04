@@ -44,6 +44,9 @@
                                     <i class="fa fa-plus"></i> Tambah Produk
                                 </a>
                             @endif
+                            <a href="{{ route('products.import-excel') }}" class="btn btn-warning ml-2">
+                                <i class="fa fa-plus"></i> import excel
+                            </a>
                         </div>
                     </div>
                 </div>
