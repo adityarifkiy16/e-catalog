@@ -487,4 +487,14 @@ class ProductVersionController extends Controller
             'message' => $message,
         ]);
     }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->ids;
+        ProductVersion::whereIn('id', $ids)->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Paket berhasil dihapus.',
+        ]);
+    }
 }

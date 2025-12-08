@@ -22,6 +22,11 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-end">
                         <div class="d-flex justify-content-between align-items-center">
+                            <div class="mx-2" id="bulk-delete-wrapper" style="display:none;">
+                                <button id="bulk-delete-btn" class="btn btn-danger">
+                                    <i class="fa fa-trash"></i> Hapus Terpilih
+                                </button>
+                            </div>
                             <form action="{{ route('product-versions.index') }}" method="GET">
                                 <div class="d-flex justify-content-between align-items-center ml-2">
                                     <div class="mr-2">
@@ -72,6 +77,9 @@
                     <table id="product-table" class="table table-bordered">
                         <thead>
                             <tr>
+                                <th>
+                                    <input type="checkbox" id="select-all">
+                                </th>
                                 <th style="width: 0.5rem;">No</th>
                                 <th>Kode</th>
                                 <th>Nama Produk</th>
@@ -117,6 +125,26 @@
             $('.select2').select2()
         })
 
+        $(document).on('change', '#select-all', function() {
+            $('.row-checkbox').prop('checked', this.checked);
+            toggleBulkDeleteButton();
+        });
+
+        // Checkbox per baris
+        $(document).on('change', '.row-checkbox', function() {
+            toggleBulkDeleteButton();
+        });
+
+        // Fungsi menampilkan tombol bulk delete
+        function toggleBulkDeleteButton() {
+            let checked = $('.row-checkbox:checked').length;
+            if (checked > 0) {
+                $('#bulk-delete-wrapper').show();
+            } else {
+                $('#bulk-delete-wrapper').hide();
+            }
+        }
+
         $(document).on('submit', '.delete-product', function(e) {
             e.preventDefault();
             const form = $(this);
@@ -151,6 +179,42 @@
                         },
                         error: function(xhr) {
                             Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+
+        // ==== Bulk Delete Paket ====
+        $('#bulk-delete-btn').on('click', function() {
+            let ids = $('.row-checkbox:checked').map(function() {
+                return $(this).val();
+            }).get();
+
+            if (ids.length === 0) return;
+
+            Swal.fire({
+                title: 'Hapus semua yang dipilih?',
+                text: "Data tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: "{{ route('product-versions.bulk.destroy') }}",
+                        type: 'POST',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content'),
+                            ids: ids
+                        },
+                        success: function(response) {
+                            Swal.fire('Berhasil!', response.message, 'success');
+                            $('#product-table').DataTable().ajax.reload(null, false);
+                            $('#bulk-delete-wrapper').hide();
                         }
                     });
                 }
@@ -278,6 +342,13 @@
                 },
 
                 columns: [{
+                        data: 'id',
+                        orderable: false,
+                        searchable: false,
+                        render: function(id) {
+                            return `<input type="checkbox" class="row-checkbox" value="${id}">`;
+                        }
+                    }, {
                         data: 'DT_RowIndex',
                         orderable: false,
                         searchable: false

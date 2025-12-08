@@ -30,18 +30,33 @@ class CatalogController extends Controller
             })
             ->values();
 
-        $arr['jenis'] = MJenis::withCount([
-            'categories as products_count' => function ($query) {
-                $query->select(DB::raw('count(t_products.id)'))
-                    ->join('t_products', 'm_categories.id', '=', 't_products.category_id')
-                    ->whereNull('t_products.deleted_at');
+        $arr['jenis'] = MJenis::with([
+            'categories' => function ($q) {
+                $q->whereNull('deleted_at')
+                    ->orderBy('id');
             }
-        ])->whereNull('deleted_at')->get();
+        ])
+            ->withCount([
+                'categories as products_count' => function ($query) {
+                    $query->join('t_products', 'm_categories.id', '=', 't_products.category_id')
+                        ->whereNull('t_products.deleted_at');
+                }
+            ])
+            ->whereNull('deleted_at')
+            ->get()
+            ->map(function ($jenis) {
+                $jenis->categories = $jenis->categories->take(1);
+                return $jenis;
+            });
+
+        // dd($arr['jenis']);
 
         return view('catalog.index', $arr);
     }
+
     public function catalog(Request $request)
     {
+        // dd($request->all());
         $isAjax = $request->ajax();
         $categoryId = $request->query('category');
         $search = $request->query('search');

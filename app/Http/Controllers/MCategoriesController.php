@@ -127,7 +127,7 @@ class MCategoriesController extends Controller
             'display_style' => 'nullable|string|max:255|in:square,rectangle',
             'order' => 'nullable|numeric',
             'image-mockup' => 'nullable',
-            'image-mockup.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'image-mockup.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:5024',
             'existing_images' => 'nullable|string',
         ]);
 
@@ -171,6 +171,12 @@ class MCategoriesController extends Controller
             if ($request->hasFile('image-mockup')) {
                 foreach ($request->file('image-mockup') as $file) {
                     $path = $this->imageServices->store($file, $folder, 1200);
+
+                    // $folderPath = "images/{$folder}/" . now()->format('Y/m/d');
+                    // $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+                    // // Simpan file ORIGINAL saja
+                    // $path = $file->storeAs($folderPath, $filename, 'public');
                     $categories->images()->create([
                         'path' => $path,
                     ]);

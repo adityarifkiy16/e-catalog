@@ -110,9 +110,12 @@ export function renderMockup(images, selectedJenis, uniquePaths, firstLoad = fal
         }
 
         paths.forEach((path, i) => {
+            let eager = i === 0 ? 'eager' : 'lazy';
+            let priority = i === 0 ? 'high' : 'low';
+
             $carouselInner.append(`
                 <div class="carousel-item ${i === 0 ? 'active' : ''}">
-                    <img src="/storage/${path}" alt="mockup" 
+                    <img src="/storage/${path}" alt="mockup" loading="${eager}" fetchpriority="${priority}" decode="async" 
                         class="img-fluid w-100 rounded-lg d-block mx-auto mockup-image"
                     >
                 </div>

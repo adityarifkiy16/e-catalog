@@ -1,6 +1,7 @@
 import { resetState, setCatalogConfig } from '../core/helpers';
 import { loadMoreData } from '../core/loader';
 import { setCategory } from './utils';
+import { updateURLParams } from '../events/updateURLParams';
 
 let isLoading = false;
 
@@ -23,6 +24,13 @@ export function bindFilterButton(selectedJenis) {
         const type = $(this).data('type');
         const version = $(this).data('version');
         try {
+            updateURLParams({
+                category: category,
+                type: type,
+                version: version,
+                jenis: selectedJenis
+            });
+
             setCatalogConfig({ selectedJenis, category, type, version });
             setCategory(category);
             $('#filterModal').modal('hide');

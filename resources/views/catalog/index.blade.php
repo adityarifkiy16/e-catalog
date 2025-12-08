@@ -222,7 +222,8 @@
         <!-- Product Categories -->
         <div class="row justify-content-center">
             @foreach ($jenis as $key => $item)
-                <div class="col-6 col-sm-4 col-md-2 text-center mb-5 jenis-card" data-id="{{ $item->id }}">
+                <div class="col-6 col-sm-4 col-md-2 text-center mb-5 jenis-card" data-id="{{ $item->id }}"
+                    data-first-category= "{{ $item->categories->first()->id }}">
                     <div
                         class="border-0 h-100 pointer d-flex flex-column justify-content-center align-items-center overflow-hidden">
                         @php $img = 'dist/img/product/' . $key; @endphp
@@ -399,7 +400,10 @@
         $(document).ready(function() {
             $('.jenis-card').click(function() {
                 var jenisId = $(this).data('id');
-                window.location.href = '/catalog?jenis=' + jenisId;
+                var catId = $(this).data('first-category');
+                var versionId = 1;
+                window.location.href = '/catalog?jenis=' + jenisId + '&category=' + catId + '&version=' +
+                    versionId;
             });
         });
     </script>

@@ -137,7 +137,7 @@
             const dz = new Dropzone("#image-dropzone", {
                 url: "{{ route('categories.update', $categories) }}",
                 paramName: "image-mockup",
-                maxFilesize: 2,
+                maxFilesize: 5,
                 acceptedFiles: "image/*",
                 addRemoveLinks: true,
                 autoProcessQueue: false,

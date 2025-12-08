@@ -103,6 +103,7 @@ Route::middleware("auth")->group(function () {
                 Route::post('/bulk-upload', 'storeBulkCreate')->name('store.bulk');
                 Route::get('/bulk-mockup/create', 'bulkCreateMotif')->name('bulk.create-motif');
                 Route::post('/bulk-mockup', 'storeBulkCreateMotif')->name('bulk.store-motif');
+                Route::post("/bulk-destroy", "bulkDestroy")->name("bulk.destroy");
             });
         });
 
