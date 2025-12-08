@@ -9,6 +9,7 @@
     src: url(../font/cocogoose/Cocogoose-Pro-Regular-trial.ttf) format('truetype');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -16,6 +17,7 @@
     src: url(../font/cocogoose/Cocogoose-Pro-Bold-trial.ttf) format('truetype');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -23,6 +25,7 @@
     src: url(../font/cocogoose/Cocogoose-Pro-Light-trial.ttf) format('truetype');
     font-weight: lighter;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -30,6 +33,7 @@
     src: url(../font/cocogoose/Cocogoose-Pro-Semilight-trial.ttf) format('truetype');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 .breadcrumb {
