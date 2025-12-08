@@ -50,16 +50,7 @@ export function updateCategoryMenu(response, firstLoad = true) {
         $('#pdf-catalog').html(checkbox);
     }
 
-    // Auto choose first category if none selected
-    if (!state.category && categories.length > 0) {
-        state.category = categories[0].id;
-        setCategory(state.category);
-        resetState();
-
-        setTimeout(() => {
-            loadMoreData();
-        }, 200);
-    } else if (state.category) {
+    if (state.category) {
         $(`.category-filter[data-id="${state.category}"]`).addClass('active');
     }
 

@@ -5,6 +5,7 @@ import { renderTypes } from '../ui/renderTypes';
 import { updateCategoryMenu } from '../ui/updateCategoryMenu';
 import { displayCarousel } from '../ui/displayCarousel';
 import { renderProducts } from '../ui/renderProduct';
+import { resetState } from './helpers';
 
 /**
  * @function loadMoreData
@@ -56,6 +57,16 @@ function handleResponse(response) {
         if (firstVersion) {
             state.version = firstVersion;
         }
+    }
+
+    if (!state.category && Array.isArray(response.category) && response.category.length > 0) {
+        const firstCategory = response.category[0].id;
+
+        state.category = firstCategory;
+        resetState();
+
+        setTimeout(() => loadMoreData(), 0);
+        return;
     }
 
     // === Function Handle jika load pertama dan ada types ===
