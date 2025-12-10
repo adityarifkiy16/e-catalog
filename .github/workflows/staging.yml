@@ -1,4 +1,4 @@
-name: Update Deploy PROD server
+name: Update Deploy STAGING server
 
 on:
   push:
