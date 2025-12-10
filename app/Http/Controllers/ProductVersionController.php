@@ -229,13 +229,13 @@ class ProductVersionController extends Controller
                     $thumbnail->update([
                         'path' => $path
                     ]);
+                } else {
+                    // 3. Simpan gambar ke database images
+                    $productVersion->images()->create([
+                        'path' => $path,
+                        'type' => 'thumbnail',
+                    ]);
                 }
-
-                // 3. Simpan gambar ke database images
-                $productVersion->images()->create([
-                    'path' => $path,
-                    'type' => 'thumbnail',
-                ]);
             }
 
             if ($request->hasFile('image-motif')) {
