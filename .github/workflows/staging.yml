@@ -1,0 +1,26 @@
+name: Update Deploy PROD server
+
+on:
+  push:
+    branches: staging
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Connect SSH & Pulling request
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          host: 153.92.8.220
+          username: u153231468
+          port: 65002
+          privateKey: ${{ secrets.PRIVATE_KEY_PROD }}
+          command: |
+            cd /home/u153231468/domains/osborn.id/public_html/laravel/test-catalog
+            git pull origin staging
+            cp -r public/build /home/u153231468/domains/osborn.id/public_html/test-catalog
+            cp -r public/dist /home/u153231468/domains/osborn.id/public_html/test-catalog
+            composer2 install --no-dev --optimize-autoloader
+        env:
+          CI: true
