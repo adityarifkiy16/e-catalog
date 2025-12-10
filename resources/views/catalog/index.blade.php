@@ -181,19 +181,18 @@
     <!-- Slider Berjalan Horizontal -->
     <div class="slider-container">
         <div class="slider-track">
-            @foreach ($products as $product)
+            @foreach ($sliders as $item)
                 <div class="slider-item">
-                    @php $img = 'dist/img/slide-depan/' . pathinfo($product, PATHINFO_FILENAME); @endphp
+                    @php $img = 'dist/img/slide-depan/' . pathinfo($item, PATHINFO_FILENAME); @endphp
                     <img src="{{ asset("$img-300.webp") }}?v={{ $version }}"
                         srcset="{{ asset("$img-300.webp") }}?v={{ $version }} 300w,{{ asset("$img-600.webp") }}?v={{ $version }} 600w"
                         sizes="200px" alt="Product" />
 
                 </div>
             @endforeach
-            @foreach ($products as $product)
-                <span>{{ $product }}</span>
+            @foreach ($sliders as $item)
                 <div class="slider-item">
-                    @php $img = 'dist/img/slide-depan/' . pathinfo($product, PATHINFO_FILENAME); @endphp
+                    @php $img = 'dist/img/slide-depan/' . pathinfo($item, PATHINFO_FILENAME); @endphp
                     <img src="{{ asset("$img-300.webp") }}?v={{ $version }}"
                         srcset="{{ asset("$img-300.webp") }}?v={{ $version }} 300w,{{ asset("$img-600.webp") }}?v={{ $version }} 600w"
                         sizes="200px" alt="Product" />
