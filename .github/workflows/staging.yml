@@ -19,8 +19,8 @@ jobs:
           command: |
             cd /home/u153231468/domains/osborn.id/public_html/laravel/test-catalog
             git pull origin staging
-            cp -r public/build /home/u153231468/domains/osborn.id/public_html/test-catalog
-            cp -r public/dist /home/u153231468/domains/osborn.id/public_html/test-catalog
+            cp -r public/build /home/u153231468/domains/osborn.id/public_html/testcatalog
+            cp -r public/dist /home/u153231468/domains/osborn.id/public_html/testcatalog
             composer2 install --no-dev --optimize-autoloader
         env:
           CI: true
