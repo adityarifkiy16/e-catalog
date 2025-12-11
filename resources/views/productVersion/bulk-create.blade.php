@@ -241,7 +241,7 @@
             new Dropzone("#image-dropzone", {
                 url: "{{ route('product-versions.store.bulk') }}",
                 paramName: "image", // matches your backend expectation
-                maxFilesize: 2, // MB
+                maxFilesize: 10, // MB
                 acceptedFiles: "image/jpeg,image/png,image/jpg,image/gif,image/svg,image/webp",
                 addRemoveLinks: false,
                 autoProcessQueue: false, // important for manual submit

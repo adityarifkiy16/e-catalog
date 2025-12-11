@@ -170,13 +170,8 @@ class MCategoriesController extends Controller
             }
             if ($request->hasFile('image-mockup')) {
                 foreach ($request->file('image-mockup') as $file) {
-                    $path = $this->imageServices->store($file, $folder, 1200);
-
-                    // $folderPath = "images/{$folder}/" . now()->format('Y/m/d');
-                    // $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-
-                    // // Simpan file ORIGINAL saja
-                    // $path = $file->storeAs($folderPath, $filename, 'public');
+                    // $path = $this->imageServices->store($file, $folder, 1200);
+                    $path = $this->imageServices->storeWithoutCompress($file, $folder);
                     $categories->images()->create([
                         'path' => $path,
                     ]);

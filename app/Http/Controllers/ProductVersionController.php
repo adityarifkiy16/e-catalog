@@ -95,7 +95,7 @@ class ProductVersionController extends Controller
     {
         $request->validate([
             'image' => 'required',
-            'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
             'category_id' => 'required|exists:m_categories,id',
             'version' => 'nullable|numeric|exists:m_versions,id',
         ]);
@@ -105,7 +105,8 @@ class ProductVersionController extends Controller
             if ($request->hasFile('image')) {
                 foreach ($request->file('image') as $file) {
                     if (!TProduct::where('code', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))->exists()) {
-                        $path = $this->imageServices->store($file, 'products', 800);
+                        // $path = $this->imageServices->store($file, 'products', 800);
+                        $path = $this->imageServices->storeWithoutCompress($file, 'products');
 
                         // 1. Buat Produk baru
                         $product = TProduct::create([

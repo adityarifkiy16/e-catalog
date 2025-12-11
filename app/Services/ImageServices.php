@@ -29,4 +29,14 @@ class ImageServices
         Storage::disk('public')->put($path, (string) $image);
         return $path;
     }
+
+    public function storeWithoutCompress(UploadedFile $file, string $folder): string
+    {
+        $folderPath = "images/{$folder}/" . now()->format('Y/m/d');
+        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+        // Simpan file ORIGINAL saja
+        $path = $file->storeAs($folderPath, $filename, 'public');
+        return $path;
+    }
 }
