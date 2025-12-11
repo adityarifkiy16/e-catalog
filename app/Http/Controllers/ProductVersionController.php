@@ -95,7 +95,7 @@ class ProductVersionController extends Controller
     {
         $request->validate([
             'image' => 'required',
-            'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
+            'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'category_id' => 'required|exists:m_categories,id',
             'version' => 'nullable|numeric|exists:m_versions,id',
         ]);
@@ -163,7 +163,7 @@ class ProductVersionController extends Controller
     {
         $request->validate([
             'name' => 'nullable|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'image-motif' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'image-mockup' => 'nullable|array|max:5',
             'image-mockup.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:5024',
