@@ -217,8 +217,8 @@ class ProductVersionController extends Controller
 
             if ($request->hasFile('image')) {
                 $file = $request->file('image');
-                // $path = $this->imageServices->store($file, 'products', 800);
-                $path = $this->imageServices->storeWithoutCompress($file, 'products', 800);
+                $path = $this->imageServices->store($file, 'products', 800);
+                // $path = $this->imageServices->storeWithoutCompress($file, 'products');
                 $thumbnail = $productVersion->images()->where('type', 'thumbnail')->first();
 
                 // 1. Hapus photo thumbnail lama
