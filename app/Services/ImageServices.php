@@ -10,7 +10,7 @@ class ImageServices
 {
     public function store(UploadedFile $file, string $folder, ?int $resizeWidth = 800): string
     {
-        $filename = time() . '_' . uniqid() . '.webp';
+        $filename = $file->getClientOriginalName() . '_' . uniqid() . '.webp';
         $directory = "images/{$folder}/" . now()->format('Y/m/d');
         $path = "{$directory}/{$filename}";
         $fullPath = storage_path('app/public/' . $path);
@@ -33,7 +33,7 @@ class ImageServices
     public function storeWithoutCompress(UploadedFile $file, string $folder): string
     {
         $folderPath = "images/{$folder}/" . now()->format('Y/m/d');
-        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $filename = $file->getClientOriginalName() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
 
         // Simpan file ORIGINAL saja
         $path = $file->storeAs($folderPath, $filename, 'public');
