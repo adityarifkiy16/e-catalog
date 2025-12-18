@@ -41,7 +41,7 @@ class TProductController extends Controller
             'filter' => 'nullable|numeric|exists:m_categories,id',
             'version' => 'nullable|numeric|exists:m_versions,id',
         ]);
-        $arr['categories'] = MCategories::with('jenis')->get();
+        $arr['jenises'] = MJenis::all();
         if ($request->ajax()) {
             $query = TProduct::with([
                 'category' => fn($q) => $q->select('id', 'name', 'jenis_id'),

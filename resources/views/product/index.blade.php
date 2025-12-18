@@ -24,17 +24,20 @@
                         <div class="d-flex justify-content-end align-items-center">
                             <form action="{{ route('products.index') }}" method="GET">
                                 <div class="d-flex justify-content-between align-items-center ml-2">
-                                    <select id="category-filter" class="form-control select2" name="filter">
-                                        <option value="">All Categories</option>
-                                        @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}"
-                                                {{ old('category', request()->query('filter')) == $category->id ? 'selected' : '' }}>
-                                                {{ $category->name }} ({{ $category->jenis->name ?? 'Unknown' }})
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <button class="btn btn-secondary ml-2" type="submit" id="btn-filter-category"
-                                        style="width: 100px;">
+                                    <div class="mr-2">
+                                        <select id="jenis-filter" class="form-control select2">
+                                            <option value="">Semua Jenis</option>
+                                            @foreach ($jenises as $jenis)
+                                                <option value="{{ $jenis->id }}">{{ $jenis->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mr-2">
+                                        <select id="category-filter" class="form-control select2" name="filter">
+                                            <option value="">Semua Categories</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-secondary ml-2" id="btn-filter-category" style="width: 100px;">
                                         Filter
                                     </button>
                                 </div>
@@ -220,6 +223,29 @@
         });
 
         $(document).ready(function() {
+            $('#jenis-filter').on('change', function() {
+                let jenisId = $(this).val();
+                if (jenisId == '') {
+                    $('#category-filter').html('<option value="">Pilih Kategori</option>');
+                }
+                let url = "{{ route('categories.byJenis', ':id') }}".replace(':id', jenisId);
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: {
+                        jenis_id: jenisId
+                    },
+                    success: function(response) {
+                        let options = '';
+                        response.forEach(function(category) {
+                            options += '<option value="' + category.id + '">' + category
+                                .name + '</option>';
+                        });
+                        $('#category-filter').html(options);
+                    }
+                })
+            })
+
             $("#product-table").DataTable({
                 "paging": true,
                 "lengthChange": true,
@@ -244,8 +270,7 @@
                     url: "{{ route('products.index') }}",
                     type: "GET",
                     data: function(d) {
-                        let urlParams = new URLSearchParams(window.location.search);
-                        let filter = urlParams.get('filter');
+                        let filter = $('#category-filter').val();
                         if (filter) {
                             d.filter = filter;
                         }
@@ -301,9 +326,6 @@
                 ],
             });
 
-
-
-
             $(document).on('click', '.img-thumbnail', function(e) {
                 e.preventDefault();
 
@@ -313,23 +335,12 @@
                 $('#modal-body-content').html('<img src="' + imgsrc + '" class="img-fluid">');
             });
 
-            $('#btn-filter-category').on('click', function() {
+            $('#btn-filter-category').on('click', function(e) {
+                e.preventDefault(); // ✅ sekarang valid
+
                 const selectedCategory = $('#category-filter').val();
-                const url = new URL(window.location.href);
 
-                // Update or remove 'category' parameter
-                if (selectedCategory) {
-                    url.searchParams.set('category', selectedCategory);
-                }
-
-                // Optional: Remove empty 'search' if exists
-                const search = url.searchParams.get('search');
-                if (!search || search.trim() === '') {
-                    url.searchParams.delete('search');
-                }
-
-                // Redirect to updated URL
-                window.location.href = url.toString();
+                $('#product-table').DataTable().ajax.reload(null, false);
             });
         });
     </script>
