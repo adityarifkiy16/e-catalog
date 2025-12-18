@@ -4,7 +4,7 @@
         <x-breadcrumb :items="[
             ['label' => 'Home', 'url' => route('dashboard')],
             ['label' => 'Paket', 'url' => route('package.index')],
-            ['label' => 'Bulk Tambah'],
+            ['label' => 'Upload Paket'],
         ]">
         </x-breadcrumb>
     </div>
@@ -15,7 +15,7 @@
         <div class="col-md-12">
             <div class="card card-maroon">
                 <div class="card-header">
-                    <h2 class="card-title">Bulk Upload Paket</h2>
+                    <h2 class="card-title">Upload Paket</h2>
                 </div>
 
                 <div class="card-body">
@@ -25,8 +25,7 @@
                         @method('POST')
                         <div class="form-group">
                             <label for="name"><i class="fas fa-user"></i> Nama Paket</label>
-                            <input type="text" class="form-control" name="name" placeholder="Masukkan Nama"
-                                id="name">
+                            <input type="text" class="form-control" name="name" placeholder="Paket 1" id="name">
 
                             <label for="order"><i class="fas fa-user-tag"></i> Urutan</label>
                             <select class="form-control select2" name="order" id="order">
@@ -62,8 +61,8 @@
                             <div class="py-1 mb-0 d-flex align-items-center" role="alert" style="border-radius: .5rem;">
                                 <i class="fa fa-info-circle mr-2"></i>
                                 <span class="font-italic">
-                                    Anda dapat mengunggah lebih dari satu gambar paket. Kode motif/produk akan
-                                    otomatis diambil dari nama file gambar yang diunggah.
+                                    Gambar paket dapat diunggah lebih dari satu. Kode motif/produk akan
+                                    otomatis diambil dari nama file gambar yang diunggah dan akan langsung menyesuaikan.
                                 </span>
                             </div>
                         </div>
