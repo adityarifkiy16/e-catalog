@@ -126,10 +126,7 @@
     <!-- Page Title -->
     <div class="w-100 d-flex justify-content-center align-items-center">
         <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100 bg-black">
-            <a href="https://osborn.id/" target="_blank" class="py-2">
-                <img src="{{ asset('dist/img/osborn.png') }}?v={{ $version }}" alt="osborn-logo"
-                    style="width: 130px; height: auto;">
-            </a>
+            <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn-logo" class="img-fluid" style="max-height:35px;">
 
             <!-- Navigation -->
             <nav class="d-none d-md-block">
@@ -349,11 +346,11 @@
     <footer class="text-white py-4 bg-black animate__animated animate__faster animate__fadeInUp">
         <!-- Garis -->
         <div class="container">
-            <div class="row justify-content-center align-items-center justify-content-md-between align-items-md-start">
+            <div class="row justify-content-center align-items-center justify-content-md-between">
                 <!-- Kiri -->
-                <div class="col-md-6 mb-3 text-center text-md-left">
-                    <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn Logo" style="width: 130px; height: auto;"
-                        class="mb-4">
+                <div class="col-md-6 mb-3 d-flex flex-column align-items-center align-items-md-start">
+                    <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn-logo"
+                        class="img-fluid d-inline-block mb-2" style="max-height:35px;">
                     <p class="mb-2 h5">{{ $setting->email ?? '-' }}</p>
                     <p class="mb-0 text-muted">Design Beyond Limits</p>
                 </div>
