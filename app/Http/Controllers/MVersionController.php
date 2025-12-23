@@ -70,17 +70,6 @@ class MVersionController extends Controller
                         'name'       => $p->name,
                     ]);
 
-
-                    if ($p->images) {
-                        foreach ($p->images as $image) {
-                            $newProductVersion->images()->create([
-                                'path' => $image->path,
-                                'type' => $image->type,
-                                'product_id' => $p->id
-                            ]);
-                        }
-                    }
-
                     if ($p->photo) {
                         $newProductVersion->images()->create([
                             'path' => $p->photo,
@@ -99,7 +88,7 @@ class MVersionController extends Controller
 
                     foreach ($oldProduct->images as $oldImage) {
                         $newProductVersion->images()->create([
-                            'path' => $oldImage->path, // ✅ fix: gunakan 'path', bukan 'image'
+                            'path' => $oldImage->path,
                             'type' => $oldImage->type,
                             'product_id' => $oldProduct->product_id
                         ]);
@@ -108,7 +97,6 @@ class MVersionController extends Controller
             }
 
             DB::commit();
-
             return response()->json([
                 'status' => 'success',
                 'message' => 'Version created successfully.'
