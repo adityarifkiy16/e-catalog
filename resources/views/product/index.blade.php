@@ -135,7 +135,7 @@
                             }
                         },
                         error: function(xhr) {
-                            Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus.', 'error');
+                            Swal.fire('Gagal!', xhr.responseJSON.message, 'error');
                         }
                     });
                 }

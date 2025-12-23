@@ -253,7 +253,6 @@
                 },
                 init: function() {
                     const dz = this;
-                    // When submit button is clicked
                     document.getElementById("btn-tambah").addEventListener("click",
                         function(e) {
                             $("#btn-tambah").prop('disabled', true);
@@ -262,55 +261,52 @@
                             );
                             e.preventDefault();
                             e.stopPropagation();
-                            console.log("submit");
-                            console.log(`category_id: ${$('#category_id').val()}`);
                             const categoryId = $('#category_id').val();
-                            if (!categoryId) {
-                                Toast.fire({
-                                    icon: 'warning',
-                                    title: 'Silahkan Pilih Kategori Dahulu',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                })
+                            const versionId = $('#version_id').val();
+                            if (!categoryId || !versionId) {
+                                toast.error('Kategori dan Versi wajib diisi.');
                                 $("#btn-tambah").prop('disabled', false);
                                 $("#btn-tambah").html('Kirim');
                                 return;
                             }
-
-                            // Process the queue
                             dz.processQueue();
                         });
 
                     // Send all required data with the file
                     this.on("sendingmultiple", function(file, xhr, formData) {
                         formData.append("category_id", $('#category_id').val());
+                        formData.append("version", $('#version_id').val());
                     });
 
                     this.on("successmultiple", function(files, response) {
                         // Handle success response
                         if (response.warning && response.warning.length > 0) {
                             let warningMessage = '';
-                            if (Array.isArray(response.warning)) {
-                                warningMessage =
-                                    '<ul style="text-align: left; margin-left: 20px;">';
-                                response.warning.forEach(function(item) {
-                                    warningMessage += '<li>' + item + '</li>';
+
+                            if (Array.isArray(response.warning) && response.warning.length >
+                                0) {
+                                warningMessage +=
+                                    '<strong>Produk berikut sudah ada:</strong><br>';
+                                warningMessage +=
+                                    '<div style="text-align:left; margin-top:4px;">';
+
+                                response.warning.forEach(item => {
+                                    warningMessage += `• ${item}<br>`;
                                 });
-                                warningMessage += '</ul>';
+
+                                warningMessage += '</div>';
                             }
                             toast.error(warningMessage);
-                            setTimeout(function() {
-                                window.location.href =
-                                    "{{ route('product-versions.index') }}";
-                            }, 3000);
+                            $("#btn-tambah").prop('disabled', false);
+                            $("#btn-tambah").html('Kirim');
                         } else if (response.status == "success") {
                             toast.success(response.message);
-                            setTimeout(function() {
-                                window.location.href =
-                                    "{{ route('product-versions.index') }}";
-                            }, 1500);
+                            $("#btn-tambah").prop('disabled', false);
+                            $("#btn-tambah").html('Kirim');
                         } else {
                             toast.error(response.responseJSON.message);
+                            $("#btn-tambah").prop('disabled', false);
+                            $("#btn-tambah").html('Kirim');
                         }
                         this.removeAllFiles(true);
                     });
