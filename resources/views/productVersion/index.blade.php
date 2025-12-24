@@ -149,6 +149,8 @@
             e.preventDefault();
             const form = $(this);
             const url = form.attr('action');
+            let table = $('#product-table').DataTable();
+
 
             Swal.fire({
                 title: 'Yakin ingin menghapus?',
@@ -171,8 +173,14 @@
                         success: function(response) {
                             if (response.status === 'success') {
                                 Swal.fire('Berhasil!', response.message, 'success');
-                                // Jika pakai DataTables
-                                $('#product-table').DataTable().ajax.reload(null, false);
+                                table.ajax.reload(function() {
+                                    let info = table.page.info();
+
+                                    // page index TIDAK BOLEH >= pages
+                                    if (info.page >= info.pages && info.pages > 0) {
+                                        table.page(info.pages - 1).draw('page');
+                                    }
+                                }, false);
                             } else {
                                 Swal.fire('Gagal!', response.message, 'error');
                             }
@@ -190,6 +198,8 @@
             let ids = $('.row-checkbox:checked').map(function() {
                 return $(this).val();
             }).get();
+
+            let table = $('#product-table').DataTable();
 
             if (ids.length === 0) return;
 
@@ -213,7 +223,15 @@
                         },
                         success: function(response) {
                             Swal.fire('Berhasil!', response.message, 'success');
-                            $('#product-table').DataTable().ajax.reload(null, false);
+                            table.ajax.reload(function() {
+                                let info = table.page.info();
+
+                                // page index TIDAK BOLEH >= pages
+                                if (info.page >= info.pages && info.pages > 0) {
+                                    table.page(info.pages - 1).draw('page');
+                                }
+                            }, false);
+                            $('input[type="checkbox"]').prop('checked', false);
                             $('#bulk-delete-wrapper').hide();
                         }
                     });
