@@ -131,9 +131,7 @@
                                     showConfirmButton: false,
                                     timer: 1500
                                 })
-                                setTimeout(function() {
-                                    window.location.reload();
-                                }, 1500);
+                                $('#btn-submit').html('Masuk').attr("disabled", false);
                             }
                         },
                         error: function(response) {
@@ -176,9 +174,7 @@
                                     showConfirmButton: false,
                                     timer: 1500
                                 });
-                                setTimeout(function() {
-                                    window.location.reload();
-                                })
+                                $('#btn-submit').html('Masuk').attr("disabled", false);
                             }
                         }
                     });

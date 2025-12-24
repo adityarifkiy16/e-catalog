@@ -34,49 +34,7 @@ class ProductVersionController extends Controller
         $arr['categories'] = MCategories::with('jenis')->get();
         $arr['versions'] = MVersion::all();
         if ($request->ajax()) {
-            $query = ProductVersion::with(['version', 'product.category.jenis', 'images']);
-
-            if ($request->has('filter')) {
-                $query = $query->whereHas('product', function ($q) use ($request) {
-                    $q->where('category_id', $request->filter);
-                });
-            }
-
-            if ($request->filled('search')) {
-                $search = is_array($request->search)
-                    ? $request->search['value'] ?? null
-                    : $request->search;
-
-                if ($search) {
-                    $query->where(function ($q) use ($search) {
-                        // cari di tabel product
-                        $q->whereHas('product', function ($sub) use ($search) {
-                            $sub->where('code', 'like', "%{$search}%")
-                                ->orWhere('name', 'like', "%{$search}%");
-                        });
-                    });
-                }
-            }
-
-
-            if ($request->has('version')) {
-                $query = $query->whereHas('version', function ($q) use ($request) {
-                    $q->where('id', $request->version);
-                });
-            }
-
-            return DataTables::of($query)
-                ->addIndexColumn()
-                ->addColumn('category', function ($row) {
-                    return $row->product->category ? $row->product->category->name : '-';
-                })
-                ->addColumn('jenis', function ($row) {
-                    return ($row->product->category && $row->product->category->jenis)
-                        ? $row->product->category->jenis->name
-                        : "Tidak ada jenis";
-                })
-                ->rawColumns(['action'])
-                ->toJson();
+            return $this->productVersionServices->getDataTable($request);
         }
         return view('productVersion.index', $arr);
     }
@@ -103,21 +61,13 @@ class ProductVersionController extends Controller
             'version' => 'nullable|numeric|exists:m_versions,id',
         ]);
 
-        DB::beginTransaction();
         try {
-            $arr = $this->productVersionServices->bulkCreate($validated);
-            DB::commit();
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Product created successfully.',
-                'warning' => isset($arr['warning']) ? $arr['warning'] : null
-            ]);
+            $result = DB::transaction(fn() => $this->productVersionServices->bulkCreate($validated));
+            $response = ['status' => 'success', 'message' => 'Produk berhasil ditambahkan secara massal.'];
+            if (!empty($result['warning'])) $response['warning'] = $result['warning'];
+            return response()->json($response);
         } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
-            ], 500);
+            return response()->json(['status' => 'error', 'message' => 'Gagal update: ' . $e->getMessage()]);
         }
     }
 
@@ -144,21 +94,13 @@ class ProductVersionController extends Controller
             'version_id' => 'required|numeric|exists:m_versions,id',
         ]);
 
-        DB::beginTransaction();
         try {
-            $this->productVersionServices->update($validated, $productVersion);
-            DB::commit();
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Versi Produk berhasil diperbarui',
-            ]);
+            DB::transaction(fn() => $this->productVersionServices->update($validated, $productVersion));
         } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Gagal update: ' . $e->getMessage(),
-            ], 500);
+            return response()->json(['status' => 'error', 'message' => 'Gagal update: ' . $e->getMessage()], 500);
         }
+
+        return response()->json(['status' => 'success', 'message' => 'Versi Produk berhasil diperbarui']);
     }
 
     // 6. Hapus Product Version
@@ -206,20 +148,16 @@ class ProductVersionController extends Controller
             'image.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
-        DB::beginTransaction();
         try {
-            $this->productVersionServices->bulkImage($request, $request->type);
-            DB::commit();
-            return response()->json([
-                'status' => 'success',
-                'message' => 'berhasil diupload.'
-            ]);
+            DB::transaction(fn() => $this->productVersionServices->bulkImage($request, $request->type));
         } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'message' => 'Terjadi kesalahan saat mengupload mockup.'
-            ], 500);
+            return response()->json(['status' => 'error', 'message' => 'Gagal upload: ' . $e->getMessage()], 500);
         }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'berhasil diupload.'
+        ]);
     }
 
     public function create()

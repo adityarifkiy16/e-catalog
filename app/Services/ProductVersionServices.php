@@ -4,9 +4,10 @@ namespace App\Services;
 
 use App\Models\MVersion;
 use App\Models\TProduct;
-use App\Models\ProductVersion;
 use Illuminate\Http\Request;
+use App\Models\ProductVersion;
 use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProductVersionServices
 {
@@ -15,6 +16,52 @@ class ProductVersionServices
     public function __construct(ImageServices $imageServices)
     {
         $this->imageServices = $imageServices;
+    }
+
+    public function getDataTable(Request $request)
+    {
+        $query = ProductVersion::with(['version', 'product.category.jenis', 'images']);
+
+        if ($request->filled('filter')) {
+            $query = $query->whereHas('product', function ($q) use ($request) {
+                $q->where('category_id', $request->filter);
+            });
+        }
+
+        if ($request->filled('version')) {
+            $query = $query->whereHas('version', function ($q) use ($request) {
+                $q->where('id', $request->version);
+            });
+        }
+
+        if ($request->filled('search')) {
+            $search = is_array($request->search)
+                ? $request->search['value'] ?? null
+                : $request->search;
+
+            if ($search) {
+                $query->where(function ($q) use ($search) {
+                    // cari di tabel product
+                    $q->whereHas('product', function ($sub) use ($search) {
+                        $sub->where('code', 'like', "%{$search}%")
+                            ->orWhere('name', 'like', "%{$search}%");
+                    });
+                });
+            }
+        }
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('category', function ($row) {
+                return $row->product->category ? $row->product->category->name : '-';
+            })
+            ->addColumn('jenis', function ($row) {
+                return ($row->product->category && $row->product->category->jenis)
+                    ? $row->product->category->jenis->name
+                    : "Tidak ada jenis";
+            })
+            ->rawColumns(['action'])
+            ->toJson();
     }
 
     //sync product version
