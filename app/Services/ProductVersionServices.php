@@ -153,7 +153,7 @@ class ProductVersionServices
             ->first();
 
         if ($existData) {
-            throw new \Exception('Version already exists.');
+            throw new \Exception('Product with this version already exists.');
         }
 
         // mockup
