@@ -11,8 +11,6 @@ use App\Models\ProductVersion;
 use App\Services\ImageServices;
 use App\Services\ProductVersionServices;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use Yajra\DataTables\Facades\DataTables;
 
 class ProductVersionController extends Controller
 {

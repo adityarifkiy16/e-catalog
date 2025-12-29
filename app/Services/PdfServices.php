@@ -95,8 +95,13 @@ class PdfServices
             return $path;
         }
 
+        $pdfContent = $this->mpdf->Output('', 'S'); // ambil sebagai STRING
         $this->cleanup();
-        return $this->mpdf->Output($filename, 'I');
+
+        return [
+            'content' => $pdfContent,
+            'filename' => $filename,
+        ];
     }
 
     protected function convertImages($pvs): void

@@ -128,13 +128,20 @@ class PDFController extends Controller
                 return redirect()->back()->with('error', 'Pilih maksimal 3 kategori.');
             }
 
-            return $this->pdfService->generateCatalogPdf(
+            $result = $this->pdfService->generateCatalogPdf(
                 $version,
                 $request->jenis_id,
                 $request->type_id,
                 $request->category,
                 false
             );
+
+            return response($result['content'], 200)
+                ->header('Content-Type', 'application/pdf')
+                ->header(
+                    'Content-Disposition',
+                    'inline; filename="' . $result['filename'] . '"'
+                );
         } else {
             return response()->json(['message' => 'Category is required'], 400);
         }
