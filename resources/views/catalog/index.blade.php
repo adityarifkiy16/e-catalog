@@ -219,7 +219,8 @@
         <div class="row justify-content-center">
             @foreach ($jenis as $key => $item)
                 <div class="col-6 col-sm-4 col-md-2 text-center mb-5 jenis-card" data-id="{{ $item->id }}"
-                    data-first-category= "{{ $item->categories?->first()?->id }}">
+                    data-first-category= "{{ $item->categories?->first()?->id }}"
+                    data-first-version="{{ $firstVersion->id }}">
                     <div
                         class="border-0 h-100 pointer d-flex flex-column justify-content-center align-items-center overflow-hidden">
                         @php $img = 'dist/img/product/' . $key; @endphp
@@ -397,7 +398,7 @@
             $('.jenis-card').click(function() {
                 var jenisId = $(this).data('id');
                 var catId = $(this).data('first-category');
-                var versionId = 1;
+                var versionId = $(this).data('first-version');
                 window.location.href = '/catalog?jenis=' + jenisId + '&category=' + catId + '&version=' +
                     versionId;
             });

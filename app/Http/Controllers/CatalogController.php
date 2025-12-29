@@ -29,8 +29,11 @@ class CatalogController extends Controller
             })
             ->values();
 
+        $arr['firstVersion'] = MVersion::first();
+
         // Ambil jenis dan kategori
         $arr['jenis'] = MJenis::with([
+            'categories.products.productVersions',
             'categories' => function ($q) {
                 $q->whereNull('deleted_at')
                     ->orderBy('id');
@@ -38,7 +41,14 @@ class CatalogController extends Controller
         ])
             ->withCount([
                 'categories as products_count' => function ($query) {
-                    $query->join('t_products', 'm_categories.id', '=', 't_products.category_id')
+                    $query
+                        ->join('t_products', 'm_categories.id', '=', 't_products.category_id')
+                        ->join(
+                            't_product_m_versions',
+                            't_products.id',
+                            '=',
+                            't_product_m_versions.product_id'
+                        )
                         ->whereNull('t_products.deleted_at');
                 }
             ])
