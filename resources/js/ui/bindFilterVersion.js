@@ -1,6 +1,7 @@
 import { resetState } from '../core/helpers';
 import { loadMoreData } from '../core/loader';
 import { state } from '../core/state';
+import { updateURLParams } from '../events/updateURLParams';
 
 /**
  * bindFilterVersion - handling pilihan versi
@@ -14,6 +15,7 @@ export function bindFilterVersion() {
 
         // Simpan ke global state
         state.version = selectedVersion;
+        updateURLParams({ version: selectedVersion });
 
         // Reset list produk dan load ulang
         resetState();
