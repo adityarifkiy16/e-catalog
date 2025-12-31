@@ -124,7 +124,7 @@
 @endpush
 @section('content')
     <!-- Page Title -->
-    <div class="w-100 d-flex justify-content-center align-items-center">
+    <header class="w-100 d-flex justify-content-center align-items-center">
         <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100 bg-black">
             <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn-logo" class="img-fluid" style="max-height:35px;">
 
@@ -138,206 +138,212 @@
             </nav>
 
             <!-- Website Button -->
-            <span class="d-block d-md-none"><a href="https://osborn.id/" target="_blank" class="contact-btn">
+            <span class="d-block d-md-none">
+                <a href="https://osborn.id/" target="_blank" class="contact-btn" aria-label="Kunjungi website Osborn">
                     <i class="fas fa-globe text-white fa-lg"></i></a>
             </span>
 
         </div>
-    </div>
+    </header>
+    <main>
+        <!-- Carousel Content -->
+        <div class="container-fluid p-0 mb-2 rounded">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    @for ($key = 0; $key < 7; $key++)
+                        <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                            @php $img = 'dist/img/slider/' . ($key + 1); @endphp
 
-    <!-- Carousel Content -->
-    <div class="container-fluid p-0 mb-2 rounded">
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                @for ($key = 0; $key < 7; $key++)
-                    <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                        @php $img = 'dist/img/slider/' . ($key + 1); @endphp
+                            <img src="{{ asset("$img-1600.webp") }}?v={{ $version }}"
+                                srcset="{{ asset("$img-800.webp") }}?v={{ $version }} 800w,{{ asset("$img-1600.webp") }}?v={{ $version }} 1600w"
+                                sizes="100vw" class="d-block w-100 img-fluid" alt="{{ 'Slide ' . ($key + 1) }}"
+                                style="object-fit: cover; object-position: center bottom; height: 65vh;"
+                                fetchpriority="{{ $key == 0 ? 'high' : 'low' }}">
 
-                        <img src="{{ asset("$img-1600.webp") }}?v={{ $version }}"
-                            srcset="{{ asset("$img-800.webp") }}?v={{ $version }} 800w,{{ asset("$img-1600.webp") }}?v={{ $version }} 1600w"
-                            sizes="100vw" class="d-block w-100 img-fluid" alt="{{ 'Slide ' . ($key + 1) }}"
-                            style="object-fit: cover; object-position: center bottom; height: 65vh;"
-                            fetchpriority="{{ $key == 0 ? 'high' : 'low' }}">
+                        </div>
+                    @endfor
+                </div>
 
-                    </div>
-                @endfor
+                <ol class="carousel-indicators" id="mockup-carousel-indicators">
+                    @php $slideIndex = 0; @endphp
+                    @for ($key = 0; $key < 7; $key++)
+                        <li data-target="#carouselExampleIndicators" data-slide-to="{{ $slideIndex }}"
+                            class="{{ $slideIndex == 0 ? 'active' : '' }}"></li>
+                        @php $slideIndex++; @endphp
+                    @endfor
+                </ol>
             </div>
 
-            <ol class="carousel-indicators" id="mockup-carousel-indicators">
-                @php $slideIndex = 0; @endphp
-                @for ($key = 0; $key < 7; $key++)
-                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ $slideIndex }}"
-                        class="{{ $slideIndex == 0 ? 'active' : '' }}"></li>
-                    @php $slideIndex++; @endphp
-                @endfor
-            </ol>
         </div>
 
-    </div>
+        <!-- Slider Berjalan Horizontal -->
+        <div class="slider-container">
+            <div class="slider-track">
+                @foreach ($sliders as $item)
+                    <div class="slider-item">
+                        @php $img = 'dist/img/slide-depan/' . pathinfo($item, PATHINFO_FILENAME); @endphp
+                        <img src="{{ asset("$img-300.webp") }}?v={{ $version }}"
+                            srcset="{{ asset("$img-300.webp") }}?v={{ $version }} 300w,{{ asset("$img-600.webp") }}?v={{ $version }} 600w"
+                            sizes="200px" alt="Product" />
 
-    <!-- Slider Berjalan Horizontal -->
-    <div class="slider-container">
-        <div class="slider-track">
-            @foreach ($sliders as $item)
-                <div class="slider-item">
-                    @php $img = 'dist/img/slide-depan/' . pathinfo($item, PATHINFO_FILENAME); @endphp
-                    <img src="{{ asset("$img-300.webp") }}?v={{ $version }}"
-                        srcset="{{ asset("$img-300.webp") }}?v={{ $version }} 300w,{{ asset("$img-600.webp") }}?v={{ $version }} 600w"
-                        sizes="200px" alt="Product" />
+                    </div>
+                @endforeach
+                @foreach ($sliders as $item)
+                    <div class="slider-item">
+                        @php $img = 'dist/img/slide-depan/' . pathinfo($item, PATHINFO_FILENAME); @endphp
+                        <img src="{{ asset("$img-300.webp") }}?v={{ $version }}"
+                            srcset="{{ asset("$img-300.webp") }}?v={{ $version }} 300w,{{ asset("$img-600.webp") }}?v={{ $version }} 600w"
+                            sizes="200px" alt="Product" />
 
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+
+        <!-- Main Content -->
+        <div class="container my-5">
+            <div class="text-center mb-5">
+                <h1 class="display-5 display-md-4 display-lg-3 font-weight-bold mb-3 text-capitalize">Discover Our
+                    Collections
+                </h1>
+                <h2 class="font-weight-bold text-white mb-2">
+                    To help you visualize the image pack,<br>
+                    we have separated it into five different products
+                </h2>
+                <p class="text-white lead">
+                    Tap on the boxes below to explore<br>
+                    all the models within the categories
+                </p>
+            </div>
+
+            <!-- Product Categories -->
+            <div class="row justify-content-center">
+                @foreach ($jenis as $key => $item)
+                    <div class="col-6 col-sm-4 col-md-2 text-center mb-5 jenis-card" data-id="{{ $item->id }}"
+                        data-first-category= "{{ $item->categories?->first()?->id }}"
+                        data-first-version="{{ $firstVersion->id }}">
+                        <div
+                            class="border-0 h-100 pointer d-flex flex-column justify-content-center align-items-center overflow-hidden">
+                            @php $img = 'dist/img/product/' . $key; @endphp
+
+                            <img src="{{ asset("$img-400.webp") }}?v={{ $version }}"
+                                srcset="{{ asset("$img-200.webp") }}?v={{ $version }} 200w,{{ asset("$img-400.webp") }}?v={{ $version }} 400w"
+                                sizes="(max-width: 768px) 50vw, 200px" class="img-fluid d-block w-100 product-img"
+                                alt="{{ $item->name }}">
+
+                            <div class="card-body mt-0">
+                                <h4 class="card-text font-weight-bold text-uppercase">{{ $item->name }}</h4>
+                                <div class="d-flex flex-row justify-content-center">
+                                    <h5 class="font-weight-bold">{{ $item->products_count }}</h5>
+                                    <p class="ml-1 text-white text-uppercase">products</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="bg-black-secondary p-md-5 p-3" style="border-radius: 10px">
+                <!-- About -->
+                <div class="container">
+                    <div class="row align-items-center justify-content-center justify-content-md-between">
+                        <!-- Gambar -->
+                        <div class="col-md-5 mb-3 mb-md-0 animate__animated animate__faster animate__fadeInLeft">
+                            <div class="square-wrapper">
+                                @php $img = 'dist/img/slider/1'; @endphp
+
+                                <img src="{{ asset("$img-1600.webp") }}"
+                                    srcset="{{ asset("$img-800.webp") }} 800,{{ asset("$img-1600.webp") }} 1600w"
+                                    sizes="100vw" class="img-fluid w-100" alt="about">
+                            </div>
+                        </div>
+
+                        <!-- Teks -->
+                        <div class="col-md-6 offset-md-1 animate__animated animate__faster animate__fadeInRight">
+                            <span class="text-uppercase" style="color: #bbb">Crafted for Your Space</span>
+                            <h1 class="font-weight-bold mb-3">Unleash Your Design Vision with Over 1000 Premium Motifs</h1>
+                            <ul class="list-styled">
+                                <li>1000+ elegant and exclusive motifs</li>
+                                <li>Durable, lightweight, and easy-to-install material</li>
+                                <li>Perfect for any interior style</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-            @endforeach
-            @foreach ($sliders as $item)
-                <div class="slider-item">
-                    @php $img = 'dist/img/slide-depan/' . pathinfo($item, PATHINFO_FILENAME); @endphp
-                    <img src="{{ asset("$img-300.webp") }}?v={{ $version }}"
-                        srcset="{{ asset("$img-300.webp") }}?v={{ $version }} 300w,{{ asset("$img-600.webp") }}?v={{ $version }} 600w"
-                        sizes="200px" alt="Product" />
 
-                </div>
-            @endforeach
-        </div>
-    </div>
+                <!-- Contact -->
+                <div class="container mt-4">
+                    <div class="row align-items-center justify-content-center justify-content-md-between">
+                        <div class="col-md-5 mb-4 mb-md-0 order-2 order-md-1">
+                            <span class="text-uppercase small d-block mb-2" style="color: #bbb">Ready to Get Started?</span>
+                            <h2 class="font-weight-bold mb-3">Contact Us !</h2>
+
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-3 d-flex">
+                                    <i class="fa fa-envelope mr-2 mt-1"></i>
+                                    <div class="d-flex">
+                                        <span class="font-weight-bold" style="min-width: 80px;">Email</span>
+                                        <span class="mr-1">:</span>
+                                        <a href="mailto:{{ $setting->email ?? '-' }}"
+                                            class="text-white font-weight-lighter">
+                                            {{ $setting->email ?? '-' }}
+                                        </a>
+                                    </div>
+                                </li>
+
+                                <li class="mb-3 d-flex">
+                                    <i class="fa fa-phone mr-2 mt-1"></i>
+                                    <div class="d-flex">
+                                        <span class="font-weight-bold" style="min-width: 80px;">Call</span>
+                                        <span class="mr-1">:</span>
+                                        <a href="tel:0816659688"
+                                            class="text-white font-weight-lighter">{{ $setting->phone ?? '-' }}</a>
+                                    </div>
+                                </li>
+
+                                <li class="d-flex">
+                                    <i class="fa fa-map-marker mr-2 mt-1"></i>
+                                    <div class="d-flex">
+                                        <span class="font-weight-bold" style="min-width: 80px;">Address</span>
+                                        <span class="mr-1">:</span>
+                                        <span class="text-white font-weight-lighter">
+                                            {{ $setting->address ?? '-' }}
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
 
 
-    <!-- Main Content -->
-    <div class="container my-5">
-        <div class="text-center mb-5">
-            <h1 class="display-5 display-md-4 display-lg-3 font-weight-bold mb-3 text-capitalize">Discover Our Collections
-            </h1>
-            <h4 class="font-weight-bold text-white mb-2">
-                To help you visualize the image pack,<br>
-                we have separated it into five different products
-            </h4>
-            <p class="text-white lead">
-                Tap on the boxes below to explore<br>
-                all the models within the categories
-            </p>
-        </div>
+                            <div class="d-flex">
+                                <a href="https://instagram.com/osborn.pvcboard" class="text-white mr-3" target="__blank"
+                                    aria-label="Kunjungi Instagram"><i class="fab fa-instagram fa-lg"></i></a>
+                                <a href="https://www.youtube.com/@osborn.pvcboard" class="text-white mr-3"
+                                    target="__blank" aria-label="Kunjungi YouTube"><i
+                                        class="fab fa-youtube fa-lg"></i></a>
+                                <a href="https://facebook.com/profile.php?id=61560927238237" class="text-white mr-3"
+                                    target="__blank" aria-label="Kunjungi Facebook"><i
+                                        class="fab fa-facebook fa-lg"></i></a>
+                                <a href="https://tiktok.com/@osborn.pvcboard?_t=8nISbYs42Fc&_r=1" class="text-white"
+                                    target="__blank" aria-label="Kunjungi TikTok"><i class="fab fa-tiktok fa-lg"></i></a>
+                            </div>
+                        </div>
 
-        <!-- Product Categories -->
-        <div class="row justify-content-center">
-            @foreach ($jenis as $key => $item)
-                <div class="col-6 col-sm-4 col-md-2 text-center mb-5 jenis-card" data-id="{{ $item->id }}"
-                    data-first-category= "{{ $item->categories?->first()?->id }}"
-                    data-first-version="{{ $firstVersion->id }}">
-                    <div
-                        class="border-0 h-100 pointer d-flex flex-column justify-content-center align-items-center overflow-hidden">
-                        @php $img = 'dist/img/product/' . $key; @endphp
+                        <!-- Gambar -->
+                        <div class="col-md-5 mb-3 mb-md-0 animate__animated animate__faster animate__fadeInLeft order-1">
+                            <div class="square-wrapper">
+                                @php $img = 'dist/img/slider/2'; @endphp
 
-                        <img src="{{ asset("$img-400.webp") }}?v={{ $version }}"
-                            srcset="{{ asset("$img-200.webp") }}?v={{ $version }} 200w,{{ asset("$img-400.webp") }}?v={{ $version }} 400w"
-                            sizes="(max-width: 768px) 50vw, 200px" class="img-fluid d-block w-100 product-img"
-                            alt="{{ $item->name }}">
-
-                        <div class="card-body mt-0">
-                            <h4 class="card-text font-weight-bold text-uppercase">{{ $item->name }}</h4>
-                            <div class="d-flex flex-row justify-content-center">
-                                <h5 class="font-weight-bold">{{ $item->products_count }}</h5>
-                                <p class="ml-1 text-muted text-uppercase">products</p>
+                                <img src="{{ asset("$img-1600.webp") }}"
+                                    srcset="{{ asset("$img-800.webp") }} 800w,{{ asset("$img-1600.webp") }} 1600w"
+                                    sizes="100vw" class="img-fluid w-100" alt="about">
                             </div>
                         </div>
                     </div>
                 </div>
-            @endforeach
-        </div>
-
-        <div class="bg-black-secondary p-md-5 p-3" style="border-radius: 10px">
-            <!-- About -->
-            <div class="container">
-                <div class="row align-items-center justify-content-center justify-content-md-between">
-                    <!-- Gambar -->
-                    <div class="col-md-5 mb-3 mb-md-0 animate__animated animate__faster animate__fadeInLeft">
-                        <div class="square-wrapper">
-                            @php $img = 'dist/img/slider/1'; @endphp
-
-                            <img src="{{ asset("$img-1600.webp") }}"
-                                srcset="{{ asset("$img-800.webp") }} 800,{{ asset("$img-1600.webp") }} 1600w"
-                                sizes="100vw" class="img-fluid w-100" alt="about">
-                        </div>
-                    </div>
-
-                    <!-- Teks -->
-                    <div class="col-md-6 offset-md-1 animate__animated animate__faster animate__fadeInRight">
-                        <span class="text-uppercase" style="color: #bbb">Crafted for Your Space</span>
-                        <h1 class="font-weight-bold mb-3">Unleash Your Design Vision with Over 1000 Premium Motifs</h1>
-                        <ul class="list-styled">
-                            <li>1000+ elegant and exclusive motifs</li>
-                            <li>Durable, lightweight, and easy-to-install material</li>
-                            <li>Perfect for any interior style</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Contact -->
-            <div class="container mt-4">
-                <div class="row align-items-center justify-content-center justify-content-md-between">
-                    <div class="col-md-5 mb-4 mb-md-0 order-2 order-md-1">
-                        <span class="text-uppercase small d-block mb-2" style="color: #bbb">Ready to Get Started?</span>
-                        <h2 class="font-weight-bold mb-3">Contact Us !</h2>
-
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-3 d-flex">
-                                <i class="fa fa-envelope mr-2 mt-1"></i>
-                                <div class="d-flex">
-                                    <span class="font-weight-bold" style="min-width: 80px;">Email</span>
-                                    <span class="mr-1">:</span>
-                                    <a href="mailto:{{ $setting->email ?? '-' }}" class="text-white font-weight-lighter">
-                                        {{ $setting->email ?? '-' }}
-                                    </a>
-                                </div>
-                            </li>
-
-                            <li class="mb-3 d-flex">
-                                <i class="fa fa-phone mr-2 mt-1"></i>
-                                <div class="d-flex">
-                                    <span class="font-weight-bold" style="min-width: 80px;">Call</span>
-                                    <span class="mr-1">:</span>
-                                    <a href="tel:0816659688"
-                                        class="text-white font-weight-lighter">{{ $setting->phone ?? '-' }}</a>
-                                </div>
-                            </li>
-
-                            <li class="d-flex">
-                                <i class="fa fa-map-marker mr-2 mt-1"></i>
-                                <div class="d-flex">
-                                    <span class="font-weight-bold" style="min-width: 80px;">Address</span>
-                                    <span class="mr-1">:</span>
-                                    <span class="text-white font-weight-lighter">
-                                        {{ $setting->address ?? '-' }}
-                                    </span>
-                                </div>
-                            </li>
-                        </ul>
-
-
-                        <div class="d-flex">
-                            <a href="https://instagram.com/osborn.pvcboard" class="text-white mr-3" target="__blank"><i
-                                    class="fab fa-instagram fa-lg"></i></a>
-                            <a href="https://www.youtube.com/@osborn.pvcboard" class="text-white mr-3"
-                                target="__blank"><i class="fab fa-youtube fa-lg"></i></a>
-                            <a href="https://facebook.com/profile.php?id=61560927238237" class="text-white mr-3"
-                                target="__blank"><i class="fab fa-facebook fa-lg"></i></a>
-                            <a href="https://tiktok.com/@osborn.pvcboard?_t=8nISbYs42Fc&_r=1" class="text-white"
-                                target="__blank"><i class="fab fa-tiktok fa-lg"></i></a>
-                        </div>
-                    </div>
-
-                    <!-- Gambar -->
-                    <div class="col-md-5 mb-3 mb-md-0 animate__animated animate__faster animate__fadeInLeft order-1">
-                        <div class="square-wrapper">
-                            @php $img = 'dist/img/slider/2'; @endphp
-
-                            <img src="{{ asset("$img-1600.webp") }}"
-                                srcset="{{ asset("$img-800.webp") }} 800w,{{ asset("$img-1600.webp") }} 1600w"
-                                sizes="100vw" class="img-fluid w-100" alt="about">
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
-    </div>
+    </main>
 @endsection
 @section('footer')
     <div class="container">
@@ -353,12 +359,12 @@
                     <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn-logo"
                         class="img-fluid d-inline-block mb-2" style="max-height:35px;">
                     <p class="mb-2 h5">{{ $setting->email ?? '-' }}</p>
-                    <p class="mb-0 text-muted">Design Beyond Limits</p>
+                    <p class="mb-0 text-white">Design Beyond Limits</p>
                 </div>
 
                 <!-- Kanan -->
                 <div class="col-md-6 text-md-right text-center">
-                    <h5 class="text-uppercase mt-0 mb-3">Follow Us</h5>
+                    <h4 class="text-uppercase mt-0 mb-3">Follow Us</h4>
                     <ul class="list-unstyled d-flex justify-content-center justify-content-md-end">
                         <li>
                             <a href="https://instagram.com/osborn.pvcboard" class="social-link" target="__blank">
@@ -384,7 +390,7 @@
                         </li>
                     </ul>
                     <p class="mt-5 mb-1">&copy; 2025 Osborn. All rights reserved.</p>
-                    <span class="text-muted">Updated:
+                    <span class="text-white">Updated:
                         {{ \Carbon\Carbon::parse($setting->last_update ?? null)->formatLocalized('%d %B %Y') }} |
                         {{ $setting->version ?? '-' }}</span>
                 </div>
