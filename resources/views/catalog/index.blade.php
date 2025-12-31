@@ -367,24 +367,26 @@
                     <h4 class="text-uppercase mt-0 mb-3">Follow Us</h4>
                     <ul class="list-unstyled d-flex justify-content-center justify-content-md-end">
                         <li>
-                            <a href="https://instagram.com/osborn.pvcboard" class="social-link" target="__blank">
+                            <a href="https://instagram.com/osborn.pvcboard" class="social-link" target="__blank"
+                                aria-label="Kunjungi Instagram">
                                 <i class="fab fa-instagram"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="https://www.youtube.com/@osborn.pvcboard" class="social-link ml-2" target="__blank">
+                            <a href="https://www.youtube.com/@osborn.pvcboard" class="social-link ml-2" target="__blank"
+                                aria-label="Kunjungi YouTube">
                                 <i class="fab fa-youtube"></i>
                             </a>
                         </li>
                         <li>
                             <a href="https://facebook.com/profile.php?id=61560927238237" class="social-link ml-2"
-                                target="__blank">
+                                target="__blank" aria-label="Kunjungi Facebook">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
                         </li>
                         <li>
                             <a href="https://tiktok.com/@osborn.pvcboard?_t=8nISbYs42Fc&_r=1" class="social-link ml-2"
-                                target="__blank">
+                                target="__blank" aria-label="Kunjungi TikTok">
                                 <i class="fab fa-tiktok"></i>
                             </a>
                         </li>
