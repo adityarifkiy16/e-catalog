@@ -86,7 +86,7 @@ export function renderProducts(products, selectedJenis, version) {
                             <h4 class="card-title font-weight-bold text-uppercase mb-2">
                                 ${displayName}
                             </h4>
-                            <h6 class="card-text text-muted mb-1">${categoryName}</h6>
+                            <h5 class="card-text text-white mb-1 font-weight-light">${categoryName}</h5>
                         </div>
                     </div>
                 </div>`;

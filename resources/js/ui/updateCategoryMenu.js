@@ -1,6 +1,4 @@
 // Core
-import { resetState } from '../core/helpers';
-import { loadMoreData } from '../core/loader';
 import { state } from '../core/state';
 // UI
 import { applyLabelMap } from './applyLabelMap';
@@ -8,7 +6,6 @@ import { toggleCategoryLayout } from './toggleCategoryLayout';
 import { renderCategory } from './renderCategory';
 import { renderDownloadCheckbox } from './renderDownloadCheckbox';
 import { renderTypeMenu } from './renderTypeMenu';
-import { setCategory } from './utils';
 
 /**
  * @function updateCategoryMenu
