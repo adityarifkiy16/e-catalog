@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="description"
+        content="Osborn adalah brand Indonesia yang berfokus pada produksi material konstruksi dan interior berkualitas tinggi, dengan menghadirkan solusi estetika dinding melalui produk inovatif seperti PVC board, Wallpanel, wallboard, dan UV board.">
 
     <title>@yield('title', 'Catalog - OSBORN')</title>
     <link rel="shortcut icon" href="{{ asset('dist/img/favicon.ico') }}" />
