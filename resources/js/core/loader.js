@@ -68,6 +68,7 @@ function handleResponse(response) {
         setTimeout(() => loadMoreData(), 0);
         return;
     }
+    //test console.log(response);
 
     // === Function Handle jika load pertama dan ada types ===
     if (state.selectedJenis && state.firstLoad && types.length > 0) {
