@@ -356,7 +356,7 @@
             <div class="row justify-content-center align-items-center justify-content-md-between">
                 <!-- Kiri -->
                 <div class="col-md-6 mb-3 d-flex flex-column align-items-center align-items-md-start">
-                    <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn-logo"
+                    <img src="{{ asset('dist/img/osborn.webp') }}" alt="osborn-logo"
                         class="img-fluid d-inline-block mb-2" style="max-height:35px;">
                     <p class="mb-2 h5">{{ $setting->email ?? '-' }}</p>
                     <p class="mb-0 text-white">Design Beyond Limits</p>
