@@ -126,7 +126,7 @@
     <!-- Page Title -->
     <header class="w-100 d-flex justify-content-center align-items-center">
         <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100 bg-black">
-            <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn-logo" class="img-fluid" style="max-height:35px;">
+            <img src="{{ asset('dist/img/osborn.webp') }}" alt="osborn-logo" class="img-fluid" style="max-height:35px;">
 
             <!-- Navigation -->
             <nav class="d-none d-md-block">
@@ -356,7 +356,7 @@
             <div class="row justify-content-center align-items-center justify-content-md-between">
                 <!-- Kiri -->
                 <div class="col-md-6 mb-3 d-flex flex-column align-items-center align-items-md-start">
-                    <img src="{{ asset('dist/img/osborn.png') }}" alt="osborn-logo"
+                    <img src="{{ asset('dist/img/osborn.webp') }}" alt="osborn-logo"
                         class="img-fluid d-inline-block mb-2" style="max-height:35px;">
                     <p class="mb-2 h5">{{ $setting->email ?? '-' }}</p>
                     <p class="mb-0 text-white">Design Beyond Limits</p>
@@ -391,7 +391,7 @@
                             </a>
                         </li>
                     </ul>
-                    <p class="mt-5 mb-1">&copy; 2025 Osborn. All rights reserved.</p>
+                    <p class="mt-5 mb-1">&copy;{{ date('Y') }} Osborn. All rights reserved.</p>
                     <span class="text-white">Updated:
                         {{ \Carbon\Carbon::parse($setting->last_update ?? null)->formatLocalized('%d %B %Y') }} |
                         {{ $setting->version ?? '-' }}</span>
