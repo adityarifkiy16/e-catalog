@@ -12,7 +12,7 @@ export function fetchCatalog(params) {
         state.currentRequest.abort();
     }
     return (state.currentRequest = $.ajax({
-        url: '/catalog',
+        url: '/catalog/product',
         type: 'GET',
         data: params
     }));

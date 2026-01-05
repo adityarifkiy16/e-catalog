@@ -26,6 +26,9 @@ export function renderMockup(images, selectedJenis, uniquePaths, firstLoad = fal
     const paths = Array.from(uniquePaths);
     const $carouselInner = $('#mockup-carousel-inner');
     const $carouselIndicators = $('#mockup-carousel-indicators');
+    $carouselInner.empty();
+    $carouselIndicators.empty();
+
     const videos = [
         'https://www.youtube.com/embed/BiiUrYAbL9s?autoplay=1&mute=1&rel=0&controls=0&amp;loop=1&playlist=BiiUrYAbL9s'
     ];
@@ -35,9 +38,6 @@ export function renderMockup(images, selectedJenis, uniquePaths, firstLoad = fal
         if (i === 2) continue;
         imagesWpc.push(`/dist/img/wpc/${i}.webp?v=${Date.now()}`);
     }
-
-    $carouselInner.empty();
-    $carouselIndicators.empty();
 
     if (selectedJenis == 4) {
         $('#mockup-carousel').carousel({
@@ -99,6 +99,7 @@ export function renderMockup(images, selectedJenis, uniquePaths, firstLoad = fal
 
     // Mode gambar
     if (paths.length > 0) {
+        console.log('Rendering mockup images:', paths);
         if (paths.length === 1) {
             $('#mockup .carousel-control-next').addClass('d-none');
             $('#mockup .carousel-control-prev').addClass('d-none');
@@ -112,7 +113,6 @@ export function renderMockup(images, selectedJenis, uniquePaths, firstLoad = fal
         paths.forEach((path, i) => {
             let eager = i === 0 ? 'eager' : 'lazy';
             let priority = i === 0 ? 'high' : 'low';
-
             $carouselInner.append(`
                 <div class="carousel-item ${i === 0 ? 'active' : ''}">
                     <img src="/storage/${path}" alt="mockup" loading="${eager}" fetchpriority="${priority}" decode="async" 

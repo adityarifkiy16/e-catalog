@@ -8,18 +8,43 @@ import { state } from '../core/state';
  * @param {Boolean} firstLoad - flaggin first load
  */
 export function displayCarousel(response, firstLoad = true) {
-    const firstProduct = response.data.data[0];
+    const firstProduct = response.products?.data[0];
     const imageTypes = firstProduct?.category?.type?.images ?? [];
     const images = firstProduct?.category?.images ?? [];
-    if (imageTypes.length > 0) {
-        renderMockup(imageTypes, state.selectedJenis, state.uniquePaths, firstLoad);
-    } else if (images.length > 0) {
-        renderMockup(images, state.selectedJenis, state.uniquePaths, firstLoad);
-    } else if (state.selectedJenis == 3) {
-        renderMockup([], state.selectedJenis, state.uniquePaths, firstLoad);
-    } else if (state.selectedJenis == 4) {
-        renderMockup([], state.selectedJenis, state.uniquePaths, firstLoad);
+    console.log(images);
+
+    const isMockupJenis = state.selectedJenis === 3 || state.selectedJenis === 4;
+
+    if (firstLoad) {
+        if (imageTypes.length > 0) {
+            console.log('Rendering mockup image types:', imageTypes);
+            renderMockup(imageTypes, state.selectedJenis, state.uniquePaths, firstLoad);
+            return;
+        }
+
+        if (images.length > 0) {
+            console.log('Rendering mockup images:', images);
+            renderMockup(images, state.selectedJenis, state.uniquePaths, firstLoad);
+            return;
+        }
+
+        if (isMockupJenis) {
+            renderMockup([], state.selectedJenis, state.uniquePaths, firstLoad);
+            return;
+        }
     } else {
-        $('#mockup').addClass('d-none');
+        if (imageTypes.length > 0) {
+            console.log('Rendering mockup image types:', imageTypes);
+            renderMockup(imageTypes, state.selectedJenis, state.uniquePaths, firstLoad);
+            return;
+        }
+
+        if (images.length > 0) {
+            console.log('Rendering mockup images:', images);
+            renderMockup(images, state.selectedJenis, state.uniquePaths, firstLoad);
+            return;
+        }
+
+        renderMockup([], state.selectedJenis, state.uniquePaths, firstLoad);
     }
 }

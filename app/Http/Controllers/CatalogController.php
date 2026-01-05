@@ -64,14 +64,25 @@ class CatalogController extends Controller
 
     public function catalog(Request $request)
     {
-        // dd($request->all());
-        $isAjax = $request->ajax();
-        $categoryId = $request->query('category');
-        $search = $request->query('search');
-        $jenisId = $request->query('jenis');
-        $typeId = $request->query('type');
-        $versionId = $request->query('version');
+        $data = $request->validate([
+            'category' => 'required|exists:m_categories,id',
+        ]);
+        $images = collect();
+        if (isset($data['category'])) {
+            $categories  = MCategories::with('images')->find($data['category']);
+            $images = $categories->images ?? collect();
+        }
+        return view('catalog.catalog', [
+            'jenis' => MJenis::with('categories')->get(),
+            'imageCarousel' => $images,
+            'categories' => MCategories::all(),
+            'type' => \App\Models\MType::with('jenis')->get(),
+            'versions' => MVersion::orderBy('id', 'desc')->get(),
+        ]);
+    }
 
+    public function product(Request $request)
+    {
         $query = TProduct::with([
             'category',
             'category.jenis',
@@ -82,19 +93,19 @@ class CatalogController extends Controller
             'productVersions.images'
         ]);
 
-        $query->whereHas('productVersions', function ($q) use ($versionId) {
-            if (is_array($versionId)) {
-                $q->whereIn('version_id', $versionId);
+        $query->whereHas('productVersions', function ($q) use ($request) {
+            if (is_array($request->version)) {
+                $q->whereIn('version_id', $request->version);
             } else {
-                $q->where('version_id', $versionId);
+                $q->where('version_id', $request->version);
             }
         });
 
         // Filter kategori
-        if ($categoryId) {
-            $query->where('category_id', $categoryId);
+        if ($request->category) {
+            $query->where('category_id', $request->category);
 
-            if ($categoryId == 32) {
+            if ($request->category == 32) {
                 $query->orderByRaw("CAST(SUBSTRING_INDEX(code, 'mm', 1) AS UNSIGNED) ASC");
             } else {
                 $query->orderBy('code', 'asc');
@@ -102,85 +113,75 @@ class CatalogController extends Controller
         }
 
         // Filter search
-        if ($search) {
-            $query->where('code', 'like', '%' . $search . '%');
+        if ($request->search) {
+            $query->where('code', 'like', '%' . $request->search . '%');
         }
 
         // Filter jenis
-        if ($jenisId) {
-            $query->whereHas('category.jenis', function ($q) use ($jenisId) {
-                if (is_array($jenisId)) {
-                    $q->whereIn('id', $jenisId);
+        if ($request->jenis) {
+            $query->whereHas('category.jenis', function ($q) use ($request) {
+                if (is_array($request->jenis)) {
+                    $q->whereIn('id', $request->jenis);
                 } else {
-                    $q->where('id', $jenisId);
+                    $q->where('id', $request->jenis);
                 }
             });
         }
 
         // Filter type
-        if ($typeId) {
-            $query->whereHas('category.type', function ($q) use ($typeId) {
-                if (is_array($typeId)) {
-                    $q->whereIn('id', $typeId);
+        if ($request->type) {
+            $query->whereHas('category.type', function ($q) use ($request) {
+                if (is_array($request->type)) {
+                    $q->whereIn('id', $request->type);
                 } else {
-                    $q->where('id', $typeId);
+                    $q->where('id', $request->type);
                 }
             });
         }
 
-        if ($isAjax) {
-            $data = $query->paginate(12);
-
-            $response = ['data' => $data];
-
-            // Jika categoryId spesifik
-            if ($typeId) {
-                $categories = MCategories::with(['jenis', 'images', 'type.images'])
-                    ->whereHas('type', function ($q) use ($typeId) {
-                        if (is_array($typeId)) {
-                            $q->whereIn('id', $typeId);
-                        } else {
-                            $q->where('id', $typeId);
-                        }
-                    })
-                    ->get();
-                if ($categories->isEmpty()) {
-                    $response['category'] = [];
-                    $response['message'] = 'Kategori dengan type tersebut tidak ditemukan';
-                } else {
-                    $response['category'] = $categories;
-                }
-            } elseif ($jenisId) {
-                $response['category'] = MCategories::with(['jenis', 'images'])
-                    ->where('jenis_id', $jenisId)
-                    ->get();
-            }
-
-            // Tambahan data jenis
-            if ($jenisId) {
-                $jenis = MJenis::with('categories.products')->find($jenisId);
-                if ($jenis) {
-                    $response['jenis'] = $jenis;
-                    if ($jenis->types->isNotEmpty()) {
-                        $response['types'] = $jenis->types;
-                    }
-                }
-            }
-            $response['active_version_id'] = $versionId;
-            return response()->json($response);
-        }
-
         // Default order jika tidak ada categoryId
-        if (!$categoryId) {
+        if (!$request->category) {
             $query->orderBy('code', 'asc');
         }
 
-        return view('catalog.catalog', [
-            'data' => $query->get(),
-            'jenis' => MJenis::with('categories')->get(),
-            'categories' => MCategories::all(),
-            'type' => \App\Models\MType::with('jenis')->get(),
-            'versions' => MVersion::orderBy('id', 'desc')->get(),
-        ]);
+        $data = $query->paginate(12);
+
+        $response = ['products' => $data];
+
+        // Jika categoryId spesifik
+        if ($request->type) {
+            $categories = MCategories::with(['jenis', 'images', 'type.images'])
+                ->whereHas('type', function ($q) use ($request) {
+                    if (is_array($request->type)) {
+                        $q->whereIn('id', $request->type);
+                    } else {
+                        $q->where('id', $request->type);
+                    }
+                })
+                ->get();
+            if ($categories->isEmpty()) {
+                $response['category'] = [];
+                $response['message'] = 'Kategori dengan type tersebut tidak ditemukan';
+            } else {
+                $response['category'] = $categories;
+            }
+        } elseif ($request->jenis) {
+            $response['category'] = MCategories::with(['jenis', 'images'])
+                ->where('jenis_id', $request->jenis)
+                ->get();
+        }
+
+        // Tambahan data jenis
+        if ($request->jenis) {
+            $jenis = MJenis::with('categories.products')->find($request->jenis);
+            if ($jenis) {
+                $response['jenis'] = $jenis;
+                if ($jenis->types->isNotEmpty()) {
+                    $response['types'] = $jenis->types;
+                }
+            }
+        }
+        $response['active_version_id'] = $request->version;
+        return response()->json($response);
     }
 }

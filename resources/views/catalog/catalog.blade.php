@@ -113,12 +113,19 @@
                     </div>
 
                     <!-- Slider Mockup -->
-                    <div id="mockup" class="d-none">
+                    <div id="mockup">
                         <div class="row mb-3">
                             <div class="col-12">
                                 <div id="mockup-carousel" class="carousel slide carousel-fade">
                                     <div class="carousel-inner" id="mockup-carousel-inner">
                                         <!-- Slide gambar akan di-inject lewat JS -->
+                                        @foreach ($imageCarousel as $key => $item)
+                                            <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                                                <img src="{{ asset('storage/' . $item->path) }}"
+                                                    class="img-fluid w-100 rounded-lg d-block mx-auto mockup-image"
+                                                    fetchpriority="high" alt="Mockup {{ $item->name }}">
+                                            </div>
+                                        @endforeach
                                     </div>
                                     <a class="carousel-control-prev" href="#mockup-carousel" role="button"
                                         data-slide="prev">
@@ -130,7 +137,12 @@
                                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                         <span class="sr-only">Next</span>
                                     </a>
-                                    <ol id="mockup-carousel-indicators" class="carousel-indicators"></ol>
+                                    <ol id="mockup-carousel-indicators" class="carousel-indicators">
+                                        @foreach ($imageCarousel as $key => $item)
+                                            <li data-target="#mockup-carousel" data-slide-to="{{ $key }}"
+                                                class="{{ $key == 0 ? 'active' : '' }}"></li>
+                                        @endforeach
+                                    </ol>
                                 </div>
                             </div>
                         </div>

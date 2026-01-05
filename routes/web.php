@@ -4,8 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductVersionController;
 
 
-Route::get("/catalog", [App\Http\Controllers\CatalogController::class, "catalog"])->name("catalog");
 Route::get("/", [App\Http\Controllers\CatalogController::class, "index"])->name("catalog.index");
+Route::get("/catalog", [App\Http\Controllers\CatalogController::class, "catalog"])->name("catalog");
+Route::get("/catalog/product", [App\Http\Controllers\CatalogController::class, "product"])->name("catalog.product");
 
 // DOWNLOAD PDF
 // Generate File PDF Catalog - tidak sering dijalankan
