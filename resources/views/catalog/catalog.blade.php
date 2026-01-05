@@ -14,7 +14,7 @@
             <div class="w-100 shadow-sm py-3 px-4 d-flex justify-content-between align-items-center bg-black">
                 <!-- Logo -->
                 <a href="https://osborn.id/" target="_blank" class="d-flex align-items-center">
-                    <img src="{{ asset('dist/img/osborn.png') }}?v={{ time() }}" alt="osborn-logo"
+                    <img src="{{ asset('dist/img/osborn.webp') }}?v={{ time() }}" alt="osborn-logo"
                         style="width: 130px; height: auto;">
                 </a>
 
@@ -361,7 +361,8 @@
 @section('footer')
     <footer class="footer mt-auto py-2 text-center bg-black-secondary text-white"
         style="position: fixed; bottom: 0; width: 100%; z-index: 100;">
-        <strong>&copy; <a href="https://osborn.id" target="_blank" class="text-white">Osborn</a>.</strong> All rights
+        <strong>&copy;{{ date('Y') }} <a href="https://osborn.id" target="_blank"
+                class="text-white">Osborn</a>.</strong> All rights
         reserved.
     </footer>
 @endsection
