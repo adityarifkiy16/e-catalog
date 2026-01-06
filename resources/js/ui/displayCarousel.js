@@ -11,40 +11,29 @@ export function displayCarousel(response, firstLoad = true) {
     const firstProduct = response.products?.data[0];
     const imageTypes = firstProduct?.category?.type?.images ?? [];
     const images = firstProduct?.category?.images ?? [];
-    console.log(images);
-
-    const isMockupJenis = state.selectedJenis === 3 || state.selectedJenis === 4;
+    const isMockupJenis = state.selectedJenis == 3 || state.selectedJenis == 4;
 
     if (firstLoad) {
         if (imageTypes.length > 0) {
-            console.log('Rendering mockup image types:', imageTypes);
             renderMockup(imageTypes, state.selectedJenis, state.uniquePaths, firstLoad);
             return;
         }
-
         if (images.length > 0) {
-            console.log('Rendering mockup images:', images);
             renderMockup(images, state.selectedJenis, state.uniquePaths, firstLoad);
             return;
         }
-
         if (isMockupJenis) {
             renderMockup([], state.selectedJenis, state.uniquePaths, firstLoad);
             return;
         }
     } else {
         if (imageTypes.length > 0) {
-            console.log('Rendering mockup image types:', imageTypes);
             renderMockup(imageTypes, state.selectedJenis, state.uniquePaths, firstLoad);
             return;
         }
-
         if (images.length > 0) {
-            console.log('Rendering mockup images:', images);
             renderMockup(images, state.selectedJenis, state.uniquePaths, firstLoad);
             return;
         }
-
-        renderMockup([], state.selectedJenis, state.uniquePaths, firstLoad);
     }
 }

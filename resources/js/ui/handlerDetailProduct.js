@@ -2,6 +2,8 @@ import { renderVariantsToModal } from './renderVariant';
 import { resetState, setFirstLoad, setCatalogConfig } from '../core/helpers';
 import { viewProduct } from '../core/api';
 import { renderCarouselProduct } from './renderCarouselProduct';
+import { state } from '../core/state';
+import { loadMoreData } from '../core/loader';
 
 /**
  * @function detailProduct
@@ -54,7 +56,7 @@ export function detailProduct() {
             // 5. Handling klik pada jenis produk yang terdapat tipe
             if (jenis === 'card-types') {
                 resetState();
-                setCatalogConfig({ selectedJenis: selectedJenis, type });
+                setCatalogConfig({ selectedJenis: state.selectedJenis, type });
                 setFirstLoad(false);
                 loadMoreData();
                 return;
