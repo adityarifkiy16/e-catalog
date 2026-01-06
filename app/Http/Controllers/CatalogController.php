@@ -9,8 +9,6 @@ use App\Models\TProduct;
 use App\Models\MCategories;
 use App\Models\MVersion;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 
 class CatalogController extends Controller
