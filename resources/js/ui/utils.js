@@ -16,6 +16,14 @@ export function hideLoading() {
     $('#loading').addClass('d-none');
 }
 
+export function showPageLoading() {
+    $('#page-loading').removeClass('d-none');
+}
+
+export function hidePageLoading() {
+    $('#page-loading').addClass('d-none');
+}
+
 export function prepareImageOrder(images = []) {
     if (!Array.isArray(images)) return [];
 

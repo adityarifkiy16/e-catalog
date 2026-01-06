@@ -187,6 +187,20 @@
     background-color: #fabb81; /* dot aktif */
 }
 
+.page-loading {
+    position: fixed;
+    inset: 0;
+    background: rgb(0, 0, 0);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader-content {
+    text-align: center;
+}
+
 /* #product-list {
     max-height: 75vh; 
     overflow-y: auto; 

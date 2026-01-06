@@ -7,6 +7,7 @@ use App\Models\MJenis;
 use App\Models\MSetting;
 use App\Models\TProduct;
 use App\Models\MCategories;
+use App\Models\MType;
 use App\Models\MVersion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -63,21 +64,30 @@ class CatalogController extends Controller
     public function catalog(Request $request)
     {
         $data = $request->validate([
+            'jenis' => 'required|exists:m_jenis,id',
+            'type' => 'nullable|exists:m_types,id',
+            'version' => 'required|exists:m_versions,id',
             'category' => 'required|exists:m_categories,id',
         ]);
         $images = collect();
         if (isset($data['category'])) {
             $categories  = MCategories::with('images')->find($data['category']);
             $images = $categories->images ?? collect();
+        }
+
+        if (isset($request->type)) {
+            $type = MType::with('images')->find($request->type);
+            $images = $type->images ?? collect();
         } else {
             $categories = MCategories::with('images')->where('jenis_id', $request->jenis)->first();
             $images = $categories->images ?? collect();
         }
+
         return view('catalog.catalog', [
             'jenis' => MJenis::with('categories')->get(),
             'imageCarousel' => $images,
             'categories' => MCategories::all(),
-            'type' => \App\Models\MType::with('jenis')->get(),
+            'type' => \App\Models\MType::with(['jenis'])->get(),
             'versions' => MVersion::orderBy('id', 'desc')->get(),
         ]);
     }
@@ -187,6 +197,7 @@ class CatalogController extends Controller
                 }
             }
         }
+        // $response['type'] = \App\Models\MType::with(['jenis', 'images'])->get();
         $response['active_version_id'] = $request->version;
         return response()->json($response);
     }

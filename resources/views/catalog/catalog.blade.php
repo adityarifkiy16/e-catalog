@@ -1,6 +1,19 @@
 @extends('layouts.catalog')
 
 @section('content')
+    <!-- Full Page Loading -->
+    <div id="page-loading" class="page-loading d-none">
+        <div class="loader-content">
+            <div class="elegant-spinner">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <p class="mt-3 text-white">Loading...</p>
+        </div>
+    </div>
+
     <a href="https://wa.me/62816659688" class="btn btn-success btn-lg rounded-circle position-fixed" target="_blank"
         style="bottom: 20px; right: 20px; z-index: 999;" aria-label="Hubungi Kami">
         <i class="fab fa-whatsapp"></i>
@@ -65,8 +78,8 @@
                                         <!-- Tombol Back -->
                                         <div class="mb-2 mb-md-0 text-center text-md-left mr-2 order-1 d-none"
                                             id="backButton">
-                                            <button type="button" class="btn btn-outline-light w-100 w-md-auto"
-                                                onclick="window.location.reload()">
+                                            <button type="button"
+                                                class="btn btn-outline-light w-100 w-md-auto back-button">
                                                 Back
                                             </button>
                                         </div>

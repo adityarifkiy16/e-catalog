@@ -1,6 +1,6 @@
 import { state } from './state';
 import { fetchCatalog } from './api';
-import { showLoading, hideLoading } from '../ui/utils';
+import { showLoading, hideLoading, hidePageLoading, showPageLoading } from '../ui/utils';
 import { renderTypes } from '../ui/renderTypes';
 import { updateCategoryMenu } from '../ui/updateCategoryMenu';
 import { displayCarousel } from '../ui/displayCarousel';
@@ -69,7 +69,9 @@ async function handleResponse(response) {
     handleTypeNavigation();
     handleVersionInitialization();
 
-    await handleFirstCategorySelection(category);
+    if (await handleFirstCategorySelection(category)) {
+        return;
+    }
 
     if (state.firstLoad) {
         await handleFirstLoadResponse(types, productData, version, response);
@@ -108,7 +110,7 @@ async function handleFirstCategorySelection(categories) {
 }
 
 async function handleFirstLoadResponse(types, products, version, response) {
-    if (types.length > 0) {
+    if (types.length > 0 && !state.type) {
         showTypeView(types, response);
     } else {
         await showProductView(products, version, response, true);
@@ -136,12 +138,18 @@ async function showProductView(products, version, response, isFirstLoad) {
     } else {
         if (state.currentPage === 1) {
             showNoDataMessage();
+            state.lastPage = true;
+        } else {
+            state.lastPage = true;
         }
-        state.lastPage = true;
     }
 
     if (isFirstLoad && state.selectedJenis == 4) {
         displayCarousel(response, true);
+    }
+
+    if (isFirstLoad && !state.type) {
+        updateCategoryMenu(response, true);
     }
 
     updateCategoryMenu(response, false);

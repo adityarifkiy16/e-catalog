@@ -12,14 +12,18 @@ import { loadMoreData } from './core/loader';
 // Events
 import { searchHandler } from './events/searchHandler';
 import { scrollHandler } from './events/scrollHandler';
+import { backHandler } from './events/backHandler';
+import { showPageLoading } from './ui/utils';
 
 $(document).ready(function () {
     const urlParams = new URLSearchParams(window.location.search);
     const selectedJenis = urlParams.get('jenis');
     const version = urlParams.get('version');
     const category = urlParams.get('category');
+    const type = urlParams.get('type');
+
     // 1. Load pertama dan set global state
-    setCatalogConfig({ selectedJenis, category, version });
+    setCatalogConfig({ selectedJenis, category, version, type });
     loadMoreData();
     // 2. Toggle layout kategori dipanggil pertama kali + on resize
     toggleCategoryLayout({ selectedJenis, hasCategory: category, isRenderTypes: false });
@@ -33,4 +37,5 @@ $(document).ready(function () {
     searchHandler();
     scrollHandler();
     detailProduct();
+    backHandler();
 });
