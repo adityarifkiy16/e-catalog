@@ -6,6 +6,7 @@ import { updateCategoryMenu } from '../ui/updateCategoryMenu';
 import { displayCarousel } from '../ui/displayCarousel';
 import { renderProducts } from '../ui/renderProduct';
 import { resetState } from './helpers';
+import { updateURLParams } from '../events/updateURLParams';
 
 const SELECTORS = {
     SEARCH_INPUT: '#search-input',
@@ -68,9 +69,7 @@ async function handleResponse(response) {
     handleTypeNavigation();
     handleVersionInitialization();
 
-    if (await handleFirstCategorySelection(category)) {
-        return;
-    }
+    await handleFirstCategorySelection(category);
 
     if (state.firstLoad) {
         await handleFirstLoadResponse(types, productData, version, response);
@@ -101,6 +100,7 @@ async function handleFirstCategorySelection(categories) {
     if (!state.category && Array.isArray(categories) && categories.length > 0) {
         state.category = categories[0].id;
         resetState();
+        updateURLParams({ category: state.category });
         await loadMoreData();
         return true;
     }

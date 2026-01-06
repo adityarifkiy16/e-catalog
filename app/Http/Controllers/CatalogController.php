@@ -71,6 +71,9 @@ class CatalogController extends Controller
         if (isset($data['category'])) {
             $categories  = MCategories::with('images')->find($data['category']);
             $images = $categories->images ?? collect();
+        } else {
+            $categories = MCategories::with('images')->where('jenis_id', $request->jenis)->first();
+            $images = $categories->images ?? collect();
         }
         return view('catalog.catalog', [
             'jenis' => MJenis::with('categories')->get(),
@@ -109,6 +112,11 @@ class CatalogController extends Controller
                 $query->orderByRaw("CAST(SUBSTRING_INDEX(code, 'mm', 1) AS UNSIGNED) ASC");
             } else {
                 $query->orderBy('code', 'asc');
+            }
+        } else {
+            $category = MCategories::where('jenis_id', $request->jenis)->first();
+            if ($category) {
+                $query->where('category_id', $category->id);
             }
         }
 
