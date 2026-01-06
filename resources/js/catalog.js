@@ -13,7 +13,6 @@ import { loadMoreData } from './core/loader';
 import { searchHandler } from './events/searchHandler';
 import { scrollHandler } from './events/scrollHandler';
 import { backHandler } from './events/backHandler';
-import { showPageLoading } from './ui/utils';
 
 $(document).ready(function () {
     const urlParams = new URLSearchParams(window.location.search);
@@ -21,7 +20,6 @@ $(document).ready(function () {
     const version = urlParams.get('version');
     const category = urlParams.get('category');
     const type = urlParams.get('type');
-
     // 1. Load pertama dan set global state
     setCatalogConfig({ selectedJenis, category, version, type });
     loadMoreData();

@@ -9,7 +9,8 @@ let state = {
     firstLoad: true,
     currentRequest: null,
     uniquePaths: new Set(),
-    version: null
+    version: null,
+    isInitialLoad: true
 };
 
 export { state };

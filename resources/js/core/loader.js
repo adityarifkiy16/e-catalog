@@ -33,7 +33,12 @@ export async function loadMoreData() {
     }
 
     state.isLoading = true;
-    showLoading();
+
+    if (state.isInitialLoad) {
+        showPageLoading();
+    } else {
+        showLoading();
+    }
 
     try {
         const params = buildFetchParams();
@@ -41,7 +46,9 @@ export async function loadMoreData() {
         await handleResponse(response);
     } finally {
         state.isLoading = false;
+        state.isInitialLoad = false;
         hideLoading();
+        hidePageLoading();
         state.currentRequest = null;
     }
 }
