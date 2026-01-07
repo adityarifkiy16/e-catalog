@@ -122,8 +122,8 @@
                                             <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                                                 <img src="{{ asset('storage/' . $item->path) }}"
                                                     class="img-fluid w-100 rounded-lg d-block mx-auto mockup-image"
-                                                    fetchpriority="high" alt="Mockup {{ $item->name }}" width="559"
-                                                    height="221">
+                                                    fetchpriority="high" alt="Mockup {{ $item->name }}" width="845"
+                                                    height="470" style="aspect-ratio: 16 / 9; width: 100%; height: auto;">
                                             </div>
                                         @endforeach
                                     </div>

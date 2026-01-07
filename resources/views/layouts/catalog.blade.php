@@ -16,9 +16,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <!-- FontAwesome (delayed load) -->
-    <link rel="preload" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}" as="style">
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}" media="print"
         onload="this.media='all'">
+    <link rel="stylesheet" href="{{ asset('dist/css/fontawesome-fix.css') }}">
 
     <!-- AdminLTE -->
     <link rel="preload" href="{{ asset('dist/css/adminlte.min.css') }}" as="style">

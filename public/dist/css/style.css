@@ -5,6 +5,18 @@
 }
 
 @font-face {
+    font-family: 'Font Awesome 5 Free';
+    src: url('../webfonts/fa-solid-900.woff2') format('woff2');
+    font-display: optional;
+}
+
+@font-face {
+    font-family: 'Font Awesome 5 Brands';
+    src: url('../webfonts/fa-brands-400.woff2') format('woff2');
+    font-display: optional;
+}
+
+@font-face {
     font-family: 'cocogoose';
     src: url(../font/cocogoose/Cocogoose-Pro-Regular-trial.ttf) format('truetype');
     font-weight: normal;
