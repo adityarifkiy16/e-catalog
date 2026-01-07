@@ -53,7 +53,6 @@ export function bindFilterButton(selectedJenis) {
         isLoading = true;
         const type = $(this).data('id');
         try {
-            updateURLParams({ type: type });
             setCatalogConfig({ selectedJenis, type });
             $('#filterModal').modal('hide');
             resetState();

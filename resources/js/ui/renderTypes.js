@@ -17,7 +17,7 @@ export function renderTypes(types, selectedJenis) {
 
         html += `
                     <div class="col-md-2 col-6 mb-4">
-                        <div class="h-100 type-filter d-flex flex-column justify-content-center align-items-center"
+                        <div class="h-100 product-card d-flex flex-column justify-content-center align-items-center"
                     `;
 
         html += `
