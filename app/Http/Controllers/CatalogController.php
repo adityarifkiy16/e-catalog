@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\MType;
 use App\Models\MJenis;
 use App\Models\MSetting;
+use App\Models\MVersion;
 use App\Models\TProduct;
 use App\Models\MCategories;
-use App\Models\MVersion;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 
 class CatalogController extends Controller
@@ -65,13 +64,24 @@ class CatalogController extends Controller
     public function catalog(Request $request)
     {
         $data = $request->validate([
+            'jenis' => 'required|exists:m_jenis,id',
+            'type' => 'nullable|exists:m_types,id',
+            'version' => 'required|exists:m_versions,id',
             'category' => 'required|exists:m_categories,id',
         ]);
         $images = collect();
-        if (isset($data['category'])) {
+
+        if (isset($request->type)) {
+            $type = MType::with('images')->find($request->type);
+            $images = $type->images ?? collect();
+        } else if (isset($data['category'])) {
             $categories  = MCategories::with('images')->find($data['category']);
             $images = $categories->images ?? collect();
+        } else {
+            $categories = MCategories::with('images')->where('jenis_id', $request->jenis)->first();
+            $images = $categories->images ?? collect();
         }
+
         return view('catalog.catalog', [
             'jenis' => MJenis::with('categories')->get(),
             'imageCarousel' => $images,
@@ -109,6 +119,11 @@ class CatalogController extends Controller
                 $query->orderByRaw("CAST(SUBSTRING_INDEX(code, 'mm', 1) AS UNSIGNED) ASC");
             } else {
                 $query->orderBy('code', 'asc');
+            }
+        } else {
+            $category = MCategories::where('jenis_id', $request->jenis)->first();
+            if ($category) {
+                $query->where('category_id', $category->id);
             }
         }
 
