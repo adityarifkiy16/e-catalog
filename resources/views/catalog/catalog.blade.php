@@ -15,7 +15,7 @@
                 <!-- Logo -->
                 <a href="https://osborn.id/" target="_blank" class="d-flex align-items-center">
                     <img src="{{ asset('dist/img/osborn.webp') }}?v={{ time() }}" alt="osborn-logo"
-                        style="width: 130px; height: auto;">
+                        style="width: 130px; height: 30px;" width="130" height="30">
                 </a>
 
                 <!-- Search Button -->
@@ -65,8 +65,7 @@
                                         <!-- Tombol Back -->
                                         <div class="mb-2 mb-md-0 text-center text-md-left mr-2 order-1 d-none"
                                             id="backButton">
-                                            <button type="button" class="btn btn-outline-light w-100 w-md-auto"
-                                                >
+                                            <button type="button" class="btn btn-outline-light w-100 w-md-auto">
                                                 Back
                                             </button>
                                         </div>
@@ -123,7 +122,8 @@
                                             <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                                                 <img src="{{ asset('storage/' . $item->path) }}"
                                                     class="img-fluid w-100 rounded-lg d-block mx-auto mockup-image"
-                                                    fetchpriority="high" alt="Mockup {{ $item->name }}">
+                                                    fetchpriority="high" alt="Mockup {{ $item->name }}" width="559"
+                                                    height="221">
                                             </div>
                                         @endforeach
                                     </div>
