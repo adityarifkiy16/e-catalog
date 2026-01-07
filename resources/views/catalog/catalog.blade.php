@@ -2,7 +2,7 @@
 
 @section('content')
     <!-- Full Page Loading -->
-    <div id="page-loading" class="page-loading">
+    <div id="page-loading" class="page-loading d-none">
         <div class="loader-content">
             <div class="elegant-spinner">
                 <div></div>

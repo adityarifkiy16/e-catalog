@@ -26,6 +26,5 @@ export function resetState() {
     state.isLoading = false;
     state.lastPage = false;
     state.uniquePaths.clear();
-    state.isInitialLoad = true;
     $('#product-list .row').html('');
 }
