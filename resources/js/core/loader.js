@@ -69,7 +69,9 @@ async function handleResponse(response) {
     handleTypeNavigation();
     handleVersionInitialization();
 
-    await handleFirstCategorySelection(category);
+    if (await handleFirstCategorySelection(category)) {
+        return;
+    }
 
     if (state.firstLoad) {
         await handleFirstLoadResponse(types, productData, version, response);
@@ -108,7 +110,7 @@ async function handleFirstCategorySelection(categories) {
 }
 
 async function handleFirstLoadResponse(types, products, version, response) {
-    if (types.length > 0) {
+    if (types.length > 0 && !state.type) {
         showTypeView(types, response);
     } else {
         await showProductView(products, version, response, true);

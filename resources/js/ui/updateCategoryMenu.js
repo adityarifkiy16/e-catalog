@@ -16,7 +16,7 @@ import { renderTypeMenu } from './renderTypeMenu';
 export function updateCategoryMenu(response, firstLoad = true) {
     const categories = response.category ?? [];
     const jenis = response.jenis?.name;
-    const isRenderTypes = state.firstLoad && (response.types?.length ?? 0) > 0;
+    const isRenderTypes = firstLoad;
     const hasCategory = (response.category?.length ?? 0) > 0;
 
     toggleCategoryLayout({

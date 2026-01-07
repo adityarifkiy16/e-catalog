@@ -66,7 +66,7 @@
                                         <div class="mb-2 mb-md-0 text-center text-md-left mr-2 order-1 d-none"
                                             id="backButton">
                                             <button type="button" class="btn btn-outline-light w-100 w-md-auto"
-                                                onclick="window.location.reload()">
+                                                >
                                                 Back
                                             </button>
                                         </div>
