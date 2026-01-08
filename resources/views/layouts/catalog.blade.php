@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
         media="print" onload="this.media='all'">
 
-    @if (isset($imageCarousel))
+    @if (isset($imageCarousel) && count($imageCarousel) > 0)
         @php
             $originalPath = $imageCarousel[0]->path;
             $image517 = str_replace('.webp', '-517.webp', $originalPath);
