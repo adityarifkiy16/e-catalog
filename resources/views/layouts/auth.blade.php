@@ -26,7 +26,6 @@
     <!-- custom css -->
     <link rel="stylesheet" href="{{ asset('dist/css/style.css') }}">
 
-    @vite(['resources/js/app.js'])
     <style>
         .password-toggle {
             position: absolute;
