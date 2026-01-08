@@ -124,7 +124,12 @@
                                                     <img src="{{ asset('storage/' . $item->path) }}"
                                                         class="mockup-image rounded-lg" alt="Mockup {{ $item->name }}"
                                                         data-src="{{ asset('storage/' . $item->path) }}" width="1600"
-                                                        height="900">
+                                                        height="900" decoding="async"
+                                                        @if ($key == 0) fetchpriority="high"
+                                                            loading="eager"
+                                                        @else
+                                                            loading="lazy"
+                                                            fetchpriority="low" @endif>
                                                 </div>
                                             </div>
                                         @endforeach
