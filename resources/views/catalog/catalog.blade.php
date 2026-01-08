@@ -131,7 +131,7 @@
                                                         class="mockup-image rounded-lg" alt="Mockup {{ $item->name }}"
                                                         srcset="{{ $image517 }} 517w, {{ $original }} 800w"
                                                         sizes="(min-width: 768px) 800px, (min-width: 576px) 517px, 100vw"
-                                                        width="800" height="450" decoding="async"
+                                                        width="1600" height="900" decoding="async"
                                                         @if ($key == 0) fetchpriority="high" loading="eager"
                                                         @else loading="lazy" fetchpriority="low" @endif>
                                                 </div>
