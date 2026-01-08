@@ -125,7 +125,7 @@
                                                     fetchpriority="{{ $key == 0 ? 'high' : 'low' }}"
                                                     loading="{{ $key == 0 ? 'eager' : 'lazy' }}"
                                                     alt="Mockup {{ $item->name }}" width="845" height="470"
-                                                    style="aspect-ratio: 16 / 9; width: 100%; height: auto;">
+                                                    style="aspect-ratio: 16 / 9; width: 100%; height: auto; object-fit: cover">
                                             </div>
                                         @endforeach
                                     </div>
