@@ -18,6 +18,8 @@ export function renderProducts(products, selectedJenis, version) {
             ? orderedImages[0]
             : "https://via.placeholder.com/300x200?text=No+Image";
 
+        const thumb164 = toImageVariant(image, 164);
+
         // Masukkan gambar utama di paling depan
         let allImages = orderedImages;
         let thumb = product.category?.type?.thumbnail ?? "";
@@ -80,7 +82,7 @@ export function renderProducts(products, selectedJenis, version) {
                     data-specifications = "${specificationsJson}"
                     >
                        <img 
-                            src="${image}" 
+                            src="${thumb164}"
                             class="card-img-top" 
                             alt="${product.name}" 
                             loading="lazy"
@@ -111,6 +113,10 @@ export function renderProducts(products, selectedJenis, version) {
                     </div>
                 </div>`;
     });
-    $("#product-list .row").empty();
     $("#product-list .row").append(html);
+}
+
+function toImageVariant(src, size) {
+    if (!src) return src;
+    return src.replace(/\.webp$/, `-${size}.webp`);
 }
