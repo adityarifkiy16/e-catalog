@@ -39,8 +39,11 @@
         media="print" onload="this.media='all'">
 
     @if (isset($imageCarousel))
-        <link rel="preload" as="image" href="{{ asset('storage/' . $imageCarousel[0]->path) }}"
-            fetchpriority="high">
+        @php
+            $originalPath = $imageCarousel[0]->path;
+            $image517 = str_replace('.webp', '-517.webp', $originalPath);
+        @endphp
+        <link rel="preload" as="image" href="{{ asset('storage/' . $image517) }}" fetchpriority="high">
     @endif
     <style>
         .card:hover {

@@ -119,17 +119,21 @@
                                     <div class="carousel-inner" id="mockup-carousel-inner ratio ratio-16x9">
                                         <!-- Slide gambar akan di-inject lewat JS -->
                                         @foreach ($imageCarousel as $key => $item)
+                                            @php
+                                                $original = asset('storage/' . $item->path);
+                                                $image517 = asset(
+                                                    'storage/' . str_replace('.webp', '-517.webp', $item->path),
+                                                );
+                                            @endphp
                                             <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                                                 <div class="ratio ratio-16x9 rounded-lg">
-                                                    <img src="{{ asset('storage/' . $item->path) }}"
+                                                    <img src="{{ $image517 }}" style="width=100%;"
                                                         class="mockup-image rounded-lg" alt="Mockup {{ $item->name }}"
-                                                        data-src="{{ asset('storage/' . $item->path) }}" width="1600"
-                                                        height="900" decoding="async"
-                                                        @if ($key == 0) fetchpriority="high"
-                                                            loading="eager"
-                                                        @else
-                                                            loading="lazy"
-                                                            fetchpriority="low" @endif>
+                                                        srcset="{{ $image517 }} 517w, {{ $original }} 800w"
+                                                        sizes="(min-width: 768px) 800px, (min-width: 576px) 517px, 100vw"
+                                                        width="800" height="450" decoding="async"
+                                                        @if ($key == 0) fetchpriority="high" loading="eager"
+                                                        @else loading="lazy" fetchpriority="low" @endif>
                                                 </div>
                                             </div>
                                         @endforeach
@@ -158,12 +162,6 @@
                     <!-- Product list -->
                     <div id="product-list">
                         <div class="row">
-                            <div class="col-6 col-md-2 mb-4">
-                                <div class="skeleton-card"></div>
-                            </div>
-                            <div class="col-6 col-md-2 mb-4">
-                                <div class="skeleton-card"></div>
-                            </div>
                         </div>
                     </div>
 
