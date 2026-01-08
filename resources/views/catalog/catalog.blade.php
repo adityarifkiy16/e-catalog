@@ -127,7 +127,7 @@
                                             @endphp
                                             <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                                                 <div class="ratio ratio-16x9 rounded-lg">
-                                                    <img src="{{ $image517 }}" style="width=100%;"
+                                                    <img src="{{ $image517 }}" style="width:100%;"
                                                         class="mockup-image rounded-lg" alt="Mockup {{ $item->name }}"
                                                         srcset="{{ $image517 }} 517w, {{ $original }} 800w"
                                                         sizes="(min-width: 768px) 800px, (min-width: 576px) 517px, 100vw"
