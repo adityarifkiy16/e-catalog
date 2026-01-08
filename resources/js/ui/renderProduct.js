@@ -111,5 +111,6 @@ export function renderProducts(products, selectedJenis, version) {
                     </div>
                 </div>`;
     });
+    $("#product-list .row").empty();
     $("#product-list .row").append(html);
 }

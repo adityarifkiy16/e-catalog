@@ -153,7 +153,12 @@
                     <!-- Product list -->
                     <div id="product-list">
                         <div class="row">
-                            {{-- akan di isi js --}}
+                            <div class="col-6 col-md-2 mb-4">
+                                <div class="skeleton-card"></div>
+                            </div>
+                            <div class="col-6 col-md-2 mb-4">
+                                <div class="skeleton-card"></div>
+                            </div>
                         </div>
                     </div>
 

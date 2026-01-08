@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
         media="print" onload="this.media='all'">
 
-    @if ($imageCarousel)
+    @if (isset($imageCarousel))
         <link rel="preload" as="image" href="{{ asset('storage/' . $imageCarousel[0]->path) }}"
             fetchpriority="high">
     @endif
@@ -64,6 +64,9 @@
         }
     </style>
     @stack('styles')
+
+    @vite(['resources/js/catalog.js'])
+
 </head>
 
 <body class="bg-black">
@@ -82,13 +85,11 @@
 
     <!-- Scripts -->
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
-    <script defer src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
-    <!-- DataTables & Plugins -->
+    <!-- Plugins -->
+    <script defer src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script defer src="{{ asset('dist/js/adminlte.min.js') }}"></script>
-
-    @vite(['resources/js/app.js', 'resources/js/catalog.js'])
 
 
     <script type="module" defer src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
