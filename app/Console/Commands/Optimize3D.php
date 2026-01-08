@@ -43,6 +43,24 @@ class Optimize3D extends Command
                 ->encode('webp', 70)
                 ->save($fullPath);
         }
+
+        $files = Storage::disk('public')->allFiles('images/categories');
+
+        foreach ($files as $file) {
+            $base = basename($file);
+
+            if (!str_ends_with($base, '.webp')) continue;
+
+            $fullPath = storage_path('app/public/' . $file);
+            if (!file_exists($fullPath)) continue;
+
+            // ===== OVERWRITE ORIGINAL =====
+            Image::make($fullPath)
+                ->resize(51, 51, fn($c) => $c->aspectRatio())
+                ->encode('webp', 70)
+                ->save($fullPath);
+        }
+
         $this->info("\nAll folders optimized successfully!");
     }
 }
