@@ -115,18 +115,16 @@
                     <div id="mockup">
                         <div class="row mb-3">
                             <div class="col-12">
-                                <div id="mockup-carousel" class="carousel slide carousel-fade">
+                                <div id="mockup-carousel" class="carousel slide">
                                     <div class="carousel-inner" id="mockup-carousel-inner ratio ratio-16x9">
                                         <!-- Slide gambar akan di-inject lewat JS -->
                                         @foreach ($imageCarousel as $key => $item)
                                             <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                                                <div class="aspect-ratio-16-9 rounded-lg">
+                                                <div class="ratio ratio-16x9 rounded-lg">
                                                     <img src="{{ asset('storage/' . $item->path) }}"
-                                                        class="mockup-image rounded-lg"
-                                                        fetchpriority="{{ $key == 0 ? 'high' : 'low' }}"
-                                                        loading="{{ $key == 0 ? 'eager' : 'lazy' }}"
-                                                        alt="Mockup {{ $item->name }}"
-                                                        data-src="{{ asset('storage/' . $item->path) }}">
+                                                        class="mockup-image rounded-lg" alt="Mockup {{ $item->name }}"
+                                                        data-src="{{ asset('storage/' . $item->path) }}" width="1600"
+                                                        height="900">
                                                 </div>
                                             </div>
                                         @endforeach
