@@ -126,15 +126,17 @@
                                                 );
                                             @endphp
                                             <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                                                <div class="ratio ratio-16x9 rounded-lg">
-                                                    <img src="{{ $image517 }}" style="width:100%;"
-                                                        class="mockup-image rounded-lg img-fluid w-100 rounded-lg d-block mx-auto mockup-image"
+                                                <div class="rounded-lg overflow-hidden">
+                                                    <img src="{{ $image517 }}" class="mockup-image img-fluid w-100"
                                                         alt="Mockup {{ $item->name }}"
                                                         srcset="{{ $image517 }} 517w, {{ $original }} 800w"
                                                         sizes="(min-width: 768px) 800px, (min-width: 576px) 517px, 100vw"
                                                         width="845" height="470" decoding="async"
-                                                        @if ($key == 0) fetchpriority="high" loading="eager"
-                                                        @else loading="lazy" fetchpriority="low" @endif>
+                                                        @if ($key == 0) fetchpriority="high" 
+                                                            loading="eager"
+                                                        @else 
+                                                            loading="lazy" 
+                                                            fetchpriority="low" @endif>
                                                 </div>
                                             </div>
                                         @endforeach
