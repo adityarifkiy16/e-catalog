@@ -130,7 +130,8 @@
                                                     <img src="{{ $image517 }}" class="mockup-image img-fluid w-100"
                                                         alt="Mockup {{ $item->name }}"
                                                         srcset="{{ $image517 }} 517w, {{ $original }} 800w, {{ $original }} 1200w"
-                                                        sizes="100vw" width="845" height="470" decoding="async"
+                                                        sizes="(max-width: 845px) 517px, (max-width: 1200px) 800px, 1200px"
+                                                        width="845" height="470" decoding="async"
                                                         @if ($key == 0) fetchpriority="high" 
                                                             loading="eager"
                                                         @else 
