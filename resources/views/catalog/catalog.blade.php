@@ -129,14 +129,14 @@
                                                 <div class="rounded-lg overflow-hidden">
                                                     <img src="{{ $image517 }}" class="mockup-image img-fluid w-100"
                                                         alt="Mockup {{ $item->name }}"
-                                                        srcset="{{ $image517 }} 517w, {{ $original }} 800w, {{ $original }} 1200w"
-                                                        sizes="(max-width: 845px) 517px, (max-width: 1200px) 800px, 1200px"
-                                                        width="845" height="470" decoding="async"
+                                                        srcset="{{ $image517 }} 517w, {{ $original }} 1200w"
+                                                        sizes="(max-width: 845px) 517px, 1200px" width="845"
+                                                        height="470" decoding="async"
                                                         @if ($key == 0) fetchpriority="high" 
-                                                            loading="eager"
-                                                        @else 
-                                                            loading="lazy" 
-                                                            fetchpriority="low" @endif>
+                 loading="eager"
+             @else
+                 loading="lazy" 
+                 fetchpriority="low" @endif>
                                                 </div>
                                             </div>
                                         @endforeach
