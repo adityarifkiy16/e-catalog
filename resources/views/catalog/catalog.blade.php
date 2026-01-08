@@ -116,16 +116,18 @@
                         <div class="row mb-3">
                             <div class="col-12">
                                 <div id="mockup-carousel" class="carousel slide carousel-fade">
-                                    <div class="carousel-inner" id="mockup-carousel-inner">
+                                    <div class="carousel-inner" id="mockup-carousel-inner ratio ratio-16x9">
                                         <!-- Slide gambar akan di-inject lewat JS -->
                                         @foreach ($imageCarousel as $key => $item)
                                             <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                                                <img src="{{ asset('storage/' . $item->path) }}"
-                                                    class="img-fluid w-100 rounded-lg d-block mx-auto mockup-image"
-                                                    fetchpriority="{{ $key == 0 ? 'high' : 'low' }}"
-                                                    loading="{{ $key == 0 ? 'eager' : 'lazy' }}"
-                                                    alt="Mockup {{ $item->name }}" width="845" height="470"
-                                                    style="aspect-ratio: 16 / 9; width: 100%; height: auto; object-fit: cover">
+                                                <div class="aspect-ratio-16-9 rounded-lg">
+                                                    <img src="{{ asset('storage/' . $item->path) }}"
+                                                        class="mockup-image rounded-lg"
+                                                        fetchpriority="{{ $key == 0 ? 'high' : 'low' }}"
+                                                        loading="{{ $key == 0 ? 'eager' : 'lazy' }}"
+                                                        alt="Mockup {{ $item->name }}"
+                                                        data-src="{{ asset('storage/' . $item->path) }}">
+                                                </div>
                                             </div>
                                         @endforeach
                                     </div>
