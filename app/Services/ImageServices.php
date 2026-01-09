@@ -10,8 +10,8 @@ class ImageServices
 {
     public function store(UploadedFile $file, string $folder, ?int $resizeWidth = 800): string
     {
-        $sanitizeName = preg_replace('/[^A-Za-z0-9\-_]/', '_', $file->getClientOriginalName());
-        $filename = $sanitizeName . '_' . uniqid() . '.webp';
+        $sanitizeName = preg_replace('/[^A-Za-z0-9\-_]/', '_', $file->getClientOriginalName()) . '_' . uniqid();
+        $filename = $sanitizeName  . '.webp';
         $directory = "images/{$folder}/" . now()->format('Y/m/d');
 
         if (!file_exists($directory)) {
@@ -21,11 +21,11 @@ class ImageServices
         $path = "{$directory}/{$filename}";
 
         if ($folder == 'products') {
-            $filename164 = $sanitizeName . '_' . uniqid() . '-164.webp';
+            $filename164 = $sanitizeName  . '-164.webp';
             $path164 = "{$directory}/{$filename164}";
             $this->resizeImage($file, 164, $path164);
         } else if ($folder == 'mockupcategories') {
-            $filename517 = $sanitizeName . '_' . uniqid() . '-517.webp';
+            $filename517 = $sanitizeName  . '-517.webp';
             $path517 = "{$directory}/{$filename517}";
             $this->resizeImage($file, 517, $path517);
         }
