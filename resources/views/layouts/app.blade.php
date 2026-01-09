@@ -33,8 +33,6 @@
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
     <!-- custom css -->
     <link rel="stylesheet" href="{{ asset('dist/css/style.css') }}">
-
-    @vite(['resources/js/app.js'])
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">

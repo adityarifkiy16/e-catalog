@@ -3,62 +3,48 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
 class OptimizeAllImages extends Command
 {
-    protected $signature = 'optimize:all-images';
-    protected $description = 'Resize and optimize all image folders';
+    protected $signature = 'optimize:products';
+    protected $description = 'Resize and optimize all product images';
 
     public function handle()
     {
-        $folders = [
-            'dist/img/slider'      => [800, 1600],    // ukuran desktop (carousel)
-            'dist/img/slide-depan' => [300, 600],     // kecil (menu slider)
-            'dist/img/product'     => [200, 400],     // thumbnail produk
-            'dist/img'             => [130],          // logo osborn
-        ];
+        $files = Storage::disk('public')->allFiles('images/products');
 
-        foreach ($folders as $folder => $sizes) {
-            $this->processFolder($folder, $sizes);
-        }
+        foreach ($files as $file) {
+            $base = basename($file);
 
-        $this->info("\nAll folders optimized successfully!");
-    }
+            if (!str_ends_with($base, '.webp')) continue;
+            if (str_ends_with($base, '-164.webp')) continue;
 
-    private function processFolder($folder, $sizes)
-    {
-        $source = public_path($folder);
+            $fullPath = storage_path('app/public/' . $file);
+            if (!file_exists($fullPath)) continue;
 
-        $this->info("\nProcessing folder: $folder");
+            $dir  = dirname($file);
+            $name = pathinfo($file, PATHINFO_FILENAME);
 
-        foreach (glob("$source/*.{jpg,jpeg,png,webp}", GLOB_BRACE) as $file) {
-            $filename = basename($file);
-
-            $this->info("  -> $filename");
-
-            foreach ($sizes as $size) {
-
-                $resizedName = preg_replace('/\.(jpg|jpeg|png|webp)$/i', "-{$size}.webp", $filename);
-                $dest = "$source/$resizedName";
-
-                // Skip if exists
-                if (file_exists($dest)) {
-                    $this->info("     - $size px skipped");
-                    continue;
-                }
-
-                // Resize
-                $img = Image::make($file)->resize($size, null, function ($c) {
+            // ===== THUMB 164 =====
+            Image::make($fullPath)
+                ->resize(164, 164, function ($c) {
                     $c->aspectRatio();
                     $c->upsize();
-                });
+                })
+                ->encode('webp', 70)
+                ->save(storage_path("app/public/{$dir}/{$name}-164.webp"));
 
-                $img->encode('webp', 85);
-                $img->save($dest);
-
-                $this->info("     - Generated $resizedName");
-            }
+            // ===== OVERWRITE ORIGINAL =====
+            Image::make($fullPath)
+                ->resize(800, 800, function ($c) {
+                    $c->aspectRatio();
+                    $c->upsize();
+                })
+                ->encode('webp', 70)
+                ->save($fullPath);
         }
+        $this->info("\nAll folders optimized successfully!");
     }
 }

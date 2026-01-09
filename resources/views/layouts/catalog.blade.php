@@ -16,9 +16,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <!-- FontAwesome (delayed load) -->
-    <link rel="preload" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}" as="style">
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}" media="print"
         onload="this.media='all'">
+    <link rel="stylesheet" href="{{ asset('dist/css/fontawesome-fix.css') }}">
 
     <!-- AdminLTE -->
     <link rel="preload" href="{{ asset('dist/css/adminlte.min.css') }}" as="style">
@@ -38,8 +38,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
         media="print" onload="this.media='all'">
 
-    @vite(['resources/js/app.js', 'resources/js/catalog.js'])
-
+    @if (isset($imageCarousel) && count($imageCarousel) > 0)
+        @php
+            $originalPath = $imageCarousel[0]->path;
+            $image517 = str_replace('.webp', '-517.webp', $originalPath);
+        @endphp
+        <link rel="preload" as="image" href="{{ asset('storage/' . $image517) }}" fetchpriority="high">
+    @endif
     <style>
         .card:hover {
             box-shadow: 8px 8px 5px rgba(0, 0, 0, 0.1);
@@ -62,6 +67,9 @@
         }
     </style>
     @stack('styles')
+
+    @vite(['resources/js/catalog.js'])
+
 </head>
 
 <body class="bg-black">
@@ -80,13 +88,15 @@
 
     <!-- Scripts -->
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
-    <!-- DataTables & Plugins -->
+    <!-- Plugins -->
+    <script defer src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script defer src="{{ asset('dist/js/adminlte.min.js') }}"></script>
+
+
+    <script type="module" defer src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule defer src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
     @stack('scripts')
 </body>

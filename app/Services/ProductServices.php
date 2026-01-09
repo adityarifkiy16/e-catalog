@@ -65,7 +65,11 @@ class ProductServices
             throw new \Exception('Product cannot be deleted because it is in use.');
         }
         if ($product->photo) {
-            Storage::disk('public')->delete($product->photo);
+            $filename = pathinfo($product->photo, PATHINFO_FILENAME);
+            $directory = pathinfo($product->photo, PATHINFO_DIRNAME);
+            $basename = $filename . '-164' . '.' . pathinfo($product->photo, PATHINFO_EXTENSION);
+            Storage::disk('public')->delete($directory . '/' . $basename); // delete thumbnail
+            Storage::disk('public')->delete($product->photo); // delete original
         }
         $product->delete();
     }
@@ -75,10 +79,11 @@ class ProductServices
         $products = TProduct::where('category_id', $categoryId)->get();
         foreach ($products as $product) {
             if ($product->photo) {
-                $imagePath = storage_path('app/public/' . $product->photo);
-                if (file_exists($imagePath)) {
-                    @unlink($imagePath);
-                }
+                $filename = pathinfo($product->photo, PATHINFO_FILENAME);
+                $directory = pathinfo($product->photo, PATHINFO_DIRNAME);
+                $basename = $filename . '-164' . '.' . pathinfo($product->photo, PATHINFO_EXTENSION);
+                Storage::disk('public')->delete($directory . '/' . $basename); // delete thumbnail
+                Storage::disk('public')->delete($product->photo); // delete original
             }
             $product->delete();
         }

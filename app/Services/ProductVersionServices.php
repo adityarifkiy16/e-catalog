@@ -159,11 +159,7 @@ class ProductVersionServices
         // mockup
         if (!empty($data['image-mockup'])) {
             foreach ($productVersion->images()->where('type', 'product')->get() as $existingImage) {
-                $oldPath = storage_path('app/public/' . $existingImage->path);
-                if (file_exists($oldPath)) {
-                    @unlink($oldPath);
-                }
-                $existingImage->delete();
+                $this->imageServices->deleteImages($existingImage);
             }
             foreach ($data['image-mockup'] as $file) {
                 $path = $this->imageServices->store($file, 'mockup', 800);
@@ -175,16 +171,13 @@ class ProductVersionServices
         }
 
 
-        // thumbnail
+        // thumbnail/products
         if (!empty($data['image'])) {
             $file = $data['image'];
             $path = $this->imageServices->store($file, 'products', 800);
-            $thumbnail = $productVersion->images()->where('type', 'thumbnail')->first();
+            $thumbnail = $productVersion->images()->where('type', 'thumbnail')->first(); //
             if ($thumbnail) {
-                $imagePath = storage_path('app/public/' . $thumbnail->path);
-                if (file_exists($imagePath)) {
-                    @unlink($imagePath);
-                }
+                $this->imageServices->deleteImages($thumbnail, '164');
                 $thumbnail->update([
                     'path' => $path
                 ]);
@@ -202,10 +195,7 @@ class ProductVersionServices
             $path = $this->imageServices->store($file, 'motif', 800);
             $motifImage = $productVersion->images()->where('type', 'motif')->first();
             if ($motifImage) {
-                $imagePath = storage_path('app/public/' . $motifImage->path);
-                if (file_exists($imagePath)) {
-                    @unlink($imagePath);
-                }
+                $this->imageServices->deleteImages($motifImage);
                 $motifImage->update([
                     'path' => $path,
                 ]);
@@ -225,11 +215,7 @@ class ProductVersionServices
         $productVersion->delete();
         if ($productVersion->images()->count() > 0) {
             foreach ($productVersion->images as $image) {
-                $imagePath = storage_path('app/public/' . $image->path);
-                if (file_exists($imagePath)) {
-                    @unlink($imagePath);
-                }
-                $image->delete();
+                $this->imageServices->deleteImages($image, '164');
             }
         }
     }
@@ -240,11 +226,7 @@ class ProductVersionServices
         foreach ($query->get() as $productVersion) {
             if ($productVersion->images()->count() > 0) {
                 foreach ($productVersion->images as $image) {
-                    $imagePath = storage_path('app/public/' . $image->path);
-                    if (file_exists($imagePath)) {
-                        @unlink($imagePath);
-                    }
-                    $image->delete();
+                    $this->imageServices->deleteImages($image, '164');
                 }
             }
             $productVersion->delete();
@@ -256,11 +238,14 @@ class ProductVersionServices
         $images = $productVersion->images()
             ->where('type', $type)
             ->get();
+
         foreach ($images as $image) {
-            if (Storage::disk('public')->exists($image->path)) {
-                Storage::disk('public')->delete($image->path);
+            if ($type == 'thumbnail') {
+                $this->imageServices->deleteImages($image, '164');
+                continue;
             }
-            $image->delete();
+
+            $this->imageServices->deleteImages($image);
         }
     }
 
@@ -282,11 +267,7 @@ class ProductVersionServices
 
             if ($type == 'mockup') {
                 foreach ($productVersion->images()->where('type', 'product')->get() as $img) {
-                    $oldPath = storage_path('app/public/' . $img->path);
-                    if (file_exists($oldPath)) {
-                        @unlink($oldPath);
-                    }
-                    $img->delete();
+                    $this->imageServices->deleteImages($img);
                 }
                 $productVersion->images()->create([
                     'path' => $path,
@@ -295,13 +276,7 @@ class ProductVersionServices
                 ]);
             } elseif ($type == 'motif') {
                 $motifImage = $productVersion->images()->where('type', 'motif')->first();
-                if ($motifImage) {
-                    $oldPath = storage_path('app/public/' . $motifImage->path);
-                    if (file_exists($oldPath)) {
-                        @unlink($oldPath);
-                    }
-                    $motifImage->delete();
-                }
+                $this->imageServices->deleteImages($motifImage);
                 $productVersion->images()->create([
                     'path' => $path,
                     'product_id' => $product->id,

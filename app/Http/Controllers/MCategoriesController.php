@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\MJenis;
 use App\Models\MCategories;
-use App\Services\ImageServices;
 use Illuminate\Http\Request;
+use App\Services\ImageServices;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class MCategoriesController extends Controller
@@ -80,7 +81,7 @@ class MCategoriesController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $folder = 'categories';
-            $path = $this->imageServices->store($file, $folder, 800);
+            $path = $this->imageServices->store($file, $folder, 50);
             $data['path'] = $path;
         }
 
@@ -139,18 +140,16 @@ class MCategoriesController extends Controller
             'order' => $request->order
         ];
 
+        // save 3d image
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $folder = 'categories';
 
             if ($categories->path) {
-                $oldPath = storage_path('app/public/' . $categories->path);
-                if (file_exists($oldPath)) {
-                    unlink($oldPath);
-                }
+                $this->imageServices->deleteImages($categories);
             }
 
-            $path = $this->imageServices->store($file, $folder, 800);
+            $path = $this->imageServices->store($file, $folder, 50);
             $data['path'] = $path;
         }
 
@@ -161,16 +160,12 @@ class MCategoriesController extends Controller
             $existingToDelete = $categories->images()->whereNotIn('id', $existingImagesIds)->get();
             if ($existingToDelete->count() > 0) {
                 foreach ($existingToDelete as $oldImage) {
-                    $oldPath = storage_path('app/public/' . $oldImage->path);
-                    if (file_exists($oldPath)) {
-                        unlink($oldPath);
-                    }
-                    $oldImage->delete();
+                    $this->imageServices->deleteImages($oldImage, '517');
                 }
             }
             if ($request->hasFile('image-mockup')) {
                 foreach ($request->file('image-mockup') as $file) {
-                    $path = $this->imageServices->store($file, $folder, 1200);
+                    $path = $this->imageServices->store($file, $folder, 800);
                     // $path = $this->imageServices->storeWithoutCompress($file, $folder);
                     $categories->images()->create([
                         'path' => $path,
@@ -199,11 +194,7 @@ class MCategoriesController extends Controller
 
         if ($categories->images()->count() > 0) {
             foreach ($categories->images as $image) {
-                $imagePath = storage_path('app/public/' . $image->path);
-                if (file_exists($imagePath)) {
-                    @unlink($imagePath);
-                }
-                $image->delete();
+                $this->imageServices->deleteImages($image, '517');
             }
         }
 

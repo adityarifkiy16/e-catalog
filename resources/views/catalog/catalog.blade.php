@@ -15,7 +15,7 @@
                 <!-- Logo -->
                 <a href="https://osborn.id/" target="_blank" class="d-flex align-items-center">
                     <img src="{{ asset('dist/img/osborn.webp') }}?v={{ time() }}" alt="osborn-logo"
-                        style="width: 130px; height: auto;">
+                        style="width: 130px; height: 30px;" width="130" height="30">
                 </a>
 
                 <!-- Search Button -->
@@ -65,8 +65,7 @@
                                         <!-- Tombol Back -->
                                         <div class="mb-2 mb-md-0 text-center text-md-left mr-2 order-1 d-none"
                                             id="backButton">
-                                            <button type="button" class="btn btn-outline-light w-100 w-md-auto"
-                                                >
+                                            <button type="button" class="btn btn-outline-light w-100 w-md-auto">
                                                 Back
                                             </button>
                                         </div>
@@ -116,14 +115,29 @@
                     <div id="mockup">
                         <div class="row mb-3">
                             <div class="col-12">
-                                <div id="mockup-carousel" class="carousel slide carousel-fade">
-                                    <div class="carousel-inner" id="mockup-carousel-inner">
+                                <div id="mockup-carousel" class="carousel slide">
+                                    <div class="carousel-inner" id="mockup-carousel-inner ratio ratio-16x9">
                                         <!-- Slide gambar akan di-inject lewat JS -->
                                         @foreach ($imageCarousel as $key => $item)
+                                            @php
+                                                $original = asset('storage/' . $item->path);
+                                                $image517 = asset(
+                                                    'storage/' . str_replace('.webp', '-517.webp', $item->path),
+                                                );
+                                            @endphp
                                             <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                                                <img src="{{ asset('storage/' . $item->path) }}"
-                                                    class="img-fluid w-100 rounded-lg d-block mx-auto mockup-image"
-                                                    fetchpriority="high" alt="Mockup {{ $item->name }}">
+                                                <div class="rounded-lg overflow-hidden">
+                                                    <img src="{{ $image517 }}" class="mockup-image"
+                                                        alt="Mockup {{ $item->name }}"
+                                                        srcset="{{ $image517 }} 517w, {{ $original }} 1200w"
+                                                        sizes="(max-width: 768px) 100vw, 1200vw" width="845"
+                                                        height="470" decoding="async"
+                                                        @if ($key == 0) fetchpriority="high" 
+                                                            loading="eager"
+                                                        @else
+                                                            loading="lazy" 
+                                                            fetchpriority="low" @endif>
+                                                </div>
                                             </div>
                                         @endforeach
                                     </div>
@@ -151,7 +165,6 @@
                     <!-- Product list -->
                     <div id="product-list">
                         <div class="row">
-                            {{-- akan di isi js --}}
                         </div>
                     </div>
 
