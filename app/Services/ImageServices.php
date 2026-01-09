@@ -65,7 +65,7 @@ class ImageServices
     {
         if (!$image || empty($image->path)) return;
 
-        $imagePath = storage_path('app/public/' . $image->path);
+        $imagePath = $image->path;
         $disk = Storage::disk('public');
 
 
