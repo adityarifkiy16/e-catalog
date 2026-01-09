@@ -116,7 +116,7 @@
                         <div class="row mb-3">
                             <div class="col-12">
                                 <div id="mockup-carousel" class="carousel slide">
-                                    <div class="carousel-inner" id="mockup-carousel-inner ratio ratio-16x9">
+                                    <div class="carousel-inner" id="mockup-carousel-inner">
                                         <!-- Slide gambar akan di-inject lewat JS -->
                                         @foreach ($imageCarousel as $key => $item)
                                             @php
