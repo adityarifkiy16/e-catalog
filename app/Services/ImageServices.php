@@ -10,7 +10,7 @@ class ImageServices
 {
     public function store(UploadedFile $file, string $folder, ?int $resizeWidth = 800): string
     {
-        $sanitizeName = str_replace(' ', '_', $file->getClientOriginalName());
+        $sanitizeName = preg_replace('/[^A-Za-z0-9\-_]/', '_', $file->getClientOriginalName());
         $filename = $sanitizeName . '_' . uniqid() . '.webp';
         $directory = "images/{$folder}/" . now()->format('Y/m/d');
         $path = "{$directory}/{$filename}";
@@ -21,15 +21,13 @@ class ImageServices
         }
 
         if ($folder == 'products') {
-            $n = $sanitizeName . '_' . uniqid() . '-164' . '.webp';
-            $p = $directory . '/' . $n;
-            $s = 164;
-            $this->resizeImage($file, $s, $p); // Simpan thumbnail
+            $filename164 = $sanitizeName . '_' . uniqid() . '-164.webp';
+            $path164 = "{$directory}/{$filename164}";
+            $this->resizeImage($file, 164, $path164);
         } else if ($folder == 'mockupcategories') {
-            $n = $sanitizeName . '_' . uniqid() . '-517' . '.webp';
-            $p = $directory . '/' . $n;
-            $s = 517;
-            $this->resizeImage($file, $s, $p);
+            $filename517 = $sanitizeName . '_' . uniqid() . '-517.webp';
+            $path517 = "{$directory}/{$filename517}";
+            $this->resizeImage($file, 517, $path517);
         }
 
         $this->resizeImage($file, $resizeWidth, $fullPath);
@@ -40,7 +38,8 @@ class ImageServices
     public function storeWithoutCompress(UploadedFile $file, string $folder): string
     {
         $folderPath = "images/{$folder}/" . now()->format('Y/m/d');
-        $filename = $file->getClientOriginalName() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $sanitizeName = preg_replace('/[^A-Za-z0-9\-_]/', '_', $file->getClientOriginalName());
+        $filename = $sanitizeName . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
 
         // Simpan file ORIGINAL saja
         $path = $file->storeAs($folderPath, $filename, 'public');
