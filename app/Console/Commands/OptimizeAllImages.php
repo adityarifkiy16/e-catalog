@@ -54,12 +54,17 @@ class OptimizeAllImages extends Command
             $fullPath = storage_path('app/public/' . $file);
             if (!file_exists($fullPath)) continue;
 
-            Image::make($fullPath)
+            $originalName = str_replace('-164.webp', '.webp', $base);
+            $originalPath = storage_path('app/public/' . dirname($file) . '/' . $originalName);
+
+            if (!file_exists($originalPath)) continue;
+
+            Image::make($originalPath)
                 ->resize(164, 164, function ($c) {
                     $c->aspectRatio();
                     $c->upsize();
                 })
-                ->encode('webp', 100)
+                ->encode('webp', 85)
                 ->save($fullPath);
         }
 
