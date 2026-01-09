@@ -63,25 +63,32 @@ class ImageServices
 
     public function deleteImages($image, $size = null): void
     {
-        if (!$image) return;
+        if (!$image || empty($image->path)) return;
 
         $imagePath = storage_path('app/public/' . $image->path);
+        $disk = Storage::disk('public');
+
 
         // delete responsive images
         if ($size) {
-            $iName = pathinfo($image->path, PATHINFO_FILENAME);
-            $iDir = pathinfo($image->path, PATHINFO_DIRNAME);
-            $responsiveImages = $iName . '-' . $size . '.' . pathinfo($image->path, PATHINFO_EXTENSION);
-            $iPath = $iDir . '/' . $responsiveImages;
+            $pathInfo = pathinfo($imagePath);
 
-            if (file_exists($iPath)) {
-                @unlink($iPath);
+            // Pastikan semua bagian path tersedia
+            if (isset($pathInfo['filename'], $pathInfo['extension'])) {
+                $dirname = $pathInfo['dirname'] !== '.' ? $pathInfo['dirname'] . '/' : '';
+                $responsivePath = $dirname . $pathInfo['filename'] . '-' . $size . '.' . $pathInfo['extension'];
+
+                // Hapus menggunakan Storage facade
+                if ($disk->exists($responsivePath)) {
+                    $disk->delete($responsivePath);
+                }
             }
         }
 
-        if (file_exists($imagePath)) {
-            @unlink($imagePath);
+        if ($disk->exists($imagePath)) {
+            $disk->delete($imagePath);
         }
+
         $image->delete();
     }
 }
