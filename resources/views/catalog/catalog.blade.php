@@ -279,7 +279,7 @@
                                                         <div class="py-1 px-2 d-flex align-items-center bg-light border"
                                                             style="border-radius: .5rem;">
                                                             <i class="fa fa-info-circle mr-2 text-primary"></i>
-                                                            <span class="font-italic text-white">
+                                                            <span class="font-italic text-dark">
                                                                 Please choose an option above before order.
                                                             </span>
                                                         </div>
