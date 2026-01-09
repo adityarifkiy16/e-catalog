@@ -13,12 +13,12 @@ class ImageServices
         $sanitizeName = preg_replace('/[^A-Za-z0-9\-_]/', '_', $file->getClientOriginalName());
         $filename = $sanitizeName . '_' . uniqid() . '.webp';
         $directory = "images/{$folder}/" . now()->format('Y/m/d');
-        $path = "{$directory}/{$filename}";
-        $fullPath = storage_path('app/public/' . $path);
-        $directory = dirname($fullPath);
+
         if (!file_exists($directory)) {
             mkdir($directory, 0755, true);
         }
+
+        $path = "{$directory}/{$filename}";
 
         if ($folder == 'products') {
             $filename164 = $sanitizeName . '_' . uniqid() . '-164.webp';
@@ -30,7 +30,7 @@ class ImageServices
             $this->resizeImage($file, 517, $path517);
         }
 
-        $this->resizeImage($file, $resizeWidth, $fullPath);
+        $this->resizeImage($file, $resizeWidth, $path);
 
         return $path;
     }
@@ -47,16 +47,19 @@ class ImageServices
     }
 
 
-    protected function resizeImage($file, $resizeWidth, $path)
+    protected function resizeImage(UploadedFile $file, ?int $resizeWidth, string $path): void
     {
         $image = Image::make($file);
+
         if ($resizeWidth) {
             $image->resize($resizeWidth, null, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             });
         }
+
         $image->encode('webp', 80);
+
         Storage::disk('public')->put($path, (string) $image);
     }
 }
