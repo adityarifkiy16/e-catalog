@@ -140,18 +140,16 @@ class MCategoriesController extends Controller
             'order' => $request->order
         ];
 
+        // save 3d image
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $folder = 'categories';
 
             if ($categories->path) {
-                $oldPath = storage_path('app/public/' . $categories->path);
-                if (file_exists($oldPath)) {
-                    @unlink($oldPath);
-                }
+                $this->imageServices->deleteImages($categories);
             }
 
-            $path = $this->imageServices->store($file, $folder, 800);
+            $path = $this->imageServices->store($file, $folder, 50);
             $data['path'] = $path;
         }
 
@@ -162,20 +160,12 @@ class MCategoriesController extends Controller
             $existingToDelete = $categories->images()->whereNotIn('id', $existingImagesIds)->get();
             if ($existingToDelete->count() > 0) {
                 foreach ($existingToDelete as $oldImage) {
-                    $oldPath = storage_path('app/public/' . $oldImage->path);
-                    if (file_exists($oldPath)) {
-                        $filename = pathinfo($oldImage->path, PATHINFO_FILENAME);
-                        $directory = pathinfo($oldImage->path, PATHINFO_DIRNAME);
-                        $basename = $filename . '-517' . '.' . pathinfo($oldImage->path, PATHINFO_EXTENSION);
-                        Storage::disk('public')->delete($directory . '/' . $basename);
-                        @unlink($oldPath);
-                    }
-                    $oldImage->delete();
+                    $this->imageServices->deleteImages($oldImage, '517');
                 }
             }
             if ($request->hasFile('image-mockup')) {
                 foreach ($request->file('image-mockup') as $file) {
-                    $path = $this->imageServices->store($file, $folder, 1200);
+                    $path = $this->imageServices->store($file, $folder, 800);
                     // $path = $this->imageServices->storeWithoutCompress($file, $folder);
                     $categories->images()->create([
                         'path' => $path,
@@ -204,12 +194,7 @@ class MCategoriesController extends Controller
 
         if ($categories->images()->count() > 0) {
             foreach ($categories->images as $image) {
-                $filename = pathinfo($image->path, PATHINFO_FILENAME);
-                $directory = pathinfo($image->path, PATHINFO_DIRNAME);
-                $basename = $filename . '-517' . '.' . pathinfo($image->path, PATHINFO_EXTENSION);
-                Storage::disk('public')->delete($directory . '/' . $basename); // delete responsive image
-                Storage::disk('public')->delete($image->path); // delete original
-                $image->delete();
+                $this->imageServices->deleteImages($image, '517');
             }
         }
 

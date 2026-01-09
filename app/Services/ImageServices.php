@@ -40,8 +40,6 @@ class ImageServices
         $folderPath = "images/{$folder}/" . now()->format('Y/m/d');
         $sanitizeName = preg_replace('/[^A-Za-z0-9\-_]/', '_', $file->getClientOriginalName());
         $filename = $sanitizeName . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-
-        // Simpan file ORIGINAL saja
         $path = $file->storeAs($folderPath, $filename, 'public');
         return $path;
     }
@@ -61,5 +59,29 @@ class ImageServices
         $image->encode('webp', 80);
 
         Storage::disk('public')->put($path, (string) $image);
+    }
+
+    public function deleteImages($image, $size = null): void
+    {
+        if (!$image) return;
+
+        $imagePath = storage_path('app/public/' . $image->path);
+
+        // delete responsive images
+        if ($size) {
+            $iName = pathinfo($image->path, PATHINFO_FILENAME);
+            $iDir = pathinfo($image->path, PATHINFO_DIRNAME);
+            $responsiveImages = $iName . '-' . $size . '.' . pathinfo($image->path, PATHINFO_EXTENSION);
+            $iPath = $iDir . '/' . $responsiveImages;
+
+            if (file_exists($iPath)) {
+                @unlink($iPath);
+            }
+        }
+
+        if (file_exists($imagePath)) {
+            @unlink($imagePath);
+        }
+        $image->delete();
     }
 }
