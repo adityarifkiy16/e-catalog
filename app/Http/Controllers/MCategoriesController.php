@@ -147,7 +147,7 @@ class MCategoriesController extends Controller
             if ($categories->path) {
                 $oldPath = storage_path('app/public/' . $categories->path);
                 if (file_exists($oldPath)) {
-                    unlink($oldPath);
+                    @unlink($oldPath);
                 }
             }
 
@@ -164,7 +164,11 @@ class MCategoriesController extends Controller
                 foreach ($existingToDelete as $oldImage) {
                     $oldPath = storage_path('app/public/' . $oldImage->path);
                     if (file_exists($oldPath)) {
-                        unlink($oldPath);
+                        $filename = pathinfo($oldImage->path, PATHINFO_FILENAME);
+                        $directory = pathinfo($oldImage->path, PATHINFO_DIRNAME);
+                        $basename = $filename . '-517' . '.' . pathinfo($oldImage->path, PATHINFO_EXTENSION);
+                        Storage::disk('public')->delete($directory . '/' . $basename);
+                        @unlink($oldPath);
                     }
                     $oldImage->delete();
                 }
