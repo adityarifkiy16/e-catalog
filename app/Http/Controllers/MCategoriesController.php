@@ -80,7 +80,7 @@ class MCategoriesController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $folder = 'categories';
-            $path = $this->imageServices->store($file, $folder, 800);
+            $path = $this->imageServices->store($file, $folder, 50);
             $data['path'] = $path;
         }
 

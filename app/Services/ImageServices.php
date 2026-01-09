@@ -10,7 +10,8 @@ class ImageServices
 {
     public function store(UploadedFile $file, string $folder, ?int $resizeWidth = 800): string
     {
-        $filename = $file->getClientOriginalName() . '_' . uniqid() . '.webp';
+        $sanitizeName = str_replace(' ', '_', $file->getClientOriginalName());
+        $filename = $sanitizeName . '_' . uniqid() . '.webp';
         $directory = "images/{$folder}/" . now()->format('Y/m/d');
         $path = "{$directory}/{$filename}";
         $fullPath = storage_path('app/public/' . $path);
@@ -18,15 +19,21 @@ class ImageServices
         if (!file_exists($directory)) {
             mkdir($directory, 0755, true);
         }
-        $image = Image::make($file);
-        if ($resizeWidth) {
-            $image->resize($resizeWidth, null, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
+
+        if ($folder == 'products') {
+            $n = $sanitizeName . '_' . uniqid() . '-164' . '.webp';
+            $p = $directory . '/' . $n;
+            $s = 164;
+            $this->resizeImage($file, $s, $p); // Simpan thumbnail
+        } else if ($folder == 'mockupcategories') {
+            $n = $sanitizeName . '_' . uniqid() . '-517' . '.webp';
+            $p = $directory . '/' . $n;
+            $s = 517;
+            $this->resizeImage($file, $s, $p);
         }
-        $image->encode('webp', 100);
-        Storage::disk('public')->put($path, (string) $image);
+
+        $this->resizeImage($file, $resizeWidth, $fullPath);
+
         return $path;
     }
 
@@ -38,5 +45,19 @@ class ImageServices
         // Simpan file ORIGINAL saja
         $path = $file->storeAs($folderPath, $filename, 'public');
         return $path;
+    }
+
+
+    protected function resizeImage($file, $resizeWidth, $path)
+    {
+        $image = Image::make($file);
+        if ($resizeWidth) {
+            $image->resize($resizeWidth, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+        }
+        $image->encode('webp', 80);
+        Storage::disk('public')->put($path, (string) $image);
     }
 }

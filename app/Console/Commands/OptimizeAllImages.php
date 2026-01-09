@@ -29,13 +29,19 @@ class OptimizeAllImages extends Command
 
             // ===== THUMB 164 =====
             Image::make($fullPath)
-                ->resize(164, 164, fn($c) => $c->aspectRatio())
+                ->resize(164, 164, function ($c) {
+                    $c->aspectRatio();
+                    $c->upsize();
+                })
                 ->encode('webp', 70)
                 ->save(storage_path("app/public/{$dir}/{$name}-164.webp"));
 
             // ===== OVERWRITE ORIGINAL =====
             Image::make($fullPath)
-                ->resize(800, 800, fn($c) => $c->aspectRatio())
+                ->resize(800, 800, function ($c) {
+                    $c->aspectRatio();
+                    $c->upsize();
+                })
                 ->encode('webp', 70)
                 ->save($fullPath);
         }
