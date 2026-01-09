@@ -28,3 +28,8 @@ export function resetState() {
     state.uniquePaths.clear();
     $('#product-list .row').html('');
 }
+
+export function toImageVariant(src, size) {
+    if (!src) return src;
+    return src.replace(/\.webp$/, `-${size}.webp`);
+}

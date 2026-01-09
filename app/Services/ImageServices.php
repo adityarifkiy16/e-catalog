@@ -20,14 +20,21 @@ class ImageServices
 
         $path = "{$directory}/{$filename}";
 
-        if ($folder == 'products') {
+        if ($folder == 'products') { // thumbnail product
             $filename164 = $sanitizeName  . '-164.webp';
             $path164 = "{$directory}/{$filename164}";
             $this->resizeImage($file, 164, $path164);
-        } else if ($folder == 'mockupcategories') {
+        } else if ($folder == 'mockupcategories') { // gambar carousel category (mockup)
             $filename517 = $sanitizeName  . '-517.webp';
             $path517 = "{$directory}/{$filename517}";
             $this->resizeImage($file, 517, $path517);
+        } else if ($folder == 'thumbnail') { // gambar thumbnail tipe
+            $filename100 = $sanitizeName  . '-100.webp';
+            $filename200 = $sanitizeName  . '-200.webp';
+            $path100 = "{$directory}/{$filename100}";
+            $path200 = "{$directory}/{$filename200}";
+            $this->resizeImage($file, 100, $path100);
+            $this->resizeImage($file, 200, $path200);
         }
 
         $this->resizeImage($file, $resizeWidth, $path);

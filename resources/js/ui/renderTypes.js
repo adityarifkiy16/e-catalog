@@ -1,3 +1,5 @@
+import { toImageVariant } from '../core/helpers';
+
 /**
  * Render list of card types as a row of cards.
  * Each card type will have a thumbnail image, a name
@@ -13,6 +15,7 @@ export function renderTypes(types, selectedJenis) {
             ? `/storage/${type.thumbnail}`
             : 'https://via.placeholder.com/300x200?text=No+Image';
 
+        const thumb200 = toImageVariant(image, 200);
         const categoryName = selectedJenis == 3 ? 'wallpanel' : 'tanpa kategori';
 
         html += `
@@ -27,7 +30,7 @@ export function renderTypes(types, selectedJenis) {
                     data-type="${type.id}"
                     >
                        <img 
-                            src="${image}" 
+                            src="${thumb200}" 
                             class="card-img-top" 
                             alt="${type.name}" 
                             style="
