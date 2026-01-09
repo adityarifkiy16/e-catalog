@@ -5,46 +5,44 @@
 }
 
 @font-face {
-    font-family: "Font Awesome 5 Free";
-    src: url("../webfonts/fa-solid-900.woff2") format("woff2");
+    font-family: 'Font Awesome 5 Free';
+    src: url('../webfonts/fa-solid-900.woff2') format('woff2');
     font-display: optional;
 }
 
 @font-face {
-    font-family: "Font Awesome 5 Brands";
-    src: url("../webfonts/fa-brands-400.woff2") format("woff2");
+    font-family: 'Font Awesome 5 Brands';
+    src: url('../webfonts/fa-brands-400.woff2') format('woff2');
     font-display: optional;
 }
 
 @font-face {
-    font-family: "cocogoose";
-    src: url(../font/cocogoose/Cocogoose-Pro-Regular-trial.ttf)
-        format("truetype");
+    font-family: 'cocogoose';
+    src: url(../font/cocogoose/Cocogoose-Pro-Regular-trial.ttf) format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: "cocogoose";
-    src: url(../font/cocogoose/Cocogoose-Pro-Bold-trial.ttf) format("truetype");
+    font-family: 'cocogoose';
+    src: url(../font/cocogoose/Cocogoose-Pro-Bold-trial.ttf) format('truetype');
     font-weight: bold;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: "cocogoose";
-    src: url(../font/cocogoose/Cocogoose-Pro-Light-trial.ttf) format("truetype");
+    font-family: 'cocogoose';
+    src: url(../font/cocogoose/Cocogoose-Pro-Light-trial.ttf) format('truetype');
     font-weight: lighter;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: "cocogoose";
-    src: url(../font/cocogoose/Cocogoose-Pro-Semilight-trial.ttf)
-        format("truetype");
+    font-family: 'cocogoose';
+    src: url(../font/cocogoose/Cocogoose-Pro-Semilight-trial.ttf) format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -55,12 +53,6 @@
     position: relative;
     width: 100%;
     overflow: hidden;
-}
-
-.skeleton-card {
-    height: 180px;
-    background: #2a2a2a;
-    border-radius: 8px;
 }
 
 /* Override any problematic CSS */
@@ -95,17 +87,14 @@
 }
 
 .breadcrumb-item:not(:last-child):after {
-    content: "›";
-    /* Menambahkan tanda panah sebagai separator */
+    content: '›';
     margin: 0 10px;
     color: #6c757d;
 }
 
 .breadcrumb-item:last-child {
     font-weight: bold;
-    /* Menebalkan breadcrumb terakhir */
     color: #007bff;
-    /* Membuat breadcrumb terakhir lebih menonjol */
 }
 
 .nav-link-hover {
@@ -149,7 +138,7 @@
 }
 
 .bg-image {
-    background-image: url("../img/osborn-background.png");
+    background-image: url('../img/osborn-background.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -174,7 +163,7 @@
 }
 
 .font-poppins {
-    font-family: "Poppins", sans-serif;
+    font-family: 'Poppins', sans-serif;
     text-transform: capitalize;
 }
 
@@ -222,23 +211,6 @@
     background-color: #fabb81; /* dot aktif */
 }
 
-/* #product-list {
-    max-height: 75vh; 
-    overflow-y: auto; 
-    overflow-x: hidden;
-    padding-right: 10px; 
-}
-
-
-#product-list::-webkit-scrollbar {
-    width: 8px;
-}
-
-#product-list::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 4px;
-} */
-
 .product-img {
     height: 200px;
     object-fit: cover;
@@ -253,7 +225,7 @@
     padding-right: 10px;
     box-sizing: border-box;
     scrollbar-width: thin;
-    scrollbar-color: #bbb transparent; /* Untuk Firefox */
+    scrollbar-color: #bbb transparent;
 }
 
 /* WebKit (Chrome, Edge, Safari) */
@@ -289,8 +261,8 @@
 
 .mockup-image {
     width: 100%;
-    height: 70vh;
-    aspect-ratio: 16 / 9;
+    max-height: 70vh;
+    aspect-ratio: 16 / 9.5;
     object-fit: cover;
     object-position: center 75%;
     display: block;
