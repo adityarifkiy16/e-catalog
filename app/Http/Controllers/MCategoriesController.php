@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\MJenis;
 use App\Models\MCategories;
-use App\Services\ImageServices;
 use Illuminate\Http\Request;
+use App\Services\ImageServices;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class MCategoriesController extends Controller
@@ -199,10 +200,11 @@ class MCategoriesController extends Controller
 
         if ($categories->images()->count() > 0) {
             foreach ($categories->images as $image) {
-                $imagePath = storage_path('app/public/' . $image->path);
-                if (file_exists($imagePath)) {
-                    @unlink($imagePath);
-                }
+                $filename = pathinfo($image->path, PATHINFO_FILENAME);
+                $directory = pathinfo($image->path, PATHINFO_DIRNAME);
+                $basename = $filename . '-517' . '.' . pathinfo($image->path, PATHINFO_EXTENSION);
+                Storage::disk('public')->delete($directory . '/' . $basename); // delete responsive image
+                Storage::disk('public')->delete($image->path); // delete original
                 $image->delete();
             }
         }
