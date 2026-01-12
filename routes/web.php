@@ -91,7 +91,7 @@ Route::middleware("auth")->group(function () {
 
         // Type Management
         Route::resource('type', MTypeController::class)->except(['show']);
-        Route::prefix('type')->name('type.')->group(function () {
+        Route::prefix('types')->name('type.')->group(function () {
             Route::controller(MTypeController::class)->group(function () {
                 Route::get('/by-jenis/{jenisId}', 'getByJenis')->name('byJenis');
             });
