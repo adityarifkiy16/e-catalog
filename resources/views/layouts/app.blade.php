@@ -50,7 +50,7 @@
                     <a href="{{ route('dashboard') }}" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{{ route('catalog') }}" class="nav-link" target="__blank">Catalog</a>
+                    <a href="{{ config('app.url') }}" class="nav-link" target="__blank">Catalog</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="https://osborn.id" class="nav-link" target="__blank">Landing Page</a>
@@ -108,7 +108,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="{{ url('https://osborn.id') }}" target="_blank" class="brand-link">
-                <img src="{{ asset('dist/img/osborn.png') }}" alt="Logo" class="img-fluid w-50">
+                <img src="{{ asset('dist/img/osborn.webp') }}" alt="Logo" class="img-fluid w-50">
             </a>
 
             <!-- Sidebar -->
