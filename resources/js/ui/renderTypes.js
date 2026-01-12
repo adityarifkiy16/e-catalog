@@ -30,7 +30,7 @@ export function renderTypes(types, selectedJenis) {
                     data-type="${type.id}"
                     >
                        <img 
-                            src="${thumb200}" 
+                            src="${thumb200 ? thumb200 : image}" 
                             class="card-img-top" 
                             alt="${type.name}" 
                             style="

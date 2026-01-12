@@ -127,7 +127,7 @@
                                             @endphp
                                             <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                                                 <div class="rounded-lg overflow-hidden">
-                                                    <img src="{{ $image517 }}" class="mockup-image"
+                                                    <img src="{{ $image517 ? $image517 : $original }}" class="mockup-image"
                                                         alt="Mockup {{ $item->name }}"
                                                         srcset="{{ $image517 }} 517w, {{ $original }} 845w"
                                                         sizes="(max-width: 768px) 100vw, 845px" width="845"

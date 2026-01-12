@@ -1,4 +1,4 @@
-import { prepareImageOrder } from "./utils";
+import { prepareImageOrder } from './utils';
 
 /**
  * @function renderProducts
@@ -8,48 +8,36 @@ import { prepareImageOrder } from "./utils";
  * @param {String} version selected version id
  */
 export function renderProducts(products, selectedJenis, version) {
-    $("#btn-download").removeClass("d-none");
-    let html = "";
+    $('#btn-download').removeClass('d-none');
+    let html = '';
     products.forEach((product) => {
-        const orderedImages = prepareImageOrder(
-            product?.product_versions?.[0]?.images ?? []
-        );
-        const image = orderedImages.length
-            ? orderedImages[0]
-            : "https://via.placeholder.com/300x200?text=No+Image";
+        const orderedImages = prepareImageOrder(product?.product_versions?.[0]?.images ?? []);
+        const image = orderedImages.length ? orderedImages[0] : 'https://via.placeholder.com/300x200?text=No+Image';
 
         const thumb164 = toImageVariant(image, 164);
 
         // Masukkan gambar utama di paling depan
         let allImages = orderedImages;
-        let thumb = product.category?.type?.thumbnail ?? "";
+        let thumb = product.category?.type?.thumbnail ?? '';
 
-        if (thumb && !thumb.startsWith("http")) {
-            thumb = `storage/${thumb.replace(/^\/?storage\//, "")}`;
+        if (thumb && !thumb.startsWith('http')) {
+            thumb = `storage/${thumb.replace(/^\/?storage\//, '')}`;
             allImages.push(thumb);
         }
 
         // Simpan array ini sebagai string JSON yang aman untuk HTML
-        const imagesJson = JSON.stringify(allImages).replace(/"/g, "&quot;");
-        const packagesJson = JSON.stringify(product.packages).replace(
-            /"/g,
-            "&quot;"
-        );
-        const categoryName = product.category?.name ?? "Tanpa Kategori";
-        const displayName =
-            product.product_versions.find((p) => p.version_id == version)
-                ?.name ?? "Tanpa Nama";
+        const imagesJson = JSON.stringify(allImages).replace(/"/g, '&quot;');
+        const packagesJson = JSON.stringify(product.packages).replace(/"/g, '&quot;');
+        const categoryName = product.category?.name ?? 'Tanpa Kategori';
+        const displayName = product.product_versions.find((p) => p.version_id == version)?.name ?? 'Tanpa Nama';
 
         // Tampilan sesuai bentuk
-        if (
-            product.category?.display_style === "square" ||
-            selectedJenis === null
-        ) {
+        if (product.category?.display_style === 'square' || selectedJenis === null) {
             html += `
                     <div class="col-md-2 col-6 mb-4">
                         <div class="h-100 product-card"
                     `;
-        } else if (product.category?.display_style === "rectangle") {
+        } else if (product.category?.display_style === 'rectangle') {
             html += `
                     <div class="col-md-4 col-6 mb-4">
                         <div class="h-100 product-card"
@@ -61,28 +49,26 @@ export function renderProducts(products, selectedJenis, version) {
                     `;
         }
 
-        const isRectangle = product.category?.display_style === "rectangle";
+        const isRectangle = product.category?.display_style === 'rectangle';
 
-        const specificationsJson = JSON.stringify(
-            product.specifications
-        ).replace(/"/g, "&quot;");
+        const specificationsJson = JSON.stringify(product.specifications).replace(/"/g, '&quot;');
 
         html += `
                     data-id="${product.id}"
                     data-code="${product.code}"
                     data-name="${displayName}"
                     data-category="${categoryName}"
-                    data-jenis="${product.category?.jenis?.name ?? ""}"
+                    data-jenis="${product.category?.jenis?.name ?? ''}"
                     data-images="${imagesJson}"
                     data-image="${image}"
-                    data-type="${product.category?.type?.name ?? ""}"
-                    data-type-image="${product.category?.type?.image ?? ""}"
+                    data-type="${product.category?.type?.name ?? ''}"
+                    data-type-image="${product.category?.type?.image ?? ''}"
                     data-url="${product.url_video}"
                     data-paket="${packagesJson}"
                     data-specifications = "${specificationsJson}"
                     >
                        <img 
-                            src="${thumb164}"
+                            src="${thumb164 ? image : thumb164}"
                             class="card-img-top" 
                             alt="${product.name}" 
                             loading="lazy"
@@ -96,12 +82,9 @@ export function renderProducts(products, selectedJenis, version) {
                                 width: 100%; 
                                 object-fit: cover; 
                                 object-position: ${
-                                    product.category?.jenis?.name ===
-                                    "PVC Board"
-                                        ? "bottom center"
-                                        : "center center"
+                                    product.category?.jenis?.name === 'PVC Board' ? 'bottom center' : 'center center'
                                 };
-                                aspect-ratio: ${isRectangle ? "16/9" : "1/1"};
+                                aspect-ratio: ${isRectangle ? '16/9' : '1/1'};
                             "
                         >
                         <div class="card-body d-flex flex-column text-center">
@@ -113,7 +96,7 @@ export function renderProducts(products, selectedJenis, version) {
                     </div>
                 </div>`;
     });
-    $("#product-list .row").append(html);
+    $('#product-list .row').append(html);
 }
 
 function toImageVariant(src, size) {
