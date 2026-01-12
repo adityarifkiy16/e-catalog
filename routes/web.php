@@ -37,7 +37,6 @@ Route::controller(AuthController::class)->middleware("guest")->group(function ()
 Route::middleware("auth")->group(function () {
     Route::get("/home", [DashboardController::class, "index"])->name("dashboard");
     Route::post("/logout", [AuthController::class, "logout"])->name("logout");
-    Route::get("/clear-cache", [TImageController::class, "clear"])->name("clear-cache");
 
     // 1. User Management
     Route::middleware("permission:management_users")->group(function () {

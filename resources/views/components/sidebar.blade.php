@@ -68,17 +68,6 @@
             ])
         @endif
 
-        @if (auth()->check() && auth()->user()->hasPermission('management_product'))
-            <li class="nav-header">
-                Lainnya
-            </li>
-            @include('partials.sidebar._nav_item', [
-                'route' => 'clear-cache',
-                'icon' => 'fas fa-trash',
-                'label' => 'Clean Up',
-            ])
-        @endif
-
         @if (auth()->check() && auth()->user()->hasPermission('management_settings'))
             <li class="nav-header">
                 setting
