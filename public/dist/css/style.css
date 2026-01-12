@@ -6,13 +6,13 @@
 
 @font-face {
     font-family: 'Font Awesome 5 Free';
-    src: url('../webfonts/fa-solid-900.woff2') format('woff2');
+    src: url(../../plugins/fontawesome-free/webfonts/fa-solid-900.woff2) format('woff2');
     font-display: optional;
 }
 
 @font-face {
     font-family: 'Font Awesome 5 Brands';
-    src: url('../webfonts/fa-brands-400.woff2') format('woff2');
+    src: url(../../plugins/fontawesome-free/webfonts/fa-brands-400.woff2) format('woff2');
     font-display: optional;
 }
 
