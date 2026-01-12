@@ -57,22 +57,22 @@ class MJenisController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(MJenis $jenis)
+    public function edit(MJenis $jeni)
     {
-        $arr['jenis'] = $jenis;
+        $arr['jenis'] = $jeni;
         return view('jenis.edit', $arr);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, MJenis $jenis)
+    public function update(Request $request, MJenis $jeni)
     {
         $request->validate([
             'name' => 'required|string|max:255'
         ]);
 
-        $jenis->update($request->all());
+        $jeni->update($request->all());
 
         return response()->json([
             'status' => 'success',
@@ -83,16 +83,16 @@ class MJenisController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MJenis $jenis)
+    public function destroy(MJenis $jeni)
     {
-        if ($jenis->categories()->count() > 0) {
+        if ($jeni->categories()->count() > 0) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Cannot delete jenis with associated categories.',
             ], 400);
         }
 
-        $jenis->delete();
+        $jeni->delete();
 
         return response()->json([
             'status' => 'success',

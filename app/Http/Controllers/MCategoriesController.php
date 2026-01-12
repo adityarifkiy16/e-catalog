@@ -109,15 +109,15 @@ class MCategoriesController extends Controller
         //
     }
 
-    public function edit(MCategories $categories)
+    public function edit(MCategories $category)
     {
-        $arr['categories'] = $categories;
+        $arr['categories'] = $category;
         $arr['jenis'] = MJenis::all();
         $arr['types'] = \App\Models\MType::with('jenis')->get();
         return view('categories.edit', $arr);
     }
 
-    public function update(Request $request, MCategories $categories)
+    public function update(Request $request, MCategories $category)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -145,8 +145,8 @@ class MCategoriesController extends Controller
             $file = $request->file('image');
             $folder = 'categories';
 
-            if ($categories->path) {
-                $this->imageServices->deleteImages($categories);
+            if ($category->path) {
+                $this->imageServices->deleteImages($category);
             }
 
             $path = $this->imageServices->store($file, $folder, 50);
@@ -157,7 +157,7 @@ class MCategoriesController extends Controller
             $folder = 'mockupcategories';
 
             $existingImagesIds = $request->existing_images ? json_decode($request->existing_images, true) : [];
-            $existingToDelete = $categories->images()->whereNotIn('id', $existingImagesIds)->get();
+            $existingToDelete = $category->images()->whereNotIn('id', $existingImagesIds)->get();
             if ($existingToDelete->count() > 0) {
                 foreach ($existingToDelete as $oldImage) {
                     $this->imageServices->deleteImages($oldImage, '517');
@@ -167,14 +167,14 @@ class MCategoriesController extends Controller
                 foreach ($request->file('image-mockup') as $file) {
                     $path = $this->imageServices->store($file, $folder, 800);
                     // $path = $this->imageServices->storeWithoutCompress($file, $folder);
-                    $categories->images()->create([
+                    $category->images()->create([
                         'path' => $path,
                     ]);
                 }
             }
         }
 
-        $categories->update($data);
+        $category->update($data);
 
         return response()->json([
             'status' => 'success',
@@ -182,23 +182,23 @@ class MCategoriesController extends Controller
         ], 200);
     }
 
-    public function destroy(MCategories $categories)
+    public function destroy(MCategories $category)
     {
 
-        if ($categories->products()->count() > 0) {
+        if ($category->products()->count() > 0) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Category cannot be deleted because it has associated products.',
             ], 200);
         }
 
-        if ($categories->images()->count() > 0) {
-            foreach ($categories->images as $image) {
+        if ($category->images()->count() > 0) {
+            foreach ($category->images as $image) {
                 $this->imageServices->deleteImages($image, '517');
             }
         }
 
-        $categories->delete();
+        $category->delete();
         return response()->json([
             'status' => 'success',
             'message' => 'Category deleted successfully.',

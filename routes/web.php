@@ -1,21 +1,30 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\MRoleController;
+use App\Http\Controllers\MTypeController;
+use App\Http\Controllers\MJenisController;
+use App\Http\Controllers\TImageController;
+use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\MSettingController;
+use App\Http\Controllers\TPackageController;
+use App\Http\Controllers\TProductController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MCategoriesController;
+use App\Http\Controllers\ProductViewController;
 use App\Http\Controllers\ProductVersionController;
 
-
-Route::get("/", [App\Http\Controllers\CatalogController::class, "index"])->name("catalog.index");
-Route::get("/catalog", [App\Http\Controllers\CatalogController::class, "catalog"])->name("catalog");
-Route::get("/catalog/product", [App\Http\Controllers\CatalogController::class, "product"])->name("catalog.product");
-
-// DOWNLOAD PDF
-// Generate File PDF Catalog - tidak sering dijalankan
-// Route::get("/catalog/pdf/product", [App\Http\Controllers\TProductController::class, "downloadPdfProduct"])->name("catalog.pdf.product");
+// Public Routes
+Route::get("/", [CatalogController::class, "index"])->name("catalog.index");
+Route::get("/catalog", [CatalogController::class, "catalog"])->name("catalog");
+Route::get("/catalog/product", [CatalogController::class, "product"])->name("catalog.product");
 Route::get("/catalog/pdf", [App\Http\Controllers\PDFController::class, "downloadPdf"])->name("catalog.download");
-Route::post("/products/{product}/viewed", [App\Http\Controllers\TProductController::class, "show"])->name("products.viewed.stored");
+Route::post("/products/{product}/viewed", [TProductController::class, "show"])->name("products.viewed.stored");
 
-
-Route::controller(App\Http\Controllers\AuthController::class)->middleware("guest")->group(function () {
+// Authentication Routes (Guest Only)
+Route::controller(AuthController::class)->middleware("guest")->group(function () {
     Route::get("/admin", "index")->name("login");
     Route::post("/admin", "store")->name("login.post");
     Route::get("/forget-password", "forgetPassword")->name("forget-password");
@@ -24,80 +33,52 @@ Route::controller(App\Http\Controllers\AuthController::class)->middleware("guest
     Route::post("/reset-password", "resetPasswordPost")->name("reset-password.post");
 });
 
-Route::middleware("auth")->group(function () {
-    Route::get("/home", [App\Http\Controllers\DashboardController::class, "index"])->name("dashboard");
-    Route::post("/logout", [App\Http\Controllers\AuthController::class, "logout"])->name("logout");
-    Route::get("/clear-cache", [App\Http\Controllers\TImageController::class, "clear"])->name("clear-cache");
 
+Route::middleware("auth")->group(function () {
+    Route::get("/home", [DashboardController::class, "index"])->name("dashboard");
+    Route::post("/logout", [AuthController::class, "logout"])->name("logout");
+    Route::get("/clear-cache", [TImageController::class, "clear"])->name("clear-cache");
 
     // 1. User Management
     Route::middleware("permission:management_users")->group(function () {
-        // User management routes
-        Route::get("/users", [App\Http\Controllers\UserController::class, "index"])->name("users.index");
-        Route::get("/users/create", [App\Http\Controllers\UserController::class, "create"])->name("users.create");
-        Route::post("/users", [App\Http\Controllers\UserController::class, "store"])->name("users.store");
-        Route::get("/users/{user}/edit", [App\Http\Controllers\UserController::class, "edit"])->name("users.edit");
-        Route::put("/users/{user}", [App\Http\Controllers\UserController::class, "update"])->name("users.update");
-        Route::delete("/users/{user}", [App\Http\Controllers\UserController::class, "destroy"])->name("users.destroy");
-        Route::get("/users/search", [App\Http\Controllers\UserController::class, "search"])->name("users.search");
+        Route::resource("users", UserController::class)->except(["show"]);
+        Route::get("/users/search", [UserController::class, "search"])->name("users.search");
     });
 
     // 2. Role Management
     Route::middleware('permission:management_roles')->group(function () {
-        // Role management routes
-        Route::get("/roles", [App\Http\Controllers\MRoleController::class, "index"])->name("role.index");
-        Route::get("/role/create", [App\Http\Controllers\MRoleController::class, "create"])->name("role.create");
-        Route::post("/role", [App\Http\Controllers\MRoleController::class, "store"])->name("role.store");
-        Route::get("/role/{role}/edit", [App\Http\Controllers\MRoleController::class, "edit"])->name("role.edit");
-        Route::put("/role/{role}", [App\Http\Controllers\MRoleController::class, "update"])->name("role.update");
-        Route::delete("/role/{role}", [App\Http\Controllers\MRoleController::class, "destroy"])->name("role.destroy");
+        Route::resource("role", MRoleController::class)->except(["show"]);
     });
 
     // 3. Product Management
     Route::middleware("permission:management_product")->group(function () {
         // Jenis management routes
-        Route::get("/jenis", [App\Http\Controllers\MJenisController::class, "index"])->name("jenis.index");
-        Route::get("/jenis/create", [App\Http\Controllers\MJenisController::class, "create"])->name("jenis.create");
-        Route::post("/jenis", [App\Http\Controllers\MJenisController::class, "store"])->name("jenis.store");
-        Route::get("/jenis/{jenis}/edit", [App\Http\Controllers\MJenisController::class, "edit"])->name("jenis.edit");
-        Route::put("/jenis/{jenis}", [App\Http\Controllers\MJenisController::class, "update"])->name("jenis.update");
-        Route::delete("/jenis/{jenis}", [App\Http\Controllers\MJenisController::class, "destroy"])->name("jenis.destroy");
+        Route::resource("jenis", MJenisController::class)->except(["show"]);
 
         // Category management routes
-        Route::get("/categories", [App\Http\Controllers\MCategoriesController::class, "index"])->name("categories.index");
-        Route::get("/categories/create", [App\Http\Controllers\MCategoriesController::class, "create"])->name("categories.create");
-        Route::post("/categories", [App\Http\Controllers\MCategoriesController::class, "store"])->name("categories.store");
-        Route::get("/categories/{categories}/edit", [App\Http\Controllers\MCategoriesController::class, "edit"])->name("categories.edit");
-        Route::put("/categories/{categories}", [App\Http\Controllers\MCategoriesController::class, "update"])->name("categories.update");
-        Route::delete("/categories/{categories}", [App\Http\Controllers\MCategoriesController::class, "destroy"])->name("categories.destroy");
-        Route::get('/categories/by-type/{typeId}', [\App\Http\Controllers\MCategoriesController::class, 'getByType'])
-            ->name('categories.byType');
-        Route::get('/categories/by-jenis/{jenisId}', [\App\Http\Controllers\MCategoriesController::class, 'getByJenis'])->name('categories.byJenis');
+        Route::resource('categories', MCategoriesController::class)->except(["show"]);
+        Route::prefix('categories')->name('categories.')->group(function () {
+            Route::controller(MCategoriesController::class)->group(function () {
+                Route::get('/by-type/{typeId}', 'getByType')->name('byType');
+                Route::get('/by-jenis/{jenisId}', 'getByJenis')->name('byJenis');
+            });
+        });
 
         // Product management routes
-        Route::get("/products", [App\Http\Controllers\TProductController::class, "index"])->name("products.index");
-        Route::get("/products/create", [App\Http\Controllers\TProductController::class, "create"])->name("products.create");
-        Route::post("/products", [App\Http\Controllers\TProductController::class, "store"])->name("products.store");
-        Route::get("/products/{product}/edit", [App\Http\Controllers\TProductController::class, "edit"])->name("products.edit");
-        Route::put("/products/{product}", [App\Http\Controllers\TProductController::class, "update"])->name("products.update");
-        Route::delete("/products/{product}", [App\Http\Controllers\TProductController::class, "destroy"])->name("products.destroy");
-        Route::get("/products/search", [App\Http\Controllers\TProductController::class, "search"])->name("products.search");
-        Route::get("/products/delete-by-category", [App\Http\Controllers\TProductController::class, "destroyByCategory"])->name("products.destroy-by-category");
-        Route::get("/products/import-excel", [App\Http\Controllers\TProductController::class, "importExcel"])->name("products.import-excel");
-        Route::post("/products/import", [App\Http\Controllers\TProductController::class, "import"])->name("products.import");
-
+        Route::resource('products', TProductController::class)->except(['show']);
+        Route::prefix('products')->name('products.')->group(function () {
+            Route::controller(TProductController::class)->group(function () {
+                Route::get('/search', 'search')->name('search');
+                Route::get('/delete-by-category', 'destroyByCategory')->name('destroy-by-category');
+                Route::get('/import-excel', 'importExcel')->name('import-excel');
+                Route::post('/import', 'import')->name('import');
+            });
+        });
 
         // ProductVersion management routes
+        Route::resource('product-versions', ProductVersionController::class)->except(['show']);
         Route::prefix('product-versions')->name('product-versions.')->group(function () {
             Route::controller(ProductVersionController::class)->group(function () {
-                Route::get('/', 'index')->name('index');
-                Route::get('/create', 'create')->name('create');
-                Route::post('/', 'store')->name('store');
-                Route::get('/{productVersion}/edit', 'edit')->name('edit');
-                Route::put('/{productVersion}', 'update')->name('update');
-                Route::delete('/{productVersion}', 'destroy')->name('destroy');
-
-                // Custom actions
                 Route::delete('/reset-mockup/{productVersion}', 'resetMockup')->name('reset-mockup');
                 Route::delete('/reset-motif/{productVersion}', 'resetMotif')->name('reset-motif');
                 Route::get('/bulk-upload/create', 'bulkCreate')->name('create.bulk');
@@ -109,40 +90,48 @@ Route::middleware("auth")->group(function () {
         });
 
 
-        // Type Management routes
-        Route::get("/type", [App\Http\Controllers\MTypeController::class, "index"])->name("type.index");
-        Route::get("/type/create", [App\Http\Controllers\MTypeController::class, "create"])->name("type.create");
-        Route::post("/type", [App\Http\Controllers\MTypeController::class, "store"])->name("type.store");
-        Route::get("/type/{type}/edit", [App\Http\Controllers\MTypeController::class, "edit"])->name("type.edit");
-        Route::put("/type/{type}", [App\Http\Controllers\MTypeController::class, "update"])->name("type.update");
-        Route::delete("/type/{type}", [App\Http\Controllers\MTypeController::class, "destroy"])->name("type.destroy");
-        Route::get('/types/by-jenis/{jenisId}', [\App\Http\Controllers\MTypeController::class, 'getByJenis'])
-            ->name('types.byJenis');
+        // Type Management
+        Route::resource('type', MTypeController::class)->except(['show']);
+        Route::prefix('type')->name('type.')->group(function () {
+            Route::controller(MTypeController::class)->group(function () {
+                Route::get('/by-jenis/{jenisId}', 'getByJenis')->name('byJenis');
+            });
+        });
 
-        // Package Management routes
-        Route::get("/package", [App\Http\Controllers\TPackageController::class, "index"])->name("package.index");
-        route::get("/package/bulk-upload/create", [App\Http\Controllers\TPackageController::class, "bulkUpload"])->name("package.bulk.create");
-        Route::get("/package/create", [App\Http\Controllers\TPackageController::class, "create"])->name("package.create");
-        Route::post("/package", [App\Http\Controllers\TPackageController::class, "store"])->name("package.store");
-        Route::get("/package/{package}/edit", [App\Http\Controllers\TPackageController::class, "edit"])->name("package.edit");
-        Route::put("/package/{package}", [App\Http\Controllers\TPackageController::class, "update"])->name("package.update");
-        Route::delete("/package/{package}", [App\Http\Controllers\TPackageController::class, "destroy"])->name("package.destroy");
-        Route::post("/package/bulk-destroy", [App\Http\Controllers\TPackageController::class, "bulkDestroy"])->name("package.bulk.destroy");
+        // Package Management
+        Route::resource('package', TPackageController::class)->except(['show']);
+        Route::prefix('package')->name('package.')->group(function () {
+            Route::controller(TPackageController::class)->group(function () {
+                Route::get('/bulk-upload/create', 'bulkUpload')->name('bulk.create');
+                Route::post('/bulk-destroy', 'bulkDestroy')->name('bulk.destroy');
+            });
+        });
     });
 
     // 4. Reports Management
     Route::middleware('permission:view_reports')->group(function () {
-        Route::get("/products/viewed", [App\Http\Controllers\ProductViewController::class, "index"])->name("products.viewed");
-        Route::get("/products/viewed/log", [App\Http\Controllers\ProductViewController::class, "productViewLog"])->name("products.viewed.log");
-        Route::get("/laporan", [App\Http\Controllers\ProductViewController::class, "laporan"])->name("laporan.index");
-        Route::get("/laporan/download", [App\Http\Controllers\ProductViewController::class, "downloadLaporan"])->name("laporan.download");
+        Route::prefix('products')->name('products.')->group(function () {
+            Route::controller(ProductViewController::class)->group(function () {
+                Route::get('/viewed', 'index')->name('viewed');
+                Route::get('/viewed/log', 'productViewLog')->name('viewed.log');
+            });
+        });
+        Route::prefix('laporan')->name('laporan.')->group(function () {
+            Route::controller(ProductViewController::class)->group(function () {
+                Route::get('/laporan', 'laporan')->name('index');
+                Route::get('/download', 'downloadLaporan')->name('download');
+            });
+        });
     });
 
     // 5. Settings Management
     Route::middleware('permission:management_settings')->group(function () {
-        // Setting management routes
-        Route::get("/settings", [App\Http\Controllers\MSettingController::class, "index"])->name("settings.index");
-        Route::post("/settings", [App\Http\Controllers\MSettingController::class, "store"])->name("settings.store");
+        Route::prefix('settings')->name('settings.')->group(function () {
+            Route::controller(MSettingController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'store')->name('store');
+            });
+        });
     });
 
     // 6. PDF Management
