@@ -18,7 +18,7 @@ class MSettingController extends Controller
     public function index()
     {
         $arr['setting'] = MSetting::first();
-        return view('setting.index', $arr);
+        return view('setting', $arr);
     }
 
     /**
