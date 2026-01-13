@@ -68,7 +68,7 @@ export function renderProducts(products, selectedJenis, version) {
                     data-specifications = "${specificationsJson}"
                     >
                        <img 
-                            src="${thumb164 ? image : thumb164}"
+                            src="${thumb164 ? thumb164 : image}"
                             class="card-img-top" 
                             alt="${product.name}" 
                             loading="lazy"
