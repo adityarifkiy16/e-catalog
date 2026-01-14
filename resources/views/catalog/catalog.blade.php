@@ -107,7 +107,7 @@
                                                         border-radius:10px;
                                                         font-weight:600;
                                                         font-size:0.9rem;
-                                                        padding: 0.4rem 0;
+                                                        padding: 0.5rem 0;
                                                     ">
                                                     <i class="fa fa-arrow-down mr-1"></i>Download PDF
                                                 </a>
