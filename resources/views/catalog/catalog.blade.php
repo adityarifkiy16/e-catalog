@@ -89,6 +89,7 @@
                                                         style="
                                                             border-radius:10px;
                                                             font-weight:600;
+                                                            font-size:0.9rem;
                                                         ">
                                                         @foreach ($versions as $v)
                                                             <option value="{{ $v->id }}"
@@ -101,12 +102,14 @@
                                             @endif
                                             <div class="col-6 col-md-2">
                                                 <a href="#" data-toggle="modal" data-target="#pdfcatalog"
-                                                    class="btn btn-danger w-100"
+                                                    class="btn btn-danger w-100 text-nowrap"
                                                     style="
                                                         border-radius:10px;
                                                         font-weight:600;
+                                                        font-size:0.9rem;
+                                                        padding: 0.4rem 0;
                                                     ">
-                                                    <i class="fa fa-arrow-down mr-1 text-wrap"></i>Download PDF
+                                                    <i class="fa fa-arrow-down mr-1"></i>Download PDF
                                                 </a>
                                             </div>
                                         </div>
