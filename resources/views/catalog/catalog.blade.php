@@ -85,7 +85,7 @@
                                             @if (!empty($versions))
                                                 <div class="col-6 col-md-2">
                                                     <select id="version-select"
-                                                        class="form-control bg-danger text-white border-secondary w-100"
+                                                        class="form-control bg-primary text-white border-secondary w-100"
                                                         style="
                                                             border-radius:10px;
                                                             font-weight:600;
@@ -101,7 +101,7 @@
                                             @endif
                                             <div class="col-6 col-md-2">
                                                 <a href="#" data-toggle="modal" data-target="#pdfcatalog"
-                                                    class="btn btn-light w-100"
+                                                    class="btn btn-danger w-100"
                                                     style="
                                                         border-radius:10px;
                                                         font-weight:600;
