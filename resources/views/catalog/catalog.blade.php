@@ -20,9 +20,21 @@
 
                 <!-- Search Button -->
                 <div class="d-flex align-items-center justify-content-between">
-                    <span class="d-md-none d-flex align-items-center mr-4" id="btn-search-mobile">
-                        <i class="fa fa-search"></i>
+
+                    <!-- Tombol Home -->
+                    <span class="mr-4" id="homeButton">
+                        <a href="{{ route('catalog.index') }}" class="text-white d-flex align-items-center">
+                            <i class="fa fa-home mr-1"></i>
+                            <span class="d-none d-md-block text-capitalize">Home</span>
+                        </a>
                     </span>
+
+                    <div class="d-none mr-4" id="backButton">
+                        <div class="text-white d-flex align-items-center" style="cursor: pointer;">
+                            <i class="fa fa-arrow-left mr-1"></i>
+                            <span class="d-none d-md-block text-capitalize">Back</span>
+                        </div>
+                    </div>
 
                     <!-- Tombol filter (khusus mobile) -->
                     <span class="d-md-none d-flex align-items-center" data-toggle="modal" data-target="#filterModal"
@@ -45,69 +57,62 @@
                                     class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center justify-content-between">
 
                                     <!-- Input Search -->
-                                    <div class="mb-md-0 mb-2 flex-grow-1 mr-2 order-2 order-md-3" id="search-form">
-                                        <div class="input-group">
-                                            <input type="text" id="search-input" class="form-control"
-                                                placeholder="Search product..." value="{{ request()->query('search') }}"
-                                                style="background-color: #171717; color: #FFF; border: 1px solid #444; border-right: none; padding: 10px;">
-
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text rounded-right"
-                                                    style="background-color: #171717; border: 1px solid #444; border-left: none; color: #aaa;">
-                                                    <i class="fas fa-search"></i>
-                                                </span>
+                                    <div class="mb-md-0 mb-2 flex-grow-1 mr-2 order-md-3" id="search-form">
+                                        <div class="row ">
+                                            <div class="col-12 col-md-6 mb-2 mb-md-0">
+                                                <div class="input-group">
+                                                    <input type="text" id="search-input"
+                                                        class="form-control form-control"
+                                                        placeholder="Search product / code..."
+                                                        value="{{ request()->query('search') }}"
+                                                        style="
+                                                            background:#f1f1f1;
+                                                            border-radius:12px 0 0 12px;
+                                                            border:none;
+                                                        ">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"
+                                                            style="
+                                                                background:#f1f1f1;
+                                                                border:none;
+                                                                border-radius:0 12px 12px 0;
+                                                            ">
+                                                            <i class="fas fa-search"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @if (!empty($versions))
+                                                <div class="col-6 col-md-2">
+                                                    <select id="version-select"
+                                                        class="form-control bg-danger text-white border-secondary w-100"
+                                                        style="
+                                                            border-radius:10px;
+                                                            font-weight:600;
+                                                        ">
+                                                        @foreach ($versions as $v)
+                                                            <option value="{{ $v->id }}"
+                                                                {{ request('version') == $v->id ? 'selected' : '' }}>
+                                                                Versi {{ $v->version }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            @endif
+                                            <div class="col-6 col-md-2">
+                                                <a href="#" data-toggle="modal" data-target="#pdfcatalog"
+                                                    class="btn btn-light w-100"
+                                                    style="
+                                                        border-radius:10px;
+                                                        font-weight:600;
+                                                    ">
+                                                    <i class="fa fa-arrow-down mr-1 text-wrap"></i>Download PDF
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="d-flex flex-row align-items-center justify-content-center">
-
-                                        <!-- Tombol Back -->
-                                        <div class="mb-2 mb-md-0 text-center text-md-left mr-2 order-1 d-none"
-                                            id="backButton">
-                                            <button type="button" class="btn btn-outline-light w-100 w-md-auto">
-                                                Back
-                                            </button>
-                                        </div>
-
-                                        <!-- Tombol Home -->
-                                        <div class="mb-2 mb-md-0 text-center text-md-left mr-2 order-1" id="homeButton">
-                                            <a href="{{ route('catalog.index') }}"
-                                                class="btn btn-outline-light w-100 w-md-auto">
-                                                <i class="fa fa-home mr-1"></i> Home
-                                            </a>
-                                        </div>
-
-                                        <!-- Tombol Download -->
-                                        <div class="mb-2 mb-md-0 text-center text-md-right mr-2 order-2"
-                                            id="downloadButton">
-                                            <a href="#" class="btn btn-light w-100 w-md-auto"
-                                                data-target="#pdfcatalog" data-toggle="modal">
-                                                <i class="fa fa-arrow-down mr-1"></i> Catalog PDF
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- filter versi -->
-                                    @if (!empty($versions))
-                                        <div class="mb-2 mb-md-0 text-center text-md-right mr-2 order-1"
-                                            id="version-filter">
-                                            <label for="version-select" class="d-none">Versi</label>
-                                            <select id="version-select"
-                                                class="form-control bg-danger text-white border-secondary">
-                                                @forelse ($versions as $v)
-                                                    <option value="{{ $v->id }}"
-                                                        {{ request('version') == $v->id ? 'selected' : '' }}>
-                                                        Versi {{ $v->version }}
-                                                    </option>
-                                                @empty
-                                                    <option value="" disabled>Tidak ada versi</option>
-                                                @endforelse
-                                            </select>
-                                        </div>
-                                    @endif
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
@@ -410,10 +415,6 @@
             if ($(window).width() < 768) {
                 $('#search-form').addClass('d-none');
             }
-            $('#btn-search-mobile').on('click', function() {
-                $('#search-form').toggleClass('d-none');
-                $('#search-input').focus();
-            });
         });
     </script>
 
