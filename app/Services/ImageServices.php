@@ -94,8 +94,26 @@ class ImageServices
 
         if ($disk->exists($imagePath)) {
             $disk->delete($imagePath);
+            $this->deleteParentDirectoryIfEmpty($imagePath);
         }
 
         $image->delete();
+    }
+
+    public function deleteParentDirectoryIfEmpty(string $path): void
+    {
+        $disk = Storage::disk('public');
+
+        while ($path !== 'images') {
+            $files = $disk->files($path);
+            $directories = $disk->directories($path);
+
+            if (empty($files) && empty($directories)) {
+                $disk->deleteDirectory($path);
+                $path = dirname($path);
+            } else {
+                break;
+            }
+        }
     }
 }
