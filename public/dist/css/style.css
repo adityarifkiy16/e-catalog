@@ -48,11 +48,16 @@
     font-display: swap;
 }
 
-/* Fixed aspect ratio solution */
-.mockup-carousel-fixed {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
+.font-cocogoose {
+    font-family: cocogoose, sans-serif;
+    text-transform: capitalize;
+    font-weight: normal;
+    font-style: normal;
+}
+
+.font-poppins {
+    font-family: 'Poppins', sans-serif;
+    text-transform: capitalize;
 }
 
 /* Override any problematic CSS */
@@ -63,52 +68,8 @@
     max-height: 100%;
 }
 
-.breadcrumb {
-    font-size: 1.1rem;
-    /* Ukuran font sedikit lebih besar untuk keterbacaan */
-}
-
-.breadcrumb-item a {
-    color: #333;
-    /* Warna teks yang gelap pada link */
-    transition: color 0.3s ease-in-out;
-}
-
-.breadcrumb-item a:hover {
-    color: #007bff;
-    /* Warna biru terang saat hover */
-    text-decoration: underline;
-    /* Menambahkan garis bawah pada hover */
-}
-
-.breadcrumb-item.active {
-    color: #6c757d;
-    /* Warna breadcrumb yang aktif */
-}
-
-.breadcrumb-item:not(:last-child):after {
+.breadcrumb-item + .breadcrumb-item::before {
     content: '›';
-    margin: 0 10px;
-    color: #6c757d;
-}
-
-.breadcrumb-item:last-child {
-    font-weight: bold;
-    color: #007bff;
-}
-
-.nav-link-hover {
-    transition: background-color 0.2s, color 0.2s;
-}
-
-.nav-link-hover:hover {
-    background-color: #f4f4f4;
-    color: #000;
-}
-
-.bg-darkBlue {
-    background-color: #001c4b;
-    color: #fff;
 }
 
 .btn-brown {
@@ -120,21 +81,6 @@
     background-color: #fff;
     color: #a3764c;
     outline: #a3764c solid 2px;
-}
-
-.btn-outline-brown {
-    color: #a3764c; /* Warna coklat */
-    border: 2px solid #a3764c;
-    background-color: transparent;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.btn-outline-brown:hover {
-    background-color: #a3764c;
-    color: white;
-    text-decoration: none;
 }
 
 .bg-image {
@@ -153,18 +99,6 @@
     bottom: 0;
     background-color: rgba(255, 255, 255, 0.8);
     z-index: 0;
-}
-
-.font-cocogoose {
-    font-family: cocogoose, sans-serif;
-    text-transform: capitalize;
-    font-weight: normal;
-    font-style: normal;
-}
-
-.font-poppins {
-    font-family: 'Poppins', sans-serif;
-    text-transform: capitalize;
 }
 
 #catalog-col {
@@ -228,25 +162,6 @@
     scrollbar-color: #bbb transparent;
 }
 
-/* WebKit (Chrome, Edge, Safari) */
-#category-menu-item::-webkit-scrollbar {
-    width: 8px;
-}
-
-#category-menu-item::-webkit-scrollbar-track {
-    background: transparent; /* Biar tidak mengganggu tampilan */
-}
-
-#category-menu-item::-webkit-scrollbar-thumb {
-    background-color: #bbb;
-    border-radius: 10px;
-    transition: background-color 0.3s ease;
-}
-
-#category-menu-item:hover::-webkit-scrollbar-thumb {
-    background-color: #888; /* Sedikit lebih gelap saat hover */
-}
-
 .category-filter.active {
     border-radius: 8px;
     background-color: #313131;
@@ -271,20 +186,8 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.elegant-spinner {
-    display: inline-block;
-    position: relative;
-    width: 64px;
-    height: 64px;
-}
-
 .bg-black {
     background-color: var(--background);
-    color: #ffffff;
-}
-
-.bg-black-secondary {
-    background-color: var(--secondary);
     color: #ffffff;
 }
 
@@ -293,45 +196,19 @@
     color: #ffffff;
 }
 
-.elegant-spinner div {
-    box-sizing: border-box;
-    display: block;
-    position: absolute;
-    width: 51px;
-    height: 51px;
-    margin: 6px;
-    border: 6px solid #999;
-    border-radius: 50%;
-    animation: elegant-spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    border-color: #999 transparent transparent transparent;
-}
-
-.elegant-spinner div:nth-child(1) {
-    animation-delay: -0.45s;
-}
-.elegant-spinner div:nth-child(2) {
-    animation-delay: -0.3s;
-}
-.elegant-spinner div:nth-child(3) {
-    animation-delay: -0.15s;
-}
-.elegant-spinner div:nth-child(4) {
-    animation-delay: 0s;
-}
-
 .kepadatan {
-    cursor: pointer; /* Biar ada pointer saat dihover */
+    cursor: pointer;
     transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .kepadatan:hover {
-    background-color: #001f3f; /* Warna hover lebih gelap */
+    background-color: #001f3f;
     color: white;
-    transform: scale(1.05); /* Sedikit membesar saat hover */
+    transform: scale(1.05);
 }
 
 .kepadatan.active {
-    background-color: #001f3f !important; /* Warna aktif (contoh hijau) */
+    background-color: #001f3f !important;
     color: white;
 }
 
@@ -339,13 +216,6 @@
     font-size: 0.65rem;
     color: #001f3f;
     border: 1px solid #001f3f;
-    background-color: transparent;
-}
-
-.badge-outline-dark {
-    font-size: 0.1rem;
-    color: #000;
-    border: 1px solid #000;
     background-color: transparent;
 }
 
@@ -370,13 +240,23 @@
     pointer-events: none;
 }
 
-@keyframes elegant-spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+/* WebKit (Chrome, Edge, Safari) */
+#category-menu-item::-webkit-scrollbar {
+    width: 8px;
+}
+
+#category-menu-item::-webkit-scrollbar-track {
+    background: transparent; /* Biar tidak mengganggu tampilan */
+}
+
+#category-menu-item::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+#category-menu-item:hover::-webkit-scrollbar-thumb {
+    background-color: #888; /* Sedikit lebih gelap saat hover */
 }
 
 @media (max-width: 767.98px) {
