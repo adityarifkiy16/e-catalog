@@ -6,7 +6,7 @@
             <form class="reset-form">
                 @csrf
                 <div class="card mb-0 shadow gradient-outline rounded">
-                    <div class="card-header text-center d-flex justify-content-center align-items-center bg-darkBlue">
+                    <div class="card-header text-center d-flex justify-content-center align-items-center bg-dark">
                         <img src="{{ asset('dist/img/osborn.png') }}" alt="image logo" class="img-fluid"
                             style="width: 150px; height: auto">
                     </div>
