@@ -3,8 +3,7 @@
     <div class="card d-flex px-4 py-2" style="border-radius: 1rem;">
         <x-breadcrumb :items="[
             ['label' => 'Home', 'url' => route('dashboard')],
-            ['label' => 'Paket', 'url' => route('package.index')],
-            ['label' => 'Tambah'],
+            ['label' => 'Upload Desain', 'url' => route('product-versions.bulk.create-motif')],
         ]">
         </x-breadcrumb>
     </div>
