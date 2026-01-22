@@ -53,7 +53,7 @@ class MTypeController extends Controller
      */
     public function create()
     {
-        $arr['jenis'] = MJenis::all();
+        $arr['jenis'] = MJenis::where('id', 3)->get();
         return view('type.create', $arr);
     }
 
