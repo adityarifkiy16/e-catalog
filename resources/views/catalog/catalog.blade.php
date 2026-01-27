@@ -5,7 +5,7 @@
         style="bottom: 20px; right: 20px; z-index: 999;" aria-label="Hubungi Kami">
         <i class="fab fa-whatsapp"></i>
     </a>
-    <button type="button" class="btn bg-black rounded-circle  btn-lg" id="btn-scroll-top"
+    <button type="button" class="btn btn-secondary rounded-circle  btn-lg" id="btn-scroll-top"
         style="display: none; position: fixed; bottom: 80px; right: 20px; z-index: 999;">
         <i class="fas fa-arrow-up"></i>
     </button>
@@ -52,7 +52,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <!-- Toolbar Responsif & Estetik -->
-                            <div class="bg-black-secondary rounded shadow-sm p-3 mb-4">
+                            <div class="rounded shadow-sm p-3 mb-2">
                                 <div
                                     class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center justify-content-between">
 
@@ -392,8 +392,8 @@
     </main>
 @endsection
 @section('footer')
-    <footer class="footer mt-auto py-2 text-center bg-black-secondary text-white"
-        style="position: fixed; bottom: 0; width: 100%; z-index: 100;">
+    <footer class="footer mt-auto py-2 text-center text-white"
+        style="position: fixed; bottom: 0; width: 100%; z-index: 100; background-color: #222222">
         <strong>&copy;{{ date('Y') }} <a href="https://osborn.id" target="_blank"
                 class="text-white">Osborn</a>.</strong> All rights
         reserved.
