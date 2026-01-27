@@ -74,6 +74,17 @@ export function renderCarouselProduct(images, extraImages = [], jenis = '') {
 
             $('.thumbnail-image').removeClass('active-thumbnail');
             $(this).addClass('active-thumbnail');
+
+            const modalBody = $(this).closest('.modal-body');
+            const carousel = $('#carouselProduct');
+
+            modalBody.animate(
+                {
+                    scrollTop: carousel.position().top
+                },
+                300
+            );
+
             setTimeout(() => $(this).removeClass('active-thumbnail'), 500);
 
             $('#carouselProduct').carousel('pause');
