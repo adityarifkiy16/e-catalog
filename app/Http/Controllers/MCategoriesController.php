@@ -165,8 +165,8 @@ class MCategoriesController extends Controller
             }
             if ($request->hasFile('image-mockup')) {
                 foreach ($request->file('image-mockup') as $file) {
-                    $path = $this->imageServices->store($file, $folder, 800);
-                    // $path = $this->imageServices->storeWithoutCompress($file, $folder);
+                    // $path = $this->imageServices->store($file, $folder, 800);
+                    $path = $this->imageServices->storeWithoutCompress($file, $folder);
                     $category->images()->create([
                         'path' => $path,
                     ]);

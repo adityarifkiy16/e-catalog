@@ -117,7 +117,8 @@ class ProductVersionServices
         if (!empty($images)) {
             foreach ($images as $file) {
                 if (!TProduct::where('code', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))->exists()) {
-                    $path = $this->imageServices->store($file, 'products', 800);
+                    // $path = $this->imageServices->store($file, 'products', 800);
+                    $path = $this->imageServices->storeWithoutCompress($file, 'products');
 
                     // 1. Buat Produk baru
                     $product = TProduct::create([
