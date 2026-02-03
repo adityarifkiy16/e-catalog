@@ -116,10 +116,9 @@ class ProductVersionServices
         $arr = [];
         if (!empty($images)) {
             foreach ($images as $file) {
+                // $path = $this->imageServices->store($file, 'products', 800);
+                $path = $this->imageServices->storeWithoutCompress($file, 'products');
                 if (!TProduct::where('code', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))->exists()) {
-                    // $path = $this->imageServices->store($file, 'products', 800);
-                    $path = $this->imageServices->storeWithoutCompress($file, 'products');
-
                     // 1. Buat Produk baru
                     $product = TProduct::create([
                         'code' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
@@ -130,7 +129,7 @@ class ProductVersionServices
                     // 2. Sambungkan Produk dengan Versi
                     $productVersion = $product->productVersions()->create([
                         'name' => $product->code,
-                        'version_id' => $data['version'] ?? 1,
+                        'version_id' => $data['version'],
                     ]);
 
                     // 3. Sambungkan Produk dengan Gambar
@@ -139,7 +138,22 @@ class ProductVersionServices
                         'type' => 'thumbnail',
                     ]);
                 } else {
-                    $arr['warning'][] =  pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    $product = TProduct::where('code', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))->first();
+
+                    $isExist = $product->productVersions()->where('version_id', $data['version'])->exists();
+
+                    if (!$isExist) {
+                        $productVersion = $product->productVersions()->create([
+                            'name' => $product->code,
+                            'version_id' => $data['version'] ?? 1,
+                        ]);
+                        $productVersion->images()->create([
+                            'path' => $path,
+                            'type' => 'thumbnail',
+                        ]);
+                    } else {
+                        $arr['warning'][] =  pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    }
                 }
             }
         }
