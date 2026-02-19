@@ -16,7 +16,7 @@ class TrackVisitor
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->is('catalog')) {
+        if ($request->is('catalog') || $request->is('/')) {
             $today = today()->toDateString();
             $ip = $request->ip();
 
