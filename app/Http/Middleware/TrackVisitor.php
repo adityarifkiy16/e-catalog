@@ -16,7 +16,7 @@ class TrackVisitor
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->is('admin') && !$request->is('admin/*')) {
+        if ($request->is('catalog')) {
             $today = today()->toDateString();
             $ip = $request->ip();
 
