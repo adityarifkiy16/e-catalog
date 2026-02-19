@@ -3,15 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\ImageCategories;
-use App\Models\User;
-use App\Models\MJenis;
 use App\Models\TImage;
 use App\Models\TProduct;
 use App\Models\MCategories;
 use App\Models\MType;
 use App\Models\TPackage;
+use App\Models\Visitor;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
@@ -37,9 +35,9 @@ class DashboardController extends Controller
             'produk' => TProduct::count(),
             'kategori' => MCategories::count(),
             'gambar' => $imageCount,
+            'visitor' => Visitor::whereDate('visited_at', today())->count(),
         ];
         $arr['produkPerJenis'] = $produkPerJenis;
-        // dd($arr);
         return view('dashboard.index', $arr);
     }
 }
