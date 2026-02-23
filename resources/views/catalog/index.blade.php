@@ -126,7 +126,8 @@
     <!-- Page Title -->
     <header class="w-100 d-flex justify-content-center align-items-center">
         <div class="d-flex justify-content-between align-items-center py-3 px-3 w-100 bg-black">
-            <img src="{{ asset('dist/img/osborn.webp') }}" alt="osborn-logo" class="img-fluid" style="max-height:35px;">
+            <img src="{{ asset('dist/img/osborn.webp') }}" alt="osborn-logo" class="img-fluid"
+                style="width: 130px; height: auto;">
 
             <!-- Navigation -->
             <nav class="d-none d-md-block">
@@ -357,7 +358,7 @@
                 <!-- Kiri -->
                 <div class="col-md-6 mb-3 d-flex flex-column align-items-center align-items-md-start">
                     <img src="{{ asset('dist/img/osborn.webp') }}" alt="osborn-logo"
-                        class="img-fluid d-inline-block mb-2" style="max-height:35px;">
+                        class="img-fluid d-inline-block mb-2" style="height:auto; width: 130px;">
                     <p class="mb-2 h5">{{ $setting->email ?? '-' }}</p>
                     <p class="mb-0 text-white">Design Beyond Limits</p>
                 </div>

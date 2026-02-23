@@ -15,7 +15,7 @@
                 <!-- Logo -->
                 <a href="https://osborn.id/" target="_blank" class="d-flex align-items-center">
                     <img src="{{ asset('dist/img/osborn.webp') }}?v={{ time() }}" alt="osborn-logo"
-                        style="width: 130px; height: 30px;" width="130" height="30">
+                        style="width: 130px; height: auto;" width="130" height="86">
                 </a>
 
                 <!-- Search Button -->
