@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\GenerateCatalogPdfJob;
 use App\Models\MJenis;
 use App\Models\MVersion;
 use App\Models\GeneratePdf;
@@ -58,34 +59,7 @@ class PDFController extends Controller
             'type_id' => 'nullable|exists:m_types,id',
         ]);
 
-        $version = MVersion::find($request->version_id);
-        $exists = DB::table('generated_pdfs')
-            ->where('version_id', $version->id)
-            ->where('jenis_id', $request->jenis_id)
-            ->where('type_id', $request->type_id)
-            ->first();
-
-        if ($exists && file_exists(storage_path('app/public/' . $exists->path))) {
-            unlink(storage_path('app/public/' . $exists->path));
-            DB::table('generated_pdfs')->where('id', $exists->id)->delete();
-        }
-
-
-        $path = $this->pdfService->generateCatalogPdf(
-            $version,
-            $request->jenis_id,
-            $request->type_id,
-            null,
-            true
-        );
-
-        // Simpan path ke database
-        DB::table('generated_pdfs')->insert([
-            'path' => $path,
-            'version_id' => $version->id,
-            'jenis_id' => $request->jenis_id,
-            'type_id' => $request->type_id
-        ]);
+        GenerateCatalogPdfJob::dispatch($request->version_id, $request->jenis_id, $request->type_id);
 
         return response()->json([
             'status' => 'success',
