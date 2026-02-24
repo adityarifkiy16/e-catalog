@@ -117,18 +117,19 @@ class ProductVersionServices
         if (!empty($images)) {
             foreach ($images as $file) {
                 $path = $this->imageServices->store($file, 'products', 800);
-                // $path = $this->imageServices->storeWithoutCompress($file, 'products');
-                if (!TProduct::where('code', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))->exists()) {
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $kode = end(explode(' ', $originalName));
+                if (!TProduct::where('code', $originalName)->exists()) {
                     // 1. Buat Produk baru
                     $product = TProduct::create([
-                        'code' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
-                        'name' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+                        'code' => $originalName,
+                        'name' => $kode,
                         'category_id' => $categoryId,
                     ]);
 
                     // 2. Sambungkan Produk dengan Versi
                     $productVersion = $product->productVersions()->create([
-                        'name' => $product->code,
+                        'name' => $product->name,
                         'version_id' => $data['version'],
                     ]);
 
@@ -144,7 +145,7 @@ class ProductVersionServices
 
                     if (!$isExist) {
                         $productVersion = $product->productVersions()->create([
-                            'name' => $product->code,
+                            'name' => $product->name,
                             'version_id' => $data['version'] ?? 1,
                         ]);
                         $productVersion->images()->create([
