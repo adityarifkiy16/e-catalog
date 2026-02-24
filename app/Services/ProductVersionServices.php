@@ -6,7 +6,6 @@ use App\Models\MVersion;
 use App\Models\TProduct;
 use Illuminate\Http\Request;
 use App\Models\ProductVersion;
-use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductVersionServices
@@ -118,7 +117,8 @@ class ProductVersionServices
             foreach ($images as $file) {
                 $path = $this->imageServices->store($file, 'products', 800);
                 $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $kode = end(explode(' ', $originalName));
+                $parts = explode(' ', $originalName);
+                $kode = end($parts);
                 if (!TProduct::where('code', $originalName)->exists()) {
                     // 1. Buat Produk baru
                     $product = TProduct::create([
