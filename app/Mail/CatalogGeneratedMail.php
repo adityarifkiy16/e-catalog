@@ -39,7 +39,7 @@ class CatalogGeneratedMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.catalog-generated',
+            view: 'email.catalog-generated',
             with: [
                 'version' => $this->version,
                 'path' => $this->path
