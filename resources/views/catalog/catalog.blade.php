@@ -11,11 +11,11 @@
     </button>
     <header>
         <div class="w-100 d-flex justify-content-center align-items-center">
-            <div class="w-100 shadow-sm py-3 px-4 d-flex justify-content-between align-items-center bg-black">
+            <div class="w-100 shadow-sm pt-0 px-4 d-flex justify-content-between align-items-center bg-black">
                 <!-- Logo -->
-                <a href="https://osborn.id/" target="_blank" class="d-flex align-items-center">
+                <a href="https://osborn.id/" target="_blank" class="d-flex align-items-center mt-2">
                     <img src="{{ asset('dist/img/osborn.webp') }}?v={{ time() }}" alt="osborn-logo"
-                        style="width: 130px; height: auto;" width="130" height="86">
+                        style="width: 120px; height: auto;" width="120" height="86">
                 </a>
 
                 <!-- Search Button -->
