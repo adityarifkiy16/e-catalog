@@ -62,7 +62,7 @@ class PdfServices
 
             $thumb = $p->first()?->product?->category?->type?->thumbnail;
             $thumbPath = $thumb ? storage_path('app/public/' . $thumb) : null;
-            $html = view('product.catalog', [
+            $html = view('product.pdf.catalog', [
                 'categoryName' => $cat,
                 'products' => $p,
                 'version' => $version,
