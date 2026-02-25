@@ -320,13 +320,6 @@
                             </div>
                             <div
                                 class="modal-footer d-flex justify-content-center align-items-center justify-content-md-end align-items-md-center">
-                                <div class="mt-2 d-flex flex-wrap">
-                                    {{-- <a class="btn btn-md modalDownload text-white" style="background: #000"
-                                    id="modalDownload" href="#">
-                                    <i class="fas fa-arrow-down mr-2"></i>Download
-                                </a> --}}
-                                </div>
-
                                 <div class="mt-2 d-flex flex-wrap ml-2">
                                     <button class="btn btn-md btn-primary modalContact" id="modalContact">
                                         <i class="fas fa-cart-plus mr-2"></i> Contact
