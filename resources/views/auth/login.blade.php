@@ -33,6 +33,13 @@
                             </div>
                         </div>
                         <a href="{{ route('forget-password') }}">Lupa Kata Sandi?</a>
+                        <div class="cf-turnstile" data-sitekey="{{ env('CF_TURNSTILE_SITE_KEY') }}" data-appearance="always"
+                            data-theme="light" data-size="normal">
+                        </div>
+
+                        @error('cf-turnstile-response')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
 
                         <div class="form-group d-flex flex-column justify-content-center mt-3">
                             <button type="submit" class="btn btn-brown mr-2 w-100"

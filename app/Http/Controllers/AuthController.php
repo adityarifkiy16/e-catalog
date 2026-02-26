@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 
-use Carbon\Carbon;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
@@ -23,7 +24,23 @@ class AuthController extends Controller
         $credentials = $this->validate($request, [
             "email" => "required|email",
             "password" => "required",
+            "cf-turnstile-response" => "required",
         ]);
+
+        $response = Http::asForm()->post(
+            'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+            [
+                'secret' => env('CF_TURNSTILE_SECRET_KEY'),
+                'response' => $request->input('cf-turnstile-response'),
+                'remoteip' => $request->ip(),
+            ]
+        );
+
+        if (!$response->json('success')) {
+            return back()->withErrors([
+                'cf-turnstile-response' => 'Verifikasi manusia gagal.'
+            ])->withInput();
+        }
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
