@@ -32,6 +32,7 @@ class AuthController extends Controller
             [
                 'secret' => config('services.turnstile.secret'),
                 'response' => $request->input('cf-turnstile-response'),
+                'remoteip' => $request->ip(),
             ]
         );
 
@@ -42,7 +43,10 @@ class AuthController extends Controller
             );
         }
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt([
+            'email' => $credentials['email'],
+            'password' => $credentials['password']
+        ])) {
             $user = Auth::user();
             // if (!$user->is_verified) {
             //     Auth::logout();
