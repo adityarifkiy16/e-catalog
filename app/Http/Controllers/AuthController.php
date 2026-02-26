@@ -27,12 +27,11 @@ class AuthController extends Controller
             "cf-turnstile-response" => "required",
         ]);
 
-        $response = Http::asForm()->post(
+        $response = Http::asForm()->acceptJson()->post(
             'https://challenges.cloudflare.com/turnstile/v0/siteverify',
             [
                 'secret' => config('services.turnstile.secret'),
                 'response' => $request->input('cf-turnstile-response'),
-                'remoteip' => $request->ip(),
             ]
         );
 
