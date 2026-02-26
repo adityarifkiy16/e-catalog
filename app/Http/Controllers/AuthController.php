@@ -30,7 +30,7 @@ class AuthController extends Controller
         $response = Http::asForm()->post(
             'https://challenges.cloudflare.com/turnstile/v0/siteverify',
             [
-                'secret' => env('CF_TURNSTILE_SECRET_KEY'),
+                'secret' => config('services.turnstile.secret'),
                 'response' => $request->input('cf-turnstile-response'),
                 'remoteip' => $request->ip(),
             ]
