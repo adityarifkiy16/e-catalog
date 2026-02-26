@@ -36,9 +36,10 @@ class AuthController extends Controller
         );
 
         if (!$response->json('success')) {
-            return back()->withErrors([
-                'cf-turnstile-response' => 'Verifikasi manusia gagal.'
-            ])->withInput();
+            return response()->json(
+                ["message" => "Captcha verification failed", "status" => "error"],
+                401
+            );
         }
 
         if (Auth::attempt($credentials)) {
