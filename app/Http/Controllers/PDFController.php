@@ -63,7 +63,7 @@ class PDFController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'PDF generated successfully.',
+            'message' => 'Pembuatan PDF sedang diproses. Jangan lakukan proses generate lagi.',
         ]);
     }
 
