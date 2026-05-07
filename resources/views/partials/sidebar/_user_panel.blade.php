@@ -7,7 +7,7 @@
         <div class="d-flex flex-column">
             <span
                 class="font-weight-bold text-white text-truncate">{{ auth()->user()->name ? auth()->user()->name : auth()->user()->username }}</span>
-            <span class="text-muted small">{{ auth()->user()->role->name }}</span>
+            <span class="text-muted small">{{ auth()->user()->role->name ?? "-" }}</span>
         </div>
     </div>
 </div>
