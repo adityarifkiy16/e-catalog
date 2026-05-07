@@ -60,8 +60,8 @@ export function renderMockup(images, selectedJenis, uniquePaths, firstLoad = fal
                 `);
                 $carouselIndicators.append(`
                     <li data-bs-target="#mockup-carousel" data-bs-slide-to="${i}" ${
-                    i === 0 ? 'class="active"' : ''
-                }></li>
+                        i === 0 ? 'class="active"' : ''
+                    }></li>
                 `);
             });
             $('#mockup').removeClass('d-none');
@@ -140,6 +140,7 @@ function renderVideo(videos) {
                                 frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share"
                                 allowfullscreen
+                                referrerpolicy='strict-origin-when-cross-origin'
                             ></iframe>
                         </div>
                     </div>
